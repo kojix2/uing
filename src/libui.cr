@@ -1,4 +1,4 @@
 require "./libui/libui"
 
-module Libui
+module LibUI
 end
