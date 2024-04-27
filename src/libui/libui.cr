@@ -1,5 +1,5 @@
 module LibUI
-  @[Link("ui")]
+  @[Link("#{__DIR__}/../../libui")]
   lib LibUI
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459
     DRAWDEFAULTMITERLIMIT =                                                             10.0
