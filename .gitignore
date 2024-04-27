@@ -12,3 +12,6 @@
 *.dylib
 *.dll
 *.lib
+
+*.exe
+*.pdb
