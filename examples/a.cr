@@ -1,15 +1,15 @@
 require "../src/libui"
 
-LibUI::LibUI.init(Pointer(LibUI::LibUI::InitOptions).malloc)
+LibUI.init(Pointer(LibUI::LibUI::InitOptions).malloc)
 
-w = LibUI::LibUI.new_window("Hello", 300, 200, 1)
-LibUI::LibUI.control_show(w)
+w = LibUI.new_window("Hello", 300, 200, 1)
+LibUI.control_show(w)
 
 f = ->(a : Pointer(Void), b : Pointer(Void)) {
-  LibUI::LibUI.quit
+  LibUI.quit
   1
 }
-LibUI::LibUI.window_on_closing(w, f, nil)
+LibUI.window_on_closing(w, f, nil)
 
-LibUI::LibUI.main
-LibUI::LibUI.uninit
+LibUI.main
+LibUI.uninit
