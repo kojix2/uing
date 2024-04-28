@@ -27,4 +27,4 @@ jobs:
       - name: Build example
         run: |
           crystal run download.cr
-          crystal build examples/a.cr
+          crystal build examples/basic_window.cr
