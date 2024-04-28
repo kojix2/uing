@@ -1,5 +1,9 @@
 module LibUI
-  @[Link("#{__DIR__}/../../libui")]
+  {% if flag?(:windows) %}
+    @[Link("#{__DIR__}/../../libui")]
+  {% else %}
+    @[Link(ldflags: "-L #{__DIR__}/../../ -lui")]
+  {% end %}
   lib LibUI
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459
     DRAWDEFAULTMITERLIMIT =                                                             10.0
