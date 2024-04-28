@@ -54,10 +54,12 @@ module LibUI
   @@box = Pointer(Void).null
 
   delegate_class_method init, to: LibUI
+
   # no arguments
   def self.init
     LibUI.init(@@init_options)
   end
+
   delegate_class_method uninit, to: LibUI
   delegate_class_method free_init_error, to: LibUI
   delegate_class_method main, to: LibUI
