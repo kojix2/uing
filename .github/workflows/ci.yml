@@ -1,0 +1,26 @@
+name: test
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "51 3 * * 6" # Runs at 03:51, only on Saturday
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu", "macos", "windows"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+      - name: Install dependencies
+        run: shards install
+      - name: Run tests
+        run: crystal spec
