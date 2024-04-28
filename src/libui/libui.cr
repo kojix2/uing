@@ -12,6 +12,34 @@ module LibUI
       size : LibC::SizeT
     end
 
+    {% if flag?(:windows) %}
+      struct TM
+        sec: LibC::Int
+        min: LibC::Int
+        hour: LibC::Int
+        mday: LibC::Int
+        mon: LibC::Int
+        year: LibC::Int
+        wday: LibC::Int
+        yday: LibC::Int
+        isdst: LibC::Int
+      end
+    {% else %}
+      struct TM
+        sec: LibC::Int
+        min: LibC::Int
+        hour: LibC::Int
+        mday: LibC::Int
+        mon: LibC::Int
+        year: LibC::Int
+        wday: LibC::Int
+        yday: LibC::Int
+        isdst: LibC::Int
+        gmtoff: LibC::Long
+        zone: Pointer(LibC::Char)
+      end
+    {% end %}
+
     fun init = uiInit(options : Pointer(Void)) : Pointer(LibC::Char)
     fun uninit = uiUninit
     fun free_init_error = uiFreeInitError(err : Pointer(LibC::Char))
