@@ -1,6 +1,6 @@
 require "../src/libui"
 
-LibUI.init(Pointer(LibUI::LibUI::InitOptions).malloc)
+LibUI.init
 
 Main_window = LibUI.new_window("hello world", 300, 200, 1)
 

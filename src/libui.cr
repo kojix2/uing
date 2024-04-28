@@ -46,9 +46,18 @@ module LibUI
   #   )
   # end
 
+  # uiInitOptions is not used (but it is required)
+  # See https://github.com/libui-ng/libui-ng/issues/208
+  @@init_options = Pointer(LibUI::InitOptions).malloc
+
+  # Proc callback is boxed and stored in @@box
   @@box = Pointer(Void).null
 
   delegate_class_method init, to: LibUI
+  # no arguments
+  def self.init
+    LibUI.init(@@init_options)
+  end
   delegate_class_method uninit, to: LibUI
   delegate_class_method free_init_error, to: LibUI
   delegate_class_method main, to: LibUI

@@ -15,3 +15,8 @@
 
 *.exe
 *.pdb
+
+# executables
+basic_button
+basic_entry
+basic_window
