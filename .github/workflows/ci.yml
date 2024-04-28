@@ -24,3 +24,7 @@ jobs:
         run: shards install
       - name: Run tests
         run: crystal spec
+      - name: Build example
+        run: |
+          crystal run download.cr
+          crystal build examples/a.cr
