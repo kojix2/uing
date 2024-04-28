@@ -1,9 +1,7 @@
 require "./spec_helper"
 
-describe Libui do
-  # TODO: Write tests
-
-  it "works" do
-    false.should eq(true)
+describe LibUI do
+  it "has a version number" do
+    LibUI::VERSION.should be_a(String)
   end
 end
