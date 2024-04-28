@@ -2,10 +2,16 @@ require "./libui/version"
 require "./libui/libui"
 
 module LibUI
-  macro delegate_class_method(method, to object)
-      def self.{{method.id}}(*args, **options)
-        {{object.id}}.{{method.id}}(*args, **options)
+  macro delegate_class_method(method, to object, data data_flag = false)
+      {% if data_flag %}
+      def self.{{method.id}}(*args, data = nil)
+        {{object.id}}.{{method.id}}(*args, data)
       end
+      {% else %}
+      def self.{{method.id}}(*args)
+        {{object.id}}.{{method.id}}(*args)
+      end
+      {% end %}
 
       # def self.{{method.id}}(*args, **options)
       #   {{object.id}}.{{method.id}}(*args, **options) do |*yield_args|
@@ -21,9 +27,9 @@ module LibUI
   delegate_class_method main_steps, to: LibUI
   delegate_class_method main_step, to: LibUI
   delegate_class_method quit, to: LibUI
-  delegate_class_method queue_main, to: LibUI
-  delegate_class_method timer, to: LibUI
-  delegate_class_method on_should_quit, to: LibUI
+  delegate_class_method queue_main, to: LibUI, data: true
+  delegate_class_method timer, to: LibUI, data: true
+  delegate_class_method on_should_quit, to: LibUI, data: true
   delegate_class_method free_text, to: LibUI
   delegate_class_method control_destroy, to: LibUI
   delegate_class_method control_handle, to: LibUI
@@ -45,14 +51,14 @@ module LibUI
   delegate_class_method window_set_title, to: LibUI
   delegate_class_method window_position, to: LibUI
   delegate_class_method window_set_position, to: LibUI
-  delegate_class_method window_on_position_changed, to: LibUI
+  delegate_class_method window_on_position_changed, to: LibUI, data: true
   delegate_class_method window_content_size, to: LibUI
   delegate_class_method window_set_content_size, to: LibUI
   delegate_class_method window_fullscreen, to: LibUI
   delegate_class_method window_set_fullscreen, to: LibUI
-  delegate_class_method window_on_content_size_changed, to: LibUI
-  delegate_class_method window_on_closing, to: LibUI
-  delegate_class_method window_on_focus_changed, to: LibUI
+  delegate_class_method window_on_content_size_changed, to: LibUI, data: true
+  delegate_class_method window_on_closing, to: LibUI, data: true
+  delegate_class_method window_on_focus_changed, to: LibUI, data: true
   delegate_class_method window_focused, to: LibUI
   delegate_class_method window_borderless, to: LibUI
   delegate_class_method window_set_borderless, to: LibUI
@@ -64,7 +70,7 @@ module LibUI
   delegate_class_method new_window, to: LibUI
   delegate_class_method button_text, to: LibUI
   delegate_class_method button_set_text, to: LibUI
-  delegate_class_method button_on_clicked, to: LibUI
+  delegate_class_method button_on_clicked, to: LibUI, data: true
   delegate_class_method new_button, to: LibUI
   delegate_class_method box_append, to: LibUI
   delegate_class_method box_num_children, to: LibUI
@@ -75,13 +81,13 @@ module LibUI
   delegate_class_method new_vertical_box, to: LibUI
   delegate_class_method checkbox_text, to: LibUI
   delegate_class_method checkbox_set_text, to: LibUI
-  delegate_class_method checkbox_on_toggled, to: LibUI
+  delegate_class_method checkbox_on_toggled, to: LibUI, data: true
   delegate_class_method checkbox_checked, to: LibUI
   delegate_class_method checkbox_set_checked, to: LibUI
   delegate_class_method new_checkbox, to: LibUI
   delegate_class_method entry_text, to: LibUI
   delegate_class_method entry_set_text, to: LibUI
-  delegate_class_method entry_on_changed, to: LibUI
+  delegate_class_method entry_on_changed, to: LibUI, data: true
   delegate_class_method entry_read_only, to: LibUI
   delegate_class_method entry_set_read_only, to: LibUI
   delegate_class_method new_entry, to: LibUI
@@ -105,14 +111,14 @@ module LibUI
   delegate_class_method new_group, to: LibUI
   delegate_class_method spinbox_value, to: LibUI
   delegate_class_method spinbox_set_value, to: LibUI
-  delegate_class_method spinbox_on_changed, to: LibUI
+  delegate_class_method spinbox_on_changed, to: LibUI, data: true
   delegate_class_method new_spinbox, to: LibUI
   delegate_class_method slider_value, to: LibUI
   delegate_class_method slider_set_value, to: LibUI
   delegate_class_method slider_has_tool_tip, to: LibUI
   delegate_class_method slider_set_has_tool_tip, to: LibUI
-  delegate_class_method slider_on_changed, to: LibUI
-  delegate_class_method slider_on_released, to: LibUI
+  delegate_class_method slider_on_changed, to: LibUI, data: true
+  delegate_class_method slider_on_released, to: LibUI, data: true
   delegate_class_method slider_set_range, to: LibUI
   delegate_class_method new_slider, to: LibUI
   delegate_class_method progress_bar_value, to: LibUI
@@ -127,35 +133,35 @@ module LibUI
   delegate_class_method combobox_num_items, to: LibUI
   delegate_class_method combobox_selected, to: LibUI
   delegate_class_method combobox_set_selected, to: LibUI
-  delegate_class_method combobox_on_selected, to: LibUI
+  delegate_class_method combobox_on_selected, to: LibUI, data: true
   delegate_class_method new_combobox, to: LibUI
   delegate_class_method editable_combobox_append, to: LibUI
   delegate_class_method editable_combobox_text, to: LibUI
   delegate_class_method editable_combobox_set_text, to: LibUI
-  delegate_class_method editable_combobox_on_changed, to: LibUI
+  delegate_class_method editable_combobox_on_changed, to: LibUI, data: true
   delegate_class_method new_editable_combobox, to: LibUI
   delegate_class_method radio_buttons_append, to: LibUI
   delegate_class_method radio_buttons_selected, to: LibUI
   delegate_class_method radio_buttons_set_selected, to: LibUI
-  delegate_class_method radio_buttons_on_selected, to: LibUI
+  delegate_class_method radio_buttons_on_selected, to: LibUI, data: true
   delegate_class_method new_radio_buttons, to: LibUI
   delegate_class_method date_time_picker_time, to: LibUI
   delegate_class_method date_time_picker_set_time, to: LibUI
-  delegate_class_method date_time_picker_on_changed, to: LibUI
+  delegate_class_method date_time_picker_on_changed, to: LibUI, data: true
   delegate_class_method new_date_time_picker, to: LibUI
   delegate_class_method new_date_picker, to: LibUI
   delegate_class_method new_time_picker, to: LibUI
   delegate_class_method multiline_entry_text, to: LibUI
   delegate_class_method multiline_entry_set_text, to: LibUI
   delegate_class_method multiline_entry_append, to: LibUI
-  delegate_class_method multiline_entry_on_changed, to: LibUI
+  delegate_class_method multiline_entry_on_changed, to: LibUI, data: true
   delegate_class_method multiline_entry_read_only, to: LibUI
   delegate_class_method multiline_entry_set_read_only, to: LibUI
   delegate_class_method new_multiline_entry, to: LibUI
   delegate_class_method new_non_wrapping_multiline_entry, to: LibUI
   delegate_class_method menu_item_enable, to: LibUI
   delegate_class_method menu_item_disable, to: LibUI
-  delegate_class_method menu_item_on_clicked, to: LibUI
+  delegate_class_method menu_item_on_clicked, to: LibUI, data: true
   delegate_class_method menu_item_checked, to: LibUI
   delegate_class_method menu_item_set_checked, to: LibUI
   delegate_class_method menu_append_item, to: LibUI
@@ -229,7 +235,7 @@ module LibUI
   delegate_class_method open_type_features_add, to: LibUI
   delegate_class_method open_type_features_remove, to: LibUI
   delegate_class_method open_type_features_get, to: LibUI
-  delegate_class_method open_type_features_for_each, to: LibUI
+  delegate_class_method open_type_features_for_each, to: LibUI, data: true
   delegate_class_method new_features_attribute, to: LibUI
   delegate_class_method attribute_features, to: LibUI
   delegate_class_method new_attributed_string, to: LibUI
@@ -240,7 +246,7 @@ module LibUI
   delegate_class_method attributed_string_insert_at_unattributed, to: LibUI
   delegate_class_method attributed_string_delete, to: LibUI
   delegate_class_method attributed_string_set_attribute, to: LibUI
-  delegate_class_method attributed_string_for_each_attribute, to: LibUI
+  delegate_class_method attributed_string_for_each_attribute, to: LibUI, data: true
   delegate_class_method attributed_string_num_graphemes, to: LibUI
   delegate_class_method attributed_string_byte_index_to_grapheme, to: LibUI
   delegate_class_method attributed_string_grapheme_to_byte_index, to: LibUI
@@ -251,12 +257,12 @@ module LibUI
   delegate_class_method draw_text, to: LibUI
   delegate_class_method draw_text_layout_extents, to: LibUI
   delegate_class_method font_button_font, to: LibUI
-  delegate_class_method font_button_on_changed, to: LibUI
+  delegate_class_method font_button_on_changed, to: LibUI, data: true
   delegate_class_method new_font_button, to: LibUI
   delegate_class_method free_font_button_font, to: LibUI
   delegate_class_method color_button_color, to: LibUI
   delegate_class_method color_button_set_color, to: LibUI
-  delegate_class_method color_button_on_changed, to: LibUI
+  delegate_class_method color_button_on_changed, to: LibUI, data: true
   delegate_class_method new_color_button, to: LibUI
   delegate_class_method form_append, to: LibUI
   delegate_class_method form_num_children, to: LibUI
@@ -297,16 +303,16 @@ module LibUI
   delegate_class_method table_header_visible, to: LibUI
   delegate_class_method table_header_set_visible, to: LibUI
   delegate_class_method new_table, to: LibUI
-  delegate_class_method table_on_row_clicked, to: LibUI
-  delegate_class_method table_on_row_double_clicked, to: LibUI
+  delegate_class_method table_on_row_clicked, to: LibUI, data: true
+  delegate_class_method table_on_row_double_clicked, to: LibUI, data: true
   delegate_class_method table_header_set_sort_indicator, to: LibUI
   delegate_class_method table_header_sort_indicator, to: LibUI
-  delegate_class_method table_header_on_clicked, to: LibUI
+  delegate_class_method table_header_on_clicked, to: LibUI, data: true
   delegate_class_method table_column_width, to: LibUI
   delegate_class_method table_column_set_width, to: LibUI
   delegate_class_method table_get_selection_mode, to: LibUI
   delegate_class_method table_set_selection_mode, to: LibUI
-  delegate_class_method table_on_selection_changed, to: LibUI
+  delegate_class_method table_on_selection_changed, to: LibUI, data: true
   delegate_class_method table_get_selection, to: LibUI
   delegate_class_method table_set_selection, to: LibUI
   delegate_class_method free_table_selection, to: LibUI

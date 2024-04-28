@@ -9,7 +9,7 @@ f = ->(a : Pointer(Void), b : Pointer(Void)) {
   LibUI.quit
   1
 }
-LibUI.window_on_closing(w, f, nil)
+LibUI.window_on_closing(w, f)
 
 LibUI.main
 LibUI.uninit

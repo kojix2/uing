@@ -10,14 +10,14 @@ f1 = ->(a : Pointer(Void), b : Pointer(Void)) do
   LibUI.msg_box(Main_window, "Information", "You clicked the button")
 end
 
-LibUI.button_on_clicked(button, f1, nil)
+LibUI.button_on_clicked(button, f1)
 
 f2 = ->(a : Pointer(Void), b : Pointer(Void)) do
   LibUI.quit
   1
 end
 
-LibUI.window_on_closing(Main_window, f2, nil)
+LibUI.window_on_closing(Main_window, f2)
 
 LibUI.window_set_child(Main_window, button)
 LibUI.control_show(Main_window)
