@@ -2,10 +2,10 @@ require "./libui/version"
 require "./libui/libui"
 
 module LibUI
-  macro delegate_class_method(method, to object, type types = "", var vars = [] of String, has_sender sender = true)
+  macro delegate_class_method(method, to object, type types = "", var vars = [] of String, has_sender sender = true, to_str c2s = false)
     {% if types == "" %}
       def self.{{method.id}}(*args)
-        {{object.id}}.{{method.id}}(*args)
+        {% if c2s %} return String.new {% end %} {{object.id}}.{{method.id}}(*args)
       end
     {% else %}
       {% if sender %}
@@ -75,7 +75,7 @@ module LibUI
   delegate_class_method control_verify_set_parent, to: LibUI
   delegate_class_method control_enabled_to_user, to: LibUI
   delegate_class_method user_bug_cannot_set_parent_on_toplevel, to: LibUI
-  delegate_class_method window_title, to: LibUI
+  delegate_class_method window_title, to: LibUI, to_str: true
   delegate_class_method window_set_title, to: LibUI
   delegate_class_method window_position, to: LibUI
   delegate_class_method window_set_position, to: LibUI
@@ -96,7 +96,7 @@ module LibUI
   delegate_class_method window_resizeable, to: LibUI
   delegate_class_method window_set_resizeable, to: LibUI
   delegate_class_method new_window, to: LibUI
-  delegate_class_method button_text, to: LibUI
+  delegate_class_method button_text, to: LibUI, to_str: true
   delegate_class_method button_set_text, to: LibUI
   delegate_class_method button_on_clicked, to: LibUI, type: " -> Void"
   delegate_class_method new_button, to: LibUI
@@ -107,13 +107,13 @@ module LibUI
   delegate_class_method box_set_padded, to: LibUI
   delegate_class_method new_horizontal_box, to: LibUI
   delegate_class_method new_vertical_box, to: LibUI
-  delegate_class_method checkbox_text, to: LibUI
+  delegate_class_method checkbox_text, to: LibUI, to_str: true
   delegate_class_method checkbox_set_text, to: LibUI
   delegate_class_method checkbox_on_toggled, to: LibUI, type: " -> Void"
   delegate_class_method checkbox_checked, to: LibUI
   delegate_class_method checkbox_set_checked, to: LibUI
   delegate_class_method new_checkbox, to: LibUI
-  delegate_class_method entry_text, to: LibUI
+  delegate_class_method entry_text, to: LibUI, to_str: true
   delegate_class_method entry_set_text, to: LibUI
   delegate_class_method entry_on_changed, to: LibUI, type: " -> Void"
   delegate_class_method entry_read_only, to: LibUI
@@ -121,7 +121,7 @@ module LibUI
   delegate_class_method new_entry, to: LibUI
   delegate_class_method new_password_entry, to: LibUI
   delegate_class_method new_search_entry, to: LibUI
-  delegate_class_method label_text, to: LibUI
+  delegate_class_method label_text, to: LibUI, to_str: true
   delegate_class_method label_set_text, to: LibUI
   delegate_class_method new_label, to: LibUI
   delegate_class_method tab_append, to: LibUI
@@ -131,7 +131,7 @@ module LibUI
   delegate_class_method tab_margined, to: LibUI
   delegate_class_method tab_set_margined, to: LibUI
   delegate_class_method new_tab, to: LibUI
-  delegate_class_method group_title, to: LibUI
+  delegate_class_method group_title, to: LibUI, to_str: true
   delegate_class_method group_set_title, to: LibUI
   delegate_class_method group_set_child, to: LibUI
   delegate_class_method group_margined, to: LibUI
@@ -164,7 +164,7 @@ module LibUI
   delegate_class_method combobox_on_selected, to: LibUI, type: " -> Void"
   delegate_class_method new_combobox, to: LibUI
   delegate_class_method editable_combobox_append, to: LibUI
-  delegate_class_method editable_combobox_text, to: LibUI
+  delegate_class_method editable_combobox_text, to: LibUI, to_str: true
   delegate_class_method editable_combobox_set_text, to: LibUI
   delegate_class_method editable_combobox_on_changed, to: LibUI, type: " -> Void"
   delegate_class_method new_editable_combobox, to: LibUI
@@ -179,7 +179,7 @@ module LibUI
   delegate_class_method new_date_time_picker, to: LibUI
   delegate_class_method new_date_picker, to: LibUI
   delegate_class_method new_time_picker, to: LibUI
-  delegate_class_method multiline_entry_text, to: LibUI
+  delegate_class_method multiline_entry_text, to: LibUI, to_str: true
   delegate_class_method multiline_entry_set_text, to: LibUI
   delegate_class_method multiline_entry_append, to: LibUI
   delegate_class_method multiline_entry_on_changed, to: LibUI, type: " -> Void"
@@ -199,9 +199,9 @@ module LibUI
   delegate_class_method menu_append_about_item, to: LibUI
   delegate_class_method menu_append_separator, to: LibUI
   delegate_class_method new_menu, to: LibUI
-  delegate_class_method open_file, to: LibUI
-  delegate_class_method open_folder, to: LibUI
-  delegate_class_method save_file, to: LibUI
+  delegate_class_method open_file, to: LibUI, to_str: true
+  delegate_class_method open_folder, to: LibUI, to_str: true
+  delegate_class_method save_file, to: LibUI, to_str: true
   delegate_class_method msg_box, to: LibUI
   delegate_class_method msg_box_error, to: LibUI
   delegate_class_method area_set_size, to: LibUI
