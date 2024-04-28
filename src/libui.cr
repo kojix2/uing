@@ -355,4 +355,49 @@ module LibUI
   delegate_class_method table_get_selection, to: LibUI
   delegate_class_method table_set_selection, to: LibUI
   delegate_class_method free_table_selection, to: LibUI
+
+  macro define_cstruct_class(name, to_str members = [] of String)
+    class {{name.id}}
+      def initialize
+        @cstruct = LibUI::{{name.id}}.new
+      end
+
+      {% for member in members %}
+        def {{member.id}}
+          String.new(@cstruct.{{member.id}})
+        end
+
+        def {{member.id}}=(value : String)
+          @{{member.id}} = value # Try to keep the value alive, but is this necessary?
+          @cstruct.{{member.id}} = @{{member.id}}.to_unsafe
+        end
+      {% end %}
+
+      forward_missing_to @cstruct
+
+      def to_unsafe
+        pointerof(@cstruct)
+      end
+    end
+  end
+
+  {% if flag?(:windows) %}
+    define_cstruct_class TM
+  {% else %}
+    define_cstruct_class TM, to_str: ["zone"]
+  {% end %}
+  define_cstruct_class AreaHandler
+  define_cstruct_class AreaDrawParams
+  define_cstruct_class AreaMouseEvent
+  define_cstruct_class AreaKeyEvent
+  define_cstruct_class DrawBrush
+  define_cstruct_class DrawStrokeParams
+  define_cstruct_class DrawMatrix
+  define_cstruct_class DrawBrushGradientStop
+  define_cstruct_class FontDescriptor, to_str: ["family"]
+  define_cstruct_class DrawTextLayoutParams
+  define_cstruct_class TableModelHandler
+  define_cstruct_class TableTextColumnOptionalParams
+  define_cstruct_class TableParams
+  define_cstruct_class TableSelection
 end

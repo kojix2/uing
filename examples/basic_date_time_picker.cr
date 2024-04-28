@@ -6,11 +6,10 @@ vbox = LibUI.new_vertical_box
 
 date_time_picker = LibUI.new_date_time_picker
 
-time = LibUI::LibUI::TM.new
+time = LibUI::TM.new
 
 LibUI.date_time_picker_on_changed(date_time_picker) do
-  LibUI.date_time_picker_time(date_time_picker, pointerof(time))
-  LibUI::LibUI::TM
+  LibUI.date_time_picker_time(date_time_picker, time)
   p sec: time.sec,
     min: time.min,
     hour: time.hour,

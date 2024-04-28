@@ -20,3 +20,5 @@
 basic_button
 basic_entry
 basic_window
+basic_font_button
+basic_date_time_picker
