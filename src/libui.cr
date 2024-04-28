@@ -2,23 +2,29 @@ require "./libui/version"
 require "./libui/libui"
 
 module LibUI
-  macro delegate_class_method(method, to object, type types = "", var vars = [] of String)
+  macro delegate_class_method(method, to object, type types = "", var vars = [] of String, has_sender sender = true)
     {% if types == "" %}
       def self.{{method.id}}(*args)
         {{object.id}}.{{method.id}}(*args)
       end
     {% else %}
-      def self.{{method.id}}(sender, &callback : {{types.id}})
-        boxed_data = Box.box(callback)
-        @@box = boxed_data
-        {{object.id}}.{{method.id}}(
-          sender,
-          ->(sender, {{vars.join(", ").id}}data) {
-            data_as_callback = Box(typeof(callback)).unbox(data)
-            data_as_callback.call({{vars.join(", ").id}})
-          },
-          boxed_data
-        )
+      {% if sender %}
+        def self.{{method.id}}(sender, &callback : {{types.id}})
+      {% else %}
+        def self.{{method.id}}(&callback : {{types.id}})
+      {% end %}
+          boxed_data = Box.box(callback)
+          @@box = boxed_data
+          {{object.id}}.{{method.id}}(
+            {% if sender %}
+              sender,
+            {% end %}
+            ->(sender, {{vars.join(", ").id}}data) {
+              data_as_callback = Box(typeof(callback)).unbox(data)
+              data_as_callback.call({{vars.join(", ").id}})
+            },
+            boxed_data
+          )
       end
     {% end %}
   end
@@ -49,9 +55,9 @@ module LibUI
   delegate_class_method main_steps, to: LibUI
   delegate_class_method main_step, to: LibUI
   delegate_class_method quit, to: LibUI
-  # delegate_class_method queue_main, to: LibUI
-  # delegate_class_method timer, to: LibUI
-  # delegate_class_method on_should_quit, to: LibUI
+  delegate_class_method queue_main, to: LibUI, type: " -> Void", has_sender: false
+  delegate_class_method timer, to: LibUI, type: " -> LibC::Int" # first argument is not sender but millisecounds
+  delegate_class_method on_should_quit, to: LibUI, type: " -> LibC::Int", has_sender: false
   delegate_class_method free_text, to: LibUI
   delegate_class_method control_destroy, to: LibUI
   delegate_class_method control_handle, to: LibUI
@@ -183,7 +189,7 @@ module LibUI
   delegate_class_method new_non_wrapping_multiline_entry, to: LibUI
   delegate_class_method menu_item_enable, to: LibUI
   delegate_class_method menu_item_disable, to: LibUI
-  delegate_class_method menu_item_on_clicked, to: LibUI, type: " -> Void"
+  delegate_class_method menu_item_on_clicked, to: LibUI, type: "Window -> Void"
   delegate_class_method menu_item_checked, to: LibUI
   delegate_class_method menu_item_set_checked, to: LibUI
   delegate_class_method menu_append_item, to: LibUI
@@ -325,11 +331,11 @@ module LibUI
   delegate_class_method table_header_visible, to: LibUI
   delegate_class_method table_header_set_visible, to: LibUI
   delegate_class_method new_table, to: LibUI
-  delegate_class_method table_on_row_clicked, to: LibUI, type: "LibC::Int -> Void", var: ["row"]
-  delegate_class_method table_on_row_double_clicked, to: LibUI, type: "LibC::Int -> Void", var: ["row"]
+  delegate_class_method table_on_row_clicked, to: LibUI, type: "LibC::Int -> Void", var: ["row"]        # first argument is uiTable (sender)
+  delegate_class_method table_on_row_double_clicked, to: LibUI, type: "LibC::Int -> Void", var: ["row"] # first argument is uiTable (sender)
   delegate_class_method table_header_set_sort_indicator, to: LibUI
   delegate_class_method table_header_sort_indicator, to: LibUI
-  delegate_class_method table_header_on_clicked, to: LibUI, type: "LibC::Int -> Void", var: ["column"]
+  delegate_class_method table_header_on_clicked, to: LibUI, type: "LibC::Int -> Void", var: ["column"] # first argument is uiTable (sender)
   delegate_class_method table_column_width, to: LibUI
   delegate_class_method table_column_set_width, to: LibUI
   delegate_class_method table_get_selection_mode, to: LibUI
