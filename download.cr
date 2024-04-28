@@ -11,7 +11,7 @@ def download_libui_ng_nightly(lib_path, file_name)
 end
 
 def download_from_url(lib_path, file_name, url)
-  STDERR.puts "Downloading #{lib_path} from #{url}"
+  puts "Downloading #{lib_path} from #{url}"
 
   Crest.get(url) do |response|
     File.open(file_name, "wb") do |file|
@@ -23,11 +23,13 @@ def download_from_url(lib_path, file_name, url)
     Compress::Zip::File.open(file_name) do |zip_file|
       zip_file.entries.each do |entry|
         if lib_path.includes?(entry.filename)
+          print "Extracting #{entry.filename} from #{file_name}..."
           entry.open do |io|
             File.open(File.basename(entry.filename), "wb") do |file|
               IO.copy(io, file)
             end
           end
+          puts "done"
         end
       end
     end
