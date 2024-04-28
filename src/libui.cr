@@ -362,6 +362,7 @@ module LibUI
         @cstruct = LibUI::{{name.id}}.new
       end
 
+      # Auto convert to and from String
       {% for member in members %}
         def {{member.id}}
           String.new(@cstruct.{{member.id}})
