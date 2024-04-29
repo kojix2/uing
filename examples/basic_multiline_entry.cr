@@ -1,20 +1,20 @@
 require "../src/libui"
 
-LibUI.init
+UIng.init
 
-main_window = LibUI.new_window("Notepad", 500, 300, 1)
-LibUI.window_on_closing(main_window) do
+main_window = UIng.new_window("Notepad", 500, 300, 1)
+UIng.window_on_closing(main_window) do
   puts "Bye Bye"
-  LibUI.quit
+  UIng.quit
   1
 end
 
-vbox = LibUI.new_vertical_box
-LibUI.window_set_child(main_window, vbox)
+vbox = UIng.new_vertical_box
+UIng.window_set_child(main_window, vbox)
 
-entry = LibUI.new_non_wrapping_multiline_entry
-LibUI.box_append(vbox, entry, 1)
+entry = UIng.new_non_wrapping_multiline_entry
+UIng.box_append(vbox, entry, 1)
 
-LibUI.control_show(main_window)
-LibUI.main
-LibUI.uninit
+UIng.control_show(main_window)
+UIng.main
+UIng.uninit

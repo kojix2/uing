@@ -1,14 +1,14 @@
 require "../src/libui"
 
-LibUI.init
+UIng.init
 
-w = LibUI.new_window("Hello", 300, 200, 1)
-LibUI.control_show(w)
+w = UIng.new_window("Hello", 300, 200, 1)
+UIng.control_show(w)
 
-LibUI.window_on_closing(w) do
-  LibUI.quit
+UIng.window_on_closing(w) do
+  UIng.quit
   1
 end
 
-LibUI.main
-LibUI.uninit
+UIng.main
+UIng.uninit

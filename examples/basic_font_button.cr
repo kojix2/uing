@@ -1,14 +1,14 @@
 require "../src/libui"
 
-LibUI.init
+UIng.init
 
-main_window = LibUI.new_window("hello world", 300, 200, 1)
+main_window = UIng.new_window("hello world", 300, 200, 1)
 
-font_button = LibUI.new_font_button
-font_descriptor = LibUI::FontDescriptor.new
+font_button = UIng.new_font_button
+font_descriptor = UIng::FontDescriptor.new
 
-LibUI.font_button_on_changed(font_button) do
-  LibUI.font_button_font(font_button, font_descriptor)
+UIng.font_button_on_changed(font_button) do
+  UIng.font_button_font(font_button, font_descriptor)
   p family: font_descriptor.family,
     size: font_descriptor.size,
     weight: font_descriptor.weight,
@@ -16,14 +16,14 @@ LibUI.font_button_on_changed(font_button) do
     stretch: font_descriptor.stretch
 end
 
-LibUI.window_on_closing(main_window) do
+UIng.window_on_closing(main_window) do
   puts "Bye Bye"
-  LibUI.quit
+  UIng.quit
   1
 end
 
-LibUI.window_set_child(main_window, font_button)
-LibUI.control_show(main_window)
+UIng.window_set_child(main_window, font_button)
+UIng.control_show(main_window)
 
-LibUI.main
-LibUI.uninit
+UIng.main
+UIng.uninit

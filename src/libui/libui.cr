@@ -1,4 +1,4 @@
-module LibUI
+module UIng
   {% if flag?(:windows) %}
     @[Link("#{__DIR__}/../../libui")]
   {% else %}

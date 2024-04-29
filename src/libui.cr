@@ -1,7 +1,7 @@
 require "./libui/version"
 require "./libui/libui"
 
-module LibUI
+module UIng
   macro delegate_class_method(method, to object, type types = "", var vars = [] of String, has_sender sender = true, to_str c2s = false)
     {% if types == "" %}
       def self.{{method.id}}(*args)

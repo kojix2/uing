@@ -1,11 +1,8 @@
-name: libui-ng
+name: uing
 version: 0.1.0
 
 authors:
   - kojix2 <2xijok@gmail.com>
-
-libraries:
-  libui: "*"
 
 scripts:
   postinstall: crystal run download.cr

@@ -1,7 +1,7 @@
 require "./spec_helper"
 
-describe LibUI do
+describe UIng do
   it "has a version number" do
-    LibUI::VERSION.should be_a(String)
+    UIng::VERSION.should be_a(String)
   end
 end
