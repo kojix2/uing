@@ -19,7 +19,7 @@ module LibUI
             {% if sender %}
               sender,
             {% end %}
-            ->(sender, {{vars.join(", ").id}}data) {
+            ->({% if sender %}sender, {% end %}{{vars.map { |v| v + ", " }.join(" ").id}}data) {
               data_as_callback = Box(typeof(callback)).unbox(data)
               data_as_callback.call({{vars.join(", ").id}})
             },
@@ -200,7 +200,7 @@ module LibUI
   delegate_class_method new_non_wrapping_multiline_entry, to: LibUI
   delegate_class_method menu_item_enable, to: LibUI
   delegate_class_method menu_item_disable, to: LibUI
-  delegate_class_method menu_item_on_clicked, to: LibUI, type: "Window -> Void"
+  delegate_class_method menu_item_on_clicked, to: LibUI, type: "Pointer(LibUI::Window) -> Void", var: ["window"]
   delegate_class_method menu_item_checked, to: LibUI
   delegate_class_method menu_item_set_checked, to: LibUI
   delegate_class_method menu_append_item, to: LibUI
