@@ -1,4 +1,4 @@
-require "../src/libui"
+require "../src/uing"
 
 UIng.init
 
