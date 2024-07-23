@@ -7,7 +7,7 @@ authors:
 scripts:
   postinstall: crystal run download.cr
 
-development_dependencies:
+dependencies:
   crest:
     github: mamantoha/crest
 
