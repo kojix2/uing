@@ -2,6 +2,24 @@ require "./uing/version"
 require "./uing/libui"
 
 module UIng
+
+  # For example:
+  #   delegate_class_method window_on_closing, to: LibUI, type: " -> LibC::Int"
+  # should generate:
+  # 
+  # def self.window_on_closing(window, &callback : -> LibC::Int)
+  #   boxed_data = Box.box(callback)
+  #   @@box = boxed_data
+  #   LibUI.window_on_closing(
+  #     window,
+  #     ->(window, data) {
+  #       data_as_callback = Box(typeof(callback)).unbox(data)
+  #       data_as_callback.call()
+  #     },
+  #     boxed_data
+  #   )
+  # end
+
   macro delegate_class_method(method, to object, type types = "", var vars = [] of String, has_sender sender = true, to_str c2s = false)
     {% if types == "" %}
       def self.{{method.id}}(*args)
@@ -29,22 +47,6 @@ module UIng
     {% end %}
   end
 
-  # For example:
-  #   delegate_class_method new_window, to: LibUI, type: " -> Void"
-  # should generate:
-
-  # def self.window_on_closing(window, &callback : -> LibC::Int)
-  #   boxed_data = Box.box(callback)
-  #   @@box = boxed_data
-  #   LibUI.window_on_closing(
-  #     window,
-  #     ->(window, data) {
-  #       data_as_callback = Box(typeof(callback)).unbox(data)
-  #       data_as_callback.call()
-  #     },
-  #     boxed_data
-  #   )
-  # end
 
   # uiInitOptions is not used (but it is required)
   # See https://github.com/libui-ng/libui-ng/issues/208
