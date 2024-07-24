@@ -5,6 +5,7 @@ on:
   pull_request:
   schedule:
     - cron: "51 3 * * 6" # Runs at 03:51, only on Saturday
+  workflow_dispatch:
 jobs:
   build:
     name: ${{ matrix.os }}
