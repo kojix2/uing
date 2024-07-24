@@ -1,5 +1,5 @@
-require "./libui/version"
-require "./libui/libui"
+require "./uing/version"
+require "./uing/libui"
 
 module UIng
   macro delegate_class_method(method, to object, type types = "", var vars = [] of String, has_sender sender = true, to_str c2s = false)
