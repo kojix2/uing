@@ -1,8 +1,20 @@
 module UIng
   {% if flag?(:windows) %}
+    @[Link("User32")]
+    @[Link("Gdi32")]
+    @[Link("Comctl32")]
+    @[Link("UxTheme")]
+    @[Link("Dwrite")]
+    @[Link("D2d1")]
+    @[Link("Windowscodecs.lib")]
     @[Link("#{__DIR__}/../../libui")]
-  {% else %}
-    @[Link(ldflags: "-L #{__DIR__}/../../ -lui")]
+  {% elsif flag?(:linux) %}
+    @[Link(ldflags: "`pkg-config gtk+-3.0 --libs`")]
+    @[Link(ldflags: "#{__DIR__}/../../libui.a")]
+  {% elsif flag?(:darwin) %}
+    @[Link(framework: "CoreGraphics")]
+    @[Link(framework: "AppKit")]
+    @[Link(ldflags: "#{__DIR__}/../../libui.a")]
   {% end %}
   lib LibUI
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459
