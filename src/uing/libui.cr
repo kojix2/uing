@@ -6,7 +6,7 @@ module UIng
     @[Link("UxTheme")]
     @[Link("Dwrite")]
     @[Link("D2d1")]
-    @[Link("Windowscodecs.lib")]
+    @[Link("Windowscodecs")]
     @[Link("#{__DIR__}/../../libui")]
   {% elsif flag?(:linux) %}
     @[Link(ldflags: "`pkg-config gtk+-3.0 --libs`")]
