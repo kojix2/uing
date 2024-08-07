@@ -2,11 +2,10 @@ require "./uing/version"
 require "./uing/libui"
 
 module UIng
-
   # For example:
   #   delegate_class_method window_on_closing, to: LibUI, type: " -> LibC::Int"
   # should generate:
-  # 
+  #
   # def self.window_on_closing(window, &callback : -> LibC::Int)
   #   boxed_data = Box.box(callback)
   #   @@box = boxed_data
@@ -46,7 +45,6 @@ module UIng
       end
     {% end %}
   end
-
 
   # uiInitOptions is not used (but it is required)
   # See https://github.com/libui-ng/libui-ng/issues/208
