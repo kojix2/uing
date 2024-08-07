@@ -9,7 +9,7 @@ module UIng
     @[Link("Windowscodecs")]
     @[Link("#{__DIR__}/../../libui")]
   {% elsif flag?(:linux) %}
-    @[Link(ldflags: "`pkg-config gtk+-3.0 --libs`")]
+    @[Link("gtk+-3.0")]
     @[Link(ldflags: "#{__DIR__}/../../libui.a")]
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
