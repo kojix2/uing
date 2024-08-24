@@ -19,7 +19,10 @@
 
 # executables
 basic_button
-basic_entry
-basic_window
-basic_font_button
 basic_date_time_picker
+basic_entry
+basic_font_button
+basic_multiline_entry
+basic_table
+basic_window
+control_gallery
