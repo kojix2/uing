@@ -16,6 +16,8 @@ require "./uing/table_text_column_optional_params"
 require "./uing/table_params"
 require "./uing/table_selection"
 
+require "./uing/tm"
+
 module UIng
   # uiInitOptions is not used (but it is required)
   # See https://github.com/libui-ng/libui-ng/issues/208
@@ -739,7 +741,10 @@ module UIng
   end
 
   def self.msg_box(*args)
-    LibUI.msg_box(*args)
+    # FIXME: Workaround for Windows
+    {% unless flag?(:windows) %}
+      LibUI.msg_box(*args)
+    {% end %}
   end
 
   def self.msg_box_error(*args)
