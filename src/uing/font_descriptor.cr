@@ -2,6 +2,7 @@ module UIng
   class FontDescriptor
     def initialize
       @cstruct = LibUI::FontDescriptor.new
+      @family = ""
     end
 
     # Auto convert to and from String
