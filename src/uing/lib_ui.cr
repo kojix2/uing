@@ -10,6 +10,7 @@ module UIng
     @[Link("#{__DIR__}/../../libui")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
+    @[Link("m")]
     @[Link(ldflags: "#{__DIR__}/../../libui.a")]
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
@@ -536,15 +537,15 @@ module UIng
     fun new_attributed_string = uiNewAttributedString(initial_string : Pointer(LibC::Char)) : Pointer(Void)
     fun free_attributed_string = uiFreeAttributedString(s : Pointer(Void))
     fun attributed_string_string = uiAttributedStringString(s : Pointer(Void)) : Pointer(LibC::Char)
-    fun attributed_string_len = uiAttributedStringLen(s : Pointer(Void))
+    fun attributed_string_len = uiAttributedStringLen(s : Pointer(Void)) : LibC::SizeT
     fun attributed_string_append_unattributed = uiAttributedStringAppendUnattributed(s : Pointer(Void), str : Pointer(LibC::Char))
     fun attributed_string_insert_at_unattributed = uiAttributedStringInsertAtUnattributed(s : Pointer(Void), str : Pointer(LibC::Char), at : LibC::SizeT)
     fun attributed_string_delete = uiAttributedStringDelete(s : Pointer(Void), start : LibC::SizeT, _end : LibC::SizeT)
     fun attributed_string_set_attribute = uiAttributedStringSetAttribute(s : Pointer(Void), a : Pointer(Void), start : LibC::SizeT, _end : LibC::SizeT)
     fun attributed_string_for_each_attribute = uiAttributedStringForEachAttribute(s : Pointer(Void), f : Pointer(Void), data : Pointer(Void))
-    fun attributed_string_num_graphemes = uiAttributedStringNumGraphemes(s : Pointer(Void))
-    fun attributed_string_byte_index_to_grapheme = uiAttributedStringByteIndexToGrapheme(s : Pointer(Void), pos : LibC::SizeT)
-    fun attributed_string_grapheme_to_byte_index = uiAttributedStringGraphemeToByteIndex(s : Pointer(Void), pos : LibC::SizeT)
+    fun attributed_string_num_graphemes = uiAttributedStringNumGraphemes(s : Pointer(Void)) : LibC::SizeT
+    fun attributed_string_byte_index_to_grapheme = uiAttributedStringByteIndexToGrapheme(s : Pointer(Void), pos : LibC::SizeT) : LibC::SizeT
+    fun attributed_string_grapheme_to_byte_index = uiAttributedStringGraphemeToByteIndex(s : Pointer(Void), pos : LibC::SizeT) : LibC::SizeT
 
     struct FontDescriptor
       family : Pointer(LibC::Char)
@@ -566,7 +567,7 @@ module UIng
 
     struct DrawTextLayoutParams
       string : Pointer(Void)
-      default_font : Pointer(Void)
+      default_font : Pointer(FontDescriptor)
       width : LibC::Double
       align : DrawTextAlign
     end
