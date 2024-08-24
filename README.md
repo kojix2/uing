@@ -12,7 +12,6 @@ See [examples](examples).
 
 - Notes:
   - UIng.msg_box is not working on Windows (the reason is unknown).
-  - Use `--link-flags=/SUBSYSTEM:WINDOWS` to hide the console window on Windows.
 
 ## Development
 

@@ -8,6 +8,7 @@ module UIng
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
     @[Link("#{__DIR__}/../../libui")]
+    @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]
