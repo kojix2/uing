@@ -1,5 +1,20 @@
 require "./uing/version"
-require "./uing/libui"
+require "./uing/lib_ui"
+
+require "./uing/area_handler"
+require "./uing/area_draw_params"
+require "./uing/area_mouse_event"
+require "./uing/area_key_event"
+require "./uing/draw_brush"
+require "./uing/draw_stroke_params"
+require "./uing/draw_matrix"
+require "./uing/draw_brush_gradient_stop"
+require "./uing/font_descriptor"
+require "./uing/draw_text_layout_params"
+require "./uing/table_model_handler"
+require "./uing/table_text_column_optional_params"
+require "./uing/table_params"
+require "./uing/table_selection"
 
 module UIng
   # uiInitOptions is not used (but it is required)
@@ -1329,218 +1344,5 @@ module UIng
 
   def self.free_table_selection(*args)
     LibUI.free_table_selection(*args)
-  end
-
-  {% if flag?(:windows) %}
-    class TM
-      def initialize
-        @cstruct = LibUI::TM.new
-      end
-
-      forward_missing_to(@cstruct)
-
-      def to_unsafe
-        pointerof(@cstruct)
-      end
-    end
-  {% else %}
-    class TM
-      def initialize
-        @cstruct = LibUI::TM.new
-      end
-
-      forward_missing_to(@cstruct)
-
-      def zone
-        String.new(@cstruct.zone)
-      end
-
-      def zone=(value : String)
-        @zone = value
-        @cstruct.zone = @zone.to_unsafe
-      end
-
-      def to_unsafe
-        pointerof(@cstruct)
-      end
-    end
-  {% end %}
-
-  class AreaHandler
-    def initialize
-      @cstruct = LibUI::AreaHandler.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class AreaDrawParams
-    def initialize
-      @cstruct = LibUI::AreaDrawParams.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class AreaMouseEvent
-    def initialize
-      @cstruct = LibUI::AreaMouseEvent.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class AreaKeyEvent
-    def initialize
-      @cstruct = LibUI::AreaKeyEvent.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class DrawBrush
-    def initialize
-      @cstruct = LibUI::DrawBrush.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class DrawStrokeParams
-    def initialize
-      @cstruct = LibUI::DrawStrokeParams.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class DrawMatrix
-    def initialize
-      @cstruct = LibUI::DrawMatrix.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class DrawBrushGradientStop
-    def initialize
-      @cstruct = LibUI::DrawBrushGradientStop.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class FontDescriptor
-    def initialize
-      @cstruct = LibUI::FontDescriptor.new
-    end
-
-    # Auto convert to and from String
-    def family
-      String.new(@cstruct.family)
-    end
-
-    def family=(value : String)
-      @family = value
-      @cstruct.family = @family.to_unsafe
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class DrawTextLayoutParams
-    def initialize
-      @cstruct = LibUI::DrawTextLayoutParams.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class TableModelHandler
-    def initialize
-      @cstruct = LibUI::TableModelHandler.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class TableTextColumnOptionalParams
-    def initialize
-      @cstruct = LibUI::TableTextColumnOptionalParams.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class TableParams
-    def initialize
-      @cstruct = LibUI::TableParams.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
-  end
-
-  class TableSelection
-    def initialize
-      @cstruct = LibUI::TableSelection.new
-    end
-
-    forward_missing_to(@cstruct)
-
-    def to_unsafe
-      pointerof(@cstruct)
-    end
   end
 end
