@@ -10,6 +10,10 @@ Yet another crystal binding for libui-ng.
 
 See [examples](examples).
 
+- Notes:
+  - UIng.msg_box is not working on Windows (the reason is unknown).
+  - Use `--link-flags=/SUBSYSTEM:WINDOWS` to hide the console window on Windows.
+
 ## Development
 
 - https://forum.crystal-lang.org/t/6361
@@ -17,7 +21,7 @@ See [examples](examples).
   - `UIng::LibUI` is a module for binding.
   - Use [crystal_lib](https://github.com/crystal-lang/crystal_lib) to create bindings.
   - Method names should be snake_case.
-  - [Passing a Proc to a C function](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function) 
+  - [Passing a Proc to a C function](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function)
 
 ## Contributing
 
