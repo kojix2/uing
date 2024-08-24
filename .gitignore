@@ -16,6 +16,7 @@
 
 *.exe
 *.pdb
+*.exp
 
 # executables
 basic_button
