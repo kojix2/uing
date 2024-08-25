@@ -251,11 +251,11 @@ module UIng
     alias Area = Void
 
     struct AreaHandler
-      draw : (Pointer(Void), Pointer(Void), Pointer(Void) -> Void)
-      mouse_event : (Pointer(Void), Pointer(Void), Pointer(Void) -> Void)
-      mouse_crossed : (Pointer(Void), Pointer(Void), LibC::Int -> Void)
-      drag_broken : (Pointer(Void), Pointer(Void) -> Void)
-      key_event : (Pointer(Void), Pointer(Void), Pointer(Void) -> LibC::Int)
+      draw : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaDrawParams) -> Void)
+      mouse_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaMouseEvent) -> Void)
+      mouse_crossed : (Pointer(AreaHandler), Pointer(Area), LibC::Int -> Void)
+      drag_broken : (Pointer(AreaHandler), Pointer(Area) -> Void)
+      key_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaKeyEvent) -> LibC::Int)
     end
 
     enum WindowResizeEdge

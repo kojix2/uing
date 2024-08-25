@@ -19,6 +19,7 @@
 *.exp
 
 # executables
+basic_area
 basic_button
 basic_date_time_picker
 basic_entry
