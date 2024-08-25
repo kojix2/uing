@@ -1,3 +1,5 @@
+require "./lib_ui/*"
+
 module UIng
   {% if flag?(:windows) %}
     @[Link("User32")]
@@ -25,34 +27,6 @@ module UIng
     struct InitOptions
       size : LibC::SizeT
     end
-
-    {% if flag?(:windows) %}
-      struct TM
-        sec : LibC::Int
-        min : LibC::Int
-        hour : LibC::Int
-        mday : LibC::Int
-        mon : LibC::Int
-        year : LibC::Int
-        wday : LibC::Int
-        yday : LibC::Int
-        isdst : LibC::Int
-      end
-    {% else %}
-      struct TM
-        sec : LibC::Int
-        min : LibC::Int
-        hour : LibC::Int
-        mday : LibC::Int
-        mon : LibC::Int
-        year : LibC::Int
-        wday : LibC::Int
-        yday : LibC::Int
-        isdst : LibC::Int
-        gmtoff : LibC::Long
-        zone : Pointer(LibC::Char)
-      end
-    {% end %}
 
     fun init = uiInit(options : Pointer(InitOptions)) : Pointer(LibC::Char)
     fun uninit = uiUninit
@@ -260,17 +234,6 @@ module UIng
       key_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaKeyEvent) -> LibC::Int)
     end
 
-    enum WindowResizeEdge
-      Left
-      Top
-      Right
-      Bottom
-      TopLeft
-      TopRight
-      BottomLeft
-      BottomRight
-    end
-
     struct AreaDrawParams
       context : Pointer(DrawContext)
       area_width : LibC::Double
@@ -279,13 +242,6 @@ module UIng
       clip_y : LibC::Double
       clip_width : LibC::Double
       clip_height : LibC::Double
-    end
-
-    enum Modifiers
-      Ctrl  = 1 << 0
-      Alt   = 1 << 1
-      Shift = 1 << 2
-      Super = 1 << 3
     end
 
     struct AreaMouseEvent
@@ -298,48 +254,6 @@ module UIng
       count : LibC::Int
       modifiers : Modifiers
       held1_to64 : UInt64
-    end
-
-    enum ExtKey
-      Escape    = 1
-      Insert # equivalent to "Help" on Apple keyboards
-      Delete
-      Home
-      End
-      PageUp
-      PageDown
-      Up
-      Down
-      Left
-      Right
-      F1 # F1..F12 are guaranteed to be consecutive
-      F2
-      F3
-      F4
-      F5
-      F6
-      F7
-      F8
-      F9
-      F10
-      F11
-      F12
-      N0 # numpad keys; independent of Num Lock state
-      N1 # N0..N9 are guaranteed to be consecutive
-      N2
-      N3
-      N4
-      N5
-      N6
-      N7
-      N8
-      N9
-      NDot
-      NEnter
-      NAdd
-      NSubtract
-      NMultiply
-      NDivide
     end
 
     struct AreaKeyEvent
@@ -359,25 +273,6 @@ module UIng
     fun new_area = uiNewArea(ah : Pointer(AreaHandler)) : Pointer(Area)
     fun new_scrolling_area = uiNewScrollingArea(ah : Pointer(AreaHandler), width : LibC::Int, height : LibC::Int) : Pointer(Area)
     alias DrawPath = Void
-
-    enum DrawBrushType
-      Solid
-      LinearGradient
-      RadialGradient
-      Image
-    end
-
-    enum DrawLineCap
-      Flat
-      Round
-      Square
-    end
-
-    enum DrawLineJoin
-      Miter
-      Round
-      Bevel
-    end
 
     struct DrawBrush
       type : DrawBrushType
@@ -402,11 +297,6 @@ module UIng
       dashes : Pointer(LibC::Double)
       num_dashes : LibC::SizeT
       dash_phase : LibC::Double
-    end
-
-    enum DrawFillMode
-      Winding
-      Alternate
     end
 
     struct DrawMatrix
@@ -454,19 +344,6 @@ module UIng
     fun draw_save = uiDrawSave(c : Pointer(DrawContext))
     fun draw_restore = uiDrawRestore(c : Pointer(DrawContext))
 
-    enum AttributeType
-      Family
-      Size
-      Weight
-      Italic
-      Stretch
-      Color
-      Background
-      Underline
-      UnderlineColor
-      Features
-    end
-
     alias Attribute = Void
     fun free_attribute = uiFreeAttribute(a : Pointer(Attribute))
     fun attribute_get_type = uiAttributeGetType(a : Pointer(Attribute)) : AttributeType
@@ -475,45 +352,11 @@ module UIng
     fun new_size_attribute = uiNewSizeAttribute(size : LibC::Double) : Pointer(Attribute)
     fun attribute_size = uiAttributeSize(a : Pointer(Attribute)) : LibC::Double
 
-    enum TextWeight
-      Minimum    =    0
-      Thin       =  100
-      UltraLight =  200
-      Light      =  300
-      Book       =  350
-      Normal     =  400
-      Medium     =  500
-      SemiBold   =  600
-      Bold       =  700
-      UltraBold  =  800
-      Heavy      =  900
-      UltraHeavy =  950
-      Maximum    = 1000
-    end
-
     fun new_weight_attribute = uiNewWeightAttribute(weight : TextWeight) : Pointer(Attribute)
     fun attribute_weight = uiAttributeWeight(a : Pointer(Attribute))
 
-    enum TextItalic
-      Normal
-      Oblique
-      Italic
-    end
-
     fun new_italic_attribute = uiNewItalicAttribute(italic : TextItalic) : Pointer(Attribute)
     fun attribute_italic = uiAttributeItalic(a : Pointer(Attribute))
-
-    enum TextStretch
-      UltraCondensed
-      ExtraCondensed
-      Condensed
-      SemiCondensed
-      Normal
-      SemiExpanded
-      Expanded
-      ExtraExpanded
-      UltraExpanded
-    end
 
     fun new_stretch_attribute = uiNewStretchAttribute(stretch : TextStretch) : Pointer(Attribute)
     fun attribute_stretch = uiAttributeStretch(a : Pointer(Attribute))
@@ -521,22 +364,8 @@ module UIng
     fun attribute_color = uiAttributeColor(a : Pointer(Attribute), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), alpha : Pointer(LibC::Double))
     fun new_background_attribute = uiNewBackgroundAttribute(r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
 
-    enum Underline
-      None
-      Single
-      Double
-      Suggestion
-    end
-
     fun new_underline_attribute = uiNewUnderlineAttribute(u : Underline) : Pointer(Attribute)
     fun attribute_underline = uiAttributeUnderline(a : Pointer(Attribute)) : Underline
-
-    enum UnderlineColor
-      Custom
-      Spelling
-      Grammar
-      Auxiliary
-    end
 
     fun new_underline_color_attribute = uiNewUnderlineColorAttribute(u : UnderlineColor, r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
     fun attribute_underline_color = uiAttributeUnderlineColor(a : Pointer(Attribute), u : Pointer(UnderlineColor), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), alpha : Pointer(LibC::Double))
@@ -576,12 +405,6 @@ module UIng
     fun free_font_descriptor = uiFreeFontDescriptor(desc : Pointer(FontDescriptor))
     alias DrawTextLayout = Void
 
-    enum DrawTextAlign
-      Left
-      Center
-      Right
-    end
-
     struct DrawTextLayoutParams
       string : Pointer(AttributedString)
       default_font : Pointer(FontDescriptor)
@@ -611,20 +434,6 @@ module UIng
     fun form_set_padded = uiFormSetPadded(f : Pointer(Form), padded : LibC::Int)
     fun new_form = uiNewForm : Pointer(Form)
 
-    enum Align
-      Fill
-      Start
-      Center
-      End
-    end
-
-    enum At
-      Leading
-      Top
-      Trailing
-      Bottom
-    end
-
     alias Grid = Void
     fun grid_append = uiGridAppend(g : Pointer(Grid), c : Pointer(Control), left : LibC::Int, top : LibC::Int, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
     fun grid_insert_at = uiGridInsertAt(g : Pointer(Grid), c : Pointer(Control), existing : Pointer(Control), at : At, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
@@ -635,13 +444,6 @@ module UIng
     fun new_image = uiNewImage(width : LibC::Double, height : LibC::Double) : Pointer(Image)
     fun free_image = uiFreeImage(i : Pointer(Image))
     fun image_append = uiImageAppend(i : Pointer(Image), pixels : Pointer(Void), pixel_width : LibC::Int, pixel_height : LibC::Int, byte_stride : LibC::Int)
-
-    enum TableValueType
-      String
-      Image
-      Int
-      Color
-    end
 
     alias TableValue = Void
     fun free_table_value = uiFreeTableValue(v : Pointer(TableValue))
@@ -655,12 +457,6 @@ module UIng
     fun new_table_value_color = uiNewTableValueColor(r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(TableValue)
     fun table_value_color = uiTableValueColor(v : Pointer(TableValue), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), a : Pointer(LibC::Double))
     alias TableModel = Void
-
-    enum SortIndicator
-      None
-      Ascending
-      Descending
-    end
 
     struct TableModelHandler
       num_columns : (Pointer(TableModelHandler), Pointer(TableModel) -> LibC::Int)
@@ -703,13 +499,6 @@ module UIng
     fun table_header_on_clicked = uiTableHeaderOnClicked(t : Pointer(Table), f : (Pointer(Table), LibC::Int, Pointer(Void) -> Void), data : Pointer(Void))
     fun table_column_width = uiTableColumnWidth(t : Pointer(Table), column : LibC::Int) : LibC::Int
     fun table_column_set_width = uiTableColumnSetWidth(t : Pointer(Table), column : LibC::Int, width : LibC::Int)
-
-    enum TableSelectionMode
-      None
-      ZeroOrOne
-      One
-      ZeroOrMany
-    end
 
     fun table_get_selection_mode = uiTableGetSelectionMode(t : Pointer(Table))
     fun table_set_selection_mode = uiTableSetSelectionMode(t : Pointer(Table), mode : TableSelectionMode)
