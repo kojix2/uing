@@ -22,6 +22,11 @@ See [examples](examples).
   - Method names should be snake_case.
   - [Passing a Proc to a C function](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function)
 
+- A function pointer in C is a Proc in Crystal.
+  - If data can be passed as an argument, it can be a closure, but not always; if data cannot be passed, it works only if the Proc is not a closure.
+
+
+
 ## Contributing
 
 - Fork this repository
