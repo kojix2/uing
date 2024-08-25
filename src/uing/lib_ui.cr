@@ -24,10 +24,6 @@ module UIng
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459
     DRAWDEFAULTMITERLIMIT =                                                             10.0
 
-    struct InitOptions
-      size : LibC::SizeT
-    end
-
     fun init = uiInit(options : Pointer(InitOptions)) : Pointer(LibC::Char)
     fun uninit = uiUninit
     fun free_init_error = uiFreeInitError(err : Pointer(LibC::Char))
@@ -226,44 +222,6 @@ module UIng
     fun msg_box_error = uiMsgBoxError(parent : Pointer(Window), title : Pointer(LibC::Char), description : Pointer(LibC::Char))
     alias Area = Void
 
-    struct AreaHandler
-      draw : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaDrawParams) -> Void)
-      mouse_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaMouseEvent) -> Void)
-      mouse_crossed : (Pointer(AreaHandler), Pointer(Area), LibC::Int -> Void)
-      drag_broken : (Pointer(AreaHandler), Pointer(Area) -> Void)
-      key_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaKeyEvent) -> LibC::Int)
-    end
-
-    struct AreaDrawParams
-      context : Pointer(DrawContext)
-      area_width : LibC::Double
-      area_height : LibC::Double
-      clip_x : LibC::Double
-      clip_y : LibC::Double
-      clip_width : LibC::Double
-      clip_height : LibC::Double
-    end
-
-    struct AreaMouseEvent
-      x : LibC::Double
-      y : LibC::Double
-      area_width : LibC::Double
-      area_height : LibC::Double
-      down : LibC::Int
-      up : LibC::Int
-      count : LibC::Int
-      modifiers : Modifiers
-      held1_to64 : UInt64
-    end
-
-    struct AreaKeyEvent
-      key : LibC::Char
-      ext_key : ExtKey
-      modifier : Modifiers
-      modifiers : Modifiers
-      up : LibC::Int
-    end
-
     alias DrawContext = Void
     fun area_set_size = uiAreaSetSize(a : Pointer(Area), width : LibC::Int, height : LibC::Int)
     fun area_queue_redraw_all = uiAreaQueueRedrawAll(a : Pointer(Area))
@@ -273,48 +231,6 @@ module UIng
     fun new_area = uiNewArea(ah : Pointer(AreaHandler)) : Pointer(Area)
     fun new_scrolling_area = uiNewScrollingArea(ah : Pointer(AreaHandler), width : LibC::Int, height : LibC::Int) : Pointer(Area)
     alias DrawPath = Void
-
-    struct DrawBrush
-      type : DrawBrushType
-      r : LibC::Double
-      g : LibC::Double
-      b : LibC::Double
-      a : LibC::Double
-      x0 : LibC::Double
-      y0 : LibC::Double
-      x1 : LibC::Double
-      y1 : LibC::Double
-      outer_radius : LibC::Double
-      stops : Pointer(DrawBrushGradientStop)
-      num_stops : LibC::SizeT
-    end
-
-    struct DrawStrokeParams
-      cap : DrawLineCap
-      join : DrawLineJoin
-      thickness : LibC::Double
-      miter_limit : LibC::Double
-      dashes : Pointer(LibC::Double)
-      num_dashes : LibC::SizeT
-      dash_phase : LibC::Double
-    end
-
-    struct DrawMatrix
-      m11 : LibC::Double
-      m12 : LibC::Double
-      m21 : LibC::Double
-      m22 : LibC::Double
-      m31 : LibC::Double
-      m32 : LibC::Double
-    end
-
-    struct DrawBrushGradientStop
-      pos : LibC::Double
-      r : LibC::Double
-      g : LibC::Double
-      b : LibC::Double
-      a : LibC::Double
-    end
 
     fun draw_new_path = uiDrawNewPath(fill_mode : DrawFillMode) : Pointer(DrawPath)
     fun draw_free_path = uiDrawFreePath(p : Pointer(DrawPath))
@@ -393,24 +309,9 @@ module UIng
     fun attributed_string_byte_index_to_grapheme = uiAttributedStringByteIndexToGrapheme(s : Pointer(AttributedString), pos : LibC::SizeT) : LibC::SizeT
     fun attributed_string_grapheme_to_byte_index = uiAttributedStringGraphemeToByteIndex(s : Pointer(AttributedString), pos : LibC::SizeT) : LibC::SizeT
 
-    struct FontDescriptor
-      family : Pointer(LibC::Char)
-      size : LibC::Double
-      weight : TextWeight
-      italic : TextItalic
-      stretch : TextStretch
-    end
-
     fun load_control_font = uiLoadControlFont(f : Pointer(FontDescriptor))
     fun free_font_descriptor = uiFreeFontDescriptor(desc : Pointer(FontDescriptor))
     alias DrawTextLayout = Void
-
-    struct DrawTextLayoutParams
-      string : Pointer(AttributedString)
-      default_font : Pointer(FontDescriptor)
-      width : LibC::Double
-      align : DrawTextAlign
-    end
 
     fun draw_new_text_layout = uiDrawNewTextLayout(params : Pointer(DrawTextLayoutParams)) : Pointer(DrawTextLayout)
     fun draw_free_text_layout = uiDrawFreeTextLayout(tl : Pointer(DrawTextLayout))
@@ -458,28 +359,11 @@ module UIng
     fun table_value_color = uiTableValueColor(v : Pointer(TableValue), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), a : Pointer(LibC::Double))
     alias TableModel = Void
 
-    struct TableModelHandler
-      num_columns : (Pointer(TableModelHandler), Pointer(TableModel) -> LibC::Int)
-      column_type : (Pointer(TableModelHandler), Pointer(TableModel), LibC::Int -> Void)
-      num_rows : (Pointer(TableModelHandler), Pointer(TableModel) -> LibC::Int)
-      cell_value : (Pointer(TableModelHandler), Pointer(TableModel), LibC::Int, LibC::Int -> Pointer(TableValue))
-      set_cell_value : (Pointer(TableModelHandler), Pointer(TableModel), LibC::Int, LibC::Int, Pointer(TableValue) -> Void)
-    end
-
     fun new_table_model = uiNewTableModel(mh : Pointer(TableModelHandler)) : Pointer(TableModel)
     fun free_table_model = uiFreeTableModel(m : Pointer(TableModel))
     fun table_model_row_inserted = uiTableModelRowInserted(m : Pointer(TableModel), new_index : LibC::Int)
     fun table_model_row_changed = uiTableModelRowChanged(m : Pointer(TableModel), index : LibC::Int)
     fun table_model_row_deleted = uiTableModelRowDeleted(m : Pointer(TableModel), old_index : LibC::Int)
-
-    struct TableTextColumnOptionalParams
-      color_model_column : LibC::Int
-    end
-
-    struct TableParams
-      model : Pointer(TableModel)
-      row_background_color_model_column : LibC::Int
-    end
 
     alias Table = Void
     fun table_append_text_column = uiTableAppendTextColumn(t : Pointer(Table), name : Pointer(LibC::Char), text_model_column : LibC::Int, text_editable_model_column : LibC::Int, text_params : Pointer(TableTextColumnOptionalParams))
@@ -503,11 +387,6 @@ module UIng
     fun table_get_selection_mode = uiTableGetSelectionMode(t : Pointer(Table))
     fun table_set_selection_mode = uiTableSetSelectionMode(t : Pointer(Table), mode : TableSelectionMode)
     fun table_on_selection_changed = uiTableOnSelectionChanged(t : Pointer(Table), f : (Pointer(Table), Pointer(Void) -> Void), data : Pointer(Void))
-
-    struct TableSelection
-      num_rows : LibC::Int
-      rows : Pointer(LibC::Int)
-    end
 
     fun table_get_selection = uiTableGetSelection(t : Pointer(Table)) : Pointer(TableSelection)
     fun table_set_selection = uiTableSetSelection(t : Pointer(Table), sel : Pointer(TableSelection))
