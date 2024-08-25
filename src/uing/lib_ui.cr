@@ -83,21 +83,23 @@ module UIng
     #   disable : (Pointer(Void) -> Void)
     # end
 
-    fun control_destroy = uiControlDestroy(c : Pointer(Void))
-    fun control_handle = uiControlHandle(c : Pointer(Void))
-    fun control_parent = uiControlParent(c : Pointer(Void)) : Pointer(Void)
-    fun control_set_parent = uiControlSetParent(c : Pointer(Void), parent : Pointer(Void))
-    fun control_toplevel = uiControlToplevel(c : Pointer(Void)) : LibC::Int
-    fun control_visible = uiControlVisible(c : Pointer(Void)) : LibC::Int
-    fun control_show = uiControlShow(c : Pointer(Void))
-    fun control_hide = uiControlHide(c : Pointer(Void))
-    fun control_enabled = uiControlEnabled(c : Pointer(Void)) : LibC::Int
-    fun control_enable = uiControlEnable(c : Pointer(Void))
-    fun control_disable = uiControlDisable(c : Pointer(Void))
-    fun alloc_control = uiAllocControl(n : LibC::SizeT, o_ssig : LibC::Int, typesig : LibC::Int, typenamestr : Pointer(LibC::Char)) : Pointer(Void)
-    fun free_control = uiFreeControl(c : Pointer(Void))
-    fun control_verify_set_parent = uiControlVerifySetParent(c : Pointer(Void), parent : Pointer(Void))
-    fun control_enabled_to_user = uiControlEnabledToUser(c : Pointer(Void)) : LibC::Int
+    alias Control = Void
+
+    fun control_destroy = uiControlDestroy(c : Pointer(Control))
+    fun control_handle = uiControlHandle(c : Pointer(Control)) : Pointer(Void)
+    fun control_parent = uiControlParent(c : Pointer(Control)) : Pointer(Void)
+    fun control_set_parent = uiControlSetParent(c : Pointer(Control), parent : Pointer(Void))
+    fun control_toplevel = uiControlToplevel(c : Pointer(Control)) : LibC::Int
+    fun control_visible = uiControlVisible(c : Pointer(Control)) : LibC::Int
+    fun control_show = uiControlShow(c : Pointer(Control))
+    fun control_hide = uiControlHide(c : Pointer(Control))
+    fun control_enabled = uiControlEnabled(c : Pointer(Control)) : LibC::Int
+    fun control_enable = uiControlEnable(c : Pointer(Control))
+    fun control_disable = uiControlDisable(c : Pointer(Control))
+    fun alloc_control = uiAllocControl(n : LibC::SizeT, o_ssig : LibC::Int, typesig : LibC::Int, typenamestr : Pointer(LibC::Char)) : Pointer(Control)
+    fun free_control = uiFreeControl(c : Pointer(Control))
+    fun control_verify_set_parent = uiControlVerifySetParent(c : Pointer(Control), parent : Pointer(Control))
+    fun control_enabled_to_user = uiControlEnabledToUser(c : Pointer(Control)) : LibC::Int
     fun user_bug_cannot_set_parent_on_toplevel = uiUserBugCannotSetParentOnToplevel(type : Pointer(LibC::Char))
     alias Window = Void
     fun window_title = uiWindowTitle(w : Pointer(Void)) : Pointer(LibC::Char)
@@ -115,7 +117,7 @@ module UIng
     fun window_focused = uiWindowFocused(w : Pointer(Void)) : LibC::Int
     fun window_borderless = uiWindowBorderless(w : Pointer(Void)) : LibC::Int
     fun window_set_borderless = uiWindowSetBorderless(w : Pointer(Void), borderless : LibC::Int)
-    fun window_set_child = uiWindowSetChild(w : Pointer(Void), child : Pointer(Void))
+    fun window_set_child = uiWindowSetChild(w : Pointer(Void), child : Pointer(Control))
     fun window_margined = uiWindowMargined(w : Pointer(Void)) : LibC::Int
     fun window_set_margined = uiWindowSetMargined(w : Pointer(Void), margined : LibC::Int)
     fun window_resizeable = uiWindowResizeable(w : Pointer(Void)) : LibC::Int
@@ -127,7 +129,7 @@ module UIng
     fun button_on_clicked = uiButtonOnClicked(b : Pointer(Void), f : (Pointer(Void), Pointer(Void) -> Void), data : Pointer(Void))
     fun new_button = uiNewButton(text : Pointer(LibC::Char)) : Pointer(Void)
     alias Box = Void
-    fun box_append = uiBoxAppend(b : Pointer(Void), child : Pointer(Void), stretchy : LibC::Int)
+    fun box_append = uiBoxAppend(b : Pointer(Void), child : Pointer(Control), stretchy : LibC::Int)
     fun box_num_children = uiBoxNumChildren(b : Pointer(Void)) : LibC::Int
     fun box_delete = uiBoxDelete(b : Pointer(Void), index : LibC::Int)
     fun box_padded = uiBoxPadded(b : Pointer(Void)) : LibC::Int
@@ -155,8 +157,8 @@ module UIng
     fun label_set_text = uiLabelSetText(l : Pointer(Void), text : Pointer(LibC::Char))
     fun new_label = uiNewLabel(text : Pointer(LibC::Char)) : Pointer(Void)
     alias Tab = Void
-    fun tab_append = uiTabAppend(t : Pointer(Void), name : Pointer(LibC::Char), c : Pointer(Void))
-    fun tab_insert_at = uiTabInsertAt(t : Pointer(Void), name : Pointer(LibC::Char), index : LibC::Int, c : Pointer(Void))
+    fun tab_append = uiTabAppend(t : Pointer(Void), name : Pointer(LibC::Char), c : Pointer(Control))
+    fun tab_insert_at = uiTabInsertAt(t : Pointer(Void), name : Pointer(LibC::Char), index : LibC::Int, c : Pointer(Control))
     fun tab_delete = uiTabDelete(t : Pointer(Void), index : LibC::Int)
     fun tab_num_pages = uiTabNumPages(t : Pointer(Void)) : LibC::Int
     fun tab_margined = uiTabMargined(t : Pointer(Void), index : LibC::Int) : LibC::Int
@@ -165,7 +167,7 @@ module UIng
     alias Group = Void
     fun group_title = uiGroupTitle(g : Pointer(Void)) : Pointer(LibC::Char)
     fun group_set_title = uiGroupSetTitle(g : Pointer(Void), title : Pointer(LibC::Char))
-    fun group_set_child = uiGroupSetChild(g : Pointer(Void), c : Pointer(Void))
+    fun group_set_child = uiGroupSetChild(g : Pointer(Void), c : Pointer(Control))
     fun group_margined = uiGroupMargined(g : Pointer(Void)) : LibC::Int
     fun group_set_margined = uiGroupSetMargined(g : Pointer(Void), margined : LibC::Int)
     fun new_group = uiNewGroup(title : Pointer(LibC::Char)) : Pointer(Void)
@@ -588,7 +590,7 @@ module UIng
     fun color_button_on_changed = uiColorButtonOnChanged(b : Pointer(Void), f : (Pointer(Void), Pointer(Void) -> Void), data : Pointer(Void))
     fun new_color_button = uiNewColorButton : Pointer(Void)
     alias Form = Void
-    fun form_append = uiFormAppend(f : Pointer(Void), label : Pointer(LibC::Char), c : Pointer(Void), stretchy : LibC::Int)
+    fun form_append = uiFormAppend(f : Pointer(Void), label : Pointer(LibC::Char), c : Pointer(Control), stretchy : LibC::Int)
     fun form_num_children = uiFormNumChildren(f : Pointer(Void)) : LibC::Int
     fun form_delete = uiFormDelete(f : Pointer(Void), index : LibC::Int)
     fun form_padded = uiFormPadded(f : Pointer(Void)) : LibC::Int
@@ -610,8 +612,8 @@ module UIng
     end
 
     alias Grid = Void
-    fun grid_append = uiGridAppend(g : Pointer(Void), c : Pointer(Void), left : LibC::Int, top : LibC::Int, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
-    fun grid_insert_at = uiGridInsertAt(g : Pointer(Void), c : Pointer(Void), existing : Pointer(Void), at : At, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
+    fun grid_append = uiGridAppend(g : Pointer(Void), c : Pointer(Control), left : LibC::Int, top : LibC::Int, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
+    fun grid_insert_at = uiGridInsertAt(g : Pointer(Void), c : Pointer(Control), existing : Pointer(Control), at : At, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
     fun grid_padded = uiGridPadded(g : Pointer(Void)) : LibC::Int
     fun grid_set_padded = uiGridSetPadded(g : Pointer(Void), padded : LibC::Int)
     fun new_grid = uiNewGrid : Pointer(Void)
