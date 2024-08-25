@@ -20,13 +20,13 @@ def data
 end
 
 model_handler = UIng::TableModelHandler.new
-model_handler.num_columns = ->(v1 : Void*, v2 : Void*) { 2 }
-model_handler.column_type = ->(v1 : Void*, v2 : Void*, v3 : CInt) { 0 }
-model_handler.num_rows = ->(v1 : Void*, v2 : Void*) { 5 }
-model_handler.cell_value = ->(v1 : Void*, v2 : Void*, row : CInt, column : CInt) {
+model_handler.num_columns = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*) { 2 }
+model_handler.column_type = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*, v3 : CInt) { 0 }
+model_handler.num_rows = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*) { 5 }
+model_handler.cell_value = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*, row : CInt, column : CInt) {
   UIng.new_table_value_string(data[row][column])
 }
-model_handler.set_cell_value = ->(v1 : Void*, v2 : Void*, r : CInt, c : CInt, v3 : Void*) { Void }
+model_handler.set_cell_value = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*, r : CInt, c : CInt, v3 : UIng::LibUI::TableValue*) { Void }
 
 model = UIng.new_table_model(model_handler)
 
