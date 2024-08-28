@@ -88,64 +88,64 @@ module UIng
     LibUI.free_text(*args)
   end
 
-  def self.control_destroy(*args)
-    LibUI.control_destroy(*args)
+  def self.control_destroy(control)
+    LibUI.control_destroy(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_handle(*args)
-    LibUI.control_handle(*args)
+  def self.control_handle(control)
+    LibUI.control_handle(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_parent(*args)
-    LibUI.control_parent(*args)
+  def self.control_parent(control)
+    LibUI.control_parent(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_set_parent(*args)
-    LibUI.control_set_parent(*args)
+  def self.control_set_parent(control, parent)
+    LibUI.control_set_parent(control.as(Pointer(LibUI::Control)), parent.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_toplevel(*args)
-    LibUI.control_toplevel(*args)
+  def self.control_toplevel(control)
+    LibUI.control_toplevel(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_visible(*args)
-    LibUI.control_visible(*args)
+  def self.control_visible(control)
+    LibUI.control_visible(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_show(*args)
-    LibUI.control_show(*args)
+  def self.control_show(control)
+    LibUI.control_show(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_hide(*args)
-    LibUI.control_hide(*args)
+  def self.control_hide(control)
+    LibUI.control_hide(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_enabled(*args)
-    LibUI.control_enabled(*args)
+  def self.control_enabled(control)
+    LibUI.control_enabled(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_enable(*args)
-    LibUI.control_enable(*args)
+  def self.control_enable(control)
+    LibUI.control_enable(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_disable(*args)
-    LibUI.control_disable(*args)
+  def self.control_disable(control)
+    LibUI.control_disable(control.as(Pointer(LibUI::Control)))
   end
 
   def self.alloc_control(*args)
     LibUI.alloc_control(*args)
   end
 
-  def self.free_control(*args)
-    LibUI.free_control(*args)
+  def self.free_control(control)
+    LibUI.free_control(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_verify_set_parent(*args)
-    LibUI.control_verify_set_parent(*args)
+  def self.control_verify_set_parent(control, parent)
+    LibUI.control_verify_set_parent(control.as(Pointer(LibUI::Control)), parent.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_enabled_to_user(*args)
-    LibUI.control_enabled_to_user(*args)
+  def self.control_enabled_to_user(control)
+    LibUI.control_enabled_to_user(control.as(Pointer(LibUI::Control)))
   end
 
   def self.user_bug_cannot_set_parent_on_toplevel(*args)
@@ -232,8 +232,8 @@ module UIng
     LibUI.window_set_borderless(*args)
   end
 
-  def self.window_set_child(*args)
-    LibUI.window_set_child(*args)
+  def self.window_set_child(window, control)
+    LibUI.window_set_child(window, control.as(Pointer(LibUI::Control)))
   end
 
   def self.window_margined(*args)
@@ -277,8 +277,8 @@ module UIng
     LibUI.new_button(*args)
   end
 
-  def self.box_append(*args)
-    LibUI.box_append(*args)
+  def self.box_append(box, control, stretchy)
+    LibUI.box_append(box, control.as(Pointer(LibUI::Control)), stretchy)
   end
 
   def self.box_num_children(*args)
@@ -383,12 +383,12 @@ module UIng
     LibUI.new_label(*args)
   end
 
-  def self.tab_append(*args)
-    LibUI.tab_append(*args)
+  def self.tab_append(tab, name, control)
+    LibUI.tab_append(tab, name, control.as(Pointer(LibUI::Control)))
   end
 
-  def self.tab_insert_at(*args)
-    LibUI.tab_insert_at(*args)
+  def self.tab_insert_at(tab, name, index, control)
+    LibUI.tab_insert_at(tab, name, index, control.as(Pointer(LibUI::Control)))
   end
 
   def self.tab_delete(*args)
@@ -419,8 +419,8 @@ module UIng
     LibUI.group_set_title(*args)
   end
 
-  def self.group_set_child(*args)
-    LibUI.group_set_child(*args)
+  def self.group_set_child(group, control)
+    LibUI.group_set_child(group, control.as(Pointer(LibUI::Control)))
   end
 
   def self.group_margined(*args)
@@ -1123,8 +1123,8 @@ module UIng
     LibUI.new_color_button(*args)
   end
 
-  def self.form_append(*args)
-    LibUI.form_append(*args)
+  def self.form_append(form, label, control, stretchy)
+    LibUI.form_append(form, label, control.as(Pointer(LibUI::Control)), stretchy)
   end
 
   def self.form_num_children(*args)
@@ -1147,12 +1147,12 @@ module UIng
     LibUI.new_form(*args)
   end
 
-  def self.grid_append(*args)
-    LibUI.grid_append(*args)
+  def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign)
+    LibUI.grid_append(grid, control.as(Pointer(LibUI::Control)), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
-  def self.grid_insert_at(*args)
-    LibUI.grid_insert_at(*args)
+  def self.grid_insert_at(grid, control, existing, at, xspan, yspan, hexpand, halign, vexpand, valign)
+    LibUI.grid_insert_at(grid, control.as(Pointer(LibUI::Control)), existing.as(Pointer(LibUI::Control)), at, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
   def self.grid_padded(*args)

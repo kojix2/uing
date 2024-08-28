@@ -35,26 +35,7 @@ module UIng
     fun timer = uiTimer(milliseconds : LibC::Int, f : (Pointer(Void) -> LibC::Int), data : Pointer(Void))
     fun on_should_quit = uiOnShouldQuit(f : (Pointer(Void) -> LibC::Int), data : Pointer(Void))
     fun free_text = uiFreeText(text : Pointer(LibC::Char))
-
-    # struct Control
-    #   signature : Void
-    #   os_signature : Void
-    #   type_signature : Void
-    #   destroy : (Pointer(Void) -> Void)
-    #   handle : (Pointer(Void) -> Void)
-    #   parent : (Pointer(Void) -> Pointer(Void))
-    #   set_parent : (Pointer(Void), Pointer(Void) -> Void)
-    #   toplevel : (Pointer(Void) -> LibC::Int)
-    #   visible : (Pointer(Void) -> LibC::Int)
-    #   show : (Pointer(Void) -> Void)
-    #   hide : (Pointer(Void) -> Void)
-    #   enabled : (Pointer(Void) -> LibC::Int)
-    #   enable : (Pointer(Void) -> Void)
-    #   disable : (Pointer(Void) -> Void)
-    # end
-
-    alias Control = Void
-
+    # Control is a struct
     fun control_destroy = uiControlDestroy(c : Pointer(Control))
     fun control_handle = uiControlHandle(c : Pointer(Control)) : Pointer(Void)
     fun control_parent = uiControlParent(c : Pointer(Control)) : Pointer(Control)
