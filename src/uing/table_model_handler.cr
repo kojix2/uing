@@ -1,7 +1,6 @@
 module UIng
   class TableModelHandler
-    def initialize
-      @cstruct = LibUI::TableModelHandler.new
+    def initialize(@cstruct : LibUI::TableModelHandler = LibUI::TableModelHandler.new)
     end
 
     forward_missing_to(@cstruct)

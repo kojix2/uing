@@ -1,7 +1,6 @@
 module UIng
   class TableTextColumnOptionalParams
-    def initialize
-      @cstruct = LibUI::TableTextColumnOptionalParams.new
+    def initialize(@cstruct : LibUI::TableTextColumnOptionalParams = LibUI::TableTextColumnOptionalParams.new)
     end
 
     forward_missing_to(@cstruct)

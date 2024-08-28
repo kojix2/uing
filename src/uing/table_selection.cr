@@ -1,7 +1,6 @@
 module UIng
   class TableSelection
-    def initialize
-      @cstruct = LibUI::TableSelection.new
+    def initialize(@cstruct : LibUI::TableSelection = LibUI::TableSelection.new)
     end
 
     forward_missing_to(@cstruct)

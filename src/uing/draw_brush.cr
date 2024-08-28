@@ -1,7 +1,6 @@
 module UIng
   class DrawBrush
-    def initialize
-      @cstruct = LibUI::DrawBrush.new
+    def initialize(@cstruct : LibUI::DrawBrush = LibUI::DrawBrush.new)
     end
 
     forward_missing_to(@cstruct)

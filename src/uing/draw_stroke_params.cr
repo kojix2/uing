@@ -1,7 +1,6 @@
 module UIng
   class DrawStrokeParams
-    def initialize
-      @cstruct = LibUI::DrawStrokeParams.new
+    def initialize(@cstruct : LibUI::DrawStrokeParams = LibUI::DrawStrokeParams.new)
     end
 
     forward_missing_to(@cstruct)

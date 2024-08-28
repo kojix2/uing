@@ -1,7 +1,6 @@
 module UIng
   class TM
-    def initialize
-      @cstruct = LibUI::TM.new
+    def initialize(@cstruct : LibUI::TM = LibUI::TM.new)
     end
 
     {% unless flag?(:windows) %}

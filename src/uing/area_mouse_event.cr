@@ -1,7 +1,6 @@
 module UIng
   class AreaMouseEvent
-    def initialize
-      @cstruct = LibUI::AreaMouseEvent.new
+    def initialize(@cstruct : LibUI::AreaMouseEvent = LibUI::AreaMouseEvent.new)
     end
 
     forward_missing_to(@cstruct)

@@ -1,7 +1,6 @@
 module UIng
   class DrawMatrix
-    def initialize
-      @cstruct = LibUI::DrawMatrix.new
+    def initialize(@cstruct : LibUI::DrawMatrix = LibUI::DrawMatrix.new)
     end
 
     forward_missing_to(@cstruct)

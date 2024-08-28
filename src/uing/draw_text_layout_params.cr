@@ -1,7 +1,6 @@
 module UIng
   class DrawTextLayoutParams
-    def initialize
-      @cstruct = LibUI::DrawTextLayoutParams.new
+    def initialize(@cstruct : LibUI::DrawTextLayoutParams = LibUI::DrawTextLayoutParams.new)
     end
 
     forward_missing_to(@cstruct)

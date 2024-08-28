@@ -1,7 +1,6 @@
 module UIng
   class AreaHandler
-    def initialize
-      @cstruct = LibUI::AreaHandler.new
+    def initialize(@cstruct : LibUI::AreaHandler = LibUI::AreaHandler.new)
     end
 
     forward_missing_to(@cstruct)

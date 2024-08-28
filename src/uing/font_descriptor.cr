@@ -1,7 +1,6 @@
 module UIng
   class FontDescriptor
-    def initialize
-      @cstruct = LibUI::FontDescriptor.new
+    def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
       @family = ""
     end
 
