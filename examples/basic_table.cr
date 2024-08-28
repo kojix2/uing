@@ -20,13 +20,11 @@ def data
 end
 
 model_handler = UIng::TableModelHandler.new
-model_handler.num_columns = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*) { 2 }
-model_handler.column_type = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*, v3 : CInt) { 0 }
-model_handler.num_rows = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*) { 5 }
-model_handler.cell_value = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*, row : CInt, column : CInt) {
-  UIng.new_table_value_string(data[row][column])
-}
-model_handler.set_cell_value = ->(v1 : UIng::LibUI::TableModelHandler*, v2 : UIng::LibUI::TableModel*, r : CInt, c : CInt, v3 : UIng::LibUI::TableValue*) { Void }
+model_handler.num_columns { |_, _| 2 }
+model_handler.column_type { |_, _, _| UIng::LibUI::TableValueType::String }
+model_handler.num_rows { |_, _| 5 }
+model_handler.cell_value { |_, _, row, column| UIng.new_table_value_string(data[row][column]) }
+model_handler.set_cell_value { |_, _, _, _, _| Void }
 
 model = UIng.new_table_model(model_handler)
 
