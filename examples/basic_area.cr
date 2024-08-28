@@ -25,10 +25,10 @@ handler_draw_event = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::L
 }
 
 handler.draw = handler_draw_event
-handler.mouse_event = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::LibUI::Area*, event : UIng::LibUI::AreaMouseEvent*) { }
-handler.mouse_crossed = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::LibUI::Area*, left : Int32) { }
-handler.drag_broken = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::LibUI::Area*) { }
-handler.key_event = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::LibUI::Area*, key_event : UIng::LibUI::AreaKeyEvent*) { 0 }
+handler.mouse_event { |_, _, _| }
+handler.mouse_crossed { |_, _, _| }
+handler.drag_broken { |_, _| }
+handler.key_event { |_, _, _| 0 }
 
 area = UIng.new_area(handler)
 
