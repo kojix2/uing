@@ -6,7 +6,7 @@ main_window = UIng.new_window("Basic Area", 400, 400, 1)
 
 handler = UIng::AreaHandler.new
 
-handler_draw_event = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::LibUI::Area*, area_draw_params : UIng::LibUI::AreaDrawParams*) {
+handler.draw do |area_handler, area, area_draw_params|
   path = UIng.draw_new_path(UIng::LibUI::DrawFillMode::Winding)
   UIng.draw_path_add_rectangle(path, 0, 0, 400, 400)
   UIng.draw_path_end(path)
@@ -22,9 +22,8 @@ handler_draw_event = ->(area_handler : UIng::LibUI::AreaHandler*, area : UIng::L
   ctx = area_draw_params.value.context
   UIng.draw_fill(ctx, path, brush)
   UIng.draw_free_path(path)
-}
+end
 
-handler.draw = handler_draw_event
 handler.mouse_event { |_, _, _| }
 handler.mouse_crossed { |_, _, _| }
 handler.drag_broken { |_, _| }
