@@ -29,8 +29,14 @@ module UIng
   # delegate_class_method init, to: LibUI
 
   # no arguments
-  def self.init
-    LibUI.init(@@init_options)
+  def self.init : String?
+    str_ptr = LibUI.init(@@init_options)
+    str_ptr.null? ? nil : String.new(str_ptr)
+  end
+
+  def self.init(init_options : Pointer(LibUI::InitOptions)) : String?
+    @@init_options = init_options
+    self.init
   end
 
   def self.uninit(*args)
@@ -910,8 +916,9 @@ module UIng
     LibUI.new_family_attribute(*args)
   end
 
-  def self.attribute_family(*args)
-    LibUI.attribute_family(*args)
+  def self.attribute_family(attribute) : String?
+    str_ptr = LibUI.attribute_family(attribute)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.new_size_attribute(*args)
@@ -1023,8 +1030,9 @@ module UIng
     LibUI.free_attributed_string(*args)
   end
 
-  def self.attributed_string_string(*args)
-    LibUI.attributed_string_string(*args)
+  def self.attributed_string_string(attributed_string) : String?
+    str_ptr = LibUI.attributed_string_string(attributed_string)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.attributed_string_len(*args)
@@ -1202,8 +1210,9 @@ module UIng
     LibUI.new_table_value_string(*args)
   end
 
-  def self.table_value_string(*args)
-    LibUI.table_value_string(*args)
+  def self.table_value_string(table_value) : String?
+    str_ptr = LibUI.table_value_string(table_value)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.new_table_value_image(*args)
