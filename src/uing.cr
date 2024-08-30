@@ -152,8 +152,9 @@ module UIng
     LibUI.user_bug_cannot_set_parent_on_toplevel(*args)
   end
 
-  def self.window_title(*args)
-    return String.new(LibUI.window_title(*args))
+  def self.window_title(window) : String?
+    str_ptr = LibUI.window_title(window)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.window_set_title(*args)
@@ -256,8 +257,9 @@ module UIng
     LibUI.new_window(*args)
   end
 
-  def self.button_text(*args)
-    return String.new(LibUI.button_text(*args))
+  def self.button_text(button) : String?
+    str_ptr = LibUI.button_text(button)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.button_set_text(*args)
@@ -305,8 +307,9 @@ module UIng
     LibUI.new_vertical_box(*args)
   end
 
-  def self.checkbox_text(*args)
-    return String.new(LibUI.checkbox_text(*args))
+  def self.checkbox_text(checkbox) : String?
+    str_ptr = LibUI.checkbox_text(checkbox)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.checkbox_set_text(*args)
@@ -334,8 +337,9 @@ module UIng
     LibUI.new_checkbox(*args)
   end
 
-  def self.entry_text(*args)
-    return String.new(LibUI.entry_text(*args))
+  def self.entry_text(entry) : String?
+    str_ptr = LibUI.entry_text(entry)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.entry_set_text(*args)
@@ -371,8 +375,9 @@ module UIng
     LibUI.new_search_entry(*args)
   end
 
-  def self.label_text(*args)
-    return String.new(LibUI.label_text(*args))
+  def self.label_text(label) : String?
+    str_ptr = LibUI.label_text(label)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.label_set_text(*args)
@@ -411,8 +416,9 @@ module UIng
     LibUI.new_tab(*args)
   end
 
-  def self.group_title(*args)
-    return String.new(LibUI.group_title(*args))
+  def self.group_title(group) : String?
+    str_ptr = LibUI.group_title(group)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.group_set_title(*args)
@@ -563,8 +569,9 @@ module UIng
     LibUI.editable_combobox_append(*args)
   end
 
-  def self.editable_combobox_text(*args)
-    return String.new(LibUI.editable_combobox_text(*args))
+  def self.editable_combobox_text(editable_combobox) : String?
+    str_ptr = LibUI.editable_combobox_text(editable_combobox)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.editable_combobox_set_text(*args)
@@ -638,8 +645,9 @@ module UIng
     LibUI.new_time_picker(*args)
   end
 
-  def self.multiline_entry_text(*args)
-    return String.new(LibUI.multiline_entry_text(*args))
+  def self.multiline_entry_text(multiline_entry) : String?
+    str_ptr = LibUI.multiline_entry_text(multiline_entry)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.multiline_entry_set_text(*args)
@@ -728,16 +736,19 @@ module UIng
     LibUI.new_menu(*args)
   end
 
-  def self.open_file(*args)
-    return String.new(LibUI.open_file(*args))
+  def self.open_file(window) : String?
+    str_ptr = LibUI.open_file(window)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.open_folder(*args)
-    return String.new(LibUI.open_folder(*args))
+  def self.open_folder(window) : String?
+    str_ptr = LibUI.open_folder(window)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.save_file(*args)
-    return String.new(LibUI.save_file(*args))
+  def self.save_file(window) : String?
+    str_ptr = LibUI.save_file(window)
+    str_ptr.null? ? nil : String.new(str_ptr)
   end
 
   def self.msg_box(*args)
