@@ -11,7 +11,7 @@ Yet another crystal binding for libui-ng.
 See [examples](examples).
 
 - Notes:
-  - UIng.msg_box is not working on Windows (the reason is unknown).
+  - On Windows, libui-ng's msg_box implementation uses TaskDialog. ComCtl32.dll version6 is required to call TaskDialog. The standard ComCtl32 is version 5, so a manifest file is required.
 
 ## Development
 
@@ -24,8 +24,6 @@ See [examples](examples).
 
 - A function pointer in C is a Proc in Crystal.
   - If data can be passed as an argument, it can be a closure, but not always; if data cannot be passed, it works only if the Proc is not a closure.
-
-
 
 ## Contributing
 
