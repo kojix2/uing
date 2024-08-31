@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::OpenTypeFeatures))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_open_type_features
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_open_type_features
+    # end
 
     forward_missing_to(@ref_ptr)
 

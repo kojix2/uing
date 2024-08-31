@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::TableModel))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_table_model
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_table_model
+    # end
 
     forward_missing_to(@ref_ptr)
 

@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Spinbox))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_spinbox
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_spinbox
+    # end
 
     forward_missing_to(@ref_ptr)
 

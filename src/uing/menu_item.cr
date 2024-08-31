@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::MenuItem))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_menu_item
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_menu_item
+    # end
 
     forward_missing_to(@ref_ptr)
 

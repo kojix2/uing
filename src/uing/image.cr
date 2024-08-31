@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Image))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_image
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_image
+    # end
 
     forward_missing_to(@ref_ptr)
 

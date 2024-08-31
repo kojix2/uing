@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Area))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_area
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_area
+    # end
 
     forward_missing_to(@ref_ptr)
 

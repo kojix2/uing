@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::TableValue))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_table_value
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_table_value
+    # end
 
     forward_missing_to(@ref_ptr)
 

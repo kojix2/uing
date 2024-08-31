@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::RadioButtons))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_radio_buttons
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_radio_buttons
+    # end
 
     forward_missing_to(@ref_ptr)
 

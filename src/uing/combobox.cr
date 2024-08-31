@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Combobox))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_combobox
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_combobox
+    # end
 
     forward_missing_to(@ref_ptr)
 

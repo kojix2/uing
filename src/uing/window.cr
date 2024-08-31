@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_window
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_window
+    # end
 
     forward_missing_to(@ref_ptr)
 

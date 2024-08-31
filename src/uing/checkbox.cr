@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Checkbox))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_checkbox
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_checkbox
+    # end
 
     forward_missing_to(@ref_ptr)
 

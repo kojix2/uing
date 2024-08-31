@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Grid))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_grid
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_grid
+    # end
 
     forward_missing_to(@ref_ptr)
 

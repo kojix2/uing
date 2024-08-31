@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Tab))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_tab
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_tab
+    # end
 
     forward_missing_to(@ref_ptr)
 

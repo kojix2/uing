@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Separator))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_separator
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_separator
+    # end
 
     forward_missing_to(@ref_ptr)
 

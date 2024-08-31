@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::DrawPath))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_draw_path
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_draw_path
+    # end
 
     forward_missing_to(@ref_ptr)
 

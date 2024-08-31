@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Label))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_label
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_label
+    # end
 
     forward_missing_to(@ref_ptr)
 

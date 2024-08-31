@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Form))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_form
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_form
+    # end
 
     forward_missing_to(@ref_ptr)
 

@@ -3,9 +3,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Slider))
     end
 
-    def initialize
-      @ref_ptr = LibUI.new_slider
-    end
+    # def initialize
+    #   @ref_ptr = LibUI.new_slider
+    # end
 
     forward_missing_to(@ref_ptr)
 
