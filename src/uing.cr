@@ -1,22 +1,8 @@
 require "./uing/version"
 require "./uing/lib_ui"
-
-require "./uing/area_handler"
-require "./uing/area_draw_params"
-require "./uing/area_mouse_event"
-require "./uing/area_key_event"
-require "./uing/draw_brush"
-require "./uing/draw_stroke_params"
-require "./uing/draw_matrix"
-require "./uing/draw_brush_gradient_stop"
-require "./uing/font_descriptor"
-require "./uing/draw_text_layout_params"
-require "./uing/table_model_handler"
-require "./uing/table_text_column_optional_params"
-require "./uing/table_params"
-require "./uing/table_selection"
-
 require "./uing/tm"
+
+require "./uing/*"
 
 module UIng
   # uiInitOptions is not used (but it is required)
@@ -70,28 +56,28 @@ module UIng
   end
 
   def self.queue_main(&callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.queue_main(->(data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
 
   def self.timer(sender, &callback : -> LibC::Int) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.timer(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
 
   def self.on_should_quit(&callback : -> LibC::Int) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.on_should_quit(->(data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -182,10 +168,10 @@ module UIng
   end
 
   def self.window_on_position_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_position_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -207,28 +193,28 @@ module UIng
   end
 
   def self.window_on_content_size_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_content_size_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
 
   def self.window_on_closing(sender, &callback : -> LibC::Int) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_closing(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
 
   def self.window_on_focus_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_focus_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -279,10 +265,10 @@ module UIng
   end
 
   def self.button_on_clicked(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.button_on_clicked(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -329,10 +315,10 @@ module UIng
   end
 
   def self.checkbox_on_toggled(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.checkbox_on_toggled(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -359,10 +345,10 @@ module UIng
   end
 
   def self.entry_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.entry_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -462,10 +448,10 @@ module UIng
   end
 
   def self.spinbox_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.spinbox_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -491,19 +477,19 @@ module UIng
   end
 
   def self.slider_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.slider_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
 
   def self.slider_on_released(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.slider_on_released(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -565,10 +551,10 @@ module UIng
   end
 
   def self.combobox_on_selected(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.combobox_on_selected(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -591,10 +577,10 @@ module UIng
   end
 
   def self.editable_combobox_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.editable_combobox_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -616,10 +602,10 @@ module UIng
   end
 
   def self.radio_buttons_on_selected(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.radio_buttons_on_selected(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -637,10 +623,10 @@ module UIng
   end
 
   def self.date_time_picker_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.date_time_picker_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -671,10 +657,10 @@ module UIng
   end
 
   def self.multiline_entry_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.multiline_entry_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -704,10 +690,10 @@ module UIng
   end
 
   def self.menu_item_on_clicked(sender, &callback : Pointer(LibUI::Window) -> Void)
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.menu_item_on_clicked(sender, ->(sender, window, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(window)
     end, boxed_data)
   end
@@ -1012,10 +998,10 @@ module UIng
   end
 
   def self.open_type_features_for_each(sender, &callback : (Pointer(Void), LibC::Char, LibC::Char, LibC::Char, LibC::Char, Int32) -> Void)
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.open_type_features_for_each(sender, ->(otf, a, b, c, d, value, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(otf)
     end, boxed_data)
   end
@@ -1062,10 +1048,10 @@ module UIng
   end
 
   def self.attributed_string_for_each_attribute(sender, &callback : (Pointer(Void), Pointer(LibUI::Attribute), SizeT, SizeT, Pointer(Void)) -> Void)
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.attributed_string_for_each_attribute(sender, ->(sender, attr, start, end_, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(attr, start, end_)
     end, boxed_data)
   end
@@ -1111,10 +1097,10 @@ module UIng
   end
 
   def self.font_button_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.font_button_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -1136,10 +1122,10 @@ module UIng
   end
 
   def self.color_button_on_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.color_button_on_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
@@ -1306,19 +1292,19 @@ module UIng
   end
 
   def self.table_on_row_clicked(sender, &callback : LibC::Int -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.table_on_row_clicked(sender, ->(sender, row, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(row)
     end, boxed_data)
   end
 
   def self.table_on_row_double_clicked(sender, &callback : LibC::Int -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.table_on_row_double_clicked(sender, ->(sender, row, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(row)
     end, boxed_data)
   end
@@ -1332,10 +1318,10 @@ module UIng
   end
 
   def self.table_header_on_clicked(sender, &callback : LibC::Int -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.table_header_on_clicked(sender, ->(sender, column, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(column)
     end, boxed_data)
   end
@@ -1357,10 +1343,10 @@ module UIng
   end
 
   def self.table_on_selection_changed(sender, &callback : -> Void) : Nil
-    boxed_data = Box.box(callback)
+    boxed_data = ::Box.box(callback)
     @@box = boxed_data
     LibUI.table_on_selection_changed(sender, ->(sender, data) do
-      data_as_callback = Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
   end
