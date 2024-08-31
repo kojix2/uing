@@ -12,9 +12,15 @@ module UIng
   # Proc callback is boxed and stored in @@box
   @@box = Pointer(Void).null
 
-  # delegate_class_method init, to: LibUI
+  # Convert control to Pointer(LibUI::Control)
+  private def self.to_control(control)
+    if control.is_a?(Pointer)
+      control.as(Pointer(LibUI::Control))
+    else
+      control.to_unsafe.as(Pointer(LibUI::Control))
+    end
+  end
 
-  # no arguments
   def self.init : Nil
     str_ptr = LibUI.init(@@init_options)
     return if str_ptr.null?
@@ -87,47 +93,47 @@ module UIng
   end
 
   def self.control_destroy(control) : Nil
-    LibUI.control_destroy(control.as(Pointer(LibUI::Control)))
+    LibUI.control_destroy(to_control(control))
   end
 
   def self.control_handle(control)
-    LibUI.control_handle(control.as(Pointer(LibUI::Control)))
+    LibUI.control_handle(to_control(control))
   end
 
   def self.control_parent(control)
-    LibUI.control_parent(control.as(Pointer(LibUI::Control)))
+    LibUI.control_parent(to_control(control))
   end
 
   def self.control_set_parent(control, parent) : Nil
-    LibUI.control_set_parent(control.as(Pointer(LibUI::Control)), parent.as(Pointer(LibUI::Control)))
+    LibUI.control_set_parent(to_control(control), to_control(parent))
   end
 
   def self.control_toplevel(control)
-    LibUI.control_toplevel(control.as(Pointer(LibUI::Control)))
+    LibUI.control_toplevel(to_control(control))
   end
 
-  def self.control_visible(control)
-    LibUI.control_visible(control.as(Pointer(LibUI::Control)))
+  def self.control_visible(control) : LibC::Int
+    LibUI.control_visible(to_control(control))
   end
 
   def self.control_show(control) : Nil
-    LibUI.control_show(control.as(Pointer(LibUI::Control)))
+    LibUI.control_show(to_control(control))
   end
 
   def self.control_hide(control) : Nil
-    LibUI.control_hide(control.as(Pointer(LibUI::Control)))
+    LibUI.control_hide(to_control(control))
   end
 
-  def self.control_enabled(control)
-    LibUI.control_enabled(control.as(Pointer(LibUI::Control)))
+  def self.control_enabled(control) : LibC::Int
+    LibUI.control_enabled(to_control(control))
   end
 
   def self.control_enable(control) : Nil
-    LibUI.control_enable(control.as(Pointer(LibUI::Control)))
+    LibUI.control_enable(to_control(control))
   end
 
   def self.control_disable(control) : Nil
-    LibUI.control_disable(control.as(Pointer(LibUI::Control)))
+    LibUI.control_disable(to_control(control))
   end
 
   def self.alloc_control(*args)
@@ -135,15 +141,15 @@ module UIng
   end
 
   def self.free_control(control) : Nil
-    LibUI.free_control(control.as(Pointer(LibUI::Control)))
+    LibUI.free_control(to_control(control))
   end
 
   def self.control_verify_set_parent(control, parent) : Nil
-    LibUI.control_verify_set_parent(control.as(Pointer(LibUI::Control)), parent.as(Pointer(LibUI::Control)))
+    LibUI.control_verify_set_parent(to_control(control), to_control(parent))
   end
 
-  def self.control_enabled_to_user(control)
-    LibUI.control_enabled_to_user(control.as(Pointer(LibUI::Control)))
+  def self.control_enabled_to_user(control) : LibC::Int
+    LibUI.control_enabled_to_user(to_control(control))
   end
 
   def self.user_bug_cannot_set_parent_on_toplevel(*args) : Nil
@@ -232,7 +238,7 @@ module UIng
   end
 
   def self.window_set_child(window, control) : Nil
-    LibUI.window_set_child(window, control.as(Pointer(LibUI::Control)))
+    LibUI.window_set_child(window, to_control(control))
   end
 
   def self.window_margined(*args)
@@ -278,7 +284,7 @@ module UIng
   end
 
   def self.box_append(box, control, stretchy) : Nil
-    LibUI.box_append(box, control.as(Pointer(LibUI::Control)), stretchy)
+    LibUI.box_append(box, to_control(control), stretchy)
   end
 
   def self.box_num_children(*args)
@@ -387,11 +393,11 @@ module UIng
   end
 
   def self.tab_append(tab, name, control) : Nil
-    LibUI.tab_append(tab, name, control.as(Pointer(LibUI::Control)))
+    LibUI.tab_append(tab, name, to_control(control))
   end
 
   def self.tab_insert_at(tab, name, index, control) : Nil
-    LibUI.tab_insert_at(tab, name, index, control.as(Pointer(LibUI::Control)))
+    LibUI.tab_insert_at(tab, name, index, to_control(control))
   end
 
   def self.tab_delete(*args) : Nil
@@ -424,7 +430,7 @@ module UIng
   end
 
   def self.group_set_child(group, control) : Nil
-    LibUI.group_set_child(group, control.as(Pointer(LibUI::Control)))
+    LibUI.group_set_child(group, to_control(control))
   end
 
   def self.group_margined(*args)
@@ -1135,7 +1141,7 @@ module UIng
   end
 
   def self.form_append(form, label, control, stretchy) : Nil
-    LibUI.form_append(form, label, control.as(Pointer(LibUI::Control)), stretchy)
+    LibUI.form_append(form, label, to_control(control), stretchy)
   end
 
   def self.form_num_children(*args)
@@ -1159,11 +1165,11 @@ module UIng
   end
 
   def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
-    LibUI.grid_append(grid, control.as(Pointer(LibUI::Control)), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
+    LibUI.grid_append(grid, to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
   def self.grid_insert_at(grid, control, existing, at, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
-    LibUI.grid_insert_at(grid, control.as(Pointer(LibUI::Control)), existing.as(Pointer(LibUI::Control)), at, xspan, yspan, hexpand, halign, vexpand, valign)
+    LibUI.grid_insert_at(grid, to_control(control), to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
   def self.grid_padded(*args)
