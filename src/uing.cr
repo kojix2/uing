@@ -29,9 +29,12 @@ module UIng
   # delegate_class_method init, to: LibUI
 
   # no arguments
-  def self.init : String?
+  def self.init : Nil
     str_ptr = LibUI.init(@@init_options)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    return if str_ptr.null?
+    err = String.new(str_ptr)
+    LibUI.free_init_error(str_ptr)
+    raise err
   end
 
   def self.init(init_options : Pointer(LibUI::InitOptions)) : String?
@@ -39,31 +42,34 @@ module UIng
     self.init
   end
 
-  def self.uninit(*args)
-    LibUI.uninit(*args)
+  def self.uninit : Nil
+    LibUI.uninit
   end
 
-  def self.free_init_error(*args)
-    LibUI.free_init_error(*args)
+  # should not be used.
+  # See the implementation of `init` above.
+
+  def self.free_init_error(err) : Nil
+    LibUI.free_init_error(err)
   end
 
-  def self.main(*args)
-    LibUI.main(*args)
+  def self.main : Nil
+    LibUI.main
   end
 
-  def self.main_steps(*args)
-    LibUI.main_steps(*args)
+  def self.main_steps : Nil
+    LibUI.main_steps
   end
 
-  def self.main_step(*args)
+  def self.main_step(wait) : LibC::Int
     LibUI.main_step(*args)
   end
 
-  def self.quit(*args)
-    LibUI.quit(*args)
+  def self.quit : Nil
+    LibUI.quit
   end
 
-  def self.queue_main(&callback : -> Void)
+  def self.queue_main(&callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.queue_main(->(data) do
@@ -72,7 +78,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.timer(sender, &callback : -> LibC::Int)
+  def self.timer(sender, &callback : -> LibC::Int) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.timer(sender, ->(sender, data) do
@@ -81,7 +87,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.on_should_quit(&callback : -> LibC::Int)
+  def self.on_should_quit(&callback : -> LibC::Int) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.on_should_quit(->(data) do
@@ -90,11 +96,11 @@ module UIng
     end, boxed_data)
   end
 
-  def self.free_text(*args)
-    LibUI.free_text(*args)
+  def self.free_text(text) : Nil
+    LibUI.free_text(text)
   end
 
-  def self.control_destroy(control)
+  def self.control_destroy(control) : Nil
     LibUI.control_destroy(control.as(Pointer(LibUI::Control)))
   end
 
@@ -106,7 +112,7 @@ module UIng
     LibUI.control_parent(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_set_parent(control, parent)
+  def self.control_set_parent(control, parent) : Nil
     LibUI.control_set_parent(control.as(Pointer(LibUI::Control)), parent.as(Pointer(LibUI::Control)))
   end
 
@@ -118,11 +124,11 @@ module UIng
     LibUI.control_visible(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_show(control)
+  def self.control_show(control) : Nil
     LibUI.control_show(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_hide(control)
+  def self.control_hide(control) : Nil
     LibUI.control_hide(control.as(Pointer(LibUI::Control)))
   end
 
@@ -130,11 +136,11 @@ module UIng
     LibUI.control_enabled(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_enable(control)
+  def self.control_enable(control) : Nil
     LibUI.control_enable(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_disable(control)
+  def self.control_disable(control) : Nil
     LibUI.control_disable(control.as(Pointer(LibUI::Control)))
   end
 
@@ -142,11 +148,11 @@ module UIng
     LibUI.alloc_control(*args)
   end
 
-  def self.free_control(control)
+  def self.free_control(control) : Nil
     LibUI.free_control(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.control_verify_set_parent(control, parent)
+  def self.control_verify_set_parent(control, parent) : Nil
     LibUI.control_verify_set_parent(control.as(Pointer(LibUI::Control)), parent.as(Pointer(LibUI::Control)))
   end
 
@@ -154,7 +160,7 @@ module UIng
     LibUI.control_enabled_to_user(control.as(Pointer(LibUI::Control)))
   end
 
-  def self.user_bug_cannot_set_parent_on_toplevel(*args)
+  def self.user_bug_cannot_set_parent_on_toplevel(*args) : Nil
     LibUI.user_bug_cannot_set_parent_on_toplevel(*args)
   end
 
@@ -163,19 +169,19 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.window_set_title(*args)
+  def self.window_set_title(*args) : Nil
     LibUI.window_set_title(*args)
   end
 
-  def self.window_position(*args)
+  def self.window_position(*args) : Nil
     LibUI.window_position(*args)
   end
 
-  def self.window_set_position(*args)
+  def self.window_set_position(*args) : Nil
     LibUI.window_set_position(*args)
   end
 
-  def self.window_on_position_changed(sender, &callback : -> Void)
+  def self.window_on_position_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_position_changed(sender, ->(sender, data) do
@@ -184,11 +190,11 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_content_size(*args)
+  def self.window_content_size(*args) : Nil
     LibUI.window_content_size(*args)
   end
 
-  def self.window_set_content_size(*args)
+  def self.window_set_content_size(*args) : Nil
     LibUI.window_set_content_size(*args)
   end
 
@@ -196,11 +202,11 @@ module UIng
     LibUI.window_fullscreen(*args)
   end
 
-  def self.window_set_fullscreen(*args)
+  def self.window_set_fullscreen(*args) : Nil
     LibUI.window_set_fullscreen(*args)
   end
 
-  def self.window_on_content_size_changed(sender, &callback : -> Void)
+  def self.window_on_content_size_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_content_size_changed(sender, ->(sender, data) do
@@ -209,7 +215,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_on_closing(sender, &callback : -> LibC::Int)
+  def self.window_on_closing(sender, &callback : -> LibC::Int) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_closing(sender, ->(sender, data) do
@@ -218,7 +224,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_on_focus_changed(sender, &callback : -> Void)
+  def self.window_on_focus_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.window_on_focus_changed(sender, ->(sender, data) do
@@ -235,11 +241,11 @@ module UIng
     LibUI.window_borderless(*args)
   end
 
-  def self.window_set_borderless(*args)
+  def self.window_set_borderless(*args) : Nil
     LibUI.window_set_borderless(*args)
   end
 
-  def self.window_set_child(window, control)
+  def self.window_set_child(window, control) : Nil
     LibUI.window_set_child(window, control.as(Pointer(LibUI::Control)))
   end
 
@@ -247,7 +253,7 @@ module UIng
     LibUI.window_margined(*args)
   end
 
-  def self.window_set_margined(*args)
+  def self.window_set_margined(*args) : Nil
     LibUI.window_set_margined(*args)
   end
 
@@ -255,7 +261,7 @@ module UIng
     LibUI.window_resizeable(*args)
   end
 
-  def self.window_set_resizeable(*args)
+  def self.window_set_resizeable(*args) : Nil
     LibUI.window_set_resizeable(*args)
   end
 
@@ -268,11 +274,11 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.button_set_text(*args)
+  def self.button_set_text(*args) : Nil
     LibUI.button_set_text(*args)
   end
 
-  def self.button_on_clicked(sender, &callback : -> Void)
+  def self.button_on_clicked(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.button_on_clicked(sender, ->(sender, data) do
@@ -285,7 +291,7 @@ module UIng
     LibUI.new_button(*args)
   end
 
-  def self.box_append(box, control, stretchy)
+  def self.box_append(box, control, stretchy) : Nil
     LibUI.box_append(box, control.as(Pointer(LibUI::Control)), stretchy)
   end
 
@@ -293,7 +299,7 @@ module UIng
     LibUI.box_num_children(*args)
   end
 
-  def self.box_delete(*args)
+  def self.box_delete(*args) : Nil
     LibUI.box_delete(*args)
   end
 
@@ -301,7 +307,7 @@ module UIng
     LibUI.box_padded(*args)
   end
 
-  def self.box_set_padded(*args)
+  def self.box_set_padded(*args) : Nil
     LibUI.box_set_padded(*args)
   end
 
@@ -318,11 +324,11 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.checkbox_set_text(*args)
+  def self.checkbox_set_text(*args) : Nil
     LibUI.checkbox_set_text(*args)
   end
 
-  def self.checkbox_on_toggled(sender, &callback : -> Void)
+  def self.checkbox_on_toggled(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.checkbox_on_toggled(sender, ->(sender, data) do
@@ -335,7 +341,7 @@ module UIng
     LibUI.checkbox_checked(*args)
   end
 
-  def self.checkbox_set_checked(*args)
+  def self.checkbox_set_checked(*args) : Nil
     LibUI.checkbox_set_checked(*args)
   end
 
@@ -348,11 +354,11 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.entry_set_text(*args)
+  def self.entry_set_text(*args) : Nil
     LibUI.entry_set_text(*args)
   end
 
-  def self.entry_on_changed(sender, &callback : -> Void)
+  def self.entry_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.entry_on_changed(sender, ->(sender, data) do
@@ -365,7 +371,7 @@ module UIng
     LibUI.entry_read_only(*args)
   end
 
-  def self.entry_set_read_only(*args)
+  def self.entry_set_read_only(*args) : Nil
     LibUI.entry_set_read_only(*args)
   end
 
@@ -386,7 +392,7 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.label_set_text(*args)
+  def self.label_set_text(*args) : Nil
     LibUI.label_set_text(*args)
   end
 
@@ -394,15 +400,15 @@ module UIng
     LibUI.new_label(*args)
   end
 
-  def self.tab_append(tab, name, control)
+  def self.tab_append(tab, name, control) : Nil
     LibUI.tab_append(tab, name, control.as(Pointer(LibUI::Control)))
   end
 
-  def self.tab_insert_at(tab, name, index, control)
+  def self.tab_insert_at(tab, name, index, control) : Nil
     LibUI.tab_insert_at(tab, name, index, control.as(Pointer(LibUI::Control)))
   end
 
-  def self.tab_delete(*args)
+  def self.tab_delete(*args) : Nil
     LibUI.tab_delete(*args)
   end
 
@@ -414,7 +420,7 @@ module UIng
     LibUI.tab_margined(*args)
   end
 
-  def self.tab_set_margined(*args)
+  def self.tab_set_margined(*args) : Nil
     LibUI.tab_set_margined(*args)
   end
 
@@ -427,11 +433,11 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.group_set_title(*args)
+  def self.group_set_title(*args) : Nil
     LibUI.group_set_title(*args)
   end
 
-  def self.group_set_child(group, control)
+  def self.group_set_child(group, control) : Nil
     LibUI.group_set_child(group, control.as(Pointer(LibUI::Control)))
   end
 
@@ -439,7 +445,7 @@ module UIng
     LibUI.group_margined(*args)
   end
 
-  def self.group_set_margined(*args)
+  def self.group_set_margined(*args) : Nil
     LibUI.group_set_margined(*args)
   end
 
@@ -451,11 +457,11 @@ module UIng
     LibUI.spinbox_value(*args)
   end
 
-  def self.spinbox_set_value(*args)
+  def self.spinbox_set_value(*args) : Nil
     LibUI.spinbox_set_value(*args)
   end
 
-  def self.spinbox_on_changed(sender, &callback : -> Void)
+  def self.spinbox_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.spinbox_on_changed(sender, ->(sender, data) do
@@ -472,7 +478,7 @@ module UIng
     LibUI.slider_value(*args)
   end
 
-  def self.slider_set_value(*args)
+  def self.slider_set_value(*args) : Nil
     LibUI.slider_set_value(*args)
   end
 
@@ -480,11 +486,11 @@ module UIng
     LibUI.slider_has_tool_tip(*args)
   end
 
-  def self.slider_set_has_tool_tip(*args)
+  def self.slider_set_has_tool_tip(*args) : Nil
     LibUI.slider_set_has_tool_tip(*args)
   end
 
-  def self.slider_on_changed(sender, &callback : -> Void)
+  def self.slider_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.slider_on_changed(sender, ->(sender, data) do
@@ -493,7 +499,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.slider_on_released(sender, &callback : -> Void)
+  def self.slider_on_released(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.slider_on_released(sender, ->(sender, data) do
@@ -502,7 +508,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.slider_set_range(*args)
+  def self.slider_set_range(*args) : Nil
     LibUI.slider_set_range(*args)
   end
 
@@ -514,7 +520,7 @@ module UIng
     LibUI.progress_bar_value(*args)
   end
 
-  def self.progress_bar_set_value(*args)
+  def self.progress_bar_set_value(*args) : Nil
     LibUI.progress_bar_set_value(*args)
   end
 
@@ -530,19 +536,19 @@ module UIng
     LibUI.new_vertical_separator(*args)
   end
 
-  def self.combobox_append(*args)
+  def self.combobox_append(*args) : Nil
     LibUI.combobox_append(*args)
   end
 
-  def self.combobox_insert_at(*args)
+  def self.combobox_insert_at(*args) : Nil
     LibUI.combobox_insert_at(*args)
   end
 
-  def self.combobox_delete(*args)
+  def self.combobox_delete(*args) : Nil
     LibUI.combobox_delete(*args)
   end
 
-  def self.combobox_clear(*args)
+  def self.combobox_clear(*args) : Nil
     LibUI.combobox_clear(*args)
   end
 
@@ -554,11 +560,11 @@ module UIng
     LibUI.combobox_selected(*args)
   end
 
-  def self.combobox_set_selected(*args)
+  def self.combobox_set_selected(*args) : Nil
     LibUI.combobox_set_selected(*args)
   end
 
-  def self.combobox_on_selected(sender, &callback : -> Void)
+  def self.combobox_on_selected(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.combobox_on_selected(sender, ->(sender, data) do
@@ -571,7 +577,7 @@ module UIng
     LibUI.new_combobox(*args)
   end
 
-  def self.editable_combobox_append(*args)
+  def self.editable_combobox_append(*args) : Nil
     LibUI.editable_combobox_append(*args)
   end
 
@@ -580,11 +586,11 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.editable_combobox_set_text(*args)
+  def self.editable_combobox_set_text(*args) : Nil
     LibUI.editable_combobox_set_text(*args)
   end
 
-  def self.editable_combobox_on_changed(sender, &callback : -> Void)
+  def self.editable_combobox_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.editable_combobox_on_changed(sender, ->(sender, data) do
@@ -597,7 +603,7 @@ module UIng
     LibUI.new_editable_combobox(*args)
   end
 
-  def self.radio_buttons_append(*args)
+  def self.radio_buttons_append(*args) : Nil
     LibUI.radio_buttons_append(*args)
   end
 
@@ -605,11 +611,11 @@ module UIng
     LibUI.radio_buttons_selected(*args)
   end
 
-  def self.radio_buttons_set_selected(*args)
+  def self.radio_buttons_set_selected(*args) : Nil
     LibUI.radio_buttons_set_selected(*args)
   end
 
-  def self.radio_buttons_on_selected(sender, &callback : -> Void)
+  def self.radio_buttons_on_selected(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.radio_buttons_on_selected(sender, ->(sender, data) do
@@ -622,15 +628,15 @@ module UIng
     LibUI.new_radio_buttons(*args)
   end
 
-  def self.date_time_picker_time(*args)
+  def self.date_time_picker_time(*args) : Nil
     LibUI.date_time_picker_time(*args)
   end
 
-  def self.date_time_picker_set_time(*args)
+  def self.date_time_picker_set_time(*args) : Nil
     LibUI.date_time_picker_set_time(*args)
   end
 
-  def self.date_time_picker_on_changed(sender, &callback : -> Void)
+  def self.date_time_picker_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.date_time_picker_on_changed(sender, ->(sender, data) do
@@ -656,15 +662,15 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.multiline_entry_set_text(*args)
+  def self.multiline_entry_set_text(*args) : Nil
     LibUI.multiline_entry_set_text(*args)
   end
 
-  def self.multiline_entry_append(*args)
+  def self.multiline_entry_append(*args) : Nil
     LibUI.multiline_entry_append(*args)
   end
 
-  def self.multiline_entry_on_changed(sender, &callback : -> Void)
+  def self.multiline_entry_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.multiline_entry_on_changed(sender, ->(sender, data) do
@@ -677,7 +683,7 @@ module UIng
     LibUI.multiline_entry_read_only(*args)
   end
 
-  def self.multiline_entry_set_read_only(*args)
+  def self.multiline_entry_set_read_only(*args) : Nil
     LibUI.multiline_entry_set_read_only(*args)
   end
 
@@ -689,11 +695,11 @@ module UIng
     LibUI.new_non_wrapping_multiline_entry(*args)
   end
 
-  def self.menu_item_enable(*args)
+  def self.menu_item_enable(*args) : Nil
     LibUI.menu_item_enable(*args)
   end
 
-  def self.menu_item_disable(*args)
+  def self.menu_item_disable(*args) : Nil
     LibUI.menu_item_disable(*args)
   end
 
@@ -710,7 +716,7 @@ module UIng
     LibUI.menu_item_checked(*args)
   end
 
-  def self.menu_item_set_checked(*args)
+  def self.menu_item_set_checked(*args) : Nil
     LibUI.menu_item_set_checked(*args)
   end
 
@@ -734,7 +740,7 @@ module UIng
     LibUI.menu_append_about_item(*args)
   end
 
-  def self.menu_append_separator(*args)
+  def self.menu_append_separator(*args) : Nil
     LibUI.menu_append_separator(*args)
   end
 
@@ -757,34 +763,34 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.msg_box(*args)
+  def self.msg_box(*args) : Nil
     # FIXME: Workaround for Windows
     {% unless flag?(:windows) %}
       LibUI.msg_box(*args)
     {% end %}
   end
 
-  def self.msg_box_error(*args)
+  def self.msg_box_error(*args) : Nil
     LibUI.msg_box_error(*args)
   end
 
-  def self.area_set_size(*args)
+  def self.area_set_size(*args) : Nil
     LibUI.area_set_size(*args)
   end
 
-  def self.area_queue_redraw_all(*args)
+  def self.area_queue_redraw_all(*args) : Nil
     LibUI.area_queue_redraw_all(*args)
   end
 
-  def self.area_scroll_to(*args)
+  def self.area_scroll_to(*args) : Nil
     LibUI.area_scroll_to(*args)
   end
 
-  def self.area_begin_user_window_move(*args)
+  def self.area_begin_user_window_move(*args) : Nil
     LibUI.area_begin_user_window_move(*args)
   end
 
-  def self.area_begin_user_window_resize(*args)
+  def self.area_begin_user_window_resize(*args) : Nil
     LibUI.area_begin_user_window_resize(*args)
   end
 
@@ -800,35 +806,35 @@ module UIng
     LibUI.draw_new_path(*args)
   end
 
-  def self.draw_free_path(*args)
+  def self.draw_free_path(*args) : Nil
     LibUI.draw_free_path(*args)
   end
 
-  def self.draw_path_new_figure(*args)
+  def self.draw_path_new_figure(*args) : Nil
     LibUI.draw_path_new_figure(*args)
   end
 
-  def self.draw_path_new_figure_with_arc(*args)
+  def self.draw_path_new_figure_with_arc(*args) : Nil
     LibUI.draw_path_new_figure_with_arc(*args)
   end
 
-  def self.draw_path_line_to(*args)
+  def self.draw_path_line_to(*args) : Nil
     LibUI.draw_path_line_to(*args)
   end
 
-  def self.draw_path_arc_to(*args)
+  def self.draw_path_arc_to(*args) : Nil
     LibUI.draw_path_arc_to(*args)
   end
 
-  def self.draw_path_bezier_to(*args)
+  def self.draw_path_bezier_to(*args) : Nil
     LibUI.draw_path_bezier_to(*args)
   end
 
-  def self.draw_path_close_figure(*args)
+  def self.draw_path_close_figure(*args) : Nil
     LibUI.draw_path_close_figure(*args)
   end
 
-  def self.draw_path_add_rectangle(*args)
+  def self.draw_path_add_rectangle(*args) : Nil
     LibUI.draw_path_add_rectangle(*args)
   end
 
@@ -836,39 +842,39 @@ module UIng
     LibUI.draw_path_ended(*args)
   end
 
-  def self.draw_path_end(*args)
+  def self.draw_path_end(*args) : Nil
     LibUI.draw_path_end(*args)
   end
 
-  def self.draw_stroke(*args)
+  def self.draw_stroke(*args) : Nil
     LibUI.draw_stroke(*args)
   end
 
-  def self.draw_fill(*args)
+  def self.draw_fill(*args) : Nil
     LibUI.draw_fill(*args)
   end
 
-  def self.draw_matrix_set_identity(*args)
+  def self.draw_matrix_set_identity(*args) : Nil
     LibUI.draw_matrix_set_identity(*args)
   end
 
-  def self.draw_matrix_translate(*args)
+  def self.draw_matrix_translate(*args) : Nil
     LibUI.draw_matrix_translate(*args)
   end
 
-  def self.draw_matrix_scale(*args)
+  def self.draw_matrix_scale(*args) : Nil
     LibUI.draw_matrix_scale(*args)
   end
 
-  def self.draw_matrix_rotate(*args)
+  def self.draw_matrix_rotate(*args) : Nil
     LibUI.draw_matrix_rotate(*args)
   end
 
-  def self.draw_matrix_skew(*args)
+  def self.draw_matrix_skew(*args) : Nil
     LibUI.draw_matrix_skew(*args)
   end
 
-  def self.draw_matrix_multiply(*args)
+  def self.draw_matrix_multiply(*args) : Nil
     LibUI.draw_matrix_multiply(*args)
   end
 
@@ -880,31 +886,31 @@ module UIng
     LibUI.draw_matrix_invert(*args)
   end
 
-  def self.draw_matrix_transform_point(*args)
+  def self.draw_matrix_transform_point(*args) : Nil
     LibUI.draw_matrix_transform_point(*args)
   end
 
-  def self.draw_matrix_transform_size(*args)
+  def self.draw_matrix_transform_size(*args) : Nil
     LibUI.draw_matrix_transform_size(*args)
   end
 
-  def self.draw_transform(*args)
+  def self.draw_transform(*args) : Nil
     LibUI.draw_transform(*args)
   end
 
-  def self.draw_clip(*args)
+  def self.draw_clip(*args) : Nil
     LibUI.draw_clip(*args)
   end
 
-  def self.draw_save(*args)
+  def self.draw_save(*args) : Nil
     LibUI.draw_save(*args)
   end
 
-  def self.draw_restore(*args)
+  def self.draw_restore(*args) : Nil
     LibUI.draw_restore(*args)
   end
 
-  def self.free_attribute(*args)
+  def self.free_attribute(*args) : Nil
     LibUI.free_attribute(*args)
   end
 
@@ -957,7 +963,7 @@ module UIng
     LibUI.new_color_attribute(*args)
   end
 
-  def self.attribute_color(*args)
+  def self.attribute_color(*args) : Nil
     LibUI.attribute_color(*args)
   end
 
@@ -977,7 +983,7 @@ module UIng
     LibUI.new_underline_color_attribute(*args)
   end
 
-  def self.attribute_underline_color(*args)
+  def self.attribute_underline_color(*args) : Nil
     LibUI.attribute_underline_color(*args)
   end
 
@@ -985,7 +991,7 @@ module UIng
     LibUI.new_open_type_features(*args)
   end
 
-  def self.free_open_type_features(*args)
+  def self.free_open_type_features(*args) : Nil
     LibUI.free_open_type_features(*args)
   end
 
@@ -993,11 +999,11 @@ module UIng
     LibUI.open_type_features_clone(*args)
   end
 
-  def self.open_type_features_add(*args)
+  def self.open_type_features_add(*args) : Nil
     LibUI.open_type_features_add(*args)
   end
 
-  def self.open_type_features_remove(*args)
+  def self.open_type_features_remove(*args) : Nil
     LibUI.open_type_features_remove(*args)
   end
 
@@ -1026,7 +1032,7 @@ module UIng
     LibUI.new_attributed_string(*args)
   end
 
-  def self.free_attributed_string(*args)
+  def self.free_attributed_string(*args) : Nil
     LibUI.free_attributed_string(*args)
   end
 
@@ -1039,19 +1045,19 @@ module UIng
     LibUI.attributed_string_len(*args)
   end
 
-  def self.attributed_string_append_unattributed(*args)
+  def self.attributed_string_append_unattributed(*args) : Nil
     LibUI.attributed_string_append_unattributed(*args)
   end
 
-  def self.attributed_string_insert_at_unattributed(*args)
+  def self.attributed_string_insert_at_unattributed(*args) : Nil
     LibUI.attributed_string_insert_at_unattributed(*args)
   end
 
-  def self.attributed_string_delete(*args)
+  def self.attributed_string_delete(*args) : Nil
     LibUI.attributed_string_delete(*args)
   end
 
-  def self.attributed_string_set_attribute(*args)
+  def self.attributed_string_set_attribute(*args) : Nil
     LibUI.attributed_string_set_attribute(*args)
   end
 
@@ -1076,11 +1082,11 @@ module UIng
     LibUI.attributed_string_grapheme_to_byte_index(*args)
   end
 
-  def self.load_control_font(*args)
+  def self.load_control_font(*args) : Nil
     LibUI.load_control_font(*args)
   end
 
-  def self.free_font_descriptor(*args)
+  def self.free_font_descriptor(*args) : Nil
     LibUI.free_font_descriptor(*args)
   end
 
@@ -1088,23 +1094,23 @@ module UIng
     LibUI.draw_new_text_layout(*args)
   end
 
-  def self.draw_free_text_layout(*args)
+  def self.draw_free_text_layout(*args) : Nil
     LibUI.draw_free_text_layout(*args)
   end
 
-  def self.draw_text(*args)
+  def self.draw_text(*args) : Nil
     LibUI.draw_text(*args)
   end
 
-  def self.draw_text_layout_extents(*args)
+  def self.draw_text_layout_extents(*args) : Nil
     LibUI.draw_text_layout_extents(*args)
   end
 
-  def self.font_button_font(*args)
+  def self.font_button_font(*args) : Nil
     LibUI.font_button_font(*args)
   end
 
-  def self.font_button_on_changed(sender, &callback : -> Void)
+  def self.font_button_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.font_button_on_changed(sender, ->(sender, data) do
@@ -1117,19 +1123,19 @@ module UIng
     LibUI.new_font_button(*args)
   end
 
-  def self.free_font_button_font(*args)
+  def self.free_font_button_font(*args) : Nil
     LibUI.free_font_button_font(*args)
   end
 
-  def self.color_button_color(*args)
+  def self.color_button_color(*args) : Nil
     LibUI.color_button_color(*args)
   end
 
-  def self.color_button_set_color(*args)
+  def self.color_button_set_color(*args) : Nil
     LibUI.color_button_set_color(*args)
   end
 
-  def self.color_button_on_changed(sender, &callback : -> Void)
+  def self.color_button_on_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.color_button_on_changed(sender, ->(sender, data) do
@@ -1142,7 +1148,7 @@ module UIng
     LibUI.new_color_button(*args)
   end
 
-  def self.form_append(form, label, control, stretchy)
+  def self.form_append(form, label, control, stretchy) : Nil
     LibUI.form_append(form, label, control.as(Pointer(LibUI::Control)), stretchy)
   end
 
@@ -1150,7 +1156,7 @@ module UIng
     LibUI.form_num_children(*args)
   end
 
-  def self.form_delete(*args)
+  def self.form_delete(*args) : Nil
     LibUI.form_delete(*args)
   end
 
@@ -1158,7 +1164,7 @@ module UIng
     LibUI.form_padded(*args)
   end
 
-  def self.form_set_padded(*args)
+  def self.form_set_padded(*args) : Nil
     LibUI.form_set_padded(*args)
   end
 
@@ -1166,11 +1172,11 @@ module UIng
     LibUI.new_form(*args)
   end
 
-  def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign)
+  def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
     LibUI.grid_append(grid, control.as(Pointer(LibUI::Control)), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
-  def self.grid_insert_at(grid, control, existing, at, xspan, yspan, hexpand, halign, vexpand, valign)
+  def self.grid_insert_at(grid, control, existing, at, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
     LibUI.grid_insert_at(grid, control.as(Pointer(LibUI::Control)), existing.as(Pointer(LibUI::Control)), at, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
@@ -1178,7 +1184,7 @@ module UIng
     LibUI.grid_padded(*args)
   end
 
-  def self.grid_set_padded(*args)
+  def self.grid_set_padded(*args) : Nil
     LibUI.grid_set_padded(*args)
   end
 
@@ -1190,15 +1196,15 @@ module UIng
     LibUI.new_image(*args)
   end
 
-  def self.free_image(*args)
+  def self.free_image(*args) : Nil
     LibUI.free_image(*args)
   end
 
-  def self.image_append(*args)
+  def self.image_append(*args) : Nil
     LibUI.image_append(*args)
   end
 
-  def self.free_table_value(*args)
+  def self.free_table_value(*args) : Nil
     LibUI.free_table_value(*args)
   end
 
@@ -1235,7 +1241,7 @@ module UIng
     LibUI.new_table_value_color(*args)
   end
 
-  def self.table_value_color(*args)
+  def self.table_value_color(*args) : Nil
     LibUI.table_value_color(*args)
   end
 
@@ -1243,47 +1249,47 @@ module UIng
     LibUI.new_table_model(*args)
   end
 
-  def self.free_table_model(*args)
+  def self.free_table_model(*args) : Nil
     LibUI.free_table_model(*args)
   end
 
-  def self.table_model_row_inserted(*args)
+  def self.table_model_row_inserted(*args) : Nil
     LibUI.table_model_row_inserted(*args)
   end
 
-  def self.table_model_row_changed(*args)
+  def self.table_model_row_changed(*args) : Nil
     LibUI.table_model_row_changed(*args)
   end
 
-  def self.table_model_row_deleted(*args)
+  def self.table_model_row_deleted(*args) : Nil
     LibUI.table_model_row_deleted(*args)
   end
 
-  def self.table_append_text_column(*args)
+  def self.table_append_text_column(*args) : Nil
     LibUI.table_append_text_column(*args)
   end
 
-  def self.table_append_image_column(*args)
+  def self.table_append_image_column(*args) : Nil
     LibUI.table_append_image_column(*args)
   end
 
-  def self.table_append_image_text_column(*args)
+  def self.table_append_image_text_column(*args) : Nil
     LibUI.table_append_image_text_column(*args)
   end
 
-  def self.table_append_checkbox_column(*args)
+  def self.table_append_checkbox_column(*args) : Nil
     LibUI.table_append_checkbox_column(*args)
   end
 
-  def self.table_append_checkbox_text_column(*args)
+  def self.table_append_checkbox_text_column(*args) : Nil
     LibUI.table_append_checkbox_text_column(*args)
   end
 
-  def self.table_append_progress_bar_column(*args)
+  def self.table_append_progress_bar_column(*args) : Nil
     LibUI.table_append_progress_bar_column(*args)
   end
 
-  def self.table_append_button_column(*args)
+  def self.table_append_button_column(*args) : Nil
     LibUI.table_append_button_column(*args)
   end
 
@@ -1291,7 +1297,7 @@ module UIng
     LibUI.table_header_visible(*args)
   end
 
-  def self.table_header_set_visible(*args)
+  def self.table_header_set_visible(*args) : Nil
     LibUI.table_header_set_visible(*args)
   end
 
@@ -1299,7 +1305,7 @@ module UIng
     LibUI.new_table(*args)
   end
 
-  def self.table_on_row_clicked(sender, &callback : LibC::Int -> Void)
+  def self.table_on_row_clicked(sender, &callback : LibC::Int -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.table_on_row_clicked(sender, ->(sender, row, data) do
@@ -1308,7 +1314,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.table_on_row_double_clicked(sender, &callback : LibC::Int -> Void)
+  def self.table_on_row_double_clicked(sender, &callback : LibC::Int -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.table_on_row_double_clicked(sender, ->(sender, row, data) do
@@ -1317,7 +1323,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.table_header_set_sort_indicator(*args)
+  def self.table_header_set_sort_indicator(*args) : Nil
     LibUI.table_header_set_sort_indicator(*args)
   end
 
@@ -1325,7 +1331,7 @@ module UIng
     LibUI.table_header_sort_indicator(*args)
   end
 
-  def self.table_header_on_clicked(sender, &callback : LibC::Int -> Void)
+  def self.table_header_on_clicked(sender, &callback : LibC::Int -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.table_header_on_clicked(sender, ->(sender, column, data) do
@@ -1338,7 +1344,7 @@ module UIng
     LibUI.table_column_width(*args)
   end
 
-  def self.table_column_set_width(*args)
+  def self.table_column_set_width(*args) : Nil
     LibUI.table_column_set_width(*args)
   end
 
@@ -1346,11 +1352,11 @@ module UIng
     LibUI.table_get_selection_mode(*args)
   end
 
-  def self.table_set_selection_mode(*args)
+  def self.table_set_selection_mode(*args) : Nil
     LibUI.table_set_selection_mode(*args)
   end
 
-  def self.table_on_selection_changed(sender, &callback : -> Void)
+  def self.table_on_selection_changed(sender, &callback : -> Void) : Nil
     boxed_data = Box.box(callback)
     @@box = boxed_data
     LibUI.table_on_selection_changed(sender, ->(sender, data) do
@@ -1363,11 +1369,11 @@ module UIng
     LibUI.table_get_selection(*args)
   end
 
-  def self.table_set_selection(*args)
+  def self.table_set_selection(*args) : Nil
     LibUI.table_set_selection(*args)
   end
 
-  def self.free_table_selection(*args)
+  def self.free_table_selection(*args) : Nil
     LibUI.free_table_selection(*args)
   end
 end
