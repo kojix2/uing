@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::TableSelection - uing main</title>
+  <title>UIng::Form - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -187,7 +187,7 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/Form" data-name="uing::form">
+  <li class=" current" data-id="uing/UIng/Form" data-name="uing::form">
       <a href="../UIng/Form.html">Form</a>
       
     </li>
@@ -282,7 +282,7 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/TableSelection" data-name="uing::tableselection">
+  <li class=" " data-id="uing/UIng/TableSelection" data-name="uing::tableselection">
       <a href="../UIng/TableSelection.html">TableSelection</a>
       
     </li>
@@ -321,12 +321,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> UIng::<wbr>TableSelection
+  <span class="kind">class</span> UIng::<wbr>Form
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/TableSelection.html">UIng::TableSelection</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/Form.html">UIng::Form</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -354,8 +354,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/table_selection.cr#L2" target="_blank">
-        uing/table_selection.cr
+      <a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/form.cr#L2" target="_blank">
+        uing/form.cr
       </a>
     
     <br/>
@@ -376,7 +376,12 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28cstruct%3ALibUI%3A%3ATableSelection%3DLibUI%3A%3ATableSelection.new%29-class-method" class="signature"><strong>.new</strong>(cstruct : LibUI::TableSelection = <span class="t">LibUI</span><span class="t">::</span><span class="t">TableSelection</span>.new)</a>
+        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3AForm%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::Form))</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
         
       </li>
     
@@ -416,7 +421,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
+        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
         
       </li>
     
@@ -464,18 +469,34 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(cstruct:LibUI::TableSelection=LibUI::TableSelection.new)-class-method">
+    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::Form))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(cstruct : LibUI::TableSelection = <span class="t">LibUI</span><span class="t">::</span><span class="t">TableSelection</span>.new)
+        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::Form))
 
-        <a class="method-permalink" href="#new%28cstruct%3ALibUI%3A%3ATableSelection%3DLibUI%3A%3ATableSelection.new%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3AForm%29%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/table_selection.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/form.cr#L3" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/form.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -505,7 +526,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/table_selection.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/form.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -522,18 +543,18 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="to_unsafe-instance-method">
+    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
         
-        def <strong>to_unsafe</strong>
+        def <strong>to_unsafe</strong> : Pointer(Void)
 
-        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
+        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/table_selection.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/ea06577780308db96459aaa78debe47fd0edddd3/src/uing/form.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
