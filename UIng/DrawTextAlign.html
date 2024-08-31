@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.12.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="uing">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="uing">
+  <title>UIng::DrawTextAlign - uing main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          uing
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="uing/UIng" data-name="uing">
+      <a href="../UIng.html">UIng</a>
+      
+        <ul>
+  
+  <li class=" " data-id="uing/UIng/Align" data-name="uing::align">
+      <a href="../UIng/Align.html">Align</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Area" data-name="uing::area">
+      <a href="../UIng/Area.html">Area</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/AreaDrawParams" data-name="uing::areadrawparams">
+      <a href="../UIng/AreaDrawParams.html">AreaDrawParams</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/AreaHandler" data-name="uing::areahandler">
+      <a href="../UIng/AreaHandler.html">AreaHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/AreaKeyEvent" data-name="uing::areakeyevent">
+      <a href="../UIng/AreaKeyEvent.html">AreaKeyEvent</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/AreaMouseEvent" data-name="uing::areamouseevent">
+      <a href="../UIng/AreaMouseEvent.html">AreaMouseEvent</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/At" data-name="uing::at">
+      <a href="../UIng/At.html">At</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Attribute" data-name="uing::attribute">
+      <a href="../UIng/Attribute.html">Attribute</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/AttributedString" data-name="uing::attributedstring">
+      <a href="../UIng/AttributedString.html">AttributedString</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/AttributeType" data-name="uing::attributetype">
+      <a href="../UIng/AttributeType.html">AttributeType</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Box" data-name="uing::box">
+      <a href="../UIng/Box.html">Box</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Button" data-name="uing::button">
+      <a href="../UIng/Button.html">Button</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Checkbox" data-name="uing::checkbox">
+      <a href="../UIng/Checkbox.html">Checkbox</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/ColorButton" data-name="uing::colorbutton">
+      <a href="../UIng/ColorButton.html">ColorButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Combobox" data-name="uing::combobox">
+      <a href="../UIng/Combobox.html">Combobox</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DateTimePicker" data-name="uing::datetimepicker">
+      <a href="../UIng/DateTimePicker.html">DateTimePicker</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawBrush" data-name="uing::drawbrush">
+      <a href="../UIng/DrawBrush.html">DrawBrush</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawBrushGradientStop" data-name="uing::drawbrushgradientstop">
+      <a href="../UIng/DrawBrushGradientStop.html">DrawBrushGradientStop</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawBrushType" data-name="uing::drawbrushtype">
+      <a href="../UIng/DrawBrushType.html">DrawBrushType</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawContext" data-name="uing::drawcontext">
+      <a href="../UIng/DrawContext.html">DrawContext</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawFillMode" data-name="uing::drawfillmode">
+      <a href="../UIng/DrawFillMode.html">DrawFillMode</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawLineCap" data-name="uing::drawlinecap">
+      <a href="../UIng/DrawLineCap.html">DrawLineCap</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawLineJoin" data-name="uing::drawlinejoin">
+      <a href="../UIng/DrawLineJoin.html">DrawLineJoin</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawMatrix" data-name="uing::drawmatrix">
+      <a href="../UIng/DrawMatrix.html">DrawMatrix</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawPath" data-name="uing::drawpath">
+      <a href="../UIng/DrawPath.html">DrawPath</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawStrokeParams" data-name="uing::drawstrokeparams">
+      <a href="../UIng/DrawStrokeParams.html">DrawStrokeParams</a>
+      
+    </li>
+  
+  <li class=" current" data-id="uing/UIng/DrawTextAlign" data-name="uing::drawtextalign">
+      <a href="../UIng/DrawTextAlign.html">DrawTextAlign</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawTextLayout" data-name="uing::drawtextlayout">
+      <a href="../UIng/DrawTextLayout.html">DrawTextLayout</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/DrawTextLayoutParams" data-name="uing::drawtextlayoutparams">
+      <a href="../UIng/DrawTextLayoutParams.html">DrawTextLayoutParams</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/EditableCombobox" data-name="uing::editablecombobox">
+      <a href="../UIng/EditableCombobox.html">EditableCombobox</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Entry" data-name="uing::entry">
+      <a href="../UIng/Entry.html">Entry</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/ExtKey" data-name="uing::extkey">
+      <a href="../UIng/ExtKey.html">ExtKey</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/FontButton" data-name="uing::fontbutton">
+      <a href="../UIng/FontButton.html">FontButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/FontDescriptor" data-name="uing::fontdescriptor">
+      <a href="../UIng/FontDescriptor.html">FontDescriptor</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Form" data-name="uing::form">
+      <a href="../UIng/Form.html">Form</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Grid" data-name="uing::grid">
+      <a href="../UIng/Grid.html">Grid</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Group" data-name="uing::group">
+      <a href="../UIng/Group.html">Group</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Image" data-name="uing::image">
+      <a href="../UIng/Image.html">Image</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Label" data-name="uing::label">
+      <a href="../UIng/Label.html">Label</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Menu" data-name="uing::menu">
+      <a href="../UIng/Menu.html">Menu</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/MenuItem" data-name="uing::menuitem">
+      <a href="../UIng/MenuItem.html">MenuItem</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Modifiers" data-name="uing::modifiers">
+      <a href="../UIng/Modifiers.html">Modifiers</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/MultilineEntry" data-name="uing::multilineentry">
+      <a href="../UIng/MultilineEntry.html">MultilineEntry</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/OpenTypeFeatures" data-name="uing::opentypefeatures">
+      <a href="../UIng/OpenTypeFeatures.html">OpenTypeFeatures</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/ProgressBar" data-name="uing::progressbar">
+      <a href="../UIng/ProgressBar.html">ProgressBar</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/RadioButtons" data-name="uing::radiobuttons">
+      <a href="../UIng/RadioButtons.html">RadioButtons</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Separator" data-name="uing::separator">
+      <a href="../UIng/Separator.html">Separator</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Slider" data-name="uing::slider">
+      <a href="../UIng/Slider.html">Slider</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/SortIndicator" data-name="uing::sortindicator">
+      <a href="../UIng/SortIndicator.html">SortIndicator</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Spinbox" data-name="uing::spinbox">
+      <a href="../UIng/Spinbox.html">Spinbox</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Tab" data-name="uing::tab">
+      <a href="../UIng/Tab.html">Tab</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Table" data-name="uing::table">
+      <a href="../UIng/Table.html">Table</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableModel" data-name="uing::tablemodel">
+      <a href="../UIng/TableModel.html">TableModel</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableModelHandler" data-name="uing::tablemodelhandler">
+      <a href="../UIng/TableModelHandler.html">TableModelHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableParams" data-name="uing::tableparams">
+      <a href="../UIng/TableParams.html">TableParams</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableSelection" data-name="uing::tableselection">
+      <a href="../UIng/TableSelection.html">TableSelection</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableSelectionMode" data-name="uing::tableselectionmode">
+      <a href="../UIng/TableSelectionMode.html">TableSelectionMode</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableTextColumnOptionalParams" data-name="uing::tabletextcolumnoptionalparams">
+      <a href="../UIng/TableTextColumnOptionalParams.html">TableTextColumnOptionalParams</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableValue" data-name="uing::tablevalue">
+      <a href="../UIng/TableValue.html">TableValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TableValueType" data-name="uing::tablevaluetype">
+      <a href="../UIng/TableValueType.html">TableValueType</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TextItalic" data-name="uing::textitalic">
+      <a href="../UIng/TextItalic.html">TextItalic</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TextStretch" data-name="uing::textstretch">
+      <a href="../UIng/TextStretch.html">TextStretch</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TextWeight" data-name="uing::textweight">
+      <a href="../UIng/TextWeight.html">TextWeight</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/TM" data-name="uing::tm">
+      <a href="../UIng/TM.html">TM</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Underline" data-name="uing::underline">
+      <a href="../UIng/Underline.html">Underline</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/UnderlineColor" data-name="uing::underlinecolor">
+      <a href="../UIng/UnderlineColor.html">UnderlineColor</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/Window" data-name="uing::window">
+      <a href="../UIng/Window.html">Window</a>
+      
+    </li>
+  
+  <li class=" " data-id="uing/UIng/WindowResizeEdge" data-name="uing::windowresizeedge">
+      <a href="../UIng/WindowResizeEdge.html">WindowResizeEdge</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">enum</span> UIng::<wbr>DrawTextAlign
+
+</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/6e39787985db712226bbf6b94b6dbfbad622b4ce/src/uing/draw_text_align.cr#L2" target="_blank">
+        uing/draw_text_align.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>
+      <a id="enum-members" class="anchor" href="#enum-members">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Enum Members
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="Left">
+        <strong>Left</strong> = <code><span class="n">0</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="Center">
+        <strong>Center</strong> = <code><span class="n">1</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="Right">
+        <strong>Right</strong> = <code><span class="n">2</span></code>
+      </dt>
+      
+    
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#center%3F-instance-method" class="signature"><strong>#center?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#left%3F-instance-method" class="signature"><strong>#left?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#right%3F-instance-method" class="signature"><strong>#right?</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="center?-instance-method">
+      <div class="signature">
+        
+        def <strong>center?</strong>
+
+        <a class="method-permalink" href="#center%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6e39787985db712226bbf6b94b6dbfbad622b4ce/src/uing/draw_text_align.cr#L4" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="left?-instance-method">
+      <div class="signature">
+        
+        def <strong>left?</strong>
+
+        <a class="method-permalink" href="#left%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6e39787985db712226bbf6b94b6dbfbad622b4ce/src/uing/draw_text_align.cr#L3" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="right?-instance-method">
+      <div class="signature">
+        
+        def <strong>right?</strong>
+
+        <a class="method-permalink" href="#right%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6e39787985db712226bbf6b94b6dbfbad622b4ce/src/uing/draw_text_align.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>
