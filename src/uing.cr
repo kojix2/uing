@@ -311,12 +311,12 @@ module UIng
     LibUI.box_set_padded(*args)
   end
 
-  def self.new_horizontal_box(*args)
-    LibUI.new_horizontal_box(*args)
+  def self.new_horizontal_box
+    LibUI.new_horizontal_box
   end
 
-  def self.new_vertical_box(*args)
-    LibUI.new_vertical_box(*args)
+  def self.new_vertical_box
+    LibUI.new_vertical_box
   end
 
   def self.checkbox_text(checkbox) : String?
@@ -375,16 +375,16 @@ module UIng
     LibUI.entry_set_read_only(*args)
   end
 
-  def self.new_entry(*args)
-    LibUI.new_entry(*args)
+  def self.new_entry
+    LibUI.new_entry
   end
 
-  def self.new_password_entry(*args)
-    LibUI.new_password_entry(*args)
+  def self.new_password_entry
+    LibUI.new_password_entry
   end
 
-  def self.new_search_entry(*args)
-    LibUI.new_search_entry(*args)
+  def self.new_search_entry
+    LibUI.new_search_entry
   end
 
   def self.label_text(label) : String?
@@ -424,8 +424,8 @@ module UIng
     LibUI.tab_set_margined(*args)
   end
 
-  def self.new_tab(*args)
-    LibUI.new_tab(*args)
+  def self.new_tab
+    LibUI.new_tab
   end
 
   def self.group_title(group) : String?
@@ -524,16 +524,16 @@ module UIng
     LibUI.progress_bar_set_value(*args)
   end
 
-  def self.new_progress_bar(*args)
-    LibUI.new_progress_bar(*args)
+  def self.new_progress_bar
+    LibUI.new_progress_bar
   end
 
-  def self.new_horizontal_separator(*args)
-    LibUI.new_horizontal_separator(*args)
+  def self.new_horizontal_separator
+    LibUI.new_horizontal_separator
   end
 
-  def self.new_vertical_separator(*args)
-    LibUI.new_vertical_separator(*args)
+  def self.new_vertical_separator
+    LibUI.new_vertical_separator
   end
 
   def self.combobox_append(*args) : Nil
@@ -573,8 +573,8 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_combobox(*args)
-    LibUI.new_combobox(*args)
+  def self.new_combobox
+    LibUI.new_combobox
   end
 
   def self.editable_combobox_append(*args) : Nil
@@ -599,8 +599,8 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_editable_combobox(*args)
-    LibUI.new_editable_combobox(*args)
+  def self.new_editable_combobox
+    LibUI.new_editable_combobox
   end
 
   def self.radio_buttons_append(*args) : Nil
@@ -624,8 +624,8 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_radio_buttons(*args)
-    LibUI.new_radio_buttons(*args)
+  def self.new_radio_buttons
+    LibUI.new_radio_buttons
   end
 
   def self.date_time_picker_time(*args) : Nil
@@ -645,16 +645,16 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_date_time_picker(*args)
-    LibUI.new_date_time_picker(*args)
+  def self.new_date_time_picker
+    LibUI.new_date_time_picker
   end
 
-  def self.new_date_picker(*args)
-    LibUI.new_date_picker(*args)
+  def self.new_date_picker
+    LibUI.new_date_picker
   end
 
-  def self.new_time_picker(*args)
-    LibUI.new_time_picker(*args)
+  def self.new_time_picker
+    LibUI.new_time_picker
   end
 
   def self.multiline_entry_text(multiline_entry) : String?
@@ -687,12 +687,12 @@ module UIng
     LibUI.multiline_entry_set_read_only(*args)
   end
 
-  def self.new_multiline_entry(*args)
-    LibUI.new_multiline_entry(*args)
+  def self.new_multiline_entry
+    LibUI.new_multiline_entry
   end
 
-  def self.new_non_wrapping_multiline_entry(*args)
-    LibUI.new_non_wrapping_multiline_entry(*args)
+  def self.new_non_wrapping_multiline_entry
+    LibUI.new_non_wrapping_multiline_entry
   end
 
   def self.menu_item_enable(*args) : Nil
@@ -987,8 +987,8 @@ module UIng
     LibUI.attribute_underline_color(*args)
   end
 
-  def self.new_open_type_features(*args)
-    LibUI.new_open_type_features(*args)
+  def self.new_open_type_features
+    LibUI.new_open_type_features
   end
 
   def self.free_open_type_features(*args) : Nil
@@ -1119,8 +1119,8 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_font_button(*args)
-    LibUI.new_font_button(*args)
+  def self.new_font_button
+    LibUI.new_font_button
   end
 
   def self.free_font_button_font(*args) : Nil
@@ -1144,8 +1144,8 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_color_button(*args)
-    LibUI.new_color_button(*args)
+  def self.new_color_button
+    LibUI.new_color_button
   end
 
   def self.form_append(form, label, control, stretchy) : Nil
@@ -1168,8 +1168,8 @@ module UIng
     LibUI.form_set_padded(*args)
   end
 
-  def self.new_form(*args)
-    LibUI.new_form(*args)
+  def self.new_form
+    LibUI.new_form
   end
 
   def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
@@ -1188,8 +1188,8 @@ module UIng
     LibUI.grid_set_padded(*args)
   end
 
-  def self.new_grid(*args)
-    LibUI.new_grid(*args)
+  def self.new_grid
+    LibUI.new_grid
   end
 
   def self.new_image(*args)
