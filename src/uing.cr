@@ -936,9 +936,8 @@ module UIng
     LibUI.free_attribute(attribute)
   end
 
-  def self.attribute_get_type(attribute) : Attribute
-    ref_ptr = LibUI.attribute_get_type(attribute)
-    Attribute.new(ref_ptr)
+  def self.attribute_get_type(attribute) : AttributeType
+    LibUI.attribute_get_type(attribute)
   end
 
   def self.new_family_attribute(family) : Attribute
@@ -965,7 +964,7 @@ module UIng
     Attribute.new(ref_ptr)
   end
 
-  def self.attribute_weight(attribute) : LibUI::TextWeight
+  def self.attribute_weight(attribute) : TextWeight
     LibUI.attribute_weight(attribute)
   end
 
@@ -973,7 +972,7 @@ module UIng
     LibUI.new_italic_attribute(test_italic)
   end
 
-  def self.attribute_italic(attribute) : LibC::TextItalic
+  def self.attribute_italic(attribute) : TextItalic
     LibUI.attribute_italic(attribute)
   end
 
@@ -981,12 +980,13 @@ module UIng
     LibUI.new_stretch_attribute(text_search)
   end
 
-  def self.attribute_stretch(attribute) : LibUI::TextStretch
+  def self.attribute_stretch(attribute) : TextStretch
     LibUI.attribute_stretch(attribute)
   end
 
   def self.new_color_attribute(r, g, b, a) : Attribute
-    LibUI.new_color_attribute(r, g, b, a)
+    ref_ptr = LibUI.new_color_attribute(r, g, b, a)
+    Attribute.new(ref_ptr)
   end
 
   def self.attribute_color(attribute, r, g, b, a) : Nil
@@ -1001,7 +1001,7 @@ module UIng
     LibUI.new_underline_attribute(underline)
   end
 
-  def self.attribute_underline(attribute) : LibUI::TextUnderline
+  def self.attribute_underline(attribute) : Underline
     LibUI.attribute_underline(attribute)
   end
 
@@ -1245,7 +1245,7 @@ module UIng
     LibUI.free_table_value(table_value)
   end
 
-  def self.table_value_get_type(table_value) : LibUI::TableValueType
+  def self.table_value_get_type(table_value) : TableValueType
     LibUI.table_value_get_type(table_value)
   end
 
@@ -1370,7 +1370,7 @@ module UIng
     LibUI.table_header_set_sort_indicator(table, column, sort_indicator)
   end
 
-  def self.table_header_sort_indicator(table, column) : LibUI::TableSortOrder
+  def self.table_header_sort_indicator(table, column) : SortIndicator
     LibUI.table_header_sort_indicator(table, column)
   end
 
@@ -1391,7 +1391,7 @@ module UIng
     LibUI.table_column_set_width(table, column, width)
   end
 
-  def self.table_get_selection_mode(table) : LibUI::TableSelectionMode
+  def self.table_get_selection_mode(table) : TableSelectionMode
     LibUI.table_get_selection_mode(table)
   end
 
