@@ -54,7 +54,7 @@ module UIng
   end
 
   def self.main_step(wait) : LibC::Int
-    LibUI.main_step(*args)
+    LibUI.main_step(wait)
   end
 
   def self.quit : Nil
@@ -152,8 +152,8 @@ module UIng
     LibUI.control_enabled_to_user(to_control(control))
   end
 
-  def self.user_bug_cannot_set_parent_on_toplevel(*args) : Nil
-    LibUI.user_bug_cannot_set_parent_on_toplevel(*args)
+  def self.user_bug_cannot_set_parent_on_toplevel(type) : Nil
+    LibUI.user_bug_cannot_set_parent_on_toplevel(type)
   end
 
   def self.window_title(window) : String?
@@ -161,16 +161,16 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.window_set_title(*args) : Nil
-    LibUI.window_set_title(*args)
+  def self.window_set_title(window, title) : Nil
+    LibUI.window_set_title(window, title)
   end
 
-  def self.window_position(*args) : Nil
-    LibUI.window_position(*args)
+  def self.window_position(window, x, y) : Nil
+    LibUI.window_position(window, x, y)
   end
 
-  def self.window_set_position(*args) : Nil
-    LibUI.window_set_position(*args)
+  def self.window_set_position(window, x, y) : Nil
+    LibUI.window_set_position(window, x, y)
   end
 
   def self.window_on_position_changed(sender, &callback : -> Void) : Nil
@@ -182,20 +182,20 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_content_size(*args) : Nil
-    LibUI.window_content_size(*args)
+  def self.window_content_size(window, width, height) : Nil
+    LibUI.window_content_size(window, width, height)
   end
 
-  def self.window_set_content_size(*args) : Nil
-    LibUI.window_set_content_size(*args)
+  def self.window_set_content_size(window, width, height) : Nil
+    LibUI.window_set_content_size(window, width, height)
   end
 
-  def self.window_fullscreen(*args)
-    LibUI.window_fullscreen(*args)
+  def self.window_fullscreen(window) : LibC::Int
+    LibUI.window_fullscreen(window)
   end
 
-  def self.window_set_fullscreen(*args) : Nil
-    LibUI.window_set_fullscreen(*args)
+  def self.window_set_fullscreen(window, fullscreen) : Nil
+    LibUI.window_set_fullscreen(window, fullscreen)
   end
 
   def self.window_on_content_size_changed(sender, &callback : -> Void) : Nil
@@ -225,40 +225,41 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_focused(*args)
-    LibUI.window_focused(*args)
+  def self.window_focused(window) : LibC::Int
+    LibUI.window_focused(window)
   end
 
-  def self.window_borderless(*args)
-    LibUI.window_borderless(*args)
+  def self.window_borderless(window) : LibC::Int
+    LibUI.window_borderless(window)
   end
 
-  def self.window_set_borderless(*args) : Nil
-    LibUI.window_set_borderless(*args)
+  def self.window_set_borderless(window, borderless) : Nil
+    LibUI.window_set_borderless(window, borderless)
   end
 
   def self.window_set_child(window, control) : Nil
     LibUI.window_set_child(window, to_control(control))
   end
 
-  def self.window_margined(*args)
-    LibUI.window_margined(*args)
+  def self.window_margined(window) : LibC::Int
+    LibUI.window_margined(window)
   end
 
-  def self.window_set_margined(*args) : Nil
-    LibUI.window_set_margined(*args)
+  def self.window_set_margined(window, margined) : Nil
+    LibUI.window_set_margined(window, margined)
   end
 
-  def self.window_resizeable(*args)
-    LibUI.window_resizeable(*args)
+  def self.window_resizeable(window) : LibC::Int
+    LibUI.window_resizeable(window)
   end
 
-  def self.window_set_resizeable(*args) : Nil
-    LibUI.window_set_resizeable(*args)
+  def self.window_set_resizeable(window, resizeable) : Nil
+    LibUI.window_set_resizeable(window, resizeable)
   end
 
-  def self.new_window(*args)
-    LibUI.new_window(*args)
+  def self.new_window(title, width, height, has_menu)
+    ref_ptr = LibUI.new_window(title, width, height, has_menu)
+    Window.new(ref_ptr)
   end
 
   def self.button_text(button) : String?
@@ -266,8 +267,8 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.button_set_text(*args) : Nil
-    LibUI.button_set_text(*args)
+  def self.button_set_text(button, text) : Nil
+    LibUI.button_set_text(button, text)
   end
 
   def self.button_on_clicked(sender, &callback : -> Void) : Nil
@@ -279,36 +280,39 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_button(*args)
-    LibUI.new_button(*args)
+  def self.new_button(text) : Button
+    ref_ptr = LibUI.new_button(text)
+    Button.new(ref_ptr)
   end
 
   def self.box_append(box, control, stretchy) : Nil
     LibUI.box_append(box, to_control(control), stretchy)
   end
 
-  def self.box_num_children(*args)
-    LibUI.box_num_children(*args)
+  def self.box_num_children(button) : LibC::Int
+    LibUI.box_num_children(button)
   end
 
-  def self.box_delete(*args) : Nil
-    LibUI.box_delete(*args)
+  def self.box_delete(box, index) : Nil
+    LibUI.box_delete(box, index)
   end
 
-  def self.box_padded(*args)
-    LibUI.box_padded(*args)
+  def self.box_padded(button) : LibC::Int
+    LibUI.box_padded(button)
   end
 
-  def self.box_set_padded(*args) : Nil
-    LibUI.box_set_padded(*args)
+  def self.box_set_padded(box, padded) : Nil
+    LibUI.box_set_padded(box, padded)
   end
 
-  def self.new_horizontal_box
-    LibUI.new_horizontal_box
+  def self.new_horizontal_box : UIng::Box
+    ref_ptr = LibUI.new_horizontal_box
+    UIng::Box.new(ref_ptr)
   end
 
-  def self.new_vertical_box
-    LibUI.new_vertical_box
+  def self.new_vertical_box : UIng::Box
+    ref_ptr = LibUI.new_vertical_box
+    UIng::Box.new(ref_ptr)
   end
 
   def self.checkbox_text(checkbox) : String?
@@ -316,8 +320,8 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.checkbox_set_text(*args) : Nil
-    LibUI.checkbox_set_text(*args)
+  def self.checkbox_set_text(checkbox, text) : Nil
+    LibUI.checkbox_set_text(checkbox, text)
   end
 
   def self.checkbox_on_toggled(sender, &callback : -> Void) : Nil
@@ -329,16 +333,17 @@ module UIng
     end, boxed_data)
   end
 
-  def self.checkbox_checked(*args)
-    LibUI.checkbox_checked(*args)
+  def self.checkbox_checked(checkbox) : LibC::Int
+    LibUI.checkbox_checked(checkbox)
   end
 
-  def self.checkbox_set_checked(*args) : Nil
-    LibUI.checkbox_set_checked(*args)
+  def self.checkbox_set_checked(checkbox, checked) : Nil
+    LibUI.checkbox_set_checked(checkbox, checked)
   end
 
-  def self.new_checkbox(*args)
-    LibUI.new_checkbox(*args)
+  def self.new_checkbox(text) : Checkbox
+    ref_ptr = LibUI.new_checkbox(text)
+    Checkbox.new(ref_ptr)
   end
 
   def self.entry_text(entry) : String?
@@ -346,8 +351,8 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.entry_set_text(*args) : Nil
-    LibUI.entry_set_text(*args)
+  def self.entry_set_text(entry, text) : Nil
+    LibUI.entry_set_text(entry, text)
   end
 
   def self.entry_on_changed(sender, &callback : -> Void) : Nil
@@ -359,24 +364,27 @@ module UIng
     end, boxed_data)
   end
 
-  def self.entry_read_only(*args)
-    LibUI.entry_read_only(*args)
+  def self.entry_read_only(entry) : LibC::Int
+    LibUI.entry_read_only(entry)
   end
 
-  def self.entry_set_read_only(*args) : Nil
-    LibUI.entry_set_read_only(*args)
+  def self.entry_set_read_only(entry, readonly) : Nil
+    LibUI.entry_set_read_only(entry, readonly)
   end
 
-  def self.new_entry
-    LibUI.new_entry
+  def self.new_entry : Entry
+    ref_ptr = LibUI.new_entry
+    Entry.new(ref_ptr)
   end
 
-  def self.new_password_entry
-    LibUI.new_password_entry
+  def self.new_password_entry : Entry
+    ref_ptr = LibUI.new_password_entry
+    Entry.new(ref_ptr)
   end
 
-  def self.new_search_entry
-    LibUI.new_search_entry
+  def self.new_search_entry : Entry
+    ref_ptr LibUI.new_search_entry
+    Entry.new(ref_ptr)
   end
 
   def self.label_text(label) : String?
@@ -384,12 +392,13 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.label_set_text(*args) : Nil
-    LibUI.label_set_text(*args)
+  def self.label_set_text(label, text) : Nil
+    LibUI.label_set_text(label, text)
   end
 
-  def self.new_label(*args)
-    LibUI.new_label(*args)
+  def self.new_label(text) : Label
+    ref_ptr = LibUI.new_label(text)
+    Label.new(ref_ptr)
   end
 
   def self.tab_append(tab, name, control) : Nil
@@ -400,24 +409,25 @@ module UIng
     LibUI.tab_insert_at(tab, name, index, to_control(control))
   end
 
-  def self.tab_delete(*args) : Nil
-    LibUI.tab_delete(*args)
+  def self.tab_delete(tab, index) : Nil
+    LibUI.tab_delete(tab, index)
   end
 
-  def self.tab_num_pages(*args)
-    LibUI.tab_num_pages(*args)
+  def self.tab_num_pages(tab) : LibC::Int
+    LibUI.tab_num_pages(tab)
   end
 
-  def self.tab_margined(*args)
-    LibUI.tab_margined(*args)
+  def self.tab_margined(tab, index) : LibC::Int
+    LibUI.tab_margined(tab, index)
   end
 
-  def self.tab_set_margined(*args) : Nil
-    LibUI.tab_set_margined(*args)
+  def self.tab_set_margined(tab, index, margined) : Nil
+    LibUI.tab_set_margined(tab, index, margined)
   end
 
-  def self.new_tab
-    LibUI.new_tab
+  def self.new_tab : Tab
+    ref_ptr = LibUI.new_tab
+    Tab.new(ref_ptr)
   end
 
   def self.group_title(group) : String?
@@ -425,32 +435,33 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.group_set_title(*args) : Nil
-    LibUI.group_set_title(*args)
+  def self.group_set_title(group, title) : Nil
+    LibUI.group_set_title(group, title)
   end
 
   def self.group_set_child(group, control) : Nil
     LibUI.group_set_child(group, to_control(control))
   end
 
-  def self.group_margined(*args)
-    LibUI.group_margined(*args)
+  def self.group_margined(group) : LibC::Int
+    LibUI.group_margined(group)
   end
 
-  def self.group_set_margined(*args) : Nil
-    LibUI.group_set_margined(*args)
+  def self.group_set_margined(group, margined) : Nil
+    LibUI.group_set_margined(group, margined)
   end
 
-  def self.new_group(*args)
-    LibUI.new_group(*args)
+  def self.new_group(title) : Group
+    ref_ptr = LibUI.new_group(title)
+    Group.new(ref_ptr)
   end
 
-  def self.spinbox_value(*args)
-    LibUI.spinbox_value(*args)
+  def self.spinbox_value(spinbox) : LibC::Int
+    LibUI.spinbox_value(spinbox)
   end
 
-  def self.spinbox_set_value(*args) : Nil
-    LibUI.spinbox_set_value(*args)
+  def self.spinbox_set_value(spinbox, value) : Nil
+    LibUI.spinbox_set_value(spinbox, value)
   end
 
   def self.spinbox_on_changed(sender, &callback : -> Void) : Nil
@@ -462,24 +473,25 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_spinbox(*args)
-    LibUI.new_spinbox(*args)
+  def self.new_spinbox(min, max) : Spinbox
+    ref_ptr = LibUI.new_spinbox(min, max)
+    Spinbox.new(ref_ptr)
   end
 
-  def self.slider_value(*args)
-    LibUI.slider_value(*args)
+  def self.slider_value(slider) : LibC::Int
+    LibUI.slider_value(slider)
   end
 
-  def self.slider_set_value(*args) : Nil
-    LibUI.slider_set_value(*args)
+  def self.slider_set_value(slider, value) : Nil
+    LibUI.slider_set_value(slider, value)
   end
 
-  def self.slider_has_tool_tip(*args)
-    LibUI.slider_has_tool_tip(*args)
+  def self.slider_has_tool_tip(slider) : LibC::Int
+    LibUI.slider_has_tool_tip(slider)
   end
 
-  def self.slider_set_has_tool_tip(*args) : Nil
-    LibUI.slider_set_has_tool_tip(*args)
+  def self.slider_set_has_tool_tip(slider, has_tool_tip) : Nil
+    LibUI.slider_set_has_tool_tip(slider, has_tool_tip)
   end
 
   def self.slider_on_changed(sender, &callback : -> Void) : Nil
@@ -500,60 +512,64 @@ module UIng
     end, boxed_data)
   end
 
-  def self.slider_set_range(*args) : Nil
-    LibUI.slider_set_range(*args)
+  def self.slider_set_range(slider, min, max) : Nil
+    LibUI.slider_set_range(slider, min, max)
   end
 
-  def self.new_slider(*args)
-    LibUI.new_slider(*args)
+  def self.new_slider(min, max) : Slider
+    ref_ptr = LibUI.new_slider(min, max)
+    Slider.new(ref_ptr)
   end
 
-  def self.progress_bar_value(*args)
-    LibUI.progress_bar_value(*args)
+  def self.progress_bar_value(progress_bar) : LibC::Int
+    LibUI.progress_bar_value(progress_bar)
   end
 
-  def self.progress_bar_set_value(*args) : Nil
-    LibUI.progress_bar_set_value(*args)
+  def self.progress_bar_set_value(progress_bar, n) : Nil
+    LibUI.progress_bar_set_value(progress_bar, n)
   end
 
-  def self.new_progress_bar
-    LibUI.new_progress_bar
+  def self.new_progress_bar : ProgressBar
+    ref_ptr = LibUI.new_progress_bar
+    ProgressBar.new(ref_ptr)
   end
 
-  def self.new_horizontal_separator
-    LibUI.new_horizontal_separator
+  def self.new_horizontal_separator : Separator
+    ref_ptr = LibUI.new_horizontal_separator
+    Separator.new(ref_ptr)
   end
 
-  def self.new_vertical_separator
-    LibUI.new_vertical_separator
+  def self.new_vertical_separator : Separator
+    ref_ptr = LibUI.new_vertical_separator
+    Separator.new(ref_ptr)
   end
 
-  def self.combobox_append(*args) : Nil
-    LibUI.combobox_append(*args)
+  def self.combobox_append(combobox, text) : Nil
+    LibUI.combobox_append(combobox, text)
   end
 
-  def self.combobox_insert_at(*args) : Nil
-    LibUI.combobox_insert_at(*args)
+  def self.combobox_insert_at(combobox, index, text) : Nil
+    LibUI.combobox_insert_at(combobox, index, text)
   end
 
-  def self.combobox_delete(*args) : Nil
-    LibUI.combobox_delete(*args)
+  def self.combobox_delete(combobox, index) : Nil
+    LibUI.combobox_delete(combobox, index)
   end
 
-  def self.combobox_clear(*args) : Nil
-    LibUI.combobox_clear(*args)
+  def self.combobox_clear(combobox) : Nil
+    LibUI.combobox_clear(combobox)
   end
 
-  def self.combobox_num_items(*args)
-    LibUI.combobox_num_items(*args)
+  def self.combobox_num_items(combobox) : LibC::Int
+    LibUI.combobox_num_items(combobox)
   end
 
-  def self.combobox_selected(*args)
-    LibUI.combobox_selected(*args)
+  def self.combobox_selected(combobox) : LibC::Int
+    LibUI.combobox_selected(combobox)
   end
 
-  def self.combobox_set_selected(*args) : Nil
-    LibUI.combobox_set_selected(*args)
+  def self.combobox_set_selected(combobox) : Nil
+    LibUI.combobox_set_selected(combobox)
   end
 
   def self.combobox_on_selected(sender, &callback : -> Void) : Nil
@@ -565,12 +581,13 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_combobox
-    LibUI.new_combobox
+  def self.new_combobox : Combobox
+    ref_ptr = LibUI.new_combobox
+    Combobox.new(ref_ptr)
   end
 
-  def self.editable_combobox_append(*args) : Nil
-    LibUI.editable_combobox_append(*args)
+  def self.editable_combobox_append(editable_combobox, text) : Nil
+    LibUI.editable_combobox_append(editable_combobox, text)
   end
 
   def self.editable_combobox_text(editable_combobox) : String?
@@ -578,8 +595,8 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.editable_combobox_set_text(*args) : Nil
-    LibUI.editable_combobox_set_text(*args)
+  def self.editable_combobox_set_text(editable_combobox, text) : Nil
+    LibUI.editable_combobox_set_text(editable_combobox, text)
   end
 
   def self.editable_combobox_on_changed(sender, &callback : -> Void) : Nil
@@ -591,20 +608,21 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_editable_combobox
-    LibUI.new_editable_combobox
+  def self.new_editable_combobox : EditableCombobox
+    ref_ptr = LibUI.new_editable_combobox
+    EditableCombobox.new(ref_ptr)
   end
 
-  def self.radio_buttons_append(*args) : Nil
-    LibUI.radio_buttons_append(*args)
+  def self.radio_buttons_append(radio_buttons, text) : Nil
+    LibUI.radio_buttons_append(radio_buttons, text)
   end
 
-  def self.radio_buttons_selected(*args)
-    LibUI.radio_buttons_selected(*args)
+  def self.radio_buttons_selected(radio_buttons) : LibC::Int
+    LibUI.radio_buttons_selected(radio_buttons)
   end
 
-  def self.radio_buttons_set_selected(*args) : Nil
-    LibUI.radio_buttons_set_selected(*args)
+  def self.radio_buttons_set_selected(radio_buttons, index) : Nil
+    LibUI.radio_buttons_set_selected(radio_buttons, index)
   end
 
   def self.radio_buttons_on_selected(sender, &callback : -> Void) : Nil
@@ -616,16 +634,17 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_radio_buttons
-    LibUI.new_radio_buttons
+  def self.new_radio_buttons : RadioButtons
+    ref_ptr = LibUI.new_radio_buttons
+    RadioButtons.new(ref_ptr)
   end
 
-  def self.date_time_picker_time(*args) : Nil
-    LibUI.date_time_picker_time(*args)
+  def self.date_time_picker_time(date_time_picker, time) : Nil
+    LibUI.date_time_picker_time(date_time_picker, time)
   end
 
-  def self.date_time_picker_set_time(*args) : Nil
-    LibUI.date_time_picker_set_time(*args)
+  def self.date_time_picker_set_time(date_time_picker, time) : Nil
+    LibUI.date_time_picker_set_time(date_time_picker, time)
   end
 
   def self.date_time_picker_on_changed(sender, &callback : -> Void) : Nil
@@ -637,16 +656,19 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_date_time_picker
-    LibUI.new_date_time_picker
+  def self.new_date_time_picker : DateTimePicker
+    ref_ptr = LibUI.new_date_time_picker
+    DateTimePicker.new(ref_ptr)
   end
 
-  def self.new_date_picker
-    LibUI.new_date_picker
+  def self.new_date_picker : DateTimePicker
+    ref_ptr = LibUI.new_date_picker
+    DateTimePicker.new(ref_ptr)
   end
 
-  def self.new_time_picker
-    LibUI.new_time_picker
+  def self.new_time_picker : DateTimePicker
+    ref_ptr = LibUI.new_time_picker
+    DateTimePicker.new(ref_ptr)
   end
 
   def self.multiline_entry_text(multiline_entry) : String?
@@ -654,12 +676,12 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.multiline_entry_set_text(*args) : Nil
-    LibUI.multiline_entry_set_text(*args)
+  def self.multiline_entry_set_text(multiline_entry, text) : Nil
+    LibUI.multiline_entry_set_text(multiline_entry, text)
   end
 
-  def self.multiline_entry_append(*args) : Nil
-    LibUI.multiline_entry_append(*args)
+  def self.multiline_entry_append(multiline_entry, text) : Nil
+    LibUI.multiline_entry_append(multiline_entry, text)
   end
 
   def self.multiline_entry_on_changed(sender, &callback : -> Void) : Nil
@@ -671,28 +693,30 @@ module UIng
     end, boxed_data)
   end
 
-  def self.multiline_entry_read_only(*args)
-    LibUI.multiline_entry_read_only(*args)
+  def self.multiline_entry_read_only(multiline_entry) : LibC::Int
+    LibUI.multiline_entry_read_only(multiline_entry)
   end
 
-  def self.multiline_entry_set_read_only(*args) : Nil
-    LibUI.multiline_entry_set_read_only(*args)
+  def self.multiline_entry_set_read_only(multiline_entry, readonly) : Nil
+    LibUI.multiline_entry_set_read_only(multiline_entry, readonly)
   end
 
-  def self.new_multiline_entry
-    LibUI.new_multiline_entry
+  def self.new_multiline_entry : MultilineEntry
+    ref_ptr = LibUI.new_multiline_entry
+    MultilineEntry.new(ref_ptr)
   end
 
-  def self.new_non_wrapping_multiline_entry
-    LibUI.new_non_wrapping_multiline_entry
+  def self.new_non_wrapping_multiline_entry : MultilineEntry
+    ref_ptr = LibUI.new_non_wrapping_multiline_entry
+    MultilineEntry.new(ref_ptr)
   end
 
-  def self.menu_item_enable(*args) : Nil
-    LibUI.menu_item_enable(*args)
+  def self.menu_item_enable(menu_item) : Nil
+    LibUI.menu_item_enable(menu_item)
   end
 
-  def self.menu_item_disable(*args) : Nil
-    LibUI.menu_item_disable(*args)
+  def self.menu_item_disable(menu_item) : Nil
+    LibUI.menu_item_disable(menu_item)
   end
 
   def self.menu_item_on_clicked(sender, &callback : Pointer(LibUI::Window) -> Void)
@@ -704,40 +728,46 @@ module UIng
     end, boxed_data)
   end
 
-  def self.menu_item_checked(*args)
-    LibUI.menu_item_checked(*args)
+  def self.menu_item_checked(menu_item) : LibC::Int
+    LibUI.menu_item_checked(menu_item)
   end
 
-  def self.menu_item_set_checked(*args) : Nil
-    LibUI.menu_item_set_checked(*args)
+  def self.menu_item_set_checked(menu_item, checked) : Nil
+    LibUI.menu_item_set_checked(menu_item, checked)
   end
 
-  def self.menu_append_item(*args)
-    LibUI.menu_append_item(*args)
+  def self.menu_append_item(menu, name) : MenuItem
+    ref_ptr = LibUI.menu_append_item(menu, name)
+    MenuItem.new(ref_ptr)
   end
 
-  def self.menu_append_check_item(*args)
-    LibUI.menu_append_check_item(*args)
+  def self.menu_append_check_item(menu, name) : MenuItem
+    ref_ptr = LibUI.menu_append_check_item(menu, name)
+    MenuItem.new(ref_ptr)
   end
 
-  def self.menu_append_quit_item(*args)
-    LibUI.menu_append_quit_item(*args)
+  def self.menu_append_quit_item(menu) : MenuItem
+    ref_ptr = LibUI.menu_append_quit_item(menu)
+    MenuItem.new(ref_ptr)
   end
 
-  def self.menu_append_preferences_item(*args)
-    LibUI.menu_append_preferences_item(*args)
+  def self.menu_append_preferences_item(menu) : MenuItem
+    ref_ptr = LibUI.menu_append_preferences_item(menu)
+    MenuItem.new(ref_ptr)
   end
 
-  def self.menu_append_about_item(*args)
-    LibUI.menu_append_about_item(*args)
+  def self.menu_append_about_item(menu) : MenuItem
+    ref_ptr = LibUI.menu_append_about_item(menu)
+    MenuItem.new(ref_ptr)
   end
 
-  def self.menu_append_separator(*args) : Nil
-    LibUI.menu_append_separator(*args)
+  def self.menu_append_separator(menu) : Nil
+    LibUI.menu_append_separator(menu)
   end
 
-  def self.new_menu(*args)
-    LibUI.new_menu(*args)
+  def self.new_menu(name) : Menu
+    ref_ptr = LibUI.new_menu(name)
+    Menu.new(ref_ptr)
   end
 
   def self.open_file(window) : String?
@@ -755,163 +785,165 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.msg_box(*args) : Nil
-    # FIXME: Workaround for Windows
-    {% unless flag?(:windows) %}
-      LibUI.msg_box(*args)
-    {% end %}
+  def self.msg_box(parent, title, description) : Nil
+    LibUI.msg_box(parent, title, description)
   end
 
-  def self.msg_box_error(*args) : Nil
-    LibUI.msg_box_error(*args)
+  def self.msg_box_error(parent, title, description) : Nil
+    LibUI.msg_box_error(parent, title, description)
   end
 
-  def self.area_set_size(*args) : Nil
-    LibUI.area_set_size(*args)
+  def self.area_set_size(area, width, height) : Nil
+    LibUI.area_set_size(area, width, height)
   end
 
-  def self.area_queue_redraw_all(*args) : Nil
-    LibUI.area_queue_redraw_all(*args)
+  def self.area_queue_redraw_all(area) : Nil
+    LibUI.area_queue_redraw_all(area)
   end
 
-  def self.area_scroll_to(*args) : Nil
-    LibUI.area_scroll_to(*args)
+  def self.area_scroll_to(area, x, y, width, height) : Nil
+    LibUI.area_scroll_to(area, x, y, width, height)
   end
 
-  def self.area_begin_user_window_move(*args) : Nil
-    LibUI.area_begin_user_window_move(*args)
+  def self.area_begin_user_window_move(area) : Nil
+    LibUI.area_begin_user_window_move(area)
   end
 
-  def self.area_begin_user_window_resize(*args) : Nil
-    LibUI.area_begin_user_window_resize(*args)
+  def self.area_begin_user_window_resize(area, edge) : Nil
+    LibUI.area_begin_user_window_resize(area, edge)
   end
 
-  def self.new_area(*args)
-    LibUI.new_area(*args)
+  def self.new_area(area_handler) : Area
+    ref_ptr = LibUI.new_area(area_handler)
+    Area.new(ref_ptr)
   end
 
-  def self.new_scrolling_area(*args)
-    LibUI.new_scrolling_area(*args)
+  def self.new_scrolling_area(area_handler, width, height) : Area
+    ref_ptr = LibUI.new_scrolling_area(area_handler, width, height)
+    Area.new(ref_ptr)
   end
 
-  def self.draw_new_path(*args)
-    LibUI.draw_new_path(*args)
+  def self.draw_new_path(fill_mode) : DrawPath
+    ref_ptr = LibUI.draw_new_path(fill_mode)
+    DrawPath.new(ref_ptr)
   end
 
-  def self.draw_free_path(*args) : Nil
-    LibUI.draw_free_path(*args)
+  def self.draw_free_path(draw_path) : Nil
+    LibUI.draw_free_path(draw_path)
   end
 
-  def self.draw_path_new_figure(*args) : Nil
-    LibUI.draw_path_new_figure(*args)
+  def self.draw_path_new_figure(draw_path, x, y) : Nil
+    LibUI.draw_path_new_figure(draw_path, x, y)
   end
 
-  def self.draw_path_new_figure_with_arc(*args) : Nil
-    LibUI.draw_path_new_figure_with_arc(*args)
+  def self.draw_path_new_figure_with_arc(draw_path, x_center, y_center, radius, start_angle, sweep, negative) : Nil
+    LibUI.draw_path_new_figure_with_arc(draw_path, x_center, y_center, radius, start_angle, sweep, negative)
   end
 
-  def self.draw_path_line_to(*args) : Nil
-    LibUI.draw_path_line_to(*args)
+  def self.draw_path_line_to(draw_path, x, y) : Nil
+    LibUI.draw_path_line_to(draw_path, x, y)
   end
 
-  def self.draw_path_arc_to(*args) : Nil
-    LibUI.draw_path_arc_to(*args)
+  def self.draw_path_arc_to(draw_path, x_center, y_center, radius, start_angle, sweep, negative) : Nil
+    LibUI.draw_path_arc_to(draw_path, x_center, y_center, radius, start_angle, sweep, negative)
   end
 
-  def self.draw_path_bezier_to(*args) : Nil
-    LibUI.draw_path_bezier_to(*args)
+  def self.draw_path_bezier_to(draw_path, c1x, c1y, c2x, c2y, end_x, end_y) : Nil
+    LibUI.draw_path_bezier_to(draw_path, c1x, c1y, c2x, c2y, end_x, end_y)
   end
 
-  def self.draw_path_close_figure(*args) : Nil
-    LibUI.draw_path_close_figure(*args)
+  def self.draw_path_close_figure(draw_path) : Nil
+    LibUI.draw_path_close_figure(draw_path)
   end
 
-  def self.draw_path_add_rectangle(*args) : Nil
-    LibUI.draw_path_add_rectangle(*args)
+  def self.draw_path_add_rectangle(draw_path, x, y, width, height) : Nil
+    LibUI.draw_path_add_rectangle(draw_path, x, y, width, height)
   end
 
-  def self.draw_path_ended(*args)
-    LibUI.draw_path_ended(*args)
+  def self.draw_path_ended(draw_path) : LibC::Int
+    LibUI.draw_path_ended(draw_path)
   end
 
-  def self.draw_path_end(*args) : Nil
-    LibUI.draw_path_end(*args)
+  def self.draw_path_end(draw_path) : Nil
+    LibUI.draw_path_end(draw_path)
   end
 
-  def self.draw_stroke(*args) : Nil
-    LibUI.draw_stroke(*args)
+  def self.draw_stroke(draw_context, draw_path, dra_brush, draw_stroke_params) : Nil
+    LibUI.draw_stroke(draw_context, draw_path, dra_brush, draw_stroke_params)
   end
 
-  def self.draw_fill(*args) : Nil
-    LibUI.draw_fill(*args)
+  def self.draw_fill(draw_context, draw_path, draw_brush) : Nil
+    LibUI.draw_fill(draw_context, draw_path, draw_brush)
   end
 
-  def self.draw_matrix_set_identity(*args) : Nil
-    LibUI.draw_matrix_set_identity(*args)
+  def self.draw_matrix_set_identity(draw_matrix) : Nil
+    LibUI.draw_matrix_set_identity(draw_matrix)
   end
 
-  def self.draw_matrix_translate(*args) : Nil
-    LibUI.draw_matrix_translate(*args)
+  def self.draw_matrix_translate(draw_matrix, x, y) : Nil
+    LibUI.draw_matrix_translate(draw_matrix, x, y)
   end
 
-  def self.draw_matrix_scale(*args) : Nil
-    LibUI.draw_matrix_scale(*args)
+  def self.draw_matrix_scale(draw_matrix, x_center, y_center, x, y) : Nil
+    LibUI.draw_matrix_scale(draw_matrix, x_center, y_center, x, y)
   end
 
-  def self.draw_matrix_rotate(*args) : Nil
-    LibUI.draw_matrix_rotate(*args)
+  def self.draw_matrix_rotate(draw_matrix, x, y, amount) : Nil
+    LibUI.draw_matrix_rotate(draw_matrix, x, y, amount)
   end
 
-  def self.draw_matrix_skew(*args) : Nil
-    LibUI.draw_matrix_skew(*args)
+  def self.draw_matrix_skew(draw_matrix, x, y, x_amount, y_amount) : Nil
+    LibUI.draw_matrix_skew(draw_matrix, x, y, x_amount, y_amount)
   end
 
-  def self.draw_matrix_multiply(*args) : Nil
-    LibUI.draw_matrix_multiply(*args)
+  def self.draw_matrix_multiply(dest, src) : Nil
+    LibUI.draw_matrix_multiply(dest, src)
   end
 
-  def self.draw_matrix_invertible(*args)
-    LibUI.draw_matrix_invertible(*args)
+  def self.draw_matrix_invertible(draw_matrix) : LibC::Int
+    LibUI.draw_matrix_invertible(draw_matrix)
   end
 
-  def self.draw_matrix_invert(*args)
-    LibUI.draw_matrix_invert(*args)
+  def self.draw_matrix_invert(draw_matrix) : LibC::Int
+    LibUI.draw_matrix_invert(draw_matrix)
   end
 
-  def self.draw_matrix_transform_point(*args) : Nil
-    LibUI.draw_matrix_transform_point(*args)
+  def self.draw_matrix_transform_point(draw_matrix, x, y) : Nil
+    LibUI.draw_matrix_transform_point(draw_matrix, x, y)
   end
 
-  def self.draw_matrix_transform_size(*args) : Nil
-    LibUI.draw_matrix_transform_size(*args)
+  def self.draw_matrix_transform_size(draw_matrix, x, y) : Nil
+    LibUI.draw_matrix_transform_size(draw_matrix, x, y)
   end
 
-  def self.draw_transform(*args) : Nil
-    LibUI.draw_transform(*args)
+  def self.draw_transform(draw_context, draw_matrix) : Nil
+    LibUI.draw_transform(draw_context, draw_matrix)
   end
 
-  def self.draw_clip(*args) : Nil
-    LibUI.draw_clip(*args)
+  def self.draw_clip(draw_context, draw_path) : Nil
+    LibUI.draw_clip(draw_context, draw_path)
   end
 
-  def self.draw_save(*args) : Nil
-    LibUI.draw_save(*args)
+  def self.draw_save(draw_context) : Nil
+    LibUI.draw_save(draw_context)
   end
 
-  def self.draw_restore(*args) : Nil
-    LibUI.draw_restore(*args)
+  def self.draw_restore(draw_context) : Nil
+    LibUI.draw_restore(draw_context)
   end
 
-  def self.free_attribute(*args) : Nil
-    LibUI.free_attribute(*args)
+  def self.free_attribute(attribute) : Nil
+    LibUI.free_attribute(attribute)
   end
 
-  def self.attribute_get_type(*args)
-    LibUI.attribute_get_type(*args)
+  def self.attribute_get_type(attribute) : Attribute
+    ref_ptr = LibUI.attribute_get_type(attribute)
+    Attribute.new(ref_ptr)
   end
 
-  def self.new_family_attribute(*args)
-    LibUI.new_family_attribute(*args)
+  def self.new_family_attribute(family) : Attribute
+    ref_ptr = LibUI.new_family_attribute(family)
+    Attribute.new(ref_ptr)
   end
 
   def self.attribute_family(attribute) : String?
@@ -919,88 +951,92 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.new_size_attribute(*args)
-    LibUI.new_size_attribute(*args)
+  def self.new_size_attribute(size) : Attribute
+    str_ptr = LibUI.new_size_attribute(size)
+    Attribute.new(ref_ptr)
   end
 
-  def self.attribute_size(*args)
-    LibUI.attribute_size(*args)
+  def self.attribute_size(attribute) : LibC::Double
+    LibUI.attribute_size(attribute)
   end
 
-  def self.new_weight_attribute(*args)
-    LibUI.new_weight_attribute(*args)
+  def self.new_weight_attribute(weight) : Attribute
+    ref_ptr = LibUI.new_weight_attribute(weight)
+    Attribute.new(ref_ptr)
   end
 
-  def self.attribute_weight(*args)
-    LibUI.attribute_weight(*args)
+  def self.attribute_weight(attribute) : LibUI::TextWeight
+    LibUI.attribute_weight(attribute)
   end
 
-  def self.new_italic_attribute(*args)
-    LibUI.new_italic_attribute(*args)
+  def self.new_italic_attribute(test_italic) : Attribute
+    LibUI.new_italic_attribute(test_italic)
   end
 
-  def self.attribute_italic(*args)
-    LibUI.attribute_italic(*args)
+  def self.attribute_italic(attribute) : LibC::TextItalic
+    LibUI.attribute_italic(attribute)
   end
 
-  def self.new_stretch_attribute(*args)
-    LibUI.new_stretch_attribute(*args)
+  def self.new_stretch_attribute(text_search) : Attribute
+    LibUI.new_stretch_attribute(text_search)
   end
 
-  def self.attribute_stretch(*args)
-    LibUI.attribute_stretch(*args)
+  def self.attribute_stretch(attribute) : LibUI::TextStretch
+    LibUI.attribute_stretch(attribute)
   end
 
-  def self.new_color_attribute(*args)
-    LibUI.new_color_attribute(*args)
+  def self.new_color_attribute(r, g, b, a) : Attribute
+    LibUI.new_color_attribute(r, g, b, a)
   end
 
-  def self.attribute_color(*args) : Nil
-    LibUI.attribute_color(*args)
+  def self.attribute_color(attribute, r, g, b, a) : Nil
+    LibUI.attribute_color(attribute, r, g, b, a)
   end
 
-  def self.new_background_attribute(*args)
-    LibUI.new_background_attribute(*args)
+  def self.new_background_attribute(r, g, b, a) : Attribute
+    LibUI.new_background_attribute(r, g, b, a)
   end
 
-  def self.new_underline_attribute(*args)
-    LibUI.new_underline_attribute(*args)
+  def self.new_underline_attribute(underline) : Attribute
+    LibUI.new_underline_attribute(underline)
   end
 
-  def self.attribute_underline(*args)
-    LibUI.attribute_underline(*args)
+  def self.attribute_underline(attribute) : LibUI::TextUnderline
+    LibUI.attribute_underline(attribute)
   end
 
-  def self.new_underline_color_attribute(*args)
-    LibUI.new_underline_color_attribute(*args)
+  def self.new_underline_color_attribute(underline_color, r, g, b, a) : Attribute
+    LibUI.new_underline_color_attribute(underline_color, r, g, b, a)
   end
 
-  def self.attribute_underline_color(*args) : Nil
-    LibUI.attribute_underline_color(*args)
+  def self.attribute_underline_color(attribute, underline_color, r, g, b, a) : Nil
+    LibUI.attribute_underline_color(attribute, underline_color, r, g, b, a)
   end
 
-  def self.new_open_type_features
-    LibUI.new_open_type_features
+  def self.new_open_type_features : OpenTypeFeatures
+    ref_ptr = LibUI.new_open_type_features
+    OpenTypeFeatures.new(ref_ptr)
   end
 
-  def self.free_open_type_features(*args) : Nil
-    LibUI.free_open_type_features(*args)
+  def self.free_open_type_features(open_type_features) : Nil
+    LibUI.free_open_type_features(open_type_features)
   end
 
-  def self.open_type_features_clone(*args)
-    LibUI.open_type_features_clone(*args)
+  def self.open_type_features_clone(open_type_features) : OpenTypeFeatures
+    ref_ptr = LibUI.open_type_features_clone(open_type_features)
+    OpenTypeFeatures.new(ref_ptr)
   end
 
-  def self.open_type_features_add(*args) : Nil
-    LibUI.open_type_features_add(*args)
+  def self.open_type_features_add(open_type_features, a, b, c, d, value) : Nil
+    LibUI.open_type_features_add(open_type_features, a, b, c, d, value)
   end
 
-  def self.open_type_features_remove(*args) : Nil
-    LibUI.open_type_features_remove(*args)
+  def self.open_type_features_remove(open_type_features, a, b, c, d) : Nil
+    LibUI.open_type_features_remove(open_type_features, a, b, c, d)
   end
 
-  def self.open_type_features_get(*args)
-    LibUI.open_type_features_get(*args)
+  def self.open_type_features_get(open_type_features, a, b, c, d, value) : LibC::Int
+    LibUI.open_type_features_get(open_type_features, a, b, c, d, value)
   end
 
   def self.open_type_features_for_each(sender, &callback : (Pointer(Void), LibC::Char, LibC::Char, LibC::Char, LibC::Char, Int32) -> Void)
@@ -1012,20 +1048,23 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_features_attribute(*args)
-    LibUI.new_features_attribute(*args)
+  def self.new_features_attribute(open_type_features) : Attribute
+    ref_ptr = LibUI.new_features_attribute(open_type_features)
+    Attribute.new(ref_ptr)
   end
 
-  def self.attribute_features(*args)
-    LibUI.attribute_features(*args)
+  def self.attribute_features(attribute) : OpenTypeFeatures
+    ref_ptr = LibUI.attribute_features(attribute)
+    OpenTypeFeatures.new(ref_ptr)
   end
 
-  def self.new_attributed_string(*args)
-    LibUI.new_attributed_string(*args)
+  def self.new_attributed_string(text) : AttributedString
+    ref_ptr = LibUI.new_attributed_string(text)
+    AttributedString.new(ref_ptr)
   end
 
-  def self.free_attributed_string(*args) : Nil
-    LibUI.free_attributed_string(*args)
+  def self.free_attributed_string(attributed_string) : Nil
+    LibUI.free_attributed_string(attributed_string)
   end
 
   def self.attributed_string_string(attributed_string) : String?
@@ -1033,24 +1072,24 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.attributed_string_len(*args)
-    LibUI.attributed_string_len(*args)
+  def self.attributed_string_len(attributed_string) : LibC::SizeT
+    LibUI.attributed_string_len(attributed_string)
   end
 
-  def self.attributed_string_append_unattributed(*args) : Nil
-    LibUI.attributed_string_append_unattributed(*args)
+  def self.attributed_string_append_unattributed(attributed_string, text) : Nil
+    LibUI.attributed_string_append_unattributed(attributed_string, text)
   end
 
-  def self.attributed_string_insert_at_unattributed(*args) : Nil
-    LibUI.attributed_string_insert_at_unattributed(*args)
+  def self.attributed_string_insert_at_unattributed(attributed_string, text, at) : Nil
+    LibUI.attributed_string_insert_at_unattributed(attributed_string, text, at)
   end
 
-  def self.attributed_string_delete(*args) : Nil
-    LibUI.attributed_string_delete(*args)
+  def self.attributed_string_delete(attributed_string, start, end_) : Nil
+    LibUI.attributed_string_delete(attributed_string, start, end_)
   end
 
-  def self.attributed_string_set_attribute(*args) : Nil
-    LibUI.attributed_string_set_attribute(*args)
+  def self.attributed_string_set_attribute(attributed_string, attribute, start, end_) : Nil
+    LibUI.attributed_string_set_attribute(attributed_string, attribute, start, end_)
   end
 
   def self.attributed_string_for_each_attribute(sender, &callback : (Pointer(Void), Pointer(LibUI::Attribute), SizeT, SizeT, Pointer(Void)) -> Void)
@@ -1062,44 +1101,45 @@ module UIng
     end, boxed_data)
   end
 
-  def self.attributed_string_num_graphemes(*args)
-    LibUI.attributed_string_num_graphemes(*args)
+  def self.attributed_string_num_graphemes(attributed_string) : LibC::SizeT
+    LibUI.attributed_string_num_graphemes(attributed_string)
   end
 
-  def self.attributed_string_byte_index_to_grapheme(*args)
-    LibUI.attributed_string_byte_index_to_grapheme(*args)
+  def self.attributed_string_byte_index_to_grapheme(attributed_string, pos) : LibC::SizeT
+    LibUI.attributed_string_byte_index_to_grapheme(attributed_string, pos)
   end
 
-  def self.attributed_string_grapheme_to_byte_index(*args)
-    LibUI.attributed_string_grapheme_to_byte_index(*args)
+  def self.attributed_string_grapheme_to_byte_index(attributed_string, pos) : LibC::SizeT
+    LibUI.attributed_string_grapheme_to_byte_index(attributed_string, pos)
   end
 
-  def self.load_control_font(*args) : Nil
-    LibUI.load_control_font(*args)
+  def self.load_control_font(font_descriptor) : Nil
+    LibUI.load_control_font(font_descriptor)
   end
 
-  def self.free_font_descriptor(*args) : Nil
-    LibUI.free_font_descriptor(*args)
+  def self.free_font_descriptor(font_descriptor) : Nil
+    LibUI.free_font_descriptor(font_descriptor)
   end
 
-  def self.draw_new_text_layout(*args)
-    LibUI.draw_new_text_layout(*args)
+  def self.draw_new_text_layout(draw_text_layout_params) : DrawTextLayout
+    ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
+    DrawTextLayout.new(ref_ptr)
   end
 
-  def self.draw_free_text_layout(*args) : Nil
-    LibUI.draw_free_text_layout(*args)
+  def self.draw_free_text_layout(draw_text_layout) : Nil
+    LibUI.draw_free_text_layout(draw_text_layout)
   end
 
-  def self.draw_text(*args) : Nil
-    LibUI.draw_text(*args)
+  def self.draw_text(draw_context, draw_text_layout, x, y) : Nil
+    LibUI.draw_text(draw_context, draw_text_layout, x, y)
   end
 
-  def self.draw_text_layout_extents(*args) : Nil
-    LibUI.draw_text_layout_extents(*args)
+  def self.draw_text_layout_extents(draw_text_layout, width, height) : Nil
+    LibUI.draw_text_layout_extents(draw_text_layout, width, height)
   end
 
-  def self.font_button_font(*args) : Nil
-    LibUI.font_button_font(*args)
+  def self.font_button_font(font_button, font_descriptor) : Nil
+    LibUI.font_button_font(font_button, font_descriptor)
   end
 
   def self.font_button_on_changed(sender, &callback : -> Void) : Nil
@@ -1111,20 +1151,21 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_font_button
-    LibUI.new_font_button
+  def self.new_font_button : FontButton
+    ref_ptr = LibUI.new_font_button
+    FontButton.new(ref_ptr)
   end
 
-  def self.free_font_button_font(*args) : Nil
-    LibUI.free_font_button_font(*args)
+  def self.free_font_button_font(font_descriptor) : Nil
+    LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.color_button_color(*args) : Nil
-    LibUI.color_button_color(*args)
+  def self.color_button_color(color_button, r, g, b, a) : Nil
+    LibUI.color_button_color(color_button, r, g, b, a)
   end
 
-  def self.color_button_set_color(*args) : Nil
-    LibUI.color_button_set_color(*args)
+  def self.color_button_set_color(color_button, r, g, b, a) : Nil
+    LibUI.color_button_set_color(color_button, r, g, b, a)
   end
 
   def self.color_button_on_changed(sender, &callback : -> Void) : Nil
@@ -1136,32 +1177,34 @@ module UIng
     end, boxed_data)
   end
 
-  def self.new_color_button
-    LibUI.new_color_button
+  def self.new_color_button : ColorButton
+    ref_ptr = LibUI.new_color_button
+    ColorButton.new(ref_ptr)
   end
 
   def self.form_append(form, label, control, stretchy) : Nil
     LibUI.form_append(form, label, to_control(control), stretchy)
   end
 
-  def self.form_num_children(*args)
-    LibUI.form_num_children(*args)
+  def self.form_num_children(form) : LibC::Int
+    LibUI.form_num_children(form)
   end
 
-  def self.form_delete(*args) : Nil
-    LibUI.form_delete(*args)
+  def self.form_delete(form, index) : Nil
+    LibUI.form_delete(form, index)
   end
 
-  def self.form_padded(*args)
-    LibUI.form_padded(*args)
+  def self.form_padded(form) : LibC::Int
+    LibUI.form_padded(form)
   end
 
-  def self.form_set_padded(*args) : Nil
-    LibUI.form_set_padded(*args)
+  def self.form_set_padded(form, padded) : Nil
+    LibUI.form_set_padded(form, padded)
   end
 
-  def self.new_form
-    LibUI.new_form
+  def self.new_form : Form
+    ref_ptr = LibUI.new_form
+    Form.new(ref_ptr)
   end
 
   def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
@@ -1172,40 +1215,43 @@ module UIng
     LibUI.grid_insert_at(grid, to_control(control), to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
-  def self.grid_padded(*args)
-    LibUI.grid_padded(*args)
+  def self.grid_padded(grid) : LibC::Int
+    LibUI.grid_padded(grid)
   end
 
-  def self.grid_set_padded(*args) : Nil
-    LibUI.grid_set_padded(*args)
+  def self.grid_set_padded(grid, padded) : Nil
+    LibUI.grid_set_padded(grid, padded)
   end
 
-  def self.new_grid
-    LibUI.new_grid
+  def self.new_grid : Grid
+    ref_ptr = LibUI.new_grid
+    Grid.new(ref_ptr)
   end
 
-  def self.new_image(*args)
-    LibUI.new_image(*args)
+  def self.new_image(width, height) : Image
+    ref_ptr = LibUI.new_image(width, height)
+    Image.new(ref_ptr)
   end
 
-  def self.free_image(*args) : Nil
-    LibUI.free_image(*args)
+  def self.free_image(image) : Nil
+    LibUI.free_image(image)
   end
 
-  def self.image_append(*args) : Nil
-    LibUI.image_append(*args)
+  def self.image_append(image, pixels, piexl_width, pixel_height, byte_stride) : Nil
+    LibUI.image_append(image, pixels, piexl_width, pixel_height, byte_stride)
   end
 
-  def self.free_table_value(*args) : Nil
-    LibUI.free_table_value(*args)
+  def self.free_table_value(table_value) : Nil
+    LibUI.free_table_value(table_value)
   end
 
-  def self.table_value_get_type(*args)
-    LibUI.table_value_get_type(*args)
+  def self.table_value_get_type(table_value) : LibUI::TableValueType
+    LibUI.table_value_get_type(table_value)
   end
 
-  def self.new_table_value_string(*args)
-    LibUI.new_table_value_string(*args)
+  def self.new_table_value_string(str) : TableValue
+    ref_ptr = LibUI.new_table_value_string(str)
+    TableValue.new(ref_ptr)
   end
 
   def self.table_value_string(table_value) : String?
@@ -1213,88 +1259,93 @@ module UIng
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
-  def self.new_table_value_image(*args)
-    LibUI.new_table_value_image(*args)
+  def self.new_table_value_image(image) : TableValue
+    ref_ptr = LibUI.new_table_value_image(image)
+    TableValue.new(ref_ptr)
   end
 
-  def self.table_value_image(*args)
-    LibUI.table_value_image(*args)
+  def self.table_value_image(table_value) : Image
+    ref_ptr = LibUI.table_value_image(table_value)
+    Image.new(ref_ptr)
   end
 
-  def self.new_table_value_int(*args)
-    LibUI.new_table_value_int(*args)
+  def self.new_table_value_int(i) : TableValue
+    ref_ptr = LibUI.new_table_value_int(i)
+    TableValue.new(ref_ptr)
   end
 
-  def self.table_value_int(*args)
-    LibUI.table_value_int(*args)
+  def self.table_value_int(table_value) : LibC::Int
+    LibUI.table_value_int(table_value)
   end
 
-  def self.new_table_value_color(*args)
-    LibUI.new_table_value_color(*args)
+  def self.new_table_value_color(r, g, b, a) : TableValue
+    ref_ptr = LibUI.new_table_value_color(r, g, b, a)
+    TableValue.new(ref_ptr)
   end
 
-  def self.table_value_color(*args) : Nil
-    LibUI.table_value_color(*args)
+  def self.table_value_color(table_value, r, g, b, a) : Nil
+    LibUI.table_value_color(table_value, r, g, b, a)
   end
 
-  def self.new_table_model(*args)
-    LibUI.new_table_model(*args)
+  def self.new_table_model(model_handler) : TableModel
+    LibUI.new_table_model(model_handler)
   end
 
-  def self.free_table_model(*args) : Nil
-    LibUI.free_table_model(*args)
+  def self.free_table_model(table_model) : Nil
+    LibUI.free_table_model(table_model)
   end
 
-  def self.table_model_row_inserted(*args) : Nil
-    LibUI.table_model_row_inserted(*args)
+  def self.table_model_row_inserted(table_model, new_index) : Nil
+    LibUI.table_model_row_inserted(table_model, new_index)
   end
 
-  def self.table_model_row_changed(*args) : Nil
-    LibUI.table_model_row_changed(*args)
+  def self.table_model_row_changed(table_model, index) : Nil
+    LibUI.table_model_row_changed(table_model, index)
   end
 
-  def self.table_model_row_deleted(*args) : Nil
-    LibUI.table_model_row_deleted(*args)
+  def self.table_model_row_deleted(table_model, old_index) : Nil
+    LibUI.table_model_row_deleted(table_model, old_index)
   end
 
-  def self.table_append_text_column(*args) : Nil
-    LibUI.table_append_text_column(*args)
+  def self.table_append_text_column(table_model, name, text_model_column, table_text_column_optional_params) : Nil
+    LibUI.table_append_text_column(table_model, name, text_model_column, table_text_column_optional_params)
   end
 
-  def self.table_append_image_column(*args) : Nil
-    LibUI.table_append_image_column(*args)
+  def self.table_append_image_column(table, name, image_model_colum) : Nil
+    LibUI.table_append_image_column(table, name, image_model_colum)
   end
 
-  def self.table_append_image_text_column(*args) : Nil
-    LibUI.table_append_image_text_column(*args)
+  def self.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params) : Nil
+    LibUI.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
   end
 
-  def self.table_append_checkbox_column(*args) : Nil
-    LibUI.table_append_checkbox_column(*args)
+  def self.table_append_checkbox_column(table, name, checkbox_model_column, checkbox_editable_model_column) : Nil
+    LibUI.table_append_checkbox_column(table, name, checkbox_model_column, checkbox_editable_model_column)
   end
 
-  def self.table_append_checkbox_text_column(*args) : Nil
-    LibUI.table_append_checkbox_text_column(*args)
+  def self.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params) : Nil
+    LibUI.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
   end
 
-  def self.table_append_progress_bar_column(*args) : Nil
-    LibUI.table_append_progress_bar_column(*args)
+  def self.table_append_progress_bar_column(table, name, progress_model_column) : Nil
+    LibUI.table_append_progress_bar_column(table, name, progress_model_column)
   end
 
-  def self.table_append_button_column(*args) : Nil
-    LibUI.table_append_button_column(*args)
+  def self.table_append_button_column(table, name, button_model_column, button_clickable_model_column) : Nil
+    LibUI.table_append_button_column(table, name, button_model_column, button_clickable_model_column)
   end
 
-  def self.table_header_visible(*args)
-    LibUI.table_header_visible(*args)
+  def self.table_header_visible(table) : LibC::Int
+    LibUI.table_header_visible(table)
   end
 
-  def self.table_header_set_visible(*args) : Nil
-    LibUI.table_header_set_visible(*args)
+  def self.table_header_set_visible(table, visible) : Nil
+    LibUI.table_header_set_visible(table, visible)
   end
 
-  def self.new_table(*args)
-    LibUI.new_table(*args)
+  def self.new_table(table_params) : Table
+    ref_ptr = LibUI.new_table(table_params)
+    Table.new(ref_ptr)
   end
 
   def self.table_on_row_clicked(sender, &callback : LibC::Int -> Void) : Nil
@@ -1315,12 +1366,12 @@ module UIng
     end, boxed_data)
   end
 
-  def self.table_header_set_sort_indicator(*args) : Nil
-    LibUI.table_header_set_sort_indicator(*args)
+  def self.table_header_set_sort_indicator(table, column, sort_indicator) : Nil
+    LibUI.table_header_set_sort_indicator(table, column, sort_indicator)
   end
 
-  def self.table_header_sort_indicator(*args)
-    LibUI.table_header_sort_indicator(*args)
+  def self.table_header_sort_indicator(table, column) : LibUI::TableSortOrder
+    LibUI.table_header_sort_indicator(table, column)
   end
 
   def self.table_header_on_clicked(sender, &callback : LibC::Int -> Void) : Nil
@@ -1332,20 +1383,20 @@ module UIng
     end, boxed_data)
   end
 
-  def self.table_column_width(*args)
-    LibUI.table_column_width(*args)
+  def self.table_column_width(table, column) : LibC::Int
+    LibUI.table_column_width(table, column)
   end
 
-  def self.table_column_set_width(*args) : Nil
-    LibUI.table_column_set_width(*args)
+  def self.table_column_set_width(table, column, width) : Nil
+    LibUI.table_column_set_width(table, column, width)
   end
 
-  def self.table_get_selection_mode(*args)
-    LibUI.table_get_selection_mode(*args)
+  def self.table_get_selection_mode(table) : LibUI::TableSelectionMode
+    LibUI.table_get_selection_mode(table)
   end
 
-  def self.table_set_selection_mode(*args) : Nil
-    LibUI.table_set_selection_mode(*args)
+  def self.table_set_selection_mode(table, mode) : Nil
+    LibUI.table_set_selection_mode(table, mode)
   end
 
   def self.table_on_selection_changed(sender, &callback : -> Void) : Nil
@@ -1357,15 +1408,16 @@ module UIng
     end, boxed_data)
   end
 
-  def self.table_get_selection(*args)
-    LibUI.table_get_selection(*args)
+  def self.table_get_selection(table) : TableSelection
+    ref_ptr = LibUI.table_get_selection(table)
+    TableSelection.new(ref_ptr)
   end
 
-  def self.table_set_selection(*args) : Nil
-    LibUI.table_set_selection(*args)
+  def self.table_set_selection(table, selection) : Nil
+    LibUI.table_set_selection(table, selection)
   end
 
-  def self.free_table_selection(*args) : Nil
-    LibUI.free_table_selection(*args)
+  def self.free_table_selection(table_selection) : Nil
+    LibUI.free_table_selection(table_selection)
   end
 end
