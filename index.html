@@ -438,28 +438,57 @@
 </ul>
 </li>
 </ul>
+<h3><a id="closures-are-not-always-possible" class="anchor" href="#closures-are-not-always-possible">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Closures are not always possible</h3>
+<ul>
+<li>A function pointer in C is a Proc in Crystal.
+<ul>
+<li>If data can be passed as an argument, it can be a closure, but not always; if data cannot be passed, it works only if the Proc is not a closure.</li>
+</ul>
+</li>
+</ul>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Development</h2>
+<ol>
+<li>Low-level bindings are located in <code>src/uing/lib_ui/lib_ui.cr</code>.</li>
+</ol>
+<ul>
+<li><code>UIng::LibUI.new_window</code>, <code>UIng::LibUI::AreaHandler.new</code>, etc.</li>
+</ul>
+<ol start="2">
+<li>Middle-level bindings are located in <code>src/uing.cr</code>. <code>UIng.new_window</code> etc.</li>
+</ol>
+<ul>
+<li><code>UIng::Window.new</code>, <code>UIng::AreaHandler.new</code>, <code>UIng::AreaDrawParams.new(ref_ptr)</code>, etc.</li>
+</ul>
+<ol start="3">
+<li>High-level object-oriented bindings are not yet implemented, and parhaps never will be, but they should be found in <code>src/uing/*.cr</code>.</li>
+</ol>
 <ul>
 <li>
-<p>https://forum.crystal-lang.org/t/6361</p>
+<p><code>Window = UIng::Window.new</code>, <code>window.on_closing { |w| ... }</code>, etc.</p>
+</li>
+<li>
+<p>Enums are defined under <code><a href="UIng.html">UIng</a></code> module. Both low-level and high-level bindings use them.</p>
+</li>
+<li>
+<p>The Crystal object corresponding to a C structure may have a reference pointer, or it may have the structure. Crystal objects have structure if it is necessary to allocate memory for the structure on the Crystal side. Otherwise, it should hold the reference.</p>
+</li>
+<li>
+<p>History: https://forum.crystal-lang.org/t/6361</p>
 </li>
 <li>
 <p>Rules:</p>
 <ul>
 <li><code>UIng::LibUI</code> is a module for binding.</li>
-<li>Use <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> to create bindings.</li>
-<li>Method names should be snake_case.</li>
+<li>Use <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> to create low-level bindings. You will need to modify the generated code.</li>
 <li><a href="https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function">Passing a Proc to a C function</a></li>
-</ul>
-</li>
-<li>
-<p>A function pointer in C is a Proc in Crystal.</p>
-<ul>
-<li>If data can be passed as an argument, it can be a closure, but not always; if data cannot be passed, it works only if the Proc is not a closure.</li>
 </ul>
 </li>
 </ul>
