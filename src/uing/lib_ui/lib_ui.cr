@@ -1,4 +1,4 @@
-require "./lib_ui/*"
+require "./*"
 
 module UIng
   {% if flag?(:windows) %}
@@ -14,11 +14,11 @@ module UIng
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]
-    @[Link(ldflags: "#{__DIR__}/../../libui.a")]
+    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
     @[Link(framework: "AppKit")]
-    @[Link(ldflags: "#{__DIR__}/../../libui.a")]
+    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
   {% end %}
   lib LibUI
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459

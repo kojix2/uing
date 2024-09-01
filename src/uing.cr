@@ -1,8 +1,12 @@
 require "./uing/version"
-require "./uing/lib_ui"
+require "./uing/lib_ui/lib_ui"
 require "./uing/tm"
 
 require "./uing/*"
+require "./uing/area/*"
+require "./uing/attribute/*"
+require "./uing/grid/*"
+require "./uing/table/*"
 
 module UIng
   # uiInitOptions is not used (but it is required)
