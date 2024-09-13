@@ -25,6 +25,15 @@ module UIng
     end
   end
 
+  # Convert string pointer to Crystal string
+  # and free the pointer
+  private def self.string_from_pointer(str_ptr) : String?
+    return nil if str_ptr.null?
+    str = String.new(str_ptr)
+    LibUI.free_text(str_ptr)
+    str
+  end
+
   def self.init : Nil
     str_ptr = LibUI.init(@@init_options)
     return if str_ptr.null?
@@ -162,7 +171,7 @@ module UIng
 
   def self.window_title(window) : String?
     str_ptr = LibUI.window_title(window)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.window_set_title(window, title) : Nil
@@ -268,7 +277,7 @@ module UIng
 
   def self.button_text(button) : String?
     str_ptr = LibUI.button_text(button)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.button_set_text(button, text) : Nil
@@ -321,7 +330,7 @@ module UIng
 
   def self.checkbox_text(checkbox) : String?
     str_ptr = LibUI.checkbox_text(checkbox)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.checkbox_set_text(checkbox, text) : Nil
@@ -352,7 +361,7 @@ module UIng
 
   def self.entry_text(entry) : String?
     str_ptr = LibUI.entry_text(entry)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.entry_set_text(entry, text) : Nil
@@ -393,7 +402,7 @@ module UIng
 
   def self.label_text(label) : String?
     str_ptr = LibUI.label_text(label)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.label_set_text(label, text) : Nil
@@ -436,7 +445,7 @@ module UIng
 
   def self.group_title(group) : String?
     str_ptr = LibUI.group_title(group)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.group_set_title(group, title) : Nil
@@ -596,7 +605,7 @@ module UIng
 
   def self.editable_combobox_text(editable_combobox) : String?
     str_ptr = LibUI.editable_combobox_text(editable_combobox)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.editable_combobox_set_text(editable_combobox, text) : Nil
@@ -677,7 +686,7 @@ module UIng
 
   def self.multiline_entry_text(multiline_entry) : String?
     str_ptr = LibUI.multiline_entry_text(multiline_entry)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.multiline_entry_set_text(multiline_entry, text) : Nil
@@ -776,17 +785,17 @@ module UIng
 
   def self.open_file(window) : String?
     str_ptr = LibUI.open_file(window)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.open_folder(window) : String?
     str_ptr = LibUI.open_folder(window)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.save_file(window) : String?
     str_ptr = LibUI.save_file(window)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.msg_box(parent, title, description) : Nil
@@ -951,6 +960,8 @@ module UIng
 
   def self.attribute_family(attribute) : String?
     str_ptr = LibUI.attribute_family(attribute)
+    # The returned string is owned by the attribute
+    # and should not be freed (probably)
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
@@ -1073,6 +1084,7 @@ module UIng
 
   def self.attributed_string_string(attributed_string) : String?
     str_ptr = LibUI.attributed_string_string(attributed_string)
+    # The returned string is owned by the attributed string?
     str_ptr.null? ? nil : String.new(str_ptr)
   end
 
@@ -1260,7 +1272,7 @@ module UIng
 
   def self.table_value_string(table_value) : String?
     str_ptr = LibUI.table_value_string(table_value)
-    str_ptr.null? ? nil : String.new(str_ptr)
+    string_from_pointer(str_ptr)
   end
 
   def self.new_table_value_image(image) : TableValue
