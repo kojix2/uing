@@ -69,7 +69,7 @@ handler.draw do |_, _, adp|
   params.string = ATTR_STR
   params.default_font = default_font
   params.width = area_draw_params.area_width
-  params.align = UIng::LibUI::DrawTextAlign::Left
+  params.align = UIng::DrawTextAlign::Left
 
   text_layout = UIng.draw_new_text_layout(params)
   UIng.draw_text(area_draw_params.context, text_layout, 0, 0)
