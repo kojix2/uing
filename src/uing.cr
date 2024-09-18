@@ -37,6 +37,10 @@ module UIng
   def self.init : Nil
     str_ptr = LibUI.init(@@init_options)
     return if str_ptr.null?
+    {% if flag?(:windows) %}
+      # FIXME: This is a workaround
+      return if String.new(str_ptr).includes?("code 0")
+    {% end %}
     err = String.new(str_ptr)
     LibUI.free_init_error(str_ptr)
     raise err
