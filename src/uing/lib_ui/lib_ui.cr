@@ -10,7 +10,8 @@ module UIng
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
     @[Link("#{__DIR__}/../../../libui")]
-    @[Link(ldflags: "/SUBSYSTEM:WINDOWS /MANIFEST /MANIFEST:EMBED /MANIFESTDEPENDENCY:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' language='*'\"")]
+    @[Link(ldflags: "/SUBSYSTEM:WINDOWS /MANIFEST /MANIFEST:EMBED")]
+    @[Link(ldflags: "/MANIFESTDEPENDENCY:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]

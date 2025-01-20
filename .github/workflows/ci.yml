@@ -30,7 +30,12 @@ jobs:
         run: shards install
       - name: Run tests
         run: crystal spec
-      - name: Build example
-        run: |
-          crystal run download.cr
-          crystal build examples/control_gallery.cr
+      - name: Download library
+        run: crystal run download.cr
+      - name: Build examples
+        run: crystal build examples/control_gallery.cr
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: control_gallery-${{ matrix.os }}
+          path: ${{ matrix.os == 'windows' && 'control_gallery.exe' || 'control_gallery' }}
