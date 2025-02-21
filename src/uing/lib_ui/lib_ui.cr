@@ -1,7 +1,7 @@
 require "./*"
 
 module UIng
-  {% if flag?(:windows) %}
+  {% if flag?(:msvc) %}
     @[Link("User32")]
     @[Link("Gdi32")]
     @[Link("Comctl32")]
@@ -11,7 +11,23 @@ module UIng
     @[Link("Windowscodecs")]
     @[Link("msvcrt")]
     @[Link("#{__DIR__}/../../../libui")]
-    @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
+    @[Link(ldflags: "/SUBSYSTEM:WINDOWS /MANIFEST /MANIFEST:EMBED /MANIFESTDEPENDENCY:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' language='*'\"")]
+  {% elsif flag?(:win32) && flag?(:gnu) %}
+    @[Link("stdc++")]
+    @[Link("supc++")]
+    @[Link("user32")]
+    @[Link("Gdi32")]
+    @[Link("Comctl32")]
+    @[Link("D2d1")]
+    @[Link("Dwrite")]
+    @[Link("WindowsCodecs")]
+    @[Link("Uuid")]
+    @[Link("Winmm")]
+    @[Link("Uxtheme")]
+    @[Link("ucrt")]
+    @[Link(ldflags: "-mwindows")]
+    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
+    @[Link(ldflags: "#{__DIR__}/../../../comctl32.res")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]

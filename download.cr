@@ -2,7 +2,7 @@ require "compress/zip"
 require "crest"
 
 def url_for_libui_ng_nightly(file_name)
-  "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build2/#{file_name}"
+  "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build/#{file_name}"
 end
 
 def download_libui_ng_nightly(lib_path, file_name)
@@ -48,12 +48,17 @@ end
     ["builddir/meson-out/libui.a"],
     "Ubuntu-x64-static-release.zip"
   )
-{% elsif flag?(:windows) %}
+{% elsif flag?(:msvc) %}
   download_libui_ng_nightly(
     # ["builddir/meson-out/libui.dll", "builddir/meson-out/libui.lib"],
     ["builddir/meson-out/libui.a"],
     "Win-x64-static-release.zip"
   )
-  require "file_utils"
-  FileUtils.mv("libui.a", "libui.lib")
+{% elsif flag?(:win32) && flag?(:gnu) %}
+  download_from_url(
+    ["libui.a"],
+    "libui_x86_64_win.a",
+    "https://github.com/petabyt/libui-dev/releases/download/5-beta/libui_x86_64_win.a"
+  )
+  system(p ("windres comctl32.rc -O coff -o comctl32.res"))
 {% end %}
