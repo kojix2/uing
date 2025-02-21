@@ -9,8 +9,9 @@ module UIng
     @[Link("Dwrite")]
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
+    @[Link("msvcrt")]
     @[Link("#{__DIR__}/../../../libui")]
-    @[Link(ldflags: "/SUBSYSTEM:WINDOWS /MANIFEST /MANIFEST:EMBED /MANIFESTDEPENDENCY:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' language='*'\"")]
+    @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]

@@ -103,11 +103,11 @@ UIng.box_append(inner, UIng.new_time_picker, 0)
 # Date Time Picker
 UIng.box_append(inner, UIng.new_date_time_picker, 0)
 
-# Font Button
-UIng.box_append(inner, UIng.new_font_button, 0)
+# # Font Button
+# UIng.box_append(inner, UIng.new_font_button, 0)
 
-# Color Button
-UIng.box_append(inner, UIng.new_color_button, 0)
+# # Color Button
+# UIng.box_append(inner, UIng.new_color_button, 0)
 
 inner2 = UIng.new_vertical_box
 UIng.box_set_padded(inner2, 1)

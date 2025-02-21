@@ -2,7 +2,7 @@ require "compress/zip"
 require "crest"
 
 def url_for_libui_ng_nightly(file_name)
-  "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build/#{file_name}"
+  "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build2/#{file_name}"
 end
 
 def download_libui_ng_nightly(lib_path, file_name)
