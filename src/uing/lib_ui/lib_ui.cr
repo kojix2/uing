@@ -10,7 +10,7 @@ module UIng
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
     @[Link("msvcrt")]
-    @[Link("#{__DIR__}/../../../libui")]
+    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
     @[Link(ldflags: "/SUBSYSTEM:WINDOWS /MANIFEST /MANIFEST:EMBED /MANIFESTDEPENDENCY:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' language='*'\"")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
     @[Link("stdc++")]
