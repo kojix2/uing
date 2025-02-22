@@ -478,17 +478,21 @@ However, whether it can be used as a closure depends on the following conditions
 | <strong>Data can be passed as an argument</strong>    | ✅ Supported                                           |
 | <strong>Data cannot be passed as an argument</strong> | ❌ Not Supported (Works only if Proc is not a closure) |</p>
 <hr />
-<h2><a id="development-binding-structure" class="anchor" href="#development-binding-structure">
+<h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a><strong>📌 Development (Binding Structure)</strong></h2>
-<p>UIng is structured into three binding levels:</p>
-<p>| <strong>Level</strong>        | <strong>Description</strong>                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| <strong>Low-Level</strong>    | Defined in <code>src/uing/lib_ui/lib_ui.cr</code>. <br> Example: <code>UIng::LibUI.new_window</code>, etc. |
-| <strong>Middle-Level</strong> | Defined in <code>src/uing.cr</code>. <br> Example: <code>UIng.new_window</code>, etc.                      |
-| <strong>High-Level</strong>   | Expected in <code>src/uing/*.cr</code>. <br> Example: <code>window.on_closing { }</code>, etc.             |</p>
+</a><strong>📌 Development</strong></h2>
+<h3><a id="binding-levels" class="anchor" href="#binding-levels">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Binding Levels**</h3>
+<p>| <strong>Level</strong>        | <strong>Defined in</strong>              | <strong>Example</strong>                    | <strong>Description</strong>               |
+| ---------------- | --------------------------- | ------------------------------ | ----------------------------- |
+| <strong>Low-Level</strong>    | <code>src/uing/lib_ui/lib_ui.cr</code> | <code>UIng::LibUI.new_button</code>, etc. | Direct bindings to the libui. |
+| <strong>Middle-Level</strong> | <code>src/uing.cr</code>               | <code>UIng.button_text</code>, etc.       | Handles memory management.    |
+| <strong>High-Level</strong>   | <code>src/uing/*.cr</code>             | <code>button.on_clicked { }</code>, etc.  | Custom API or macros.         |</p>
 <ul>
 <li>At the middle level, memory management tasks such as string deallocation are handled.</li>
 <li>The high-level API implementation is limited; the <code>Control</code> module provides a <code>method_missing</code> macro to handle undefined methods.</li>
