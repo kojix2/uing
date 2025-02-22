@@ -55,8 +55,11 @@ UIng is structured into three binding levels:
 | **Level**       | **Description** |
 |---------------|----------------|
 | **Low-Level**  | Defined in `src/uing/lib_ui/lib_ui.cr`. <br> Example: `UIng::LibUI.new_window`, etc. |
-| **Middle-Level** | Defined in `src/uing.cr`. <br> Example: `UIng::Window.new`, etc. |
-| **High-Level (Not Yet Implemented)** | Expected in `src/uing/*.cr`. <br> Example: `window.on_closing { |w| ... }`, etc. |
+| **Middle-Level** | Defined in `src/uing.cr`. <br> Example: `UIng.new_window`, etc. |
+| **High-Level** | Expected in `src/uing/*.cr`. <br> Example: `window.on_closing { |w| ... }`, etc. |
+
+- At the middle level, memory management tasks such as string deallocation are handled.
+- The high-level API implementation is limited; the `Control` module provides a `method_missing` macro to handle undefined methods.
 
 ### **🔹 Additional Rules**
 - `UIng::LibUI` is a **module dedicated to bindings**.
