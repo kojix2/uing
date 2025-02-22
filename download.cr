@@ -60,5 +60,5 @@ end
     "libui_x86_64_win.a",
     "https://github.com/petabyt/libui-dev/releases/download/5-beta/libui_x86_64_win.a"
   )
-  system(p ("windres comctl32.rc -O coff -o comctl32.res"))
+  system(p("windres comctl32.rc -O coff -o comctl32.res"))
 {% end %}
