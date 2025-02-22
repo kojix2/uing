@@ -434,10 +434,10 @@
 <p>Crystal prefers <strong>static linking</strong> for libui rather than using it as a shared library.</p>
 <p>The libui project <strong>does not distribute pre-compiled binaries</strong>.<br />
 Therefore, this project uses the following sources to obtain binaries:</p>
-<p>| OS             | Binary Source                                           |
-|---------------|--------------------------------------------------------|
+<p>| OS                | Binary Source                                                                                       |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
 | <strong>MacOS / Linux</strong> | Builds from the <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> repository (pre-build branch) |
-| <strong>Windows</strong>       | Pre-built binaries distributed with <a href="https://github.com/petabyt/libui-dev/releases">libui-dev</a> |</p>
+| <strong>Windows</strong>       | Pre-built binaries distributed with <a href="https://github.com/petabyt/libui-dev/releases">libui-dev</a>      |</p>
 <h3><a id="downloading-binaries" class="anchor" href="#downloading-binaries">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -473,9 +473,9 @@ Therefore, this project uses the following sources to obtain binaries:</p>
 </a><strong>📌 Closures and Their Limitations</strong></h2>
 <p>In Crystal, <strong>a C function pointer corresponds to a Proc</strong>.<br />
 However, whether it can be used as a closure depends on the following conditions:</p>
-<p>| <strong>Condition</strong>                      | <strong>Closure Support</strong> |
-|------------------------------------|----------------|
-| <strong>Data can be passed as an argument</strong> | ✅ Supported |
+<p>| <strong>Condition</strong>                            | <strong>Closure Support</strong>                                    |
+| ---------------------------------------- | ------------------------------------------------------ |
+| <strong>Data can be passed as an argument</strong>    | ✅ Supported                                           |
 | <strong>Data cannot be passed as an argument</strong> | ❌ Not Supported (Works only if Proc is not a closure) |</p>
 <hr />
 <h2><a id="development-binding-structure" class="anchor" href="#development-binding-structure">
@@ -484,11 +484,11 @@ However, whether it can be used as a closure depends on the following conditions
   </svg>
 </a><strong>📌 Development (Binding Structure)</strong></h2>
 <p>UIng is structured into three binding levels:</p>
-<p>| <strong>Level</strong>       | <strong>Description</strong> |
-|---------------|----------------|
-| <strong>Low-Level</strong>  | Defined in <code>src/uing/lib_ui/lib_ui.cr</code>. <br> Example: <code>UIng::LibUI.new_window</code>, etc. |
-| <strong>Middle-Level</strong> | Defined in <code>src/uing.cr</code>. <br> Example: <code>UIng.new_window</code>, etc. |
-| <strong>High-Level</strong> | Expected in <code>src/uing/*.cr</code>. <br> Example: <code>window.on_closing { |w| ... }</code>, etc. |</p>
+<p>| <strong>Level</strong>        | <strong>Description</strong>                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------ | --- | ------------ |
+| <strong>Low-Level</strong>    | Defined in <code>src/uing/lib_ui/lib_ui.cr</code>. <br> Example: <code>UIng::LibUI.new_window</code>, etc. |
+| <strong>Middle-Level</strong> | Defined in <code>src/uing.cr</code>. <br> Example: <code>UIng.new_window</code>, etc.                      |
+| <strong>High-Level</strong>   | Expected in <code>src/uing/*.cr</code>. <br> Example: <code>window.on_closing {                      | w   | ... }</code>, etc. |</p>
 <ul>
 <li>At the middle level, memory management tasks such as string deallocation are handled.</li>
 <li>The high-level API implementation is limited; the <code>Control</code> module provides a <code>method_missing</code> macro to handle undefined methods.</li>
@@ -515,9 +515,9 @@ However, whether it can be used as a closure depends on the following conditions
     <use href="#octicon-link"/>
   </svg>
 </a><strong>🔹 Differences Between MSVC and MinGW</strong></h3>
-<p>| <strong>Aspect</strong>  | <strong>MSVC Version</strong> | <strong>MinGW Version</strong> |
-|------------|----------------|----------------|
-| <strong>libui Suitability</strong> | <strong>libui-ng</strong> | <strong>libui-dev</strong> |
+<p>| <strong>Aspect</strong>                 | <strong>MSVC Version</strong>        | <strong>MinGW Version</strong>       |
+| -------------------------- | ----------------------- | ----------------------- |
+| <strong>libui Suitability</strong>      | <strong>libui-ng</strong>            | <strong>libui-dev</strong>           |
 | <strong>Manifest File Handling</strong> | Uses a different format | Uses a different format |</p>
 <h3><a id="com-ctl32-version-issues" class="anchor" href="#com-ctl32-version-issues">
   <svg class="octicon-link" aria-hidden="true">
