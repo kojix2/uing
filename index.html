@@ -419,12 +419,16 @@
   </svg>
 </a>UIng</h1>
 <p><a href="https://github.com/kojix2/uing/actions/workflows/ci.yml"><img src="https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg" alt="test" /></a></p>
-<p>Yet another crystal binding for libui-ng.</p>
+<p>Yet another crystal binding for <a href="https://github.com/libui-ng/libui-ng">libui-ng</a> or <a href="https://github.com/petabyt/libui-dev">libui-dev</a></p>
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Installation</h2>
+<p>The Crystal language believes that libui should be statically linked rather than as a shared library.</p>
+<p>The libui project does not distribute pre-compiled binaries. Here, for MacOS and Linux, we use builds from the workflow in repository kojix2/libui-ng; for Windows, we use binaries distributed with libui-dev.</p>
+<p>To download the binaries, run the download script.</p>
+<pre><code class="language-crystal">crystal run download.cr</code></pre>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
