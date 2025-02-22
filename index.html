@@ -496,11 +496,11 @@
 </ul>
 </li>
 </ul>
-<h2><a id="windows" class="anchor" href="#windows">
+<h3><a id="windows" class="anchor" href="#windows">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Windows</h2>
+</a>Windows</h3>
 <p>Windows is very difficult to deal with.</p>
 <p>First, there is the MSVC version of Crystal and the MingGW version of Crystal, which behave quite differently and need to be considered separately. It is not clear which Crystal will be more popular in the future.</p>
 <p>Also, either msvcrt or ucrt must be used, but they often conflict.</p>
@@ -508,6 +508,7 @@
 <p>I have tried removing TaskDialog. The build succeeds but does not work properly. As it turns out, there are other dependencies on Comctl32 besides TaskDialog. Also, the widget looks old and should not depend on the old Comctl32.</p>
 <p>The method of including manifest files also differs between MSVC and MinGW.</p>
 <p>libui-ng is more MSVC oriented, while libui-dev seems to be developed based on MinGW.</p>
+<p>For debugging, you can use the MinGW version of gdb.</p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
