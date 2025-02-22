@@ -487,8 +487,12 @@ However, whether it can be used as a closure depends on the following conditions
 <p>| <strong>Level</strong>       | <strong>Description</strong> |
 |---------------|----------------|
 | <strong>Low-Level</strong>  | Defined in <code>src/uing/lib_ui/lib_ui.cr</code>. <br> Example: <code>UIng::LibUI.new_window</code>, etc. |
-| <strong>Middle-Level</strong> | Defined in <code>src/uing.cr</code>. <br> Example: <code>UIng::Window.new</code>, etc. |
-| <strong>High-Level (Not Yet Implemented)</strong> | Expected in <code>src/uing/*.cr</code>. <br> Example: <code>window.on_closing { |w| ... }</code>, etc. |</p>
+| <strong>Middle-Level</strong> | Defined in <code>src/uing.cr</code>. <br> Example: <code>UIng.new_window</code>, etc. |
+| <strong>High-Level</strong> | Expected in <code>src/uing/*.cr</code>. <br> Example: <code>window.on_closing { |w| ... }</code>, etc. |</p>
+<ul>
+<li>At the middle level, memory management tasks such as string deallocation are handled.</li>
+<li>The high-level API implementation is limited; the <code>Control</code> module provides a <code>method_missing</code> macro to handle undefined methods.</li>
+</ul>
 <h3><a id="additional-rules" class="anchor" href="#additional-rules">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
