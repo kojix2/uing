@@ -2,9 +2,19 @@
 
 [![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)
 
-Yet another crystal binding for libui-ng.
+Yet another crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng) or [libui-dev](https://github.com/petabyt/libui-dev)
 
 ## Installation
+
+The Crystal language believes that libui should be statically linked rather than as a shared library.
+
+The libui project does not distribute pre-compiled binaries. Here, for MacOS and Linux, we use builds from the workflow in repository kojix2/libui-ng; for Windows, we use binaries distributed with libui-dev.
+
+To download the binaries, run the download script.
+
+```
+crystal run download.cr
+```
 
 ## Usage
 
