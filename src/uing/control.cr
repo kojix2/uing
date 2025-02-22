@@ -1,9 +1,15 @@
 module UIng
   module Control
     macro method_missing(call)
-      def {{call.name}}(*args, **kwargs, &block)
+      {% if call.block %}
+      def {{call.name}}(*args, **kwargs, &block : -> U) forall U
         UIng.{{ @type.name.split("::").last.underscore.id }}_{{call.name.id}}(@ref_ptr, *args, **kwargs, &block)
       end
+      {% else %}
+      def {{call.name}}(*args, **kwargs)
+        UIng.{{ @type.name.split("::").last.underscore.id }}_{{call.name.id}}(@ref_ptr, *args, **kwargs)
+      end
+      {% end %}
     end
 
     def destroy

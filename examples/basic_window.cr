@@ -2,10 +2,10 @@ require "../src/uing"
 
 UIng.init
 
-w = UIng.new_window("Hello", 300, 200, 1)
-UIng.control_show(w)
+w = UIng::Window.new("Hello", 300, 200, true)
+w.show
 
-UIng.window_on_closing(w) do
+w.on_closing do
   UIng.quit
   1
 end
