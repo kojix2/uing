@@ -51,6 +51,24 @@ See [examples](examples).
   - Use [crystal_lib](https://github.com/crystal-lang/crystal_lib) to create low-level bindings. You will need to modify the generated code.
   - [Passing a Proc to a C function](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function)
 
+### Windows
+
+Windows is very difficult to deal with.
+
+First, there is the MSVC version of Crystal and the MingGW version of Crystal, which behave quite differently and need to be considered separately. It is not clear which Crystal will be more popular in the future.
+
+Also, either msvcrt or ucrt must be used, but they often conflict.
+
+An important point is the Comctl32 version specification. libui-ng and libui-dev depend on Comctl32 version 6 or later, but require a manifest file to specify the version. For example, TaskDialog depends on the new Comctl32.
+
+I have tried removing TaskDialog. The build succeeds but does not work properly. As it turns out, there are other dependencies on Comctl32 besides TaskDialog. Also, the widget looks old and should not depend on the old Comctl32.
+
+The method of including manifest files also differs between MSVC and MinGW.
+
+libui-ng is more MSVC oriented, while libui-dev seems to be developed based on MinGW.
+
+For debugging, you can use the MinGW version of gdb.
+
 ## Contributing
 
 - Fork this repository
