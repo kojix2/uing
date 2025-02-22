@@ -1,82 +1,103 @@
-# UIng
+# **UIng**  
 
-[![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)
+[![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)  
 
-Yet another crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng) or [libui-dev](https://github.com/petabyt/libui-dev)
+**UIng** is yet another Crystal binding for **libui-ng** or **libui-dev**.  
 
-## Installation
+---
 
-The Crystal language believes that libui should be statically linked rather than as a shared library.
+## **📌 Installation**  
 
-The libui project does not distribute pre-compiled binaries. Here, for MacOS and Linux, we use builds from the workflow in repository kojix2/libui-ng; for Windows, we use binaries distributed with libui-dev.
+Crystal prefers **static linking** for libui rather than using it as a shared library.  
 
-To download the binaries, run the download script.
+The libui project **does not distribute pre-compiled binaries**.  
+Therefore, this project uses the following sources to obtain binaries:
 
-```
+| OS             | Binary Source                                           |
+|---------------|--------------------------------------------------------|
+| **MacOS / Linux** | Builds from the [kojix2/libui-ng](https://github.com/kojix2/libui-ng) repository |
+| **Windows**       | Pre-built binaries distributed with libui-dev |
+
+### **🔽 Downloading Binaries**
+```sh
 crystal run download.cr
 ```
 
-## Usage
+---
 
-See [examples](examples).
+## **📌 Usage**  
 
-- Notes:
-  - On Windows, libui-ng's msg_box implementation uses TaskDialog. ComCtl32.dll version6 is required to call TaskDialog. The standard ComCtl32 is version 5, so a manifest file is required.
+For more details, see [examples](examples).  
 
-### Closures are not always possible
+### **⚠️ Important Notes**
+- **Windows Compatibility Issues**  
+  - `libui-ng`'s `msg_box` implementation relies on `TaskDialog`.  
+  - `TaskDialog` requires **ComCtl32.dll version 6**.  
+  - **The standard ComCtl32 is version 5**, so a **manifest file is required**.  
 
-- A function pointer in C is a Proc in Crystal.
-  - If data can be passed as an argument, it can be a closure, but not always; if data cannot be passed, it works only if the Proc is not a closure.
+---
 
-## Development
+## **📌 Closures and Their Limitations**
+In Crystal, **a C function pointer corresponds to a Proc**.  
+However, whether it can be used as a closure depends on the following conditions:
 
-1. Low-level bindings are located in `src/uing/lib_ui/lib_ui.cr`.
+| **Condition**                      | **Closure Support** |
+|------------------------------------|----------------|
+| **Data can be passed as an argument** | ✅ Supported |
+| **Data cannot be passed as an argument** | ❌ Not Supported (Works only if Proc is not a closure) |
 
-- `UIng::LibUI.new_window`, `UIng::LibUI::AreaHandler.new`, etc.
+---
 
-2. Middle-level bindings are located in `src/uing.cr`. `UIng.new_window` etc.
+## **📌 Development (Binding Structure)**  
 
-- `UIng::Window.new`, `UIng::AreaHandler.new`, `UIng::AreaDrawParams.new(ref_ptr)`, etc.
+UIng is structured into three binding levels:
 
-3. High-level object-oriented bindings are not yet implemented, and parhaps never will be, but they should be found in `src/uing/*.cr`.
+| **Level**       | **Description** |
+|---------------|----------------|
+| **Low-Level**  | Defined in `src/uing/lib_ui/lib_ui.cr`. <br> Example: `UIng::LibUI.new_window`, etc. |
+| **Middle-Level** | Defined in `src/uing.cr`. <br> Example: `UIng::Window.new`, etc. |
+| **High-Level (Not Yet Implemented)** | Expected in `src/uing/*.cr`. <br> Example: `window.on_closing { |w| ... }`, etc. |
 
-- `Window = UIng::Window.new`, `window.on_closing { |w| ... }`, etc.
+### **🔹 Additional Rules**
+- `UIng::LibUI` is a **module dedicated to bindings**.
+- **Use** [crystal_lib](https://github.com/crystal-lang/crystal_lib) **to generate low-level bindings** (manual modifications required).
+- **Passing a Proc to a C function**: [Official Documentation](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function).
 
-- Enums are defined under `UIng` module. Both low-level and high-level bindings use them.
-- The Crystal object corresponding to a C structure may have a reference pointer, or it may have the structure. Crystal objects have structure if it is necessary to allocate memory for the structure on the Crystal side. Otherwise, it should hold the reference.
+---
 
-- History: https://forum.crystal-lang.org/t/6361
-- Rules:
-  - `UIng::LibUI` is a module for binding.
-  - Use [crystal_lib](https://github.com/crystal-lang/crystal_lib) to create low-level bindings. You will need to modify the generated code.
-  - [Passing a Proc to a C function](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function)
+## **📌 Windows Compatibility**  
 
-### Windows
+Windows support is **particularly challenging** due to the following reasons:
 
-Windows is very difficult to deal with.
+### **🔹 Differences Between MSVC and MinGW**
+| **Aspect**  | **MSVC Version** | **MinGW Version** |
+|------------|----------------|----------------|
+| **Crystal Build** | Official Crystal build | Custom-built Crystal |
+| **libui Suitability** | **Optimized for libui-ng** | **Optimized for libui-dev** |
+| **Manifest File Handling** | Uses a different format | Uses a different format |
 
-First, there is the MSVC version of Crystal and the MingGW version of Crystal, which behave quite differently and need to be considered separately. It is not clear which Crystal will be more popular in the future.
+### **🔹 ComCtl32 Version Issues**
+- **ComCtl32 version 6 or later is required**.
+- **TaskDialog is dependent on it** (removing TaskDialog breaks functionality).
+- **Using an older ComCtl32 version results in outdated UI appearance**.
 
-Also, either msvcrt or ucrt must be used, but they often conflict.
+### **🔹 Debugging**
+- **MinGW version of gdb** can be used for debugging.
 
-An important point is the Comctl32 version specification. libui-ng and libui-dev depend on Comctl32 version 6 or later, but require a manifest file to specify the version. For example, TaskDialog depends on the new Comctl32.
+---
 
-I have tried removing TaskDialog. The build succeeds but does not work properly. As it turns out, there are other dependencies on Comctl32 besides TaskDialog. Also, the widget looks old and should not depend on the old Comctl32.
+## **📌 Contributing**  
 
-The method of including manifest files also differs between MSVC and MinGW.
+You can contribute to this project by:  
 
-libui-ng is more MSVC oriented, while libui-dev seems to be developed based on MinGW.
+✅ **Forking this repository**  
+✅ **Reporting bugs**  
+✅ **Fixing bugs and submitting pull requests**  
+✅ **Improving documentation**  
+✅ **Suggesting or adding new features**  
 
-For debugging, you can use the MinGW version of gdb.
+---
 
-## Contributing
+## **📌 License**  
 
-- Fork this repository
-- Report bugs
-- Fix bugs and submit pull requests
-- Write, clarify, or fix documentation
-- Suggest or add new features
-
-## License
-
-MIT
+This project is licensed under the **MIT License**.  
