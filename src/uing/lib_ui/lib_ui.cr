@@ -9,9 +9,9 @@ module UIng
     @[Link("Dwrite")]
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
-    @[Link("msvcrt")]
     @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
-    @[Link(ldflags: "/SUBSYSTEM:WINDOWS /MANIFEST /MANIFEST:EMBED /MANIFESTDEPENDENCY:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' language='*'\"")]
+    @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
+    @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
     @[Link("stdc++")]
     @[Link("supc++")]
