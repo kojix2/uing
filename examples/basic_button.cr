@@ -4,9 +4,9 @@ UIng.init
 
 Main_window = UIng.new_window("hello world", 300, 200, 1)
 
-button = UIng.new_button("Button")
+button = UIng::Button.new("Button")
 
-UIng.button_on_clicked(button) do
+button.on_clicked do
   UIng.msg_box(Main_window, "Information", "You clicked the button")
 end
 
