@@ -51,15 +51,15 @@ However, whether it can be used as a closure depends on the following conditions
 
 ---
 
-## **📌 Development (Binding Structure)**
+## **📌 Development**
 
-UIng is structured into three binding levels:
+### Binding Levels\*\*
 
-| **Level**        | **Description**                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| **Low-Level**    | Defined in `src/uing/lib_ui/lib_ui.cr`. <br> Example: `UIng::LibUI.new_window`, etc. |
-| **Middle-Level** | Defined in `src/uing.cr`. <br> Example: `UIng.new_window`, etc.                      |
-| **High-Level**   | Expected in `src/uing/*.cr`. <br> Example: `window.on_closing { }`, etc.             |
+| **Level**        | **Defined in**              | **Example**                    | **Description**               |
+| ---------------- | --------------------------- | ------------------------------ | ----------------------------- |
+| **Low-Level**    | `src/uing/lib_ui/lib_ui.cr` | `UIng::LibUI.new_button`, etc. | Direct bindings to the libui. |
+| **Middle-Level** | `src/uing.cr`               | `UIng.button_text`, etc.       | Handles memory management.    |
+| **High-Level**   | `src/uing/*.cr`             | `button.on_clicked { }`, etc.  | Custom API or macros.         |
 
 - At the middle level, memory management tasks such as string deallocation are handled.
 - The high-level API implementation is limited; the `Control` module provides a `method_missing` macro to handle undefined methods.
