@@ -2,7 +2,7 @@
 
 [![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)  
 
-**UIng** is yet another Crystal binding for **libui-ng** or **libui-dev**.  
+**UIng** is yet another Crystal binding for **[libui-ng](https://github.com/libui-ng/libui-ng)** or **[libui-dev](https://github.com/petabyt/libui-dev)**.  
 
 ---
 
@@ -15,8 +15,8 @@ Therefore, this project uses the following sources to obtain binaries:
 
 | OS             | Binary Source                                           |
 |---------------|--------------------------------------------------------|
-| **MacOS / Linux** | Builds from the [kojix2/libui-ng](https://github.com/kojix2/libui-ng) repository |
-| **Windows**       | Pre-built binaries distributed with libui-dev |
+| **MacOS / Linux** | Builds from the [kojix2/libui-ng](https://github.com/kojix2/libui-ng) repository (pre-build branch) |
+| **Windows**       | Pre-built binaries distributed with [libui-dev](https://github.com/petabyt/libui-dev/releases) |
 
 ### **🔽 Downloading Binaries**
 ```sh
@@ -33,7 +33,7 @@ For more details, see [examples](examples).
 - **Windows Compatibility Issues**  
   - `libui-ng`'s `msg_box` implementation relies on `TaskDialog`.  
   - `TaskDialog` requires **ComCtl32.dll version 6**.  
-  - **The standard ComCtl32 is version 5**, so a **manifest file is required**.  
+  - **The standard ComCtl32 is version 5**, so a **manifest file is required**.
 
 ---
 
@@ -72,8 +72,7 @@ Windows support is **particularly challenging** due to the following reasons:
 ### **🔹 Differences Between MSVC and MinGW**
 | **Aspect**  | **MSVC Version** | **MinGW Version** |
 |------------|----------------|----------------|
-| **Crystal Build** | Official Crystal build | Custom-built Crystal |
-| **libui Suitability** | **Optimized for libui-ng** | **Optimized for libui-dev** |
+| **libui Suitability** | **libui-ng** | **libui-dev** |
 | **Manifest File Handling** | Uses a different format | Uses a different format |
 
 ### **🔹 ComCtl32 Version Issues**
