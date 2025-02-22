@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Separator
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Separator))
     end
 

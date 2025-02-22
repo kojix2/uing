@@ -1,14 +1,14 @@
 require "./control"
 
 module UIng
-  class Entry
+  class Grid
     include Control
 
-    def initialize(@ref_ptr : Pointer(LibUI::Entry))
+    def initialize(@ref_ptr : Pointer(LibUI::Grid))
     end
 
     # def initialize
-    #   @ref_ptr = LibUI.new_entry
+    #   @ref_ptr = LibUI.new_grid
     # end
 
     forward_missing_to(@ref_ptr)

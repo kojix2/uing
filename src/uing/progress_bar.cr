@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class ProgressBar
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::ProgressBar))
     end
 

@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Tab
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Tab))
     end
 

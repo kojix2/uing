@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Group
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Group))
     end
 

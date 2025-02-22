@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class EditableCombobox
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::EditableCombobox))
     end
 

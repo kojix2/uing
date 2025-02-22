@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Checkbox
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Checkbox))
     end
 

@@ -1,6 +1,10 @@
+require "./control"
+
 module UIng
   # Note: The name Box is already taken by Crystal's built-in class Box.
   class Box
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Box))
     end
 

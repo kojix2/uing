@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Spinbox
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Spinbox))
     end
 

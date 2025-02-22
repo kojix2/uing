@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Slider
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Slider))
     end
 

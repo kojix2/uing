@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class RadioButtons
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::RadioButtons))
     end
 

@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class MultilineEntry
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::MultilineEntry))
     end
 

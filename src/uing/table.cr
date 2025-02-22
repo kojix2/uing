@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Table
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Table))
     end
 

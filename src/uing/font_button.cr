@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class FontButton
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::FontButton))
     end
 

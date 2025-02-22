@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Window
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 

@@ -1,5 +1,9 @@
+require "./control"
+
 module UIng
   class Label
+    include Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Label))
     end
 
