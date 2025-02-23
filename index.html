@@ -438,6 +438,12 @@
     <use href="#octicon-link"/>
   </svg>
 </a>🔶 Installation</h2>
+<h3><a id="downloading-binaries" class="anchor" href="#downloading-binaries">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>⇩ Downloading Binaries</h3>
+<pre><code class="language-sh">crystal run download.cr</code></pre>
 <p>Crystal prefers <strong>static linking</strong> for libui rather than using it as a shared library.</p>
 <p>The libui project <strong>does not distribute pre-compiled binaries</strong>.<br />
 Therefore, this project uses the following sources to obtain binaries:</p>
@@ -445,12 +451,16 @@ Therefore, this project uses the following sources to obtain binaries:</p>
 | ----------------- | --------------------------------------------------------------------------------------------------- |
 | <strong>MacOS / Linux</strong> | Builds from the <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> repository (pre-build branch) |
 | <strong>Windows</strong>       | Pre-built binaries distributed with <a href="https://github.com/petabyt/libui-dev/releases">libui-dev</a>      |</p>
-<h3><a id="downloading-binaries" class="anchor" href="#downloading-binaries">
+<h3><a id="windows" class="anchor" href="#windows">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>⇩ Downloading Binaries</h3>
-<pre><code class="language-sh">crystal run download.cr</code></pre>
+</a>Windows</h3>
+<ul>
+<li><strong>MinGW (mingw-w64-crystal)</strong> is recommended for Windows. UCRT / Clang is not supported because libui-dev is built with MinGW64.</li>
+<li><strong>MSVC (x86_64-msvc)</strong> is not recommended but can be used with some limitations. Make sure rc.exe is in the PATH.</li>
+</ul>
+<p>See: https://crystal-lang.org/install/#windows</p>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
