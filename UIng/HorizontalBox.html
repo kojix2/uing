@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::DateTimePicker - uing main</title>
+  <title>UIng::HorizontalBox - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -142,7 +142,7 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/DateTimePicker" data-name="uing::datetimepicker">
+  <li class=" " data-id="uing/UIng/DateTimePicker" data-name="uing::datetimepicker">
       <a href="../UIng/DateTimePicker.html">DateTimePicker</a>
       
     </li>
@@ -252,7 +252,7 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/HorizontalBox" data-name="uing::horizontalbox">
+  <li class=" current" data-id="uing/UIng/HorizontalBox" data-name="uing::horizontalbox">
       <a href="../UIng/HorizontalBox.html">HorizontalBox</a>
       
     </li>
@@ -431,12 +431,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> UIng::<wbr>DateTimePicker
+  <span class="kind">class</span> UIng::<wbr>HorizontalBox
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/DateTimePicker.html">UIng::DateTimePicker</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/HorizontalBox.html">UIng::HorizontalBox</a></li><li class="superclass"><a href="../UIng/Box.html">UIng::Box</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -444,20 +444,6 @@
 
 
 
-
-  <h2>
-    <a id="included-modules" class="anchor" href="#included-modules">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Included Modules
-  </h2>
-  <ul class="other-types-list">
-    
-      <li class="other-type"><a href="../UIng/Control.html">UIng::Control</a></li>
-    
-  </ul>
 
 
 
@@ -478,8 +464,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/1e59d6874dc25d24fb80b03e46d80e87e7f2650d/src/uing/date_time_picker.cr#L4" target="_blank">
-        uing/date_time_picker.cr
+      <a href="https://github.com/kojix2/uing/blob/1e59d6874dc25d24fb80b03e46d80e87e7f2650d/src/uing/box.cr#L22" target="_blank">
+        uing/box.cr
       </a>
     
     <br/>
@@ -500,38 +486,48 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ADateTimePicker%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::DateTimePicker))</a>
+        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ABox%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::Box))</a>
         
       </li>
-    
-  </ul>
-
-
-
-
-
-
-
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
         
       </li>
     
   </ul>
+
+
+
+
+
+
 
 
 
 <div class="methods-inherited">
+  
+    
+
+  <h3>Instance methods inherited from class <code><a href="../UIng/Box.html">UIng::Box</a></code></h3>
+  
+  
+    <a href="../UIng/Box.html#to_unsafe-instance-method" class="tooltip">
+      <span>to_unsafe</span>
+    to_unsafe</a>
+    
+  
+
+
+    
+
+
+    
+
+
+    
+
+
   
     
 
@@ -657,18 +653,34 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::DateTimePicker))-class-method">
+    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::Box))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::DateTimePicker))
+        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::Box))
 
-        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ADateTimePicker%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ABox%29%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1e59d6874dc25d24fb80b03e46d80e87e7f2650d/src/uing/date_time_picker.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/1e59d6874dc25d24fb80b03e46d80e87e7f2650d/src/uing/box.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/1e59d6874dc25d24fb80b03e46d80e87e7f2650d/src/uing/box.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -679,32 +691,6 @@
 
 
 
-
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
-      <div class="signature">
-        
-        def <strong>to_unsafe</strong> : Pointer(Void)
-
-        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/1e59d6874dc25d24fb80b03e46d80e87e7f2650d/src/uing/date_time_picker.cr#L14" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
 
 
 </div>
