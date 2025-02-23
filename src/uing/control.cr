@@ -2,7 +2,7 @@ module UIng
   module MethodMissing
     macro method_missing(call)
       {% if call.block %}
-      # the argument type of the block is not known
+      # This only works when there are no block parameters
       def {{call.name}}(*args, **kwargs, &block : -> U) forall U
         UIng.{{ @type.name.split("::").last.underscore.id }}_{{call.name.id}}(@ref_ptr, *args, **kwargs, &block)
       end

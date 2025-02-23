@@ -7,9 +7,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Entry))
     end
 
-    # def initialize
-    #   @ref_ptr = LibUI.new_entry
-    # end
+    def initialize
+      @ref_ptr = LibUI.new_entry
+    end
 
     def to_unsafe
       @ref_ptr

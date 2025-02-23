@@ -732,11 +732,14 @@ module UIng
     LibUI.menu_item_disable(menu_item)
   end
 
-  def self.menu_item_on_clicked(sender, &callback : Pointer(LibUI::Window) -> Void)
-    boxed_data = ::Box.box(callback)
+  def self.menu_item_on_clicked(sender, &callback : UIng::Window -> Void)
+    callback2 = -> (w : Pointer(LibUI::Window)) {
+      callback.call(UIng::Window.new(w))
+    }
+    boxed_data = ::Box.box(callback2)
     @@box = boxed_data
     LibUI.menu_item_on_clicked(sender, ->(sender, window, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
+      data_as_callback = ::Box(typeof(callback2)).unbox(data)
       data_as_callback.call(window)
     end, boxed_data)
   end

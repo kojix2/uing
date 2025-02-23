@@ -7,6 +7,10 @@ module UIng
 
     # no new_menu_item function in libui
 
+    def on_clicked(&block : UIng::Window -> Void)
+      UIng.menu_item_on_clicked(@ref_ptr, &block)
+    end
+
     def to_unsafe
       @ref_ptr
     end
