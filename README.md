@@ -16,8 +16,6 @@
 crystal run download.cr
 ```
 
-Crystal prefers **static linking** for libui rather than using it as a shared library.
-
 The libui project **does not distribute pre-compiled binaries**.  
 Therefore, this project uses the following sources to obtain binaries:
 
@@ -30,6 +28,11 @@ Therefore, this project uses the following sources to obtain binaries:
 
 - **MinGW (mingw-w64-crystal)** is recommended for Windows. UCRT / Clang is not supported because libui-dev is built with MinGW64.
 - **MSVC (x86_64-msvc)** is not recommended but can be used with some limitations. Make sure rc.exe is in the PATH.
+
+```powsershell
+# Add the path to the Windows Kits
+$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
+```
 
 See: https://crystal-lang.org/install/#windows
 
@@ -56,6 +59,22 @@ The middle-level API is reasonably well-implemented, allowing users to access mo
 
 - At the middle level, memory management tasks such as string deallocation are handled.
 - The high-level API implementation is limited; the `Control` module provides a `method_missing` macro to handle undefined methods.
+
+### Hide Console Window on Windows
+
+#### MinGW
+
+```sh
+crystal build examples/basic_window.cr --link-flags "-mwindows"
+```
+
+#### MSVC
+
+```sh
+crystal build examples/basic_window.cr --link-flags=/SUBSYSTEM:WINDOWS
+```
+
+**Note:** The program will crash if you attempt to output to the console.
 
 ## 🔶 Closures and Their Limitations
 

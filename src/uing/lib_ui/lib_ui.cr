@@ -10,7 +10,7 @@ module UIng
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
     @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
-    @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
+    # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
     @[Link("stdc++")]
@@ -25,7 +25,7 @@ module UIng
     @[Link("Winmm")]
     @[Link("Uxtheme")]
     @[Link("ucrt")]
-    @[Link(ldflags: "-mwindows")]
+    # @[Link(ldflags: "-mwindows")]
     @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
     @[Link(ldflags: "#{__DIR__}/../../../comctl32.res")]
   {% elsif flag?(:linux) %}
