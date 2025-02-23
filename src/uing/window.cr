@@ -7,9 +7,8 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 
-    def initialize(title, width, height, has_menubar : Bool = false)
-      menubar_flag = has_menubar ? 1 : 0
-      @ref_ptr = LibUI.new_window(title, width, height, menubar_flag)
+    def initialize(title, width, height, has_menubar)
+      @ref_ptr = LibUI.new_window(title, width, height, has_menubar)
     end
 
     def to_unsafe

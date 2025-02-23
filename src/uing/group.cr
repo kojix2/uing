@@ -7,9 +7,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Group))
     end
 
-    # def initialize
-    #   @ref_ptr = LibUI.new_group
-    # end
+    def initialize(title : String)
+      @ref_ptr = LibUI.new_group(title)
+    end
 
     def to_unsafe
       @ref_ptr

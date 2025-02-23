@@ -1,13 +1,11 @@
 module UIng
   class MenuItem
+    include MethodMissing
+
     def initialize(@ref_ptr : Pointer(LibUI::MenuItem))
     end
 
-    # def initialize
-    #   @ref_ptr = LibUI.new_menu_item
-    # end
-
-    forward_missing_to(@ref_ptr)
+    # no new_menu_item function in libui
 
     def to_unsafe
       @ref_ptr

@@ -320,12 +320,12 @@ module UIng
 
   def self.new_horizontal_box : UIng::Box
     ref_ptr = LibUI.new_horizontal_box
-    UIng::VerticalBox.new(ref_ptr)
+    UIng::Box.new(ref_ptr)
   end
 
   def self.new_vertical_box : UIng::Box
     ref_ptr = LibUI.new_vertical_box
-    UIng::HorizontalBox.new(ref_ptr)
+    UIng::Box.new(ref_ptr)
   end
 
   def self.checkbox_text(checkbox) : String?
