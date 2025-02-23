@@ -35,6 +35,13 @@ See: https://crystal-lang.org/install/#windows
 
 ## 🔶 Usage
 
+The Control gallery example uses a high-level API.
+
+```sh
+crystal build examples/control_gallery.cr
+./control_gallery
+```
+
 For more details, see [examples](examples).
 
 The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.
