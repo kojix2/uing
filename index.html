@@ -444,7 +444,6 @@
   </svg>
 </a>⇩ Downloading Binaries</h3>
 <pre><code class="language-sh">crystal run download.cr</code></pre>
-<p>Crystal prefers <strong>static linking</strong> for libui rather than using it as a shared library.</p>
 <p>The libui project <strong>does not distribute pre-compiled binaries</strong>.<br />
 Therefore, this project uses the following sources to obtain binaries:</p>
 <p>| OS                | Binary Source                                                                                       |
@@ -460,6 +459,8 @@ Therefore, this project uses the following sources to obtain binaries:</p>
 <li><strong>MinGW (mingw-w64-crystal)</strong> is recommended for Windows. UCRT / Clang is not supported because libui-dev is built with MinGW64.</li>
 <li><strong>MSVC (x86_64-msvc)</strong> is not recommended but can be used with some limitations. Make sure rc.exe is in the PATH.</li>
 </ul>
+<pre><code class="language-powsershell"># Add the path to the Windows Kits
+$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
 <p>See: https://crystal-lang.org/install/#windows</p>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
@@ -485,6 +486,24 @@ Therefore, this project uses the following sources to obtain binaries:</p>
 <li>At the middle level, memory management tasks such as string deallocation are handled.</li>
 <li>The high-level API implementation is limited; the <code>Control</code> module provides a <code>method_missing</code> macro to handle undefined methods.</li>
 </ul>
+<h2><a id="hide-console-window-on-windows" class="anchor" href="#hide-console-window-on-windows">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Hide Console Window on Windows</h2>
+<h4><a id="min-gw" class="anchor" href="#min-gw">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>MinGW</h4>
+<pre><code class="language-sh">crystal build examples/basic_window.cr --link-flags &quot;-mwindows&quot;</code></pre>
+<h4><a id="msvc" class="anchor" href="#msvc">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>MSVC</h4>
+<pre><code class="language-sh">crystal build examples/basic_window.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
+<p><strong>Note:</strong> The program will crash if you attempt to output to the console.</p>
 <h2><a id="closures-and-their-limitations" class="anchor" href="#closures-and-their-limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
