@@ -10,6 +10,12 @@
 
 ## 🔶 Installation
 
+### ⇩ Downloading Binaries
+
+```sh
+crystal run download.cr
+```
+
 Crystal prefers **static linking** for libui rather than using it as a shared library.
 
 The libui project **does not distribute pre-compiled binaries**.  
@@ -20,11 +26,12 @@ Therefore, this project uses the following sources to obtain binaries:
 | **MacOS / Linux** | Builds from the [kojix2/libui-ng](https://github.com/kojix2/libui-ng) repository (pre-build branch) |
 | **Windows**       | Pre-built binaries distributed with [libui-dev](https://github.com/petabyt/libui-dev/releases)      |
 
-### ⇩ Downloading Binaries
+### Windows
 
-```sh
-crystal run download.cr
-```
+- **MinGW (mingw-w64-crystal)** is recommended for Windows. UCRT / Clang is not supported because libui-dev is built with MinGW64.
+- **MSVC (x86_64-msvc)** is not recommended but can be used with some limitations. Make sure rc.exe is in the PATH.
+
+See: https://crystal-lang.org/install/#windows
 
 ## 🔶 Usage
 
