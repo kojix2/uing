@@ -429,7 +429,7 @@
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>❖ Installation</h2>
+</a>🔶 Installation</h2>
 <p>Crystal prefers <strong>static linking</strong> for libui rather than using it as a shared library.</p>
 <p>The libui project <strong>does not distribute pre-compiled binaries</strong>.<br />
 Therefore, this project uses the following sources to obtain binaries:</p>
@@ -447,24 +447,9 @@ Therefore, this project uses the following sources to obtain binaries:</p>
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>❖ Usage</h2>
+</a>🔶 Usage</h2>
 <p>For more details, see <a href="examples">examples</a>.</p>
-<h2><a id="closures-and-their-limitations" class="anchor" href="#closures-and-their-limitations">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>❖ Closures and Their Limitations</h2>
-<p>In Crystal, <strong>a C function pointer corresponds to a Proc</strong>.<br />
-However, whether it can be used as a closure depends on the following conditions:</p>
-<p>| <strong>Condition</strong>                            | <strong>Closure Support</strong>                                    |
-| ---------------------------------------- | ------------------------------------------------------ |
-| <strong>Data can be passed as an argument</strong>    | ✅ Supported                                           |
-| <strong>Data cannot be passed as an argument</strong> | ❌ Not Supported (Works only if Proc is not a closure) |</p>
-<h2><a id="development" class="anchor" href="#development">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>❖ Development</h2>
+<p>The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.</p>
 <h3><a id="binding-levels" class="anchor" href="#binding-levels">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -479,6 +464,22 @@ However, whether it can be used as a closure depends on the following conditions
 <li>At the middle level, memory management tasks such as string deallocation are handled.</li>
 <li>The high-level API implementation is limited; the <code>Control</code> module provides a <code>method_missing</code> macro to handle undefined methods.</li>
 </ul>
+<h2><a id="closures-and-their-limitations" class="anchor" href="#closures-and-their-limitations">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>🔶 Closures and Their Limitations</h2>
+<p>In Crystal, <strong>a C function pointer corresponds to a Proc</strong>.<br />
+However, whether it can be used as a closure depends on the following conditions:</p>
+<p>| <strong>Condition</strong>                            | <strong>Closure Support</strong>                                    |
+| ---------------------------------------- | ------------------------------------------------------ |
+| <strong>Data can be passed as an argument</strong>    | ✅ Supported                                           |
+| <strong>Data cannot be passed as an argument</strong> | ❌ Not Supported (Works only if Proc is not a closure) |</p>
+<h2><a id="development" class="anchor" href="#development">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>🔶 Development</h2>
 <h3><a id="additional-rules" class="anchor" href="#additional-rules">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -493,7 +494,7 @@ However, whether it can be used as a closure depends on the following conditions
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>❖ Windows Compatibility</h2>
+</a>🔶 Windows Compatibility</h2>
 <p>Windows support is <strong>particularly challenging</strong> due to the following reasons:</p>
 <h3><a id="differences-between-msvc-and-min-gw" class="anchor" href="#differences-between-msvc-and-min-gw">
   <svg class="octicon-link" aria-hidden="true">
@@ -527,7 +528,7 @@ However, whether it can be used as a closure depends on the following conditions
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>❖ Contributing</h2>
+</a>🔶 Contributing</h2>
 <p>You can contribute to this project by:</p>
 <ul>
 <li>☑ Forking this repository</li>
@@ -540,7 +541,7 @@ However, whether it can be used as a closure depends on the following conditions
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>❖ License</h2>
+</a>🔶 License</h2>
 <p>This project is licensed under the <strong>MIT License</strong>.</p>
 </div>
 </body>
