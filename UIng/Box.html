@@ -252,11 +252,6 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/HorizontalBox" data-name="uing::horizontalbox">
-      <a href="../UIng/HorizontalBox.html">HorizontalBox</a>
-      
-    </li>
-  
   <li class=" " data-id="uing/UIng/Image" data-name="uing::image">
       <a href="../UIng/Image.html">Image</a>
       
@@ -407,11 +402,6 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/VerticalBox" data-name="uing::verticalbox">
-      <a href="../UIng/VerticalBox.html">VerticalBox</a>
-      
-    </li>
-  
   <li class=" " data-id="uing/UIng/Window" data-name="uing::window">
       <a href="../UIng/Window.html">Window</a>
       
@@ -436,7 +426,7 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">abstract class</span> UIng::<wbr>Box
+  <span class="kind">class</span> UIng::<wbr>Box
 
 </h1>
 
@@ -445,17 +435,6 @@
 
 
 
-
-  <h2>
-    <a id="overview" class="anchor" href="#overview">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Overview
-  </h2>
-
-  <p>Note: The name Box is already taken by Crystal's built-in class Box.</p>
 
 
 
@@ -479,22 +458,6 @@
 
 
 
-  <h2>
-    <a id="direct-known-subclasses" class="anchor" href="#direct-known-subclasses">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Direct Known Subclasses
-  </h2>
-  <ul class="other-types-list">
-    
-      <li class="other-type"><a href="../UIng/HorizontalBox.html">UIng::HorizontalBox</a></li>
-    
-      <li class="other-type"><a href="../UIng/VerticalBox.html">UIng::VerticalBox</a></li>
-    
-  </ul>
-
 
 
 
@@ -510,7 +473,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/171819fc0cf388bb9d99b1a46ce7adca672e4dd5/src/uing/box.cr#L5" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/1ed7eec65ca4072a0cbcb4cf9f58a04316d6ad8a/src/uing/box.cr#L12" target="_blank">
         uing/box.cr
       </a>
     
@@ -520,6 +483,28 @@
 
 
 
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ABox%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::Box))</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28orientation%3ASymbol%7CString%29-class-method" class="signature"><strong>.new</strong>(orientation : Symbol | String)</a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -538,7 +523,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
+        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
         
       </li>
     
@@ -676,6 +661,48 @@
 </div>
 
 
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::Box))-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::Box))
+
+        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ABox%29%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/1ed7eec65ca4072a0cbcb4cf9f58a04316d6ad8a/src/uing/box.cr#L15" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(orientation:Symbol|String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(orientation : Symbol | String)
+
+        <a class="method-permalink" href="#new%28orientation%3ASymbol%7CString%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/1ed7eec65ca4072a0cbcb4cf9f58a04316d6ad8a/src/uing/box.cr#L18" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
 
 
 
@@ -691,18 +718,18 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="to_unsafe-instance-method">
+    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
         
-        def <strong>to_unsafe</strong>
+        def <strong>to_unsafe</strong> : Pointer(Void)
 
-        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
+        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/171819fc0cf388bb9d99b1a46ce7adca672e4dd5/src/uing/box.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/1ed7eec65ca4072a0cbcb4cf9f58a04316d6ad8a/src/uing/box.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
