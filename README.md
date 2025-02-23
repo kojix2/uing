@@ -45,6 +45,60 @@ crystal build examples/control_gallery.cr
 ./control_gallery
 ```
 
+### Basic Example
+
+High level API:
+
+```crystal
+require "../src/uing"
+
+UIng.init
+
+window = UIng::Window.new("hello world", 300, 200, 1)
+window.on_closing do
+  UIng.quit
+  1
+end
+
+button = UIng::Button.new("Button")
+button.on_clicked do
+  UIng.msg_box(window, "Information", "You clicked the button")
+  0
+end
+
+window.set_child(button)
+window.show
+
+UIng.main
+UIng.uninit
+```
+
+Middle level API:
+
+```crystal
+require "../src/uing"
+
+UIng.init
+
+window = UIng.new_window("hello world", 300, 200, 1)
+UIng.window_on_closing(window) do
+  UIng.quit
+  1
+end
+
+button = UIng.new_button("Button")
+UIng.button_on_clicked(button) do
+  UIng.msg_box(window, "Information", "You clicked the button")
+  0
+end
+
+UIng.window_set_child(window, button)
+UIng.control_show(window)
+
+UIng.main
+UIng.uninit
+```
+
 For more details, see [examples](examples).
 
 The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.
