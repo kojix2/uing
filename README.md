@@ -4,6 +4,10 @@
 
 **UIng** is yet another Crystal binding for **[libui-ng](https://github.com/libui-ng/libui-ng)** or **[libui-dev](https://github.com/petabyt/libui-dev)**.
 
+| Windows                                                                                                          | Mac                                                                                                              | Linux                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| <img src="https://user-images.githubusercontent.com/5798442/103118046-900ea780-46b0-11eb-81fc-32626762e4df.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118059-99980f80-46b0-11eb-9d12-324ec4d297c9.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118068-a0bf1d80-46b0-11eb-8c5c-3bdcc3dcfb26.png"> |
+
 ## 🔶 Installation
 
 Crystal prefers **static linking** for libui rather than using it as a shared library.
@@ -28,7 +32,7 @@ For more details, see [examples](examples).
 
 The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.
 
-### Binding Levels\*\*
+### Binding Levels
 
 | **Level**        | **Defined in**              | **Example**                    | **Description**               |
 | ---------------- | --------------------------- | ------------------------------ | ----------------------------- |
