@@ -490,12 +490,7 @@ Therefore, this project uses the following sources to obtain binaries:</p>
     <use href="#octicon-link"/>
   </svg>
 </a>🔶 Closures and Their Limitations</h2>
-<p>In Crystal, <strong>a C function pointer corresponds to a Proc</strong>.<br />
-However, whether it can be used as a closure depends on the following conditions:</p>
-<p>| <strong>Condition</strong>                            | <strong>Closure Support</strong>                                    |
-| ---------------------------------------- | ------------------------------------------------------ |
-| <strong>Data can be passed as an argument</strong>    | ✅ Supported                                           |
-| <strong>Data cannot be passed as an argument</strong> | ❌ Not Supported (Works only if Proc is not a closure) |</p>
+<p>🚧</p>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -516,16 +511,6 @@ However, whether it can be used as a closure depends on the following conditions
     <use href="#octicon-link"/>
   </svg>
 </a>🔶 Windows Compatibility</h2>
-<p>Windows support is <strong>particularly challenging</strong> due to the following reasons:</p>
-<h3><a id="differences-between-msvc-and-min-gw" class="anchor" href="#differences-between-msvc-and-min-gw">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Differences Between MSVC and MinGW</h3>
-<p>| <strong>Aspect</strong>                 | <strong>MSVC Version</strong>        | <strong>MinGW Version</strong>       |
-| -------------------------- | ----------------------- | ----------------------- |
-| <strong>libui Suitability</strong>      | <strong>libui-ng</strong>            | <strong>libui-dev</strong>           |
-| <strong>Manifest File Handling</strong> | Uses a different format | Uses a different format |</p>
 <h3><a id="com-ctl32-version-issues" class="anchor" href="#com-ctl32-version-issues">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -535,7 +520,9 @@ However, whether it can be used as a closure depends on the following conditions
 <li><code>libui-ng</code>'s <code>msg_box</code> implementation relies on <code>TaskDialog</code>.</li>
 <li><code>TaskDialog</code> requires <strong>ComCtl32.dll version 6</strong>.</li>
 <li>There are other dependencies on version 6 besides <code>TaskDialog</code>.</li>
-<li><strong>The standard ComCtl32 is version 5</strong>, so a <strong>manifest file is necessary</strong>.</li>
+<li>The standard ComCtl32 is version 5, so a manifest file is necessary.</li>
+<li>For <code>MSVC</code> the link flag specifies the manuf.</li>
+<li>For <code>MinGW</code>, <code>comctl32.res</code> is generated when <code>download.cr</code> is run.</li>
 </ul>
 <h3><a id="debugging" class="anchor" href="#debugging">
   <svg class="octicon-link" aria-hidden="true">
