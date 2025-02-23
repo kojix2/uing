@@ -132,7 +132,9 @@ crystal build examples/basic_window.cr --link-flags=/SUBSYSTEM:WINDOWS
 
 ## 🔶 Closures and Their Limitations
 
-🚧
+Crystal has two types of blocks. One is the block that is inlined at compile time and is mainly used with yield. The other is the captured block. Blocks passed as callbacks to C functions are always captured blocks. However, closures do not work correctly with low-level bindings. When referencing variables outside the block, the program detects the anomaly and terminates immediately (note that this does not throw an exception, and it is different from a segmentation fault). To work around this issue, the mid-level API implements closures using the Box class.
+
+On the other hand, the real problem arises when storing callback functions in the fields of a structure and then passing them to C. In this case, since there is no user data, the closures may not function as expected. There is still no definitive solution for this.
 
 ## 🔶 Development
 
