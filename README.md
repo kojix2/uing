@@ -59,13 +59,7 @@ The middle-level API is reasonably well-implemented, allowing users to access mo
 
 ## 🔶 Closures and Their Limitations
 
-In Crystal, **a C function pointer corresponds to a Proc**.  
-However, whether it can be used as a closure depends on the following conditions:
-
-| **Condition**                            | **Closure Support**                                    |
-| ---------------------------------------- | ------------------------------------------------------ |
-| **Data can be passed as an argument**    | ✅ Supported                                           |
-| **Data cannot be passed as an argument** | ❌ Not Supported (Works only if Proc is not a closure) |
+🚧
 
 ## 🔶 Development
 
@@ -77,21 +71,14 @@ However, whether it can be used as a closure depends on the following conditions
 
 ## 🔶 Windows Compatibility
 
-Windows support is **particularly challenging** due to the following reasons:
-
-### Differences Between MSVC and MinGW
-
-| **Aspect**                 | **MSVC Version**        | **MinGW Version**       |
-| -------------------------- | ----------------------- | ----------------------- |
-| **libui Suitability**      | **libui-ng**            | **libui-dev**           |
-| **Manifest File Handling** | Uses a different format | Uses a different format |
-
 ### ComCtl32 Version Issues
 
 - `libui-ng`'s `msg_box` implementation relies on `TaskDialog`.
 - `TaskDialog` requires **ComCtl32.dll version 6**.
 - There are other dependencies on version 6 besides `TaskDialog`.
-- **The standard ComCtl32 is version 5**, so a **manifest file is necessary**.
+- The standard ComCtl32 is version 5, so a manifest file is necessary.
+- For `MSVC` the link flag specifies the manuf.
+- For `MinGW`, `comctl32.res` is generated when `download.cr` is run.
 
 ### Debugging
 
