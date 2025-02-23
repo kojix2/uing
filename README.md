@@ -4,7 +4,7 @@
 
 **UIng** is yet another Crystal binding for **[libui-ng](https://github.com/libui-ng/libui-ng)** or **[libui-dev](https://github.com/petabyt/libui-dev)**.
 
-## ❖ Installation
+## 🔶 Installation
 
 Crystal prefers **static linking** for libui rather than using it as a shared library.
 
@@ -22,21 +22,11 @@ Therefore, this project uses the following sources to obtain binaries:
 crystal run download.cr
 ```
 
-## ❖ Usage
+## 🔶 Usage
 
 For more details, see [examples](examples).
 
-## ❖ Closures and Their Limitations
-
-In Crystal, **a C function pointer corresponds to a Proc**.  
-However, whether it can be used as a closure depends on the following conditions:
-
-| **Condition**                            | **Closure Support**                                    |
-| ---------------------------------------- | ------------------------------------------------------ |
-| **Data can be passed as an argument**    | ✅ Supported                                           |
-| **Data cannot be passed as an argument** | ❌ Not Supported (Works only if Proc is not a closure) |
-
-## ❖ Development
+The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.
 
 ### Binding Levels\*\*
 
@@ -49,13 +39,25 @@ However, whether it can be used as a closure depends on the following conditions
 - At the middle level, memory management tasks such as string deallocation are handled.
 - The high-level API implementation is limited; the `Control` module provides a `method_missing` macro to handle undefined methods.
 
+## 🔶 Closures and Their Limitations
+
+In Crystal, **a C function pointer corresponds to a Proc**.  
+However, whether it can be used as a closure depends on the following conditions:
+
+| **Condition**                            | **Closure Support**                                    |
+| ---------------------------------------- | ------------------------------------------------------ |
+| **Data can be passed as an argument**    | ✅ Supported                                           |
+| **Data cannot be passed as an argument** | ❌ Not Supported (Works only if Proc is not a closure) |
+
+## 🔶 Development
+
 ### Additional Rules
 
 - `UIng::LibUI` is a **module dedicated to bindings**.
 - **Use** [crystal_lib](https://github.com/crystal-lang/crystal_lib) **to generate low-level bindings** (manual modifications required).
 - **Passing a Proc to a C function**: [Official Documentation](https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function).
 
-## ❖ Windows Compatibility
+## 🔶 Windows Compatibility
 
 Windows support is **particularly challenging** due to the following reasons:
 
@@ -77,7 +79,7 @@ Windows support is **particularly challenging** due to the following reasons:
 
 - **MinGW version of gdb** can be used for debugging.
 
-## ❖ Contributing
+## 🔶 Contributing
 
 You can contribute to this project by:
 
@@ -87,6 +89,6 @@ You can contribute to this project by:
 - ☑ Improving documentation
 - ☑ Suggesting or adding new features
 
-## ❖ License
+## 🔶 License
 
 This project is licensed under the **MIT License**.
