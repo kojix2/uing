@@ -26,8 +26,8 @@ Therefore, this project uses the following sources to obtain binaries:
 
 ### Windows
 
-- **MinGW (mingw-w64-crystal)** is recommended for Windows. UCRT / Clang is not supported because libui-dev is built with MinGW64.
-- **MSVC (x86_64-msvc)** is not recommended but can be used with some limitations. Make sure rc.exe is in the PATH.
+- **MinGW (mingw-w64-crystal)** UCRT / Clang is not supported because libui-dev is built with MinGW64.
+- **MSVC (x86_64-msvc)** Make sure Windows SDK command-line tools is in the PATH.
 
 ```powsershell
 # Add the path to the Windows Kits
@@ -35,6 +35,8 @@ $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ```
 
 See: https://crystal-lang.org/install/#windows
+
+The default link flag is defined in [lib_ui.cr](src/uing/lib_ui/lib_ui.cr).
 
 ## 🔶 Usage
 
@@ -130,6 +132,11 @@ crystal build examples/basic_window.cr --link-flags=/SUBSYSTEM:WINDOWS
 
 **Note:** The program will crash if you attempt to output to the console.
 
+### Static Linking
+
+At present, I have not been able to generate an executable that functions correctly through static linking on any platform. 
+Your contributions are welcome.
+
 ## 🔶 Closures and Their Limitations
 
 Crystal has two types of blocks. One is the block that is inlined at compile time and is mainly used with yield. The other is the captured block. Blocks passed as callbacks to C functions are always captured blocks. However, closures do not work correctly with low-level bindings. When referencing variables outside the block, the program detects the anomaly and terminates immediately (note that this does not throw an exception, and it is different from a segmentation fault). To work around this issue, the mid-level API implements closures using the Box class.
@@ -157,7 +164,12 @@ On the other hand, the real problem arises when storing callback functions in th
 
 ### Debugging
 
-- **MinGW version of gdb** can be used for debugging.
+Many unix tools are available on Windows (MinGW).
+
+- `gdb` can be used for debugging.
+- `ldd` can be used to check dependencies.
+- `strace` can be used to trace system calls.
+- `objdump` can be used to disassemble.
 
 ## 🔶 Contributing
 
