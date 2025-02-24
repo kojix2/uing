@@ -733,7 +733,7 @@ module UIng
   end
 
   def self.menu_item_on_clicked(sender, &callback : UIng::Window -> Void)
-    callback2 = -> (w : Pointer(LibUI::Window)) {
+    callback2 = ->(w : Pointer(LibUI::Window)) {
       callback.call(UIng::Window.new(w))
     }
     boxed_data = ::Box.box(callback2)

@@ -23,7 +23,7 @@ UIng.on_should_quit do
   if should_quit_item.checked == 1
     puts "Bye Bye (on_should_quit)"
     MAIN_WINDOW.destroy # You have to destroy the window manually.
-    1                                 # UIng.quit is automatically called in the C function onQuitClicked().
+    1                   # UIng.quit is automatically called in the C function onQuitClicked().
   else
     UIng.msg_box(MAIN_WINDOW, "Warning", "Please check \"Should Quit\"")
     0 # Don"t quit
