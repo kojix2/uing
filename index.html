@@ -456,12 +456,13 @@ Therefore, this project uses the following sources to obtain binaries:</p>
   </svg>
 </a>Windows</h3>
 <ul>
-<li><strong>MinGW (mingw-w64-crystal)</strong> is recommended for Windows. UCRT / Clang is not supported because libui-dev is built with MinGW64.</li>
-<li><strong>MSVC (x86_64-msvc)</strong> is not recommended but can be used with some limitations. Make sure rc.exe is in the PATH.</li>
+<li><strong>MinGW (mingw-w64-crystal)</strong> UCRT / Clang is not supported because libui-dev is built with MinGW64.</li>
+<li><strong>MSVC (x86_64-msvc)</strong> Make sure Windows SDK command-line tools is in the PATH.</li>
 </ul>
 <pre><code class="language-powsershell"># Add the path to the Windows Kits
 $env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
 <p>See: https://crystal-lang.org/install/#windows</p>
+<p>The default link flag is defined in <a href="src/uing/lib_ui/lib_ui.cr">lib_ui.cr</a>.</p>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -553,6 +554,13 @@ button <span class="o">=</span> <span class="t">UIng</span>.new_button(<span cla
 </a>MSVC</h4>
 <pre><code class="language-sh">crystal build examples/basic_window.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
 <p><strong>Note:</strong> The program will crash if you attempt to output to the console.</p>
+<h3><a id="static-linking" class="anchor" href="#static-linking">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Static Linking</h3>
+<p>At present, I have not been able to generate an executable that functions correctly through static linking on any platform.
+Your contributions are welcome.</p>
 <h2><a id="closures-and-their-limitations" class="anchor" href="#closures-and-their-limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -598,8 +606,12 @@ button <span class="o">=</span> <span class="t">UIng</span>.new_button(<span cla
     <use href="#octicon-link"/>
   </svg>
 </a>Debugging</h3>
+<p>Many unix tools are available on Windows (MinGW).</p>
 <ul>
-<li><strong>MinGW version of gdb</strong> can be used for debugging.</li>
+<li><code>gdb</code> can be used for debugging.</li>
+<li><code>ldd</code> can be used to check dependencies.</li>
+<li><code>strace</code> can be used to trace system calls.</li>
+<li><code>objdump</code> can be used to disassemble.</li>
 </ul>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
