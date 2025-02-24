@@ -470,6 +470,55 @@ $env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&
 <p>The Control gallery example uses a high-level API.</p>
 <pre><code class="language-sh">crystal build examples/control_gallery.cr
 ./control_gallery</code></pre>
+<h3><a id="basic-example" class="anchor" href="#basic-example">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Basic Example</h3>
+<p>High level API:</p>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;../src/uing&quot;</span>
+
+<span class="t">UIng</span>.init
+
+window <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Window</span>.new(<span class="s">&quot;hello world&quot;</span>, <span class="n">300</span>, <span class="n">200</span>, <span class="n">1</span>)
+window.on_closing <span class="k">do</span>
+  <span class="t">UIng</span>.quit
+  <span class="n">1</span>
+<span class="k">end</span>
+
+button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Button&quot;</span>)
+button.on_clicked <span class="k">do</span>
+  <span class="t">UIng</span>.msg_box(window, <span class="s">&quot;Information&quot;</span>, <span class="s">&quot;You clicked the button&quot;</span>)
+  <span class="n">0</span>
+<span class="k">end</span>
+
+window.set_child(button)
+window.show
+
+<span class="t">UIng</span>.main
+<span class="t">UIng</span>.uninit</code></pre>
+<p>Middle level API:</p>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;../src/uing&quot;</span>
+
+<span class="t">UIng</span>.init
+
+window <span class="o">=</span> <span class="t">UIng</span>.new_window(<span class="s">&quot;hello world&quot;</span>, <span class="n">300</span>, <span class="n">200</span>, <span class="n">1</span>)
+<span class="t">UIng</span>.window_on_closing(window) <span class="k">do</span>
+  <span class="t">UIng</span>.quit
+  <span class="n">1</span>
+<span class="k">end</span>
+
+button <span class="o">=</span> <span class="t">UIng</span>.new_button(<span class="s">&quot;Button&quot;</span>)
+<span class="t">UIng</span>.button_on_clicked(button) <span class="k">do</span>
+  <span class="t">UIng</span>.msg_box(window, <span class="s">&quot;Information&quot;</span>, <span class="s">&quot;You clicked the button&quot;</span>)
+  <span class="n">0</span>
+<span class="k">end</span>
+
+<span class="t">UIng</span>.window_set_child(window, button)
+<span class="t">UIng</span>.control_show(window)
+
+<span class="t">UIng</span>.main
+<span class="t">UIng</span>.uninit</code></pre>
 <p>For more details, see <a href="examples">examples</a>.</p>
 <p>The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.</p>
 <h3><a id="binding-levels" class="anchor" href="#binding-levels">
