@@ -2,14 +2,14 @@ require "../src/uing"
 
 UIng.init
 
-vbox = UIng.new_vertical_box
+vbox = UIng::Box.new(:vertical)
 
-date_time_picker = UIng.new_date_time_picker
+date_time_picker = UIng::DateTimePicker.new
 
 time = UIng::TM.new
 
-UIng.date_time_picker_on_changed(date_time_picker) do
-  UIng.date_time_picker_time(date_time_picker, time)
+date_time_picker.on_changed do
+  date_time_picker.time(time)
   p sec: time.sec,
     min: time.min,
     hour: time.hour,
@@ -20,16 +20,17 @@ UIng.date_time_picker_on_changed(date_time_picker) do
     yday: time.yday,
     isdst: time.isdst
 end
-UIng.box_append(vbox, date_time_picker, 1)
+vbox.append(date_time_picker, 1)
 
-main_window = UIng.new_window("Date Time Pickers", 300, 200, 1)
-UIng.window_on_closing(main_window) do
+main_window = UIng::Window.new("Date Time Pickers", 300, 200, true)
+main_window.on_closing do
   puts "Bye Bye"
   UIng.quit
   1
 end
-UIng.window_set_child(main_window, vbox)
-UIng.control_show(main_window)
+
+main_window.set_child(vbox)
+main_window.show
 
 UIng.main
 UIng.uninit
