@@ -11,6 +11,10 @@ module UIng
     #   @ref_ptr = LibUI.new_table
     # end
 
+    def on_selection_changed(&block : -> Void)
+      UIng.table_on_selection_changed(@ref_ptr, &block)
+    end
+
     def to_unsafe
       @ref_ptr
     end

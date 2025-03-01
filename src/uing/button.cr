@@ -11,6 +11,10 @@ module UIng
       @ref_ptr = LibUI.new_button(text)
     end
 
+    def on_clicked(&block : -> Void)
+      UIng.button_on_clicked(@ref_ptr, &block)
+    end
+
     def to_unsafe
       @ref_ptr
     end

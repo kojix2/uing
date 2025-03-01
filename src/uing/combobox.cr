@@ -11,6 +11,10 @@ module UIng
       @ref_ptr = LibUI.new_combobox
     end
 
+    def on_selected(&block : -> Void)
+      UIng.combobox_on_selected(@ref_ptr, &block)
+    end
+
     def to_unsafe
       @ref_ptr
     end

@@ -22,7 +22,7 @@ module UIng
       @ref_ptr = LibUI.new_date_time_picker
     end
 
-    def on_changed(&block)
+    def on_changed(&block : -> Void)
       UIng.date_time_picker_on_changed(@ref_ptr, &block)
     end
 

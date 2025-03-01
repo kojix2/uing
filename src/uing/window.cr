@@ -24,9 +24,9 @@ module UIng
       block2 = -> {
         case r = block.call
         when Bool
-         r ? 1 : 0
+          r ? 1 : 0
         else
-         r
+          r
         end
       }
       UIng.window_on_closing(@ref_ptr, &block2)

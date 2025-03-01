@@ -11,6 +11,10 @@ module UIng
       @ref_ptr = LibUI.new_checkbox(text)
     end
 
+    def on_toggled(&block : -> Void)
+      UIng.checkbox_on_toggled(@ref_ptr, &block)
+    end
+
     def to_unsafe
       @ref_ptr
     end
