@@ -26,10 +26,12 @@ Therefore, this project uses the following sources to obtain binaries:
 
 ### Windows
 
-- **MinGW (mingw-w64-crystal)** UCRT / Clang is not supported because libui-dev is built with MinGW64.
-- **MSVC (x86_64-msvc)** Make sure Windows SDK command-line tools is in the PATH.
+- **MinGW (mingw-w64-crystal)**: UCRT / Clang is not supported because libui-dev is built with MinGW64.
+- **MSVC (x86_64-msvc)**: Make sure Windows SDK command-line tools are in the PATH.
 
-```powsershell
+Open Developer PowerShell for VS 20XX or set the path to the Windows Kits manually.
+
+```powershell
 # Add the path to the Windows Kits
 $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ```
