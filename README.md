@@ -10,6 +10,14 @@
 
 ## 🔶 Installation
 
+Add the dependency to your `shard.yml`.
+
+```sh
+dependencies:
+  uing:
+    github: kojix2/uing
+```
+
 ### ⇩ Downloading Binaries
 
 ```sh
