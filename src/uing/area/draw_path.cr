@@ -5,8 +5,8 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::DrawPath))
     end
 
-    def initialize(mode : LibUI::DrawFillMode)
-      @ref_ptr = LibUI.new_draw_path(mode)
+    def initialize(mode : UIng::DrawFillMode)
+      @ref_ptr = LibUI.draw_new_path(mode)
     end
 
     def to_unsafe
