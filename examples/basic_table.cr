@@ -2,10 +2,10 @@ require "../src/uing"
 
 UIng.init
 
-main_window = UIng.new_window("Animal sounds", 300, 200, 1)
+main_window = UIng::Window.new("Animal sounds", 300, 200, 1)
 
-hbox = UIng.new_horizontal_box
-UIng.window_set_child(main_window, hbox)
+hbox = UIng::Box.new(:horizontal)
+main_window.set_child(hbox)
 
 alias CInt = LibC::Int
 
@@ -24,20 +24,20 @@ model_handler.num_rows { |_, _| 5 }
 model_handler.cell_value { |_, _, row, column| UIng.new_table_value_string(DATA[row][column]).to_unsafe }
 model_handler.set_cell_value { |_, _, _, _, _| Void }
 
-model = UIng.new_table_model(model_handler)
+model = UIng::TableModel.new(model_handler)
 
 table_params = UIng::TableParams.new
 table_params.model = model
 table_params.row_background_color_model_column = -1
 
-table = UIng.new_table(table_params)
-UIng.table_append_text_column(table, "Animal", 0, -1, nil)
-UIng.table_append_text_column(table, "Description", 1, -1, nil)
+table = UIng::Table.new(table_params)
+table.append_text_column("Animal", 0, -1, nil)
+table.append_text_column("Description", 1, -1, nil)
 
-UIng.box_append(hbox, table, 1)
-UIng.control_show(main_window)
+hbox.append(table, 1)
+main_window.show
 
-UIng.window_on_closing(main_window) do
+main_window.on_closing do
   puts "Bye Bye"
   UIng.quit
   1
