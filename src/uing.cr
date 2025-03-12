@@ -1083,6 +1083,7 @@ module UIng
 
   def self.free_attributed_string(attributed_string) : Nil
     LibUI.free_attributed_string(attributed_string)
+    attributed_string.released = true
   end
 
   def self.attributed_string_string(attributed_string) : String?

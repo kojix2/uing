@@ -15,6 +15,17 @@ module UIng
       UIng.font_button_on_changed(@ref_ptr, &block)
     end
 
+    def font(&block : FontDescriptor -> Nil)
+      font_descriptor = FontDescriptor.new
+      LibUI.font_button_font(@ref_ptr, font_descriptor)
+      block.call(font_descriptor)
+      UIng.free_font_descriptor(font_descriptor)
+    end
+
+    def font(descriptor : (FontDescriptor | LibUI::FontDescriptor))
+      LibUI.font_button_font(@ref_ptr, descriptor)
+    end
+
     def to_unsafe
       @ref_ptr
     end
