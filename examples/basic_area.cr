@@ -9,7 +9,7 @@ handler = UIng::AreaHandler.new
 handler.draw do |area_handler, area, area_draw_params|
   path = UIng::DrawPath.new(UIng::DrawFillMode::Winding)
   path.add_rectangle(0, 0, 400, 400)
-  path.end_ # `end` will also work but it is a keyword in Crystal
+  path.end_ # `end` will also work, but it is a keyword in Crystal
 
   brush = UIng::DrawBrush.new
   brush.type = UIng::DrawBrushType::Solid
