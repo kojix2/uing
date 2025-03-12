@@ -7,9 +7,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Form))
     end
 
-    # def initialize
-    #   @ref_ptr = LibUI.new_form
-    # end
+    def initialize
+      @ref_ptr = LibUI.new_form
+    end
 
     def to_unsafe
       @ref_ptr
