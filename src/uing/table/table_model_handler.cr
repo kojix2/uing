@@ -9,7 +9,7 @@ module UIng
       @cstruct.num_columns = block
     end
 
-    def column_type(&block : (LibUI::TableModelHandler*, LibUI::TableModel*, LibC::Int) -> LibUI::TableValueType)
+    def column_type(&block : (LibUI::TableModelHandler*, LibUI::TableModel*, LibC::Int) -> UIng::TableValueType)
       @cstruct.column_type = block
     end
 

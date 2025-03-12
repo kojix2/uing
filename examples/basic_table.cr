@@ -19,9 +19,9 @@ DATA = [
 
 model_handler = UIng::TableModelHandler.new
 model_handler.num_columns { |_, _| 2 }
-model_handler.column_type { |_, _, _| UIng::LibUI::TableValueType::String }
+model_handler.column_type { |_, _, _| UIng::TableValueType::String }
 model_handler.num_rows { |_, _| 5 }
-model_handler.cell_value { |_, _, row, column| UIng.new_table_value_string(DATA[row][column]) }
+model_handler.cell_value { |_, _, row, column| UIng.new_table_value_string(DATA[row][column]).to_unsafe }
 model_handler.set_cell_value { |_, _, _, _, _| Void }
 
 model = UIng.new_table_model(model_handler)

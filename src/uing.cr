@@ -1308,7 +1308,8 @@ module UIng
   end
 
   def self.new_table_model(model_handler) : TableModel
-    LibUI.new_table_model(model_handler)
+    ref_ptr = LibUI.new_table_model(model_handler)
+    TableModel.new(ref_ptr)
   end
 
   def self.free_table_model(table_model) : Nil
@@ -1327,8 +1328,8 @@ module UIng
     LibUI.table_model_row_deleted(table_model, old_index)
   end
 
-  def self.table_append_text_column(table_model, name, text_model_column, table_text_column_optional_params) : Nil
-    LibUI.table_append_text_column(table_model, name, text_model_column, table_text_column_optional_params)
+  def self.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params) : Nil
+    LibUI.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
   end
 
   def self.table_append_image_column(table, name, image_model_colum) : Nil
