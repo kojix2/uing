@@ -13,6 +13,15 @@ module UIng
       @ref_ptr
     end
 
+    def end
+      # Workaround for the naming conflict with the `end` keyword
+      LibUI.draw_path_end(@ref_ptr)
+    end
+
+    def end_
+      LibUI.draw_path_end(@ref_ptr)
+    end
+
     # def finalize
     #   LibUI.draw_free_path(@ref_ptr)
     # end
