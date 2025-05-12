@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.14.0">
+<meta name="generator" content="Crystal Docs 1.15.1">
 <meta name="crystal_docs.project_version" content="main">
 <meta name="crystal_docs.project_name" content="uing">
 
@@ -466,6 +466,15 @@ Therefore, this project uses the following sources to obtain binaries:</p>
 <p>Open Developer PowerShell for VS 20XX or set the path to the Windows Kits manually.</p>
 <pre><code class="language-powershell"># Add the path to the Windows Kits
 $env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
+<h4><a id="troubleshooting-mt.exe-error" class="anchor" href="#troubleshooting-mt.exe-error">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Troubleshooting: mt.exe Error</h4>
+<p>If you encounter an error like <code>LINK : fatal error LNK1158: cannot run 'mt.exe'</code> when building or running examples, use the Visual Studio Developer Command Prompt:</p>
+<pre><code class="language-cmd"># Open Developer Command Prompt and run
+cmd /c &quot;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat&quot; &quot;&amp;&amp;&quot; crystal build examples/control_gallery.cr</code></pre>
+<p>The manifest file is necessary for proper initialization of Common Controls, which are required by libui.</p>
 <p>See: https://crystal-lang.org/install/#windows</p>
 <p>The default link flag is defined in <a href="src/uing/lib_ui/lib_ui.cr">lib_ui.cr</a>.</p>
 <h2><a id="usage" class="anchor" href="#usage">
