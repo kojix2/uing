@@ -2,19 +2,19 @@ require "../src/uing"
 
 UIng.init
 
-main_window = UIng.new_window("Notepad", 500, 300, 1)
-UIng.window_on_closing(main_window) do
+main_window = UIng::Window.new("Notepad", 500, 300, 1)
+main_window.on_closing do
   puts "Bye Bye"
   UIng.quit
   1
 end
 
-vbox = UIng.new_vertical_box
-UIng.window_set_child(main_window, vbox)
+vbox = UIng::Box.new(:vertical)
+main_window.set_child(vbox)
 
-entry = UIng.new_non_wrapping_multiline_entry
-UIng.box_append(vbox, entry, 1)
+entry = UIng::MultilineEntry.new(wrapping: false)
+vbox.append(entry, 1)
 
-UIng.control_show(main_window)
+main_window.show
 UIng.main
 UIng.uninit

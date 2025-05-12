@@ -3,7 +3,7 @@ require "../src/uing"
 UIng.init
 
 handler = UIng::AreaHandler.new
-area = UIng.new_area(handler)
+area = UIng::Area.new(handler)
 
 title = "Michael Ende (1929-1995) The Neverending Story"
 
@@ -34,27 +34,23 @@ str5 = \
  "buzzing of a great swarm of hornets that shaped itself into " \
  "words. "
 
-ATTR_STR = UIng.new_attributed_string("")
+ATTR_STR = UIng::AttributedString.new("")
+
+RED   = UIng.new_color_attribute(0.0, 0.5, 0.0, 0.7)
+GREEN = UIng.new_color_attribute(0.5, 0.0, 0.25, 0.7)
 
 def append_to_attr_str(attr_str, text, color)
-  c = case color
-      when :red
-        {0.0, 0.5, 0.0, 0.7}
-      else :green
-      {0.5, 0.0, 0.25, 0.7}
-      end
-  color_attr = UIng.new_color_attribute(*c)
-  start = UIng.attributed_string_len(attr_str)
-  UIng.attributed_string_append_unattributed(attr_str, text)
-  UIng.attributed_string_set_attribute(attr_str, color_attr, start, start + text.size)
-  UIng.attributed_string_append_unattributed(attr_str, "\n\n")
+  start = attr_str.len
+  attr_str.append_unattributed(text)
+  attr_str.set_attribute(color, start, start + text.size)
+  attr_str.append_unattributed("\n\n")
 end
 
-append_to_attr_str(ATTR_STR, str1, :green)
-append_to_attr_str(ATTR_STR, str2, :red)
-append_to_attr_str(ATTR_STR, str3, :green)
-append_to_attr_str(ATTR_STR, str4, :red)
-append_to_attr_str(ATTR_STR, str5, :green)
+append_to_attr_str(ATTR_STR, str1, GREEN)
+append_to_attr_str(ATTR_STR, str2, RED)
+append_to_attr_str(ATTR_STR, str3, GREEN)
+append_to_attr_str(ATTR_STR, str4, RED)
+append_to_attr_str(ATTR_STR, str5, GREEN)
 
 handler.draw do |_, _, adp|
   area_draw_params = UIng::AreaDrawParams.new(adp)
@@ -81,20 +77,20 @@ handler.mouse_crossed { |_, _, _| }
 handler.drag_broken { |_, _| }
 handler.key_event { |_, _, _| 0 }
 
-box = UIng.new_vertical_box
-UIng.box_set_padded(box, 1)
-UIng.box_append(box, area, 1)
+box = UIng::Box.new(:vertical)
+box.set_padded(1)
+box.append(area, 1)
 
-main_window = UIng.new_window(title, 600, 400, 1)
-UIng.window_set_margined(main_window, 1)
-UIng.window_set_child(main_window, box)
+main_window = UIng::Window.new(title, 600, 400, 1)
+main_window.set_margined(1)
+main_window.set_child(box)
 
-UIng.window_on_closing(main_window) do
+main_window.on_closing do
   UIng.free_attributed_string(ATTR_STR)
   UIng.quit
   1
 end
-UIng.control_show(main_window)
+main_window.show
 
 UIng.main
 UIng.uninit
