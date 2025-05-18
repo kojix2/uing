@@ -44,6 +44,17 @@ Open Developer PowerShell for VS 20XX or set the path to the Windows Kits manual
 $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ```
 
+#### Troubleshooting: mt.exe Error
+
+If you encounter an error like `LINK : fatal error LNK1158: cannot run 'mt.exe'` when building or running examples, use the Visual Studio Developer Command Prompt:
+
+```cmd
+# Open Developer Command Prompt and run
+cmd /c "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" "&&" crystal build examples/control_gallery.cr
+```
+
+The manifest file is necessary for proper initialization of Common Controls, which are required by libui.
+
 See: https://crystal-lang.org/install/#windows
 
 The default link flag is defined in [lib_ui.cr](src/uing/lib_ui/lib_ui.cr).
