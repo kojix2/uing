@@ -7,8 +7,4 @@ authors:
 scripts:
   postinstall: crystal run download.cr
 
-dependencies:
-  crest:
-    github: mamantoha/crest
-
 license: MIT

@@ -5,7 +5,6 @@
   system(p("windres comctl32.rc -O coff -o comctl32.res"))
 {% else %}
   require "compress/zip"
-  require "crest"
 
   def url_for_libui_ng_nightly(file_name)
     "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build/#{file_name}"
@@ -19,11 +18,8 @@
   def download_from_url(lib_path, file_name, url)
     puts "Downloading #{lib_path} from #{url}"
 
-    Crest.get(url) do |response|
-      File.open(file_name, "wb") do |file|
-        IO.copy(response.body_io, file)
-      end
-    end
+    # Use curl command instead of Crest
+    system("curl -L -o #{file_name} #{url}")
 
     if file_name.ends_with?(".zip")
       Compress::Zip::File.open(file_name) do |zip_file|
