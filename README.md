@@ -20,44 +20,39 @@ dependencies:
 
 ### ⇩ Downloading Binaries
 
-```sh
-crystal run download.cr
-```
+The required libui library is automatically downloaded via [`postinstall`](https://github.com/kojix2/uing/blob/main/shard.yml).
 
-The libui project **does not distribute pre-compiled binaries**.  
-Therefore, this project uses the following sources to obtain binaries:
+Because the original libui-ng project does not provide prebuilt binaries, this project uses the following sources:
 
 | OS                | Binary Source                                                                                       |
 | ----------------- | --------------------------------------------------------------------------------------------------- |
-| **MacOS / Linux** | Builds from the [kojix2/libui-ng](https://github.com/kojix2/libui-ng) repository (pre-build branch) |
-| **Windows**       | Pre-built binaries distributed with [libui-dev](https://github.com/petabyt/libui-dev/releases)      |
+| MacOS / Linux / Windows (MSVC) | Builds from [kojix2/libui-ng](https://github.com/kojix2/libui-ng), [pre-build](https://github.com/kojix2/libui-ng/tree/pre-build) branch |
+| Windows (Mingw-w64) | Prebuilt binaries from [libui-dev](https://github.com/petabyt/libui-dev/releases)      |
 
-### Windows
+To download it manually: `crystal run download.cr`
 
-- **MinGW (mingw-w64-crystal)**: UCRT / Clang is not supported because libui-dev is built with MinGW64.
-- **MSVC (x86_64-msvc)**: Make sure Windows SDK command-line tools are in the PATH.
+#### Setting up on Windows (MSVC)
 
-Open Developer PowerShell for VS 20XX or set the path to the Windows Kits manually.
+If you're using MSVC, you can either:
 
-```powershell
-# Add the path to the Windows Kits
-$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
-```
-
-#### Troubleshooting: mt.exe Error
-
-If you encounter an error like `LINK : fatal error LNK1158: cannot run 'mt.exe'` when building or running examples, use the Visual Studio Developer Command Prompt:
+- Option 1: Use the Developer Command Prompt for Visual Studio
+- Option 2: Run manually from any terminal
 
 ```cmd
-# Open Developer Command Prompt and run
 cmd /c "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" "&&" crystal build examples/control_gallery.cr
 ```
 
-The manifest file is necessary for proper initialization of Common Controls, which are required by libui.
+- Option 3: Add the Windows Kits path manually:
 
-See: https://crystal-lang.org/install/#windows
+```powershell
+$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
+```
 
-The default link flag is defined in [lib_ui.cr](src/uing/lib_ui/lib_ui.cr).
+This helps prevent errors like: "LINK : fatal error LNK1158: cannot run 'mt.exe'".
+
+### Using Your Own libui Build
+
+The default link flag is defined in [lib_ui.cr](src/uing/lib_ui/lib_ui.cr). Edit as needed.
 
 ## 🔶 Usage
 
