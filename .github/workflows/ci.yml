@@ -30,7 +30,42 @@ jobs:
         run: shards install
       - name: Run tests
         run: crystal spec
-      - name: Build example
+      - name: Download libui library
         run: |
           crystal run download.cr
+          ls
+      - name: Build example
+        run: |
           crystal build examples/control_gallery.cr
+          ls
+
+  build_MinGW64:
+    name: MinGW64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-crystal
+            mingw-w64-x86_64-shards
+      - name: Install dependencies
+        shell: msys2 {0}
+        run: shards install
+      - name: Run tests
+        shell: msys2 {0}
+        run: crystal spec
+      - name: Download libui library
+        shell: msys2 {0}
+        run: |
+          crystal run download.cr
+          ls -l
+      - name: Build example
+        shell: msys2 {0}
+        run: |
+          crystal build examples/control_gallery.cr
+          ls -l
