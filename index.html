@@ -447,36 +447,35 @@
     <use href="#octicon-link"/>
   </svg>
 </a>⇩ Downloading Binaries</h3>
-<pre><code class="language-sh">crystal run download.cr</code></pre>
-<p>The libui project <strong>does not distribute pre-compiled binaries</strong>.<br />
-Therefore, this project uses the following sources to obtain binaries:</p>
+<p>The required libui library is automatically downloaded via <a href="https://github.com/kojix2/uing/blob/main/shard.yml"><code>postinstall</code></a>.</p>
+<p>Because the original libui-ng project does not provide prebuilt binaries, this project uses the following sources:</p>
 <p>| OS                | Binary Source                                                                                       |
 | ----------------- | --------------------------------------------------------------------------------------------------- |
-| <strong>MacOS / Linux</strong> | Builds from the <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> repository (pre-build branch) |
-| <strong>Windows</strong>       | Pre-built binaries distributed with <a href="https://github.com/petabyt/libui-dev/releases">libui-dev</a>      |</p>
-<h3><a id="windows" class="anchor" href="#windows">
+| MacOS / Linux / Windows (MSVC) | Builds from <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a>, <a href="https://github.com/kojix2/libui-ng/tree/pre-build">pre-build</a> branch |
+| Windows (Mingw-w64) | Prebuilt binaries from <a href="https://github.com/petabyt/libui-dev/releases">libui-dev</a>      |</p>
+<p>To download it manually: <code>crystal run download.cr</code></p>
+<h4><a id="setting-up-on-windows-msvc" class="anchor" href="#setting-up-on-windows-msvc">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Windows</h3>
+</a>Setting up on Windows (MSVC)</h4>
+<p>If you're using MSVC, you can either:</p>
 <ul>
-<li><strong>MinGW (mingw-w64-crystal)</strong>: UCRT / Clang is not supported because libui-dev is built with MinGW64.</li>
-<li><strong>MSVC (x86_64-msvc)</strong>: Make sure Windows SDK command-line tools are in the PATH.</li>
+<li>Option 1: Use the Developer Command Prompt for Visual Studio</li>
+<li>Option 2: Run manually from any terminal</li>
 </ul>
-<p>Open Developer PowerShell for VS 20XX or set the path to the Windows Kits manually.</p>
-<pre><code class="language-powershell"># Add the path to the Windows Kits
-$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
-<h4><a id="troubleshooting-mt.exe-error" class="anchor" href="#troubleshooting-mt.exe-error">
+<pre><code class="language-cmd">cmd /c &quot;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat&quot; &quot;&amp;&amp;&quot; crystal build examples/control_gallery.cr</code></pre>
+<ul>
+<li>Option 3: Add the Windows Kits path manually:</li>
+</ul>
+<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
+<p>This helps prevent errors like: &quot;LINK : fatal error LNK1158: cannot run 'mt.exe'&quot;.</p>
+<h3><a id="using-your-own-libui-build" class="anchor" href="#using-your-own-libui-build">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Troubleshooting: mt.exe Error</h4>
-<p>If you encounter an error like <code>LINK : fatal error LNK1158: cannot run 'mt.exe'</code> when building or running examples, use the Visual Studio Developer Command Prompt:</p>
-<pre><code class="language-cmd"># Open Developer Command Prompt and run
-cmd /c &quot;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat&quot; &quot;&amp;&amp;&quot; crystal build examples/control_gallery.cr</code></pre>
-<p>The manifest file is necessary for proper initialization of Common Controls, which are required by libui.</p>
-<p>See: https://crystal-lang.org/install/#windows</p>
-<p>The default link flag is defined in <a href="src/uing/lib_ui/lib_ui.cr">lib_ui.cr</a>.</p>
+</a>Using Your Own libui Build</h3>
+<p>The default link flag is defined in <a href="src/uing/lib_ui/lib_ui.cr">lib_ui.cr</a>. Edit as needed.</p>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
