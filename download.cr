@@ -53,8 +53,10 @@
   )
 {% elsif flag?(:msvc) %}
   download_libui_ng_nightly(
-    # ["builddir/meson-out/libui.dll", "builddir/meson-out/libui.lib"],
-    ["builddir/meson-out/libui.a"],
-    "Win-x64-static-release.zip"
+    ["builddir/meson-out/libui.dll", "builddir/meson-out/libui.lib"],
+    "Win-x64-shared-release.zip"
   )
+  require "file_utils"
+  FileUtils.mv "libui.lib", "ui.lib"
+  # FileUtils.mv "libui.dll", "libui.dll"
 {% end %}
