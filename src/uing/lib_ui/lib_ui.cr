@@ -9,8 +9,8 @@ module UIng
     @[Link("Dwrite")]
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
-    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
+    @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
     @[Link("stdc++")]
@@ -26,17 +26,18 @@ module UIng
     @[Link("Uxtheme")]
     @[Link("ucrt")]
     # @[Link(ldflags: "-mwindows")]
-    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
+    @[Link(ldflags: "-L#{__DIR__}/../../../")]
     @[Link(ldflags: "#{__DIR__}/../../../comctl32.res")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]
-    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
+    @[Link(ldflags: "-L#{__DIR__}/../../../")]
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
     @[Link(framework: "AppKit")]
-    @[Link(ldflags: "#{__DIR__}/../../../libui.a")]
+    @[Link(ldflags: "-L#{__DIR__}/../../../")]
   {% end %}
+  @[Link("ui")]
   lib LibUI
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459
     DRAWDEFAULTMITERLIMIT =                                                             10.0
