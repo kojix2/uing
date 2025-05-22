@@ -1,0 +1,21 @@
+# Build artifacts
+/bin/
+/lib/
+/.shards/
+*.dwarf
+*.lock
+
+# macOS app bundles
+*.app/
+/Md5checker.app/
+/MyApp.app/
+
+# Distribution files
+/dist/
+*.dmg
+
+# Staging directory
+/dmg_stage/
+
+# macOS system files
+.DS_Store

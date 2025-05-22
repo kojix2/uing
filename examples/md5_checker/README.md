@@ -17,6 +17,23 @@ shards build
 bin/md5checker
 ```
 
+## macOS App Packaging
+
+Create a standalone macOS application bundle (.app) and disk image (.dmg):
+
+```bash
+# Run the packaging script
+./build-mac.sh
+```
+
+This script will:
+1. Install dependencies (`shards install`)
+2. Build the application with release optimizations (`shards build --release`)
+3. Package the application as a .app bundle
+4. Automatically include any Homebrew dependencies
+5. Create a distributable .dmg file
+6. Place all distribution files in the `dist/` directory
+
 ## MD5 File Format
 
 ```

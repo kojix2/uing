@@ -31,7 +31,3 @@ basic_multiline_entry
 basic_table
 basic_window
 control_gallery
-
-examples/md5_checker/lib
-examples/md5_checker/bin
-examples/md5_checker/shard.lock
