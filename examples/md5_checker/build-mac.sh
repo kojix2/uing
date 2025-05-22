@@ -78,10 +78,14 @@ otool -L "$MACOS_DIR/$APP_NAME" \
     install_name_tool -change "$lib" "@executable_path/../Frameworks/$base" "$MACOS_DIR/$APP_NAME"
 done
 
-# --- Step 4: Create DMG file ---
-echo "🚚 Copying .app to staging area..."
+# --- Step 4: Create professional DMG file ---
+echo "🚚 Preparing DMG staging area..."
 mkdir -p "$STAGING_DIR"
 cp -R "$APP_BUNDLE" "$STAGING_DIR/"
+
+# Create symbolic link to /Applications
+echo "🔗 Creating Applications folder symlink..."
+ln -s /Applications "$STAGING_DIR/Applications"
 
 echo "💽 Creating DMG file..."
 hdiutil create "$DMG_NAME" \
@@ -89,14 +93,16 @@ hdiutil create "$DMG_NAME" \
   -srcfolder "$STAGING_DIR" \
   -fs HFS+ \
   -format UDZO \
+  -imagekey zlib-level=9 \
   -quiet
 
+# Clean up
 rm -rf "$STAGING_DIR"
 
 # --- Step 5: Collect artifacts in dist/ directory ---
 echo "📁 Moving artifacts to dist/ directory..."
 mv "$DMG_NAME" "$DIST_DIR/"
-cp -R "$APP_BUNDLE" "$DIST_DIR/"
+mv "$APP_BUNDLE" "$DIST_DIR/"
 
 # --- Complete ---
 echo ""

@@ -31,7 +31,9 @@ This script will:
 2. Build the application with release optimizations (`shards build --release`)
 3. Package the application as a .app bundle with custom icon
 4. Automatically include any Homebrew dependencies
-5. Create a distributable .dmg file
+5. Create a professional distributable .dmg file with:
+   - Application icon and Applications folder shortcut
+   - Installation instructions (README.txt)
 6. Place all distribution files in the `dist/` directory
 
 ### Custom Application Icon
