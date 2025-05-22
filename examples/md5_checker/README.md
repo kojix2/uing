@@ -17,7 +17,9 @@ shards build
 bin/md5checker
 ```
 
-## macOS App Packaging
+## Application Packaging
+
+### macOS App Packaging
 
 Create a standalone macOS application bundle (.app) and disk image (.dmg):
 
@@ -35,6 +37,34 @@ This script will:
    - Application icon and Applications folder shortcut
    - Installation instructions (README.txt)
 6. Place all distribution files in the `dist/` directory
+
+### Windows App Packaging
+
+Create a standalone Windows executable and installer (.exe) using Inno Setup:
+
+```cmd
+:: Run the packaging script
+build-win.bat
+```
+
+This script will:
+1. Install dependencies (`shards install`)
+2. Build the application with release optimizations (`shards build --release`)
+3. Create an Inno Setup script if it doesn't exist
+4. Build an installer using Inno Setup
+5. Place all distribution files in the `dist/` directory
+
+#### Prerequisites for Windows Packaging
+
+1. Install [Inno Setup](https://jrsoftware.org/isdl.php)
+2. Ensure `ISCC.exe` is in your PATH or modify the `ISCC` variable in `build-win.bat`
+
+#### Custom Application Icon for Windows
+
+To use a custom icon:
+1. Create a .ico file (Windows icon format)
+2. Place it at `resources/app_icon.ico` in the project directory
+3. Uncomment the icon line in `md5checker.iss`
 
 ### Custom Application Icon
 
