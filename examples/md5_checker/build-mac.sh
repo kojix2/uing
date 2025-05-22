@@ -10,6 +10,8 @@ MACOS_DIR="$APP_BUNDLE/Contents/MacOS"
 RESOURCES_DIR="$APP_BUNDLE/Contents/Resources"
 FRAMEWORKS_DIR="$APP_BUNDLE/Contents/Frameworks"
 PLIST_PATH="$APP_BUNDLE/Contents/Info.plist"
+ICON_NAME="app_icon"
+ICON_PATH="resources/$ICON_NAME.icns"
 DMG_NAME="${APP_NAME}.dmg"
 VOL_NAME="$APP_NAME_CAPITALIZED"
 STAGING_DIR="dmg_stage"
@@ -32,6 +34,15 @@ echo "📦 Creating .app bundle structure..."
 cp "$EXECUTABLE_PATH" "$MACOS_DIR/$APP_NAME"
 chmod +x "$MACOS_DIR/$APP_NAME"
 
+# Copy application icon
+echo "🎨 Adding application icon..."
+if [ -f "$ICON_PATH" ]; then
+  cp "$ICON_PATH" "$RESOURCES_DIR/$ICON_NAME.icns"
+  echo "✅ Icon added: $ICON_PATH → $RESOURCES_DIR/$ICON_NAME.icns"
+else
+  echo "⚠️ Warning: Icon file not found at $ICON_PATH"
+fi
+
 # Create Info.plist file
 cat > "$PLIST_PATH" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -49,6 +60,8 @@ cat > "$PLIST_PATH" <<EOF
   <string>1.0</string>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
+  <key>CFBundleIconFile</key>
+  <string>$ICON_NAME</string>
 </dict>
 </plist>
 EOF
