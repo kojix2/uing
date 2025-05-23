@@ -21,6 +21,8 @@ bin/md5checker
 
 ### macOS App Packaging
 
+#### DMG Package (existing)
+
 Create a standalone macOS application bundle (.app) and disk image (.dmg):
 
 ```bash
@@ -29,6 +31,7 @@ Create a standalone macOS application bundle (.app) and disk image (.dmg):
 ```
 
 This script will:
+
 1. Install dependencies (`shards install`)
 2. Build the application with release optimizations (`shards build --release`)
 3. Package the application as a .app bundle with custom icon
@@ -37,6 +40,58 @@ This script will:
    - Application icon and Applications folder shortcut
    - Installation instructions (README.txt)
 6. Place all distribution files in the `dist/` directory
+
+#### PKG Package (new)
+
+Create a macOS installer package (.pkg) using fpm:
+
+```bash
+# Run the packaging script (requires fpm)
+./build-mac-pkg.sh
+```
+
+This script will:
+
+1. Build the application and create .app bundle using build-mac.sh
+2. Create a .pkg installer using fpm that installs the .app to /Applications
+3. Generate both .dmg and .pkg files in the `dist/` directory
+
+Prerequisites:
+
+- Install fpm: `gem install fpm`
+
+### Linux/Debian Packaging
+
+Create a Debian package (.deb) for Ubuntu/Debian systems:
+
+```bash
+# Run the packaging script (requires fpm)
+./build-deb.sh
+```
+
+This script will:
+
+1. Install dependencies (`shards install`)
+2. Build the application with release optimizations (`shards build --release`)
+3. Create a .deb package using fpm with proper dependencies
+4. Include desktop entry and application icon
+5. Place the package in the `dist/` directory
+
+Prerequisites:
+
+- Install fpm: `gem install fpm`
+- Tested on Ubuntu 24.04 (dependencies may vary on other distributions)
+
+The deb package includes dependencies for:
+
+- libgtk-3-0t64, libglib2.0-0t64, libpango-1.0-0, libcairo2, libssl3t64, libgc1
+
+To install the generated package:
+
+```bash
+sudo dpkg -i dist/md5checker_0.1.0_amd64.deb
+sudo apt-get install -f  # Fix any missing dependencies
+```
 
 ### Windows App Packaging
 
@@ -48,6 +103,7 @@ build-win.bat
 ```
 
 This script will:
+
 1. Install dependencies (`shards install`)
 2. Build the application with release optimizations (`shards build --release`)
 3. Create an Inno Setup script if it doesn't exist
@@ -62,13 +118,14 @@ This script will:
 #### Custom Application Icon for Windows
 
 To use a custom icon:
+
 1. Create a .ico file (Windows icon format)
 2. Place it at `resources/app_icon.ico` in the project directory
 3. Uncomment the icon line in `md5checker.iss`
 
 ### Custom Application Icon
 
-The script automatically includes the application icon from `resources/app_icon.icns`. 
+The script automatically includes the application icon from `resources/app_icon.icns`.
 To use your own icon:
 
 1. Create an .icns file (macOS icon format)
