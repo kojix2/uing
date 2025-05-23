@@ -12,7 +12,7 @@ class MD5CheckerApp
   def initialize
     UIng.init
 
-    @main_window = UIng::Window.new("MD5 Checker", 800, 500, 1)
+    @main_window = UIng::Window.new("MD5 Checker", 600, 400, 1)
     @main_window.set_margined(1)
     @main_window.on_closing do
       UIng.quit
@@ -107,14 +107,10 @@ class MD5CheckerApp
     old_row_count = MD5Checker.instance.result_count
 
     # Process md5.txt file
-    MD5Checker.instance.clear_results
-    results = MD5Checker.instance.process_md5_file(path)
-    results.each do |result|
-      MD5Checker.instance.add_result(result)
-    end
+    MD5Checker.instance.process_md5_file(path)
 
     # Update table
-    update_table(old_row_count, results.size)
+    update_table(old_row_count, MD5Checker.instance.result_count)
 
     # Show completion dialog
     UIng.msg_box(@main_window, "Process Complete", "MD5 check completed")
@@ -123,7 +119,7 @@ class MD5CheckerApp
   # Update table with new data
   private def update_table(old_row_count, new_row_count)
     # Delete all old rows
-    old_row_count.times do |i|
+    old_row_count.times do
       UIng.table_model_row_deleted(@table_model.to_unsafe, 0) # Always delete the first row
     end
 

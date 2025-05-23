@@ -1,5 +1,30 @@
 require "digest/md5"
 
+# File verification result
+struct FileResult
+  property filename : String
+  property status : String
+  property message : String
+
+  def initialize(@filename : String, @status : String, @message : String)
+  end
+
+  # Convert status to emoji
+  def status_emoji
+    case @status
+    when "OK"    then "✅"
+    when "FAIL"  then "❌"
+    when "ERROR" then "⚠️"
+    else              "❓"
+    end
+  end
+
+  # Get display status with emoji
+  def display_status
+    "#{status_emoji} #{@status}"
+  end
+end
+
 # MD5 checker application
 class MD5Checker
   # Singleton pattern
@@ -10,20 +35,15 @@ class MD5Checker
   end
 
   private def initialize
-    @results = [] of {String, String, String} # filename, status, message
+    @results = [] of FileResult
   end
 
   # Results storage
-  getter results : Array({String, String, String})
+  getter results : Array(FileResult)
 
   # Clear results
   def clear_results
     @results.clear
-  end
-
-  # Add result
-  def add_result(result)
-    @results << result
   end
 
   # Get result count
@@ -31,28 +51,32 @@ class MD5Checker
     @results.size
   end
 
-  # Get result at index
+  # Get result at index for table display
   def result_at(index, column)
-    if index < @results.size
-      @results[index][column]
-    else
-      ""
+    return "" if index >= @results.size
+
+    result = @results[index]
+    case column
+    when 0 then result.filename
+    when 1 then result.display_status
+    when 2 then result.message
+    else        ""
     end
   end
 
   # Calculate MD5 hash for a file
-  def calculate_md5(file_path)
+  private def calculate_md5(file_path)
     Digest::MD5.new.file(file_path).hexfinal
   end
 
   # Process MD5 checksum file
   def process_md5_file(md5_file_path)
-    local_results = [] of {String, String, String}
+    @results.clear
 
     # Check if file exists
     unless File.exists?(md5_file_path)
-      local_results << {"File not found", "ERROR", md5_file_path}
-      return local_results
+      @results << FileResult.new("File not found", "ERROR", md5_file_path)
+      return
     end
 
     begin
@@ -61,61 +85,54 @@ class MD5Checker
       File.each_line(md5_file_path) do |line|
         line_number += 1
         begin
-          process_line(line, line_number, md5_file_path, local_results)
+          process_line(line, line_number, md5_file_path)
         rescue ex : Exception
-          # Handle line parsing errors
-          local_results << {"Line #{line_number}", "ERROR", "Parse error: #{ex.message}"}
+          @results << FileResult.new("Line #{line_number}", "ERROR", "Parse error: #{ex.message}")
         end
       end
     rescue ex : Exception
-      # Handle file reading errors
-      local_results << {"File error", "ERROR", "Failed to read file: #{ex.message}"}
+      @results << FileResult.new("File error", "ERROR", "Failed to read file: #{ex.message}")
     end
-
-    local_results
   end
 
   # Process a single line from the MD5 file
-  private def process_line(line, line_number, md5_file_path, results)
+  private def process_line(line, line_number, md5_file_path)
     # Skip empty lines
     return if line.strip.empty?
 
     # Parse line (format: "MD5hash filename")
     parts = line.strip.split(' ', 2)
     if parts.size < 2
-      results << {"Line #{line_number}", "ERROR", "Invalid format"}
+      @results << FileResult.new("Line #{line_number}", "ERROR", "Invalid format")
       return
     end
 
     expected_hash = parts[0].downcase
     # Validate MD5 hash format (32 hex characters)
     unless expected_hash =~ /^[0-9a-f]{32}$/
-      results << {"Line #{line_number}", "ERROR", "Invalid MD5 hash format"}
+      @results << FileResult.new("Line #{line_number}", "ERROR", "Invalid MD5 hash format")
       return
     end
 
     filename = parts[1].strip
-
-    # Build file path (assuming files are in the same directory as md5.txt)
     file_path = File.join(File.dirname(md5_file_path), filename)
+
     # Check if file exists
     unless File.exists?(file_path)
-      results << {filename, "ERROR", "File not found"}
+      @results << FileResult.new(filename, "ERROR", "File not found")
       return
     end
 
-    # Calculate actual MD5 hash
+    # Calculate and compare MD5 hash
     begin
       actual_hash = calculate_md5(file_path)
-
-      # Compare hashes
       if actual_hash.downcase == expected_hash
-        results << {filename, "OK", "Verification successful"}
+        @results << FileResult.new(filename, "OK", "Verification successful")
       else
-        results << {filename, "FAIL", "Checksum mismatch (expected: #{expected_hash}, actual: #{actual_hash})"}
+        @results << FileResult.new(filename, "FAIL", "Checksum mismatch")
       end
     rescue ex : Exception
-      results << {filename, "ERROR", "Failed to calculate MD5: #{ex.message}"}
+      @results << FileResult.new(filename, "ERROR", "Failed to calculate MD5: #{ex.message}")
     end
   end
 end
