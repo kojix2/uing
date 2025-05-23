@@ -27,8 +27,7 @@ Because the original libui-ng project does not provide prebuilt binaries, this p
 
 | OS                | Binary Source                                                                                       |
 | ----------------- | --------------------------------------------------------------------------------------------------- |
-| MacOS / Linux / Windows (MSVC) | Builds from [kojix2/libui-ng](https://github.com/kojix2/libui-ng), [pre-build](https://github.com/kojix2/libui-ng/tree/pre-build) branch |
-| Windows (Mingw-w64) | Prebuilt binaries from [libui-dev](https://github.com/petabyt/libui-dev/releases)      |
+| MacOS / Linux / Windows | Builds from [kojix2/libui-ng](https://github.com/kojix2/libui-ng), [pre-build](https://github.com/kojix2/libui-ng/tree/pre-build) branch |
 
 To download it manually: `crystal run download.cr`
 
