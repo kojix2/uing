@@ -46,13 +46,16 @@ OutputBaseFilename=$APP_NAME-setup
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest
+SetupIconFile=resources\app_icon.ico
+UninstallDisplayIcon={app}\app_icon.ico
 
 [Files]
 Source: "$EXECUTABLE_PATH"; DestDir: "{app}"; Flags: ignoreversion
 Source: "README.md"; DestDir: "{app}"; Flags: isreadme ignoreversion
+Source: "resources\app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\$APP_NAME_CAPITALIZED"; Filename: "{app}\$APP_NAME.exe"
+Name: "{group}\$APP_NAME_CAPITALIZED"; Filename: "{app}\$APP_NAME.exe"; IconFilename: "{app}\app_icon.ico"
 Name: "{group}\Uninstall $APP_NAME_CAPITALIZED"; Filename: "{uninstallexe}"
 
 [Run]
