@@ -46,7 +46,6 @@ OutputBaseFilename=$APP_NAME-setup
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest
-SetupIconFile=resources\app_icon.ico
 UninstallDisplayIcon={app}\app_icon.ico
 
 [Files]
