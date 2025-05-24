@@ -8,17 +8,16 @@ date_time_picker = UIng::DateTimePicker.new
 
 time = UIng::TM.new
 
-date_time_picker.on_changed do
-  date_time_picker.time(time)
-  p sec: time.sec,
-    min: time.min,
-    hour: time.hour,
-    mday: time.mday,
-    mon: time.mon,
-    year: time.year,
-    wday: time.wday,
-    yday: time.yday,
-    isdst: time.isdst
+date_time_picker.on_changed do |tm|
+  p sec: tm.sec,
+    min: tm.min,
+    hour: tm.hour,
+    mday: tm.mday,
+    mon: tm.mon,
+    year: tm.year,
+    wday: tm.wday,
+    yday: tm.yday,
+    isdst: tm.isdst
 end
 vbox.append(date_time_picker, 1)
 
