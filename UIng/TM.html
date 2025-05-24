@@ -463,7 +463,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L2" target="_blank">
         uing/tm.cr
       </a>
     
@@ -533,6 +533,25 @@
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#to_s%28io%3AIO%2Cformat%3AString%29%3ANil-instance-method" class="signature"><strong>#to_s</strong>(io : IO, format : String) : Nil</a>
+        
+          <div class="summary"><p>Delegate to_s to Time for convenient formatting</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_s%28format%3AString%29%3AString-instance-method" class="signature"><strong>#to_s</strong>(format : String) : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_s%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#to_s</strong>(io : IO) : Nil</a>
+        
+          <div class="summary"><p>Appends a short String representation of this object which includes its class name and its object address.</p></div>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#to_time%3ATime-instance-method" class="signature"><strong>#to_time</strong> : Time</a>
@@ -616,7 +635,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L4" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -637,7 +656,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -667,7 +686,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -683,6 +702,75 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="to_s(io:IO,format:String):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>to_s</strong>(io : IO, format : String) : Nil
+
+        <a class="method-permalink" href="#to_s%28io%3AIO%2Cformat%3AString%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Delegate to_s to Time for convenient formatting</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L56" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_s(format:String):String-instance-method">
+      <div class="signature">
+        
+        def <strong>to_s</strong>(format : String) : String
+
+        <a class="method-permalink" href="#to_s%28format%3AString%29%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L60" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_s(io:IO):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>to_s</strong>(io : IO) : Nil
+
+        <a class="method-permalink" href="#to_s%28io%3AIO%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from class Reference
+            </div>
+          
+          <p>Appends a short String representation of this object
+which includes its class name and its object address.</p>
+<pre><code class="language-crystal"><span class="k">class</span> <span class="t">Person</span>
+  <span class="k">def</span> <span class="m">initialize</span>(@name : <span class="t">String</span>, @age : <span class="t">Int32</span>)
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="t">Person</span>.new(<span class="s">&quot;John&quot;</span>, <span class="n">32</span>).to_s <span class="c"># =&gt; #&lt;Person:0x10a199f20&gt;</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L64" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="to_time:Time-instance-method">
       <div class="signature">
@@ -700,7 +788,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L43" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -716,7 +804,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -732,7 +820,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -748,7 +836,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/07852eb92605c7f6c47ef907a77790bab45be73d/src/uing/tm.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/acafbbc9d00bb4fb432790e32491fa1268f58c59/src/uing/tm.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
