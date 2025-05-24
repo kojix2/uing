@@ -22,5 +22,9 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def text=(value : String)
+      set_text(value)
+    end
   end
 end

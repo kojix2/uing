@@ -26,5 +26,13 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def text=(value : String)
+      set_text(value)
+    end
+
+    def read_only=(value : Bool)
+      set_read_only(value ? 1 : 0)
+    end
   end
 end

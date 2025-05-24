@@ -49,5 +49,25 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def title=(value : String)
+      set_title(value)
+    end
+
+    def margined=(value : Bool)
+      set_margined(value ? 1 : 0)
+    end
+
+    def borderless=(value : Bool)
+      set_borderless(value ? 1 : 0)
+    end
+
+    def resizeable=(value : Bool)
+      set_resizeable(value ? 1 : 0)
+    end
+
+    def fullscreen=(value : Bool)
+      set_fullscreen(value ? 1 : 0)
+    end
   end
 end
