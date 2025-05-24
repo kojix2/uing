@@ -37,6 +37,8 @@ module UIng
     # @[Link(ldflags: "-mwindows")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+    {% elsif flag?(:release) %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% end %}
@@ -46,6 +48,8 @@ module UIng
     @[Link("m")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+    {% elsif flag?(:release) %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% end %}
@@ -54,6 +58,8 @@ module UIng
     @[Link(framework: "AppKit")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+    {% elsif flag?(:release) %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% end %}
