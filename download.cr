@@ -1,16 +1,10 @@
-# {% if flag?(:win32) && flag?(:gnu) %}
-#   file_name = "libui.a"
-#   url = "https://github.com/petabyt/libui-dev/releases/download/5-beta/libui_x86_64_win.a"
-#   system("curl -L #{url} -o #{file_name}")
-#   system(p("windres comctl32.rc -O coff -o comctl32.res"))
-#   exit 0
-# {% end %}
-
 require "compress/zip"
 require "file_utils"
 
+COMMIT_HASH = "43ba1ef"
+
 def url_for_libui_ng_nightly(file_name)
-  "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build/#{file_name}"
+  "https://github.com/kojix2/libui-ng/releases/download/commit-#{COMMIT_HASH}/#{file_name}"
 end
 
 def download_libui_ng_nightly(lib_path, file_name)
@@ -101,3 +95,11 @@ end
   FileUtils.mv "libui.a", "libui/debug/libui.a"
   system(p("windres comctl32.rc -O coff -o comctl32.res"))
 {% end %}
+
+# {% if flag?(:win32) && flag?(:gnu) %}
+#   file_name = "libui.a"
+#   url = "https://github.com/petabyt/libui-dev/releases/download/5-beta/libui_x86_64_win.a"
+#   system("curl -L #{url} -o #{file_name}")
+#   system(p("windres comctl32.rc -O coff -o comctl32.res"))
+#   exit 0
+# {% end %}
