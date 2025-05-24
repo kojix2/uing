@@ -7,8 +7,8 @@ module UIng
     # Overloaded constructor: Convert Time to TM
     def initialize(time : ::Time)
       @cstruct = LibUI::TM.new
-      self.year = time.year
-      self.mon = time.month
+      self.year = time.year - 1900 # tm_year is years since 1900
+      self.mon = time.month - 1    # tm_mon is 0-based (0-11)
       self.mday = time.day
       self.hour = time.hour
       self.min = time.minute
@@ -17,6 +17,7 @@ module UIng
       self.yday = time.day_of_year - 1      # 0-based
       self.isdst = 0                        # Not handling DST
       {% unless flag?(:windows) %}
+        self.gmtoff = time.offset.to_i64
         self.zone = time.location.name
       {% end %}
     end
@@ -41,13 +42,27 @@ module UIng
     # Convert TM to Time
     def to_time : ::Time
       ::Time.local(
-        self.year,
-        self.mon,
+        self.year + 1900, # tm_year is years since 1900
+        self.mon + 1,     # tm_mon is 0-based (0-11)
         self.mday,
         self.hour,
         self.min,
-        self.sec
+        self.sec,
+        nanosecond: 0
       )
+    end
+
+    # Delegate to_s to Time for convenient formatting
+    def to_s(io : IO, format : String) : Nil
+      to_time.to_s(io, format)
+    end
+
+    def to_s(format : String) : String
+      to_time.to_s(format)
+    end
+
+    def to_s(io : IO) : Nil
+      to_time.to_s(io)
     end
   end
 end

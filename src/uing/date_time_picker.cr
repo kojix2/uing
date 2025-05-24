@@ -38,5 +38,18 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def set_time(time : Time)
+      tm = UIng::TM.new(time)
+      set_time(tm)
+    end
+
+    def time=(tm : UIng::TM)
+      set_time(tm)
+    end
+
+    def time=(time : Time)
+      set_time(time)
+    end
   end
 end
