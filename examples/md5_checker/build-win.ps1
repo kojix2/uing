@@ -27,7 +27,7 @@ if (-not (Get-Command $ISCC -ErrorAction SilentlyContinue)) {
 
 Write-Host "Building $APP_NAME v$VERSION..."
 & shards install
-& shards build --release
+& shards build --release --no-debug --link-flags=/SUBSYSTEM:WINDOWS
 
 if (Test-Path $DIST_DIR) { Remove-Item $DIST_DIR -Recurse -Force }
 if (Test-Path $OUTPUT_DIR) { Remove-Item $OUTPUT_DIR -Recurse -Force }
