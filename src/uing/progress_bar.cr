@@ -14,5 +14,9 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def value=(value : Int32)
+      set_value(value)
+    end
   end
 end

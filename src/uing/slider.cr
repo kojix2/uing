@@ -28,5 +28,13 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def value=(value : Int32)
+      set_value(value)
+    end
+
+    def has_tool_tip=(value : Bool)
+      set_has_tool_tip(value ? 1 : 0)
+    end
   end
 end
