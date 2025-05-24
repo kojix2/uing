@@ -7,6 +7,7 @@
 # {% end %}
 
 require "compress/zip"
+require "file_utils"
 
 def url_for_libui_ng_nightly(file_name)
   "https://nightly.link/kojix2/libui-ng/workflows/pre-build/pre-build/#{file_name}"
@@ -47,11 +48,27 @@ end
     ["builddir/meson-out/libui.a"],
     "macOS-x64-static-release.zip"
   )
+  FileUtils.mkdir_p "libui/release"
+  FileUtils.mv "libui.a", "libui/release/libui.a"
+  download_libui_ng_nightly(
+    ["builddir/meson-out/libui.a"],
+    "macOS-x64-static-debug.zip"
+  )
+  FileUtils.mkdir_p "libui/debug"
+  FileUtils.mv "libui.a", "libui/debug/libui.a"
 {% elsif flag?(:linux) %}
   download_libui_ng_nightly(
     ["builddir/meson-out/libui.a"],
     "Ubuntu-x64-static-release.zip"
   )
+  FileUtils.mkdir_p "libui/release"
+  FileUtils.mv "libui.a", "libui/release/libui.a"
+  download_libui_ng_nightly(
+    ["builddir/meson-out/libui.a"],
+    "Ubuntu-x64-static-debug.zip"
+  )
+  FileUtils.mkdir_p "libui/debug"
+  FileUtils.mv "libui.a", "libui/debug/libui.a"
 {% elsif flag?(:msvc) %}
   # download_libui_ng_nightly(
   #   ["builddir/meson-out/libui.dll", "builddir/meson-out/libui.lib"],
@@ -61,14 +78,26 @@ end
     ["builddir/meson-out/libui.a"],
     "Win-x64-static-release.zip"
   )
-  require "file_utils"
-  FileUtils.mv "libui.a", "libui.lib"
-  FileUtils.mv "libui.lib", "ui.lib"
-  # FileUtils.mv "libui.dll", "ui.dll"
+  FileUtils.mkdir_p "libui/release"
+  FileUtils.mv "libui.a", "libui/release/ui.lib"
+  download_libui_ng_nightly(
+    ["builddir/meson-out/libui.a"],
+    "Win-x64-static-debug.zip"
+  )
+  FileUtils.mkdir_p "libui/debug"
+  FileUtils.mv "libui.a", "libui/debug/ui.lib"
 {% elsif flag?(:win32) && flag?(:gnu) %}
   download_libui_ng_nightly(
     ["builddir/meson-out/libui.a"],
     "Mingw-x64-static-release.zip"
   )
+  FileUtils.mkdir_p "libui/release"
+  FileUtils.mv "libui.a", "libui/release/libui.a"
+  download_libui_ng_nightly(
+    ["builddir/meson-out/libui.a"],
+    "Mingw-x64-static-debug.zip"
+  )
+  FileUtils.mkdir_p "libui/debug"
+  FileUtils.mv "libui.a", "libui/debug/libui.a"
   system(p("windres comctl32.rc -O coff -o comctl32.res"))
 {% end %}

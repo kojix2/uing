@@ -10,7 +10,15 @@ module UIng
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
-    @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../")]
+    {% if flag?(:debug) %}
+      @[Link(ldflags: "/DEBUG")]
+      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug")]
+    {% elsif flag?(:release) %}
+      @[Link(ldflags: "/LTCG")]
+      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release")]
+    {% else %}
+      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release")]
+    {% end %}
     # @[Link("ui", dll: "libui.dll")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
@@ -27,16 +35,28 @@ module UIng
     @[Link("Uxtheme")]
     @[Link("ucrt")]
     # @[Link(ldflags: "-mwindows")]
-    @[Link(ldflags: "-L#{__DIR__}/../../../")]
+    {% if flag?(:debug) %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+    {% else %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+    {% end %}
     @[Link(ldflags: "#{__DIR__}/../../../comctl32.res")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]
-    @[Link(ldflags: "-L#{__DIR__}/../../../")]
+    {% if flag?(:debug) %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+    {% else %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+    {% end %}
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
     @[Link(framework: "AppKit")]
-    @[Link(ldflags: "-L#{__DIR__}/../../../")]
+    {% if flag?(:debug) %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+    {% else %}
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+    {% end %}
   {% end %}
   @[Link("ui")]
   lib LibUI
