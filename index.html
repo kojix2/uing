@@ -430,7 +430,7 @@
 </a>UIng</h1>
 <p><a href="https://github.com/kojix2/uing/actions/workflows/ci.yml"><img src="https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg" alt="test" /></a>
 <a href="https://tokei.kojix2.net/github/kojix2/uing"><img src="https://img.shields.io/endpoint?url=https://tokei.kojix2.net/badge/github/kojix2/uing/lines" alt="Lines of Code" /></a></p>
-<p><strong>UIng</strong> is yet another Crystal binding for <strong><a href="https://github.com/libui-ng/libui-ng">libui-ng</a></strong> or <strong><a href="https://github.com/petabyt/libui-dev">libui-dev</a></strong>.</p>
+<p><strong>UIng</strong> is a Crystal binding for <strong><a href="https://github.com/libui-ng/libui-ng">libui-ng</a></strong> with enhanced memory safety.</p>
 <p>| Windows                                                                                                          | Mac                                                                                                              | Linux                                                                                                            |
 | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | <img src="https://user-images.githubusercontent.com/5798442/103118046-900ea780-46b0-11eb-81fc-32626762e4df.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118059-99980f80-46b0-11eb-9d12-324ec4d297c9.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118068-a0bf1d80-46b0-11eb-8c5c-3bdcc3dcfb26.png"> |</p>
@@ -438,72 +438,31 @@
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>🔶 Installation</h2>
-<p>Add the dependency to your <code>shard.yml</code>.</p>
-<pre><code class="language-sh">dependencies:
+</a>Installation</h2>
+<p>Add the dependency to your <code>shard.yml</code>:</p>
+<pre><code class="language-yaml">dependencies:
   uing:
     github: kojix2/uing</code></pre>
-<h3><a id="downloading-binaries" class="anchor" href="#downloading-binaries">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>⇩ Downloading Binaries</h3>
-<p>The required libui library is automatically downloaded via <a href="https://github.com/kojix2/uing/blob/main/shard.yml"><code>postinstall</code></a>.</p>
-<p>Because the original libui-ng project does not provide prebuilt binaries, this project uses the following sources:</p>
-<p>| OS                | Binary Source                                                                                       |
-| ----------------- | --------------------------------------------------------------------------------------------------- |
-| MacOS / Linux / Windows | Builds from <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a>, <a href="https://github.com/kojix2/libui-ng/tree/pre-build">pre-build</a> branch |</p>
-<p>To download it manually: <code>crystal run download.cr</code></p>
-<h4><a id="setting-up-on-windows-msvc" class="anchor" href="#setting-up-on-windows-msvc">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Setting up on Windows (MSVC)</h4>
-<p>If you're using MSVC, you can either:</p>
-<ul>
-<li>Option 1: Use the Developer Command Prompt for Visual Studio</li>
-<li>Option 2: Run manually from any terminal</li>
-</ul>
-<pre><code class="language-cmd">cmd /c &quot;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat&quot; &quot;&amp;&amp;&quot; crystal build examples/control_gallery.cr</code></pre>
-<ul>
-<li>Option 3: Add the Windows Kits path manually:</li>
-</ul>
-<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
-<p>This helps prevent errors like: &quot;LINK : fatal error LNK1158: cannot run 'mt.exe'&quot;.</p>
-<h3><a id="using-your-own-libui-build" class="anchor" href="#using-your-own-libui-build">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Using Your Own libui Build</h3>
-<p>The default link flag is defined in <a href="src/uing/lib_ui/lib_ui.cr">lib_ui.cr</a>. Edit as needed.</p>
+<p>The required libui library is automatically downloaded via postinstall.</p>
+<p>To download manually: <code>crystal run download.cr</code></p>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>🔶 Usage</h2>
-<p>The Control gallery example uses a high-level API.</p>
-<pre><code class="language-sh">crystal build examples/control_gallery.cr
-./control_gallery</code></pre>
-<h3><a id="basic-example" class="anchor" href="#basic-example">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Basic Example</h3>
-<p>High level API:</p>
-<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;../src/uing&quot;</span>
+</a>Usage</h2>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;uing&quot;</span>
 
 <span class="t">UIng</span>.init
 
-window <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Window</span>.new(<span class="s">&quot;hello world&quot;</span>, <span class="n">300</span>, <span class="n">200</span>, <span class="n">1</span>)
+window <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Window</span>.new(<span class="s">&quot;Hello World&quot;</span>, <span class="n">300</span>, <span class="n">200</span>, <span class="n">1</span>)
 window.on_closing <span class="k">do</span>
   <span class="t">UIng</span>.quit
   <span class="n">1</span>
 <span class="k">end</span>
 
-button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Button&quot;</span>)
+button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Click me&quot;</span>)
 button.on_clicked <span class="k">do</span>
-  <span class="t">UIng</span>.msg_box(window, <span class="s">&quot;Information&quot;</span>, <span class="s">&quot;You clicked the button&quot;</span>)
-  <span class="n">0</span>
+  <span class="t">UIng</span>.msg_box(window, <span class="s">&quot;Info&quot;</span>, <span class="s">&quot;Button clicked!&quot;</span>)
 <span class="k">end</span>
 
 window.set_child(button)
@@ -511,144 +470,82 @@ window.show
 
 <span class="t">UIng</span>.main
 <span class="t">UIng</span>.uninit</code></pre>
-<p>Middle level API:</p>
-<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;../src/uing&quot;</span>
-
-<span class="t">UIng</span>.init
-
-window <span class="o">=</span> <span class="t">UIng</span>.new_window(<span class="s">&quot;hello world&quot;</span>, <span class="n">300</span>, <span class="n">200</span>, <span class="n">1</span>)
-<span class="t">UIng</span>.window_on_closing(window) <span class="k">do</span>
-  <span class="t">UIng</span>.quit
-  <span class="n">1</span>
-<span class="k">end</span>
-
-button <span class="o">=</span> <span class="t">UIng</span>.new_button(<span class="s">&quot;Button&quot;</span>)
-<span class="t">UIng</span>.button_on_clicked(button) <span class="k">do</span>
-  <span class="t">UIng</span>.msg_box(window, <span class="s">&quot;Information&quot;</span>, <span class="s">&quot;You clicked the button&quot;</span>)
-  <span class="n">0</span>
-<span class="k">end</span>
-
-<span class="t">UIng</span>.window_set_child(window, button)
-<span class="t">UIng</span>.control_show(window)
-
-<span class="t">UIng</span>.main
-<span class="t">UIng</span>.uninit</code></pre>
-<p>For more details, see <a href="examples">examples</a>.</p>
-<p>The middle-level API is reasonably well-implemented, allowing users to access most of libui's functionality. Please start by using this level.</p>
-<h3><a id="binding-levels" class="anchor" href="#binding-levels">
+<p>For more examples, see <a href="examples">examples</a>.</p>
+<h2><a id="api-levels" class="anchor" href="#api-levels">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Binding Levels</h3>
+</a>API Levels</h2>
 <p>| <strong>Level</strong>        | <strong>Defined in</strong>              | <strong>Example</strong>                    | <strong>Description</strong>               |
 | ---------------- | --------------------------- | ------------------------------ | ----------------------------- |
-| <strong>Low-Level</strong>    | <code>src/uing/lib_ui/lib_ui.cr</code> | <code>UIng::LibUI.new_button</code>, etc. | Direct bindings to the libui. |
-| <strong>Middle-Level</strong> | <code>src/uing.cr</code>               | <code>UIng.button_text</code>, etc.       | Handles memory management.    |
-| <strong>High-Level</strong>   | <code>src/uing/*.cr</code>             | <code>button.on_clicked { }</code>, etc.  | Custom API or macros.         |</p>
+| <strong>Low-Level</strong>    | <code>src/uing/lib_ui/lib_ui.cr</code> | <code>UIng::LibUI.new_button</code>, etc. | Direct bindings to libui      |
+| <strong>Middle-Level</strong> | <code>src/uing.cr</code>               | <code>UIng.button_text</code>, etc.       | Handles memory management     |
+| <strong>High-Level</strong>   | <code>src/uing/*.cr</code>             | <code>button.on_clicked { }</code>, etc.  | Object-oriented API           |</p>
+<p>The middle-level API is well-implemented and recommended for most use cases.</p>
+<h2><a id="memory-safety" class="anchor" href="#memory-safety">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Memory Safety</h2>
+<p>UIng has been enhanced with comprehensive memory safety improvements:</p>
 <ul>
-<li>At the middle level, memory management tasks such as string deallocation are handled.</li>
-<li>The high-level API implementation is limited; the <code>Control</code> module provides a <code>method_missing</code> macro to handle undefined methods.
-<ul>
-<li>Methods generated by the MethodMissing macro currently have two limitations in interpreting blocks. (1) Blocks with arguments are not available. (2) The return type is inferred from the code. Therefore, you may need to return Nil if the return value should be void. If you are not sure, you should call the Middle Level API.</li>
+<li><strong>Instance-level management</strong>: Each UI component maintains its own callback references</li>
+<li><strong>GC protection</strong>: All callback functions are properly protected from Crystal's garbage collector</li>
+<li><strong>Crash prevention</strong>: Eliminates segmentation faults caused by accessing freed callback memory</li>
 </ul>
-</li>
-</ul>
-<h3><a id="hide-console-window-on-windows" class="anchor" href="#hide-console-window-on-windows">
+<p>This ensures stable operation even with complex callback scenarios and long-running applications.</p>
+<h2><a id="windows-setup" class="anchor" href="#windows-setup">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Hide Console Window on Windows</h3>
-<h4><a id="min-gw" class="anchor" href="#min-gw">
+</a>Windows Setup</h2>
+<h3><a id="hide-console-window" class="anchor" href="#hide-console-window">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>MinGW</h4>
-<pre><code class="language-sh">crystal build examples/basic_window.cr --link-flags &quot;-mwindows&quot;</code></pre>
-<h4><a id="msvc" class="anchor" href="#msvc">
+</a>Hide Console Window</h3>
+<p>MinGW: <code>crystal build app.cr --link-flags &quot;-mwindows&quot;</code>
+MSVC: <code>crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></p>
+<h3><a id="msvc-setup" class="anchor" href="#msvc-setup">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>MSVC</h4>
-<pre><code class="language-sh">crystal build examples/basic_window.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
-<p><strong>Note:</strong> The program will crash if you attempt to output to the console.</p>
-<h3><a id="static-linking" class="anchor" href="#static-linking">
+</a>MSVC Setup</h3>
+<p>Use Developer Command Prompt or add Windows Kits path:</p>
+<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
+<h2><a id="closures-and-limitations" class="anchor" href="#closures-and-limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Static Linking</h3>
-<p>At present, I have not been able to generate an executable that functions correctly through static linking on any platform.
-Your contributions are welcome.</p>
-<h2><a id="closures-and-their-limitations" class="anchor" href="#closures-and-their-limitations">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>🔶 Closures and Their Limitations</h2>
-<p>Crystal has two types of blocks. One is the block that is inlined at compile time and is mainly used with yield. The other is the captured block. Blocks passed as callbacks to C functions are always captured blocks. However, closures do not work correctly with low-level bindings. When referencing variables outside the block, the program detects the anomaly and terminates immediately (note that this does not throw an exception, and it is different from a segmentation fault). To work around this issue, the mid-level API implements closures using the Box class.</p>
-<p>On the other hand, the real problem arises when storing callback functions in the fields of a structure and then passing them to C. In this case, since there is no user data, the closures may not function as expected. There is still no definitive solution for this.</p>
+</a>Closures and Limitations</h2>
+<p>Crystal blocks passed as callbacks to C functions are captured blocks. The mid-level API implements closures using the Box class to work around limitations. The recent memory safety improvements have resolved most callback-related crashes.</p>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>🔶 Development</h2>
-<h3><a id="additional-rules" class="anchor" href="#additional-rules">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Additional Rules</h3>
+</a>Development</h2>
 <ul>
-<li><code>UIng::LibUI</code> is a <strong>module dedicated to bindings</strong>.</li>
-<li><strong>Use</strong> <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> <strong>to generate low-level bindings</strong> (manual modifications required).</li>
-<li><strong>Passing a Proc to a C function</strong>: <a href="https://crystal-lang.org/api/1.12.1/Proc.html#passing-a-proc-to-a-c-function">Official Documentation</a>.</li>
-</ul>
-<h2><a id="windows-compatibility" class="anchor" href="#windows-compatibility">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>🔶 Windows Compatibility</h2>
-<h3><a id="com-ctl32-version-issues" class="anchor" href="#com-ctl32-version-issues">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>ComCtl32 Version Issues</h3>
-<ul>
-<li><code>libui-ng</code>'s <code>msg_box</code> implementation relies on <code>TaskDialog</code>.</li>
-<li><code>TaskDialog</code> requires <strong>ComCtl32.dll version 6</strong>.</li>
-<li>There are other dependencies on version 6 besides <code>TaskDialog</code>.</li>
-<li>The standard ComCtl32 is version 5, so a manifest file is necessary.</li>
-<li>For <code>MSVC</code> the link flag specifies the manuf.</li>
-<li>For <code>MinGW</code>, <code>comctl32.res</code> is generated when <code>download.cr</code> is run.</li>
-</ul>
-<h3><a id="debugging" class="anchor" href="#debugging">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Debugging</h3>
-<p>Many unix tools are available on Windows (MinGW).</p>
-<ul>
-<li><code>gdb</code> can be used for debugging.</li>
-<li><code>ldd</code> can be used to check dependencies.</li>
-<li><code>strace</code> can be used to trace system calls.</li>
-<li><code>objdump</code> can be used to disassemble.</li>
+<li><code>UIng::LibUI</code> is the module for direct C bindings</li>
+<li>Use <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> to generate low-level bindings</li>
+<li>When adding new UI components, follow the established callback management patterns</li>
 </ul>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>🔶 Contributing</h2>
-<p>You can contribute to this project by:</p>
+</a>Contributing</h2>
 <ul>
-<li>☑ Forking this repository</li>
-<li>☑ Reporting bugs</li>
-<li>☑ Fixing bugs and submitting pull requests</li>
-<li>☑ Improving documentation</li>
-<li>☑ Suggesting or adding new features</li>
+<li>Fork this repository</li>
+<li>Report bugs and submit pull requests</li>
+<li>Improve documentation</li>
+<li>Test memory safety improvements</li>
 </ul>
 <h2><a id="license" class="anchor" href="#license">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>🔶 License</h2>
-<p>This project is licensed under the <strong>MIT License</strong>.</p>
+</a>License</h2>
+<p>MIT License</p>
 </div>
 </body>
 </html>
