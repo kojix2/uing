@@ -430,7 +430,7 @@
 </a>UIng</h1>
 <p><a href="https://github.com/kojix2/uing/actions/workflows/ci.yml"><img src="https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg" alt="test" /></a>
 <a href="https://tokei.kojix2.net/github/kojix2/uing"><img src="https://img.shields.io/endpoint?url=https://tokei.kojix2.net/badge/github/kojix2/uing/lines" alt="Lines of Code" /></a></p>
-<p><strong>UIng</strong> is a Crystal binding for <strong><a href="https://github.com/libui-ng/libui-ng">libui-ng</a></strong> with enhanced memory safety.</p>
+<p><strong>UIng</strong> is a Crystal binding for <a href="https://github.com/libui-ng/libui-ng">libui-ng</a></p>
 <p>| Windows                                                                                                          | Mac                                                                                                              | Linux                                                                                                            |
 | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | <img src="https://user-images.githubusercontent.com/5798442/103118046-900ea780-46b0-11eb-81fc-32626762e4df.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118059-99980f80-46b0-11eb-9d12-324ec4d297c9.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118068-a0bf1d80-46b0-11eb-8c5c-3bdcc3dcfb26.png"> |</p>
@@ -476,12 +476,11 @@ window.show
     <use href="#octicon-link"/>
   </svg>
 </a>API Levels</h2>
-<p>| <strong>Level</strong>        | <strong>Defined in</strong>              | <strong>Example</strong>                    | <strong>Description</strong>               |
-| ---------------- | --------------------------- | ------------------------------ | ----------------------------- |
-| <strong>Low-Level</strong>    | <code>src/uing/lib_ui/lib_ui.cr</code> | <code>UIng::LibUI.new_button</code>, etc. | Direct bindings to libui      |
-| <strong>Middle-Level</strong> | <code>src/uing.cr</code>               | <code>UIng.button_text</code>, etc.       | Handles memory management     |
-| <strong>High-Level</strong>   | <code>src/uing/*.cr</code>             | <code>button.on_clicked { }</code>, etc.  | Object-oriented API           |</p>
-<p>The middle-level API is well-implemented and recommended for most use cases.</p>
+<p>| <strong>Level</strong>        | <strong>Defined in</strong>              | <strong>Example</strong>                    | <strong>Description</strong>           |
+| ---------------- | --------------------------- | ------------------------------ | ------------------------- |
+| <strong>High-Level</strong>   | <code>src/uing/*.cr</code>             | <code>button.on_clicked { }</code>, etc.  | Object-oriented API       |
+| <strong>Middle-Level</strong> | <code>src/uing.cr</code>               | <code>UIng.button_text</code>, etc.       | Handles memory management |
+| <strong>Low-Level</strong>    | <code>src/uing/lib_ui/lib_ui.cr</code> | <code>UIng::LibUI.new_button</code>, etc. | Direct bindings to libui  |</p>
 <h2><a id="memory-safety" class="anchor" href="#memory-safety">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -504,8 +503,10 @@ window.show
     <use href="#octicon-link"/>
   </svg>
 </a>Hide Console Window</h3>
-<p>MinGW: <code>crystal build app.cr --link-flags &quot;-mwindows&quot;</code>
-MSVC: <code>crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></p>
+<p>MinGW:</p>
+<pre><code class="language-crystal">crystal build app.cr --link-flags &quot;-mwindows&quot;</code></pre>
+<p>MSVC:</p>
+<pre><code class="language-crystal">crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
 <h3><a id="msvc-setup" class="anchor" href="#msvc-setup">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -528,6 +529,7 @@ MSVC: <code>crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></p>
 <li><code>UIng::LibUI</code> is the module for direct C bindings</li>
 <li>Use <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> to generate low-level bindings</li>
 <li>When adding new UI components, follow the established callback management patterns</li>
+<li>libui libraries are generated using GitHub Actions at <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> in the pre-build branch.</li>
 </ul>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
