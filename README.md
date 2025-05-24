@@ -3,7 +3,7 @@
 [![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)
 [![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fuing%2Flines)](https://tokei.kojix2.net/github/kojix2/uing)
 
-**UIng** is a Crystal binding for **[libui-ng](https://github.com/libui-ng/libui-ng)** with enhanced memory safety.
+**UIng** is a Crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng)
 
 | Windows                                                                                                          | Mac                                                                                                              | Linux                                                                                                            |
 | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -52,13 +52,11 @@ For more examples, see [examples](examples).
 
 ## API Levels
 
-| **Level**        | **Defined in**              | **Example**                    | **Description**               |
-| ---------------- | --------------------------- | ------------------------------ | ----------------------------- |
-| **Low-Level**    | `src/uing/lib_ui/lib_ui.cr` | `UIng::LibUI.new_button`, etc. | Direct bindings to libui      |
-| **Middle-Level** | `src/uing.cr`               | `UIng.button_text`, etc.       | Handles memory management     |
-| **High-Level**   | `src/uing/*.cr`             | `button.on_clicked { }`, etc.  | Object-oriented API           |
-
-The middle-level API is well-implemented and recommended for most use cases.
+| **Level**        | **Defined in**              | **Example**                    | **Description**           |
+| ---------------- | --------------------------- | ------------------------------ | ------------------------- |
+| **High-Level**   | `src/uing/*.cr`             | `button.on_clicked { }`, etc.  | Object-oriented API       |
+| **Middle-Level** | `src/uing.cr`               | `UIng.button_text`, etc.       | Handles memory management |
+| **Low-Level**    | `src/uing/lib_ui/lib_ui.cr` | `UIng::LibUI.new_button`, etc. | Direct bindings to libui  |
 
 ## Memory Safety
 
@@ -74,12 +72,22 @@ This ensures stable operation even with complex callback scenarios and long-runn
 
 ### Hide Console Window
 
-MinGW: `crystal build app.cr --link-flags "-mwindows"`
-MSVC: `crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS`
+MinGW:
+
+```
+crystal build app.cr --link-flags "-mwindows"
+```
+
+MSVC:
+
+```
+crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
+```
 
 ### MSVC Setup
 
 Use Developer Command Prompt or add Windows Kits path:
+
 ```powershell
 $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ```
@@ -93,6 +101,7 @@ Crystal blocks passed as callbacks to C functions are captured blocks. The mid-l
 - `UIng::LibUI` is the module for direct C bindings
 - Use [crystal_lib](https://github.com/crystal-lang/crystal_lib) to generate low-level bindings
 - When adding new UI components, follow the established callback management patterns
+- libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
 
 ## Contributing
 
