@@ -69,5 +69,9 @@ module UIng
     def fullscreen=(value : Bool)
       set_fullscreen(value ? 1 : 0)
     end
+
+    def child=(control)
+      set_child(control)
+    end
   end
 end

@@ -14,7 +14,7 @@ button.on_clicked do
   0
 end
 
-window.set_child(button)
+window.child = button
 window.show
 
 UIng.main

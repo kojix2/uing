@@ -46,7 +46,7 @@ help_menu.append_about_item
 
 # Main Window
 MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, 1)
-MAIN_WINDOW.set_margined 1
+MAIN_WINDOW.margined = true
 MAIN_WINDOW.on_closing do
   puts "Bye Bye"
   UIng.quit
@@ -56,21 +56,21 @@ MAIN_WINDOW.on_closing do
 end
 
 vbox = UIng::Box.new(:vertical)
-MAIN_WINDOW.set_child(vbox)
+MAIN_WINDOW.child = vbox
 hbox = UIng::Box.new(:horizontal)
-vbox.set_padded 1
-hbox.set_padded 1
+vbox.padded = true
+hbox.padded = true
 
 vbox.append(hbox, 1)
 
 # Group - Basic Controls
 group = UIng::Group.new("Basic Controls")
-group.set_margined(1)
+group.margined = true
 hbox.append(group, 1) # OSX bug?
 
 inner = UIng::Box.new(:vertical)
-inner.set_padded(1)
-group.set_child(inner)
+inner.padded = true
+group.child = inner
 
 # Button
 button = UIng::Button.new("Button")
@@ -83,8 +83,8 @@ inner.append(button, 0)
 checkbox = UIng::Checkbox.new("Checkbox")
 checkbox.on_toggled do
   checked = (checkbox.checked == 1)
-  MAIN_WINDOW.set_title("Checkbox is #{checked}")
-  checkbox.set_text("I am the checkbox (#{checked})")
+  MAIN_WINDOW.title = "Checkbox is #{checked}"
+  checkbox.text = "I am the checkbox (#{checked})"
 end
 inner.append(checkbox, 0)
 
@@ -110,21 +110,21 @@ inner.append(UIng::FontButton.new, 0)
 inner.append(UIng::ColorButton.new, 0)
 
 inner2 = UIng::Box.new(:vertical)
-inner2.set_padded(1)
+inner2.padded = true
 hbox.append(inner2, 1)
 
 # Group - Numbers
 group = UIng::Group.new("Numbers")
-group.set_margined(1)
+group.margined = true
 inner2.append(group, 0)
 
 inner = UIng::Box.new(:vertical)
-inner.set_padded(1)
-group.set_child(inner)
+inner.padded = true
+group.child = inner
 
 # Spinbox
 spinbox = UIng::Spinbox.new(0, 100)
-spinbox.set_value(42)
+spinbox.value = 42
 spinbox.on_changed do
   puts "New Spinbox value: #{spinbox.value}"
 end
@@ -141,17 +141,17 @@ inner.append(progressbar, 0)
 slider.on_changed do
   v = slider.value
   puts "New Slider value: #{v}"
-  progressbar.set_value(v)
+  progressbar.value = v
 end
 
 # Group - Lists
 group = UIng::Group.new("Lists")
-group.set_margined(1)
+group.margined = true
 inner2.append(group, 0)
 
 inner = UIng::Box.new(:vertical)
-inner.set_padded(1)
-group.set_child(inner)
+inner.padded = true
+group.child = inner
 
 # Combobox
 cbox = UIng::Combobox.new
@@ -188,7 +188,7 @@ inner2.append(tab, 1)
 
 # Text Entry
 text_entry = UIng::Entry.new
-text_entry.set_text "Please enter your feelings"
+text_entry.text = "Please enter your feelings"
 text_entry.on_changed do
   print "Current textbox data: "
   puts text_entry.text
