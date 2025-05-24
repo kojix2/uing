@@ -13,9 +13,9 @@ module UIng
       self.hour = time.hour
       self.min = time.minute
       self.sec = time.second
-      self.wday = time.day_of_week.to_i % 7  # 0 = Sunday
-      self.yday = time.day_of_year - 1       # 0-based
-      self.isdst = 0 # Not handling DST
+      self.wday = time.day_of_week.to_i % 7 # 0 = Sunday
+      self.yday = time.day_of_year - 1      # 0-based
+      self.isdst = 0                        # Not handling DST
       {% unless flag?(:windows) %}
         self.zone = time.location.name
       {% end %}
