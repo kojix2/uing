@@ -4,6 +4,9 @@ module UIng
   class RadioButtons
     include Control
 
+    # Store callback box to prevent GC collection
+    @on_selected_box : Pointer(Void)?
+
     def initialize(@ref_ptr : Pointer(LibUI::RadioButtons))
     end
 
@@ -12,7 +15,8 @@ module UIng
     end
 
     def on_selected(&block : -> Void)
-      UIng.radio_buttons_on_selected(@ref_ptr, &block)
+      @on_selected_box = ::Box.box(block)
+      UIng.radio_buttons_on_selected(@ref_ptr, @on_selected_box.not_nil!, &block)
     end
 
     def to_unsafe

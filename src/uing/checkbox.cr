@@ -4,6 +4,9 @@ module UIng
   class Checkbox
     include Control
 
+    # Store callback box to prevent GC collection
+    @on_toggled_box : Pointer(Void)?
+
     def initialize(@ref_ptr : Pointer(LibUI::Checkbox))
     end
 
@@ -12,7 +15,8 @@ module UIng
     end
 
     def on_toggled(&block : -> Void)
-      UIng.checkbox_on_toggled(@ref_ptr, &block)
+      @on_toggled_box = ::Box.box(block)
+      UIng.checkbox_on_toggled(@ref_ptr, @on_toggled_box.not_nil!, &block)
     end
 
     def to_unsafe

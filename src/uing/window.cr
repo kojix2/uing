@@ -4,6 +4,12 @@ module UIng
   class Window
     include Control
 
+    # Store callback boxes to prevent GC collection
+    @on_position_changed_box : Pointer(Void)?
+    @on_content_size_changed_box : Pointer(Void)?
+    @on_closing_box : Pointer(Void)?
+    @on_focus_changed_box : Pointer(Void)?
+
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 
@@ -12,11 +18,13 @@ module UIng
     end
 
     def on_position_changed(&block : -> Void)
-      UIng.window_on_position_changed(@ref_ptr, &block)
+      @on_position_changed_box = ::Box.box(block)
+      UIng.window_on_position_changed(@ref_ptr, @on_position_changed_box.not_nil!, &block)
     end
 
     def on_content_size_changed(&block : -> Void)
-      UIng.window_on_content_size_changed(@ref_ptr, &block)
+      @on_content_size_changed_box = ::Box.box(block)
+      UIng.window_on_content_size_changed(@ref_ptr, @on_content_size_changed_box.not_nil!, &block)
     end
 
     def on_closing(&block : -> U) forall U
@@ -29,11 +37,13 @@ module UIng
           r
         end
       }
-      UIng.window_on_closing(@ref_ptr, &block2)
+      @on_closing_box = ::Box.box(block2)
+      UIng.window_on_closing(@ref_ptr, @on_closing_box.not_nil!, &block2)
     end
 
-    def window_on_focus_changed(&block : -> Void)
-      UIng.window_on_focus_changed(@ref_ptr, &block)
+    def on_focus_changed(&block : -> Void)
+      @on_focus_changed_box = ::Box.box(block)
+      UIng.window_on_focus_changed(@ref_ptr, @on_focus_changed_box.not_nil!, &block)
     end
 
     def to_unsafe
