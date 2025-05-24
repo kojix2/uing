@@ -14,5 +14,9 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    # def margined=(index : Int32, value : Bool)
+    #   set_margined(index, value ? 1 : 0)
+    # end
   end
 end

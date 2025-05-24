@@ -40,5 +40,9 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
+
+    def header_visible=(value : Bool)
+      UIng.table_header_set_visible(@ref_ptr, value ? 1 : 0)
+    end
   end
 end
