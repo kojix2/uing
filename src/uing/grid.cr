@@ -14,9 +14,5 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
-
-    def padded=(value : Bool)
-      set_padded(value ? 1 : 0)
-    end
   end
 end

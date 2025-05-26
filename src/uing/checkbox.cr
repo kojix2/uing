@@ -22,13 +22,5 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
-
-    def text=(value : String)
-      set_text(value)
-    end
-
-    def checked=(value : Bool)
-      set_checked(value ? 1 : 0)
-    end
   end
 end

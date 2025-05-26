@@ -22,9 +22,5 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
-
-    def selected=(value : Int32)
-      set_selected(value)
-    end
   end
 end

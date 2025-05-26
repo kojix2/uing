@@ -1,7 +1,13 @@
 module UIng
   module MethodMissing
     macro method_missing(call)
-      {% if call.block %}
+      {% if call.name.ends_with?("=") %}
+      # Handle setter methods (e.g., text=, enabled=)
+      {% setter_name = call.name.stringify[0..-2] %}
+      def {{call.name}}(value)
+        UIng.{{ @type.name.split("::").last.underscore.id }}_set_{{setter_name.id}}(@ref_ptr, value)
+      end
+      {% elsif call.block %}
       # This only works when there are no block parameters
       def {{call.name}}(*args, **kwargs, &block : -> U) forall U
         UIng.{{ @type.name.split("::").last.underscore.id }}_{{call.name.id}}(@ref_ptr, *args, **kwargs, &block)
