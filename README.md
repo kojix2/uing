@@ -63,6 +63,8 @@ UIng.uninit
 
 For more examples, see [examples](examples).
 
+- Most methods are provided by [method_missing](https://github.com/kojix2/uing/blob/29cb13fa367367bcc2d6594c6b941097aa5bb6af/src/uing/control.cr#L2-L37). So it will work even if the method is not defined in the class. If you find a case where it does not work, please report it to the issue.
+
 ## API Levels
 
 <table>
