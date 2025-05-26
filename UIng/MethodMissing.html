@@ -485,7 +485,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/73bdb488e998ccdef3b3dde22b754510b9e8ead6/src/uing/control.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/92a205c6d3d1b6eb9a488afb97cacd0dda3a12c9/src/uing/control.cr#L2" target="_blank">
         uing/control.cr
       </a>
     
@@ -513,6 +513,8 @@
     
       <li class="entry-summary">
         <a href="#method_missing%28call%29-macro" class="signature"><strong>method_missing</strong>(call)</a>
+        
+          <div class="summary"><p>Dynamic method generation macro that automatically creates wrapper methods for libui C API functions based on the calling class and method name.</p></div>
         
       </li>
     
@@ -548,10 +550,26 @@
         <a class="method-permalink" href="#method_missing%28call%29-macro">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Dynamic method generation macro that automatically creates wrapper methods
+for libui C API functions based on the calling class and method name.</p>
+<p>This macro handles three types of method calls:</p>
+<ol>
+<li>Setter methods (ending with '=') - maps to C API functions with 'set_' prefix</li>
+<li>Methods with blocks - creates methods that accept blocks and forward them</li>
+<li>Regular methods - creates standard wrapper methods</li>
+</ol>
+<p>Examples:
+button.text = &quot;Hello&quot;     # → UIng.button_set_text(@ref_ptr, &quot;Hello&quot;)
+button.show               # → UIng.button_show(@ref_ptr)
+button.on_clicked { ... } # → UIng.button_on_clicked(@ref_ptr, &amp;block)</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/73bdb488e998ccdef3b3dde22b754510b9e8ead6/src/uing/control.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/92a205c6d3d1b6eb9a488afb97cacd0dda3a12c9/src/uing/control.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
