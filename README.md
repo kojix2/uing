@@ -5,9 +5,22 @@
 
 **UIng** is a Crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng)
 
-| Windows                                                                                                          | Mac                                                                                                              | Linux                                                                                                            |
-| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| <img src="https://user-images.githubusercontent.com/5798442/103118046-900ea780-46b0-11eb-81fc-32626762e4df.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118059-99980f80-46b0-11eb-9d12-324ec4d297c9.png"> | <img src="https://user-images.githubusercontent.com/5798442/103118068-a0bf1d80-46b0-11eb-8c5c-3bdcc3dcfb26.png"> |
+<table>
+  <thead>
+    <tr>
+      <th>Windows</th>
+      <th>Mac</th>
+      <th>Linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://user-images.githubusercontent.com/5798442/103118046-900ea780-46b0-11eb-81fc-32626762e4df.png"></td>
+      <td><img src="https://user-images.githubusercontent.com/5798442/103118059-99980f80-46b0-11eb-9d12-324ec4d297c9.png"></td>
+      <td><img src="https://user-images.githubusercontent.com/5798442/103118068-a0bf1d80-46b0-11eb-8c5c-3bdcc3dcfb26.png"></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Installation
 
@@ -52,11 +65,36 @@ For more examples, see [examples](examples).
 
 ## API Levels
 
-| **Level**        | **Defined in**              | **Example**                    | **Description**           |
-| ---------------- | --------------------------- | ------------------------------ | ------------------------- |
-| **High-Level**   | `src/uing/*.cr`             | `button.on_clicked { }`, etc.  | Object-oriented API       |
-| **Middle-Level** | `src/uing.cr`               | `UIng.button_text`, etc.       | Handles memory management |
-| **Low-Level**    | `src/uing/lib_ui/lib_ui.cr` | `UIng::LibUI.new_button`, etc. | Direct bindings to libui  |
+<table>
+  <thead>
+    <tr>
+      <th><strong>Level</strong></th>
+      <th><strong>Defined in</strong></th>
+      <th><strong>Example</strong></th>
+      <th><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>High-Level</strong></td>
+      <td><code>src/uing/*.cr</code></td>
+      <td><code>button.on_clicked { }</code>, etc.</td>
+      <td>Object-oriented API</td>
+    </tr>
+    <tr>
+      <td><strong>Middle-Level</strong></td>
+      <td><code>src/uing.cr</code></td>
+      <td><code>UIng.button_text</code>, etc.</td>
+      <td>Handles memory management</td>
+    </tr>
+    <tr>
+      <td><strong>Low-Level</strong></td>
+      <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
+      <td><code>UIng::LibUI.new_button</code>, etc.</td>
+      <td>Direct bindings to libui</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Memory Safety
 
