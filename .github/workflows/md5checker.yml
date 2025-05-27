@@ -70,12 +70,6 @@ jobs:
           chmod +x build-mac.sh
           ./build-mac.sh
 
-      - name: Build PKG package
-        working-directory: examples/md5_checker
-        run: |
-          chmod +x build-mac-pkg.sh
-          ./build-mac-pkg.sh
-
       - name: Verify macOS packages
         working-directory: examples/md5_checker
         run: |
