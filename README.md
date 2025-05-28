@@ -43,7 +43,7 @@ require "uing"
 
 UIng.init
 
-window = UIng::Window.new("Hello World", 300, 200, 1)
+window = UIng::Window.new("Hello World", 300, 200)
 window.on_closing do
   UIng.quit
   1

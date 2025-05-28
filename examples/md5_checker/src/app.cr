@@ -12,8 +12,8 @@ class MD5CheckerApp
   def initialize
     UIng.init
 
-    @main_window = UIng::Window.new("MD5 Checker", 600, 400, 1)
-    @main_window.set_margined(1)
+    @main_window = UIng::Window.new("MD5 Checker", 600, 400)
+    @main_window.margined = true
     @main_window.on_closing do
       UIng.quit
       1
@@ -39,30 +39,30 @@ class MD5CheckerApp
   private def setup_ui
     # Create layout
     main_vbox = UIng::Box.new(:vertical)
-    main_vbox.set_padded(1)
+    main_vbox.padded = true
     @main_window.set_child(main_vbox)
 
     # Top box
     top_hbox = UIng::Box.new(:horizontal)
-    top_hbox.set_padded(1)
-    main_vbox.append(top_hbox, 0)
+    top_hbox.padded = true
+    main_vbox.append(top_hbox, false)
 
     # File path label
-    top_hbox.append(@file_path_label, 1)
+    top_hbox.append(@file_path_label, true)
 
     # File selection button
     select_button = UIng::Button.new("Select File")
     select_button.on_clicked { handle_file_selection }
-    top_hbox.append(select_button, 0)
+    top_hbox.append(select_button, false)
 
     # Run button
     run_button = UIng::Button.new("Run")
     run_button.on_clicked { handle_run_button }
-    top_hbox.append(run_button, 0)
+    top_hbox.append(run_button, false)
 
     # Create table
     table = create_table
-    main_vbox.append(table, 1)
+    main_vbox.append(table, true)
   end
 
   # Create and configure table

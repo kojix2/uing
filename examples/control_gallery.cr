@@ -16,7 +16,7 @@ save_menu_item.on_clicked do |w|
 end
 menu.append_separator
 should_quit_item = menu.append_check_item("Should Quit_")
-should_quit_item.set_checked(1)
+should_quit_item.checked = true
 menu.append_quit_item
 # onShouldQuit callback is called when the user presses the quit menu item.
 UIng.on_should_quit do
@@ -45,7 +45,7 @@ help_menu.append_item("Help")
 help_menu.append_about_item
 
 # Main Window
-MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, 1)
+MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, true)
 MAIN_WINDOW.margined = true
 MAIN_WINDOW.on_closing do
   puts "Bye Bye"
@@ -61,12 +61,12 @@ hbox = UIng::Box.new(:horizontal)
 vbox.padded = true
 hbox.padded = true
 
-vbox.append(hbox, 1)
+vbox.append(hbox, true)
 
 # Group - Basic Controls
 group = UIng::Group.new("Basic Controls")
 group.margined = true
-hbox.append(group, 1) # OSX bug?
+hbox.append(group, true) # OSX bug?
 
 inner = UIng::Box.new(:vertical)
 inner.padded = true
@@ -77,7 +77,7 @@ button = UIng::Button.new("Button")
 button.on_clicked do
   UIng.msg_box(MAIN_WINDOW, "Information", "You clicked the button")
 end
-inner.append(button, 0)
+inner.append(button, false)
 
 # Checkbox
 checkbox = UIng::Checkbox.new("Checkbox")
@@ -86,37 +86,37 @@ checkbox.on_toggled do
   MAIN_WINDOW.title = "Checkbox is #{checked}"
   checkbox.text = "I am the checkbox (#{checked})"
 end
-inner.append(checkbox, 0)
+inner.append(checkbox, false)
 
 # Label
-inner.append(UIng::Label.new("Label"), 0)
+inner.append(UIng::Label.new("Label"), false)
 
 # Separator
-inner.append(UIng::Separator.new(:horizontal), 0)
+inner.append(UIng::Separator.new(:horizontal), false)
 
 # Date Picker
-inner.append(UIng::DateTimePicker.new(:date), 0)
+inner.append(UIng::DateTimePicker.new(:date), false)
 
 # Time Picker
-inner.append(UIng::DateTimePicker.new(:time), 0)
+inner.append(UIng::DateTimePicker.new(:time), false)
 
 # Date Time Picker
-inner.append(UIng::DateTimePicker.new, 0)
+inner.append(UIng::DateTimePicker.new, false)
 
 # Font Button
-inner.append(UIng::FontButton.new, 0)
+inner.append(UIng::FontButton.new, false)
 
 # Color Button
-inner.append(UIng::ColorButton.new, 0)
+inner.append(UIng::ColorButton.new, false)
 
 inner2 = UIng::Box.new(:vertical)
 inner2.padded = true
-hbox.append(inner2, 1)
+hbox.append(inner2, true)
 
 # Group - Numbers
 group = UIng::Group.new("Numbers")
 group.margined = true
-inner2.append(group, 0)
+inner2.append(group, false)
 
 inner = UIng::Box.new(:vertical)
 inner.padded = true
@@ -128,15 +128,15 @@ spinbox.value = 42
 spinbox.on_changed do
   puts "New Spinbox value: #{spinbox.value}"
 end
-inner.append(spinbox, 0)
+inner.append(spinbox, false)
 
 # Slider
 slider = UIng::Slider.new(0, 100)
-inner.append(slider, 0)
+inner.append(slider, false)
 
 # Progressbar
 progressbar = UIng::ProgressBar.new
-inner.append(progressbar, 0)
+inner.append(progressbar, false)
 
 slider.on_changed do
   v = slider.value
@@ -147,7 +147,7 @@ end
 # Group - Lists
 group = UIng::Group.new("Lists")
 group.margined = true
-inner2.append(group, 0)
+inner2.append(group, false)
 
 inner = UIng::Box.new(:vertical)
 inner.padded = true
@@ -158,7 +158,7 @@ cbox = UIng::Combobox.new
 cbox.append("combobox Item 1")
 cbox.append("combobox Item 2")
 cbox.append("combobox Item 3")
-inner.append(cbox, 0)
+inner.append(cbox, false)
 cbox.on_selected do
   puts "New combobox selection: #{cbox.selected}"
 end
@@ -168,14 +168,14 @@ ebox = UIng::EditableCombobox.new
 ebox.append("Editable Item 1")
 ebox.append("Editable Item 2")
 ebox.append("Editable Item 3")
-inner.append(ebox, 0)
+inner.append(ebox, false)
 
 # Radio Buttons
 rb = UIng::RadioButtons.new
 rb.append("Radio Button 1")
 rb.append("Radio Button 2")
 rb.append("Radio Button 3")
-inner.append(rb, 1)
+inner.append(rb, true)
 
 # Tab
 tab = UIng::Tab.new
@@ -184,7 +184,7 @@ hbox2 = UIng::Box.new(:horizontal)
 tab.append("Page 1", hbox1)
 tab.append("Page 2", hbox2)
 tab.append("Page 3", UIng::Box.new(:horizontal))
-inner2.append(tab, 1)
+inner2.append(tab, true)
 
 # Text Entry
 text_entry = UIng::Entry.new
@@ -193,7 +193,7 @@ text_entry.on_changed do
   print "Current textbox data: "
   puts text_entry.text
 end
-hbox1.append(text_entry, 1)
+hbox1.append(text_entry, true)
 
 MAIN_WINDOW.show
 

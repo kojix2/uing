@@ -68,7 +68,7 @@ module UIng
     LibUI.main_steps
   end
 
-  def self.main_step(wait) : LibC::Int
+  def self.main_step(wait) : Bool
     LibUI.main_step(wait)
   end
 
@@ -130,7 +130,7 @@ module UIng
     LibUI.control_toplevel(to_control(control))
   end
 
-  def self.control_visible(control) : LibC::Int
+  def self.control_visible(control) : Bool
     LibUI.control_visible(to_control(control))
   end
 
@@ -142,7 +142,7 @@ module UIng
     LibUI.control_hide(to_control(control))
   end
 
-  def self.control_enabled(control) : LibC::Int
+  def self.control_enabled(control) : Bool
     LibUI.control_enabled(to_control(control))
   end
 
@@ -166,7 +166,7 @@ module UIng
     LibUI.control_verify_set_parent(to_control(control), to_control(parent))
   end
 
-  def self.control_enabled_to_user(control) : LibC::Int
+  def self.control_enabled_to_user(control) : Bool
     LibUI.control_enabled_to_user(to_control(control))
   end
 
@@ -339,7 +339,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.checkbox_checked(checkbox) : LibC::Int
+  def self.checkbox_checked(checkbox) : Bool
     LibUI.checkbox_checked(checkbox)
   end
 
@@ -717,7 +717,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.menu_item_checked(menu_item) : LibC::Int
+  def self.menu_item_checked(menu_item) : Bool
     LibUI.menu_item_checked(menu_item)
   end
 

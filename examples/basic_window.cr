@@ -2,7 +2,7 @@ require "../src/uing"
 
 UIng.init
 
-w = UIng::Window.new("Hello", 300, 200, true)
+w = UIng::Window.new("Hello", 300, 200)
 w.show
 
 w.on_closing do

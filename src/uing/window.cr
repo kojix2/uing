@@ -13,7 +13,7 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 
-    def initialize(title, width, height, has_menubar)
+    def initialize(title, width, height, has_menubar = false)
       @ref_ptr = LibUI.new_window(title, width, height, has_menubar)
     end
 

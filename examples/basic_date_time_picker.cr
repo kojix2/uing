@@ -11,16 +11,16 @@ time = UIng::TM.new
 date_time_picker.on_changed do |tm|
   p tm.to_time
 end
-vbox.append(date_time_picker, 1)
+vbox.append(date_time_picker, true)
 
-main_window = UIng::Window.new("Date Time Pickers", 300, 200, true)
+main_window = UIng::Window.new("Date Time Pickers", 300, 200)
 main_window.on_closing do
   puts "Bye Bye"
   UIng.quit
   1
 end
 
-main_window.set_child(vbox)
+main_window.child = vbox
 main_window.show
 
 UIng.main

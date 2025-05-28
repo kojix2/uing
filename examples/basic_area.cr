@@ -2,7 +2,7 @@ require "../src/uing"
 
 UIng.init
 
-main_window = UIng::Window.new("Basic Area", 400, 400, 1)
+main_window = UIng::Window.new("Basic Area", 400, 400)
 
 handler = UIng::AreaHandler.new
 
@@ -32,11 +32,11 @@ handler.key_event { |_, _, _| 0 }
 area = UIng::Area.new(handler)
 
 box = UIng::Box.new(:vertical)
-box.set_padded(1)
-box.append(area, 1)
+box.padded = true
+box.append(area, true)
 
-main_window.set_child(box)
-main_window.set_margined(1)
+main_window.child = box
+main_window.margined = true
 
 main_window.on_closing do
   UIng.quit
