@@ -22,6 +22,8 @@ module UIng
     # @[Link("ui", dll: "libui.dll")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
+    @[Link("ssl")]
+    @[Link("crypto")]
     @[Link("stdc++")]
     @[Link("supc++")]
     @[Link("user32")]
@@ -33,7 +35,6 @@ module UIng
     @[Link("Uuid")]
     @[Link("Winmm")]
     @[Link("Uxtheme")]
-    @[Link("ucrt")]
     # @[Link(ldflags: "-mwindows")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
