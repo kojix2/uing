@@ -30,6 +30,33 @@ mkdir -p "$MACOS_DIR" "$RESOURCES_DIR" "$FRAMEWORKS_DIR" "$DIST_DIR"
 cp "$EXECUTABLE_PATH" "$MACOS_DIR/$APP_NAME"
 chmod +x "$MACOS_DIR/$APP_NAME"
 
+# Generate .icns from .png
+if [ -f "resources/$ICON_NAME.png" ]; then
+  echo "Generating $ICON_NAME.icns from $ICON_NAME.png..."
+  ICONSET_DIR="resources/$ICON_NAME.iconset"
+  mkdir -p "$ICONSET_DIR"
+  
+  # Generate different sizes using sips
+  sips -z 16 16 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_16x16.png"
+  sips -z 32 32 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_16x16@2x.png"
+  sips -z 32 32 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_32x32.png"
+  sips -z 64 64 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_32x32@2x.png"
+  sips -z 128 128 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_128x128.png"
+  sips -z 256 256 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_128x128@2x.png"
+  sips -z 256 256 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_256x256.png"
+  sips -z 512 512 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_256x256@2x.png"
+  sips -z 512 512 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_512x512.png"
+  sips -z 1024 1024 "resources/$ICON_NAME.png" --out "$ICONSET_DIR/icon_512x512@2x.png"
+  
+  # Generate .icns file
+  iconutil -c icns "$ICONSET_DIR" -o "$ICON_PATH"
+  
+  # Clean up iconset directory
+  rm -rf "$ICONSET_DIR"
+  
+  echo "Generated $ICON_PATH"
+fi
+
 if [ -f "$ICON_PATH" ]; then
   cp "$ICON_PATH" "$RESOURCES_DIR/$ICON_NAME.icns"
 fi

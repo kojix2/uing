@@ -34,6 +34,42 @@ if (Test-Path $OUTPUT_DIR) { Remove-Item $OUTPUT_DIR -Recurse -Force }
 New-Item -ItemType Directory -Path $DIST_DIR | Out-Null
 New-Item -ItemType Directory -Path $OUTPUT_DIR | Out-Null
 
+# Generate .ico from .png
+if (Test-Path "resources\app_icon.png") {
+    Write-Host "Generating app_icon.ico from app_icon.png..."
+    
+    Add-Type -AssemblyName System.Drawing
+    
+    try {
+        # Load the PNG image
+        $png = [System.Drawing.Image]::FromFile((Resolve-Path "resources\app_icon.png").Path)
+        
+        # Create a new bitmap with the desired size (32x32 is standard for ICO)
+        $bitmap = New-Object System.Drawing.Bitmap(32, 32)
+        $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+        $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+        $graphics.DrawImage($png, 0, 0, 32, 32)
+        
+        # Convert to icon and save
+        $icon = [System.Drawing.Icon]::FromHandle($bitmap.GetHicon())
+        $fileStream = New-Object System.IO.FileStream("resources\app_icon.ico", [System.IO.FileMode]::Create)
+        $icon.Save($fileStream)
+        $fileStream.Close()
+        
+        # Clean up
+        $graphics.Dispose()
+        $bitmap.Dispose()
+        $png.Dispose()
+        $icon.Dispose()
+        
+        Write-Host "Generated resources\app_icon.ico"
+    }
+    catch {
+        Write-Warning "Failed to generate ICO from PNG: $_"
+        Write-Host "Continuing without icon..."
+    }
+}
+
 # Create Inno Setup script using here-string
 $issContent = @"
 [Setup]

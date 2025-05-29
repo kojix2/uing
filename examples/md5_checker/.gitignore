@@ -10,6 +10,9 @@
 /Md5checker.app/
 /MyApp.app/
 
+/resources/app_icon.icns
+/resources/app_icon.ico
+
 # Distribution files
 /dist/
 *.dmg
