@@ -39,35 +39,55 @@ if (Test-Path "resources\app_icon.png") {
     Write-Host "Generating app_icon.ico from app_icon.png..."
     
     Add-Type -AssemblyName System.Drawing
+    Add-Type -AssemblyName System.Windows.Forms
     
     try {
         # Load the PNG image
-        $png = [System.Drawing.Image]::FromFile((Resolve-Path "resources\app_icon.png").Path)
+        $pngPath = (Resolve-Path "resources\app_icon.png").Path
+        $icoPath = (Join-Path $PWD "resources\app_icon.ico")
         
-        # Create a new bitmap with the desired size (32x32 is standard for ICO)
+        # Load the original image
+        $originalImage = [System.Drawing.Image]::FromFile($pngPath)
+        
+        # Create a bitmap with 32x32 size (standard for ICO)
         $bitmap = New-Object System.Drawing.Bitmap(32, 32)
         $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
         $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-        $graphics.DrawImage($png, 0, 0, 32, 32)
+        $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
+        $graphics.DrawImage($originalImage, 0, 0, 32, 32)
+        $graphics.Dispose()
         
-        # Convert to icon and save
-        $icon = [System.Drawing.Icon]::FromHandle($bitmap.GetHicon())
-        $fileStream = New-Object System.IO.FileStream("resources\app_icon.ico", [System.IO.FileMode]::Create)
+        # Create icon from bitmap
+        $iconHandle = $bitmap.GetHicon()
+        $icon = [System.Drawing.Icon]::FromHandle($iconHandle)
+        
+        # Save the icon to file
+        $fileStream = [System.IO.FileStream]::new($icoPath, [System.IO.FileMode]::Create)
         $icon.Save($fileStream)
         $fileStream.Close()
         
-        # Clean up
-        $graphics.Dispose()
-        $bitmap.Dispose()
-        $png.Dispose()
+        # Clean up resources
         $icon.Dispose()
+        $bitmap.Dispose()
+        $originalImage.Dispose()
         
-        Write-Host "Generated resources\app_icon.ico"
+        # Verify the file was created
+        if (Test-Path $icoPath) {
+            Write-Host "Successfully generated resources\app_icon.ico"
+        }
+        else {
+            throw "ICO file was not created"
+        }
     }
     catch {
-        Write-Warning "Failed to generate ICO from PNG: $_"
-        Write-Host "Continuing without icon..."
+        Write-Error "Failed to generate ICO from PNG: $_"
+        Write-Host "Build cannot continue without icon file."
+        exit 1
     }
+}
+else {
+    Write-Error "PNG icon file not found at resources\app_icon.png"
+    exit 1
 }
 
 # Create Inno Setup script using here-string
