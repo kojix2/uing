@@ -138,15 +138,9 @@ jobs:
             mingw-w64-x86_64-crystal
             mingw-w64-x86_64-shards
 
-      - name: Install dependencies
-        shell: msys2 {0}
-        run: shards install
-
       - name: Build MinGW64 package
-        working-directory: examples/md5_checker
         shell: msys2 {0}
-        run: |
-          shards build
+        run: cd examples/md5_checker && shards build
 
   test-packages:
     name: Test Package Installation
