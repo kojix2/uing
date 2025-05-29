@@ -121,6 +121,33 @@ jobs:
           name: md5checker-windows
           path: examples/md5_checker/dist/*.exe
 
+  build-mingw64:
+    name: Build MinGW64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-tools-git
+            mingw-w64-x86_64-crystal
+            mingw-w64-x86_64-shards
+
+      - name: Install dependencies
+        shell: msys2 {0}
+        run: shards install
+
+      - name: Build MinGW64 package
+        working-directory: examples/md5_checker
+        shell: msys2 {0}
+        run: |
+          shards build
+
   test-packages:
     name: Test Package Installation
     needs: [build-deb]

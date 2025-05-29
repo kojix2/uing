@@ -22,8 +22,6 @@ module UIng
     # @[Link("ui", dll: "libui.dll")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
-    @[Link("ssl")]
-    @[Link("crypto")]
     @[Link("stdc++")]
     @[Link("supc++")]
     @[Link("user32")]
