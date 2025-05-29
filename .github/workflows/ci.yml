@@ -22,7 +22,9 @@ jobs:
         with:
           crystal: latest
       - if: ${{ matrix.os == 'ubuntu' }}
-        run: sudo apt-get install -y --fix-missing libgtk-3-dev
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libgtk-3-dev
       - if: ${{ matrix.os == 'windows' }}
         name: Add Windows SDK to PATH
         run: echo "C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64" >> $env:GITHUB_PATH
