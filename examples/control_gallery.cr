@@ -154,27 +154,18 @@ inner.padded = true
 group.child = inner
 
 # Combobox
-cbox = UIng::Combobox.new
-cbox.append("combobox Item 1")
-cbox.append("combobox Item 2")
-cbox.append("combobox Item 3")
+cbox = UIng::Combobox.new ["Combobox Item 1", "Combobox Item 2", "Combobox Item 3"]
 inner.append(cbox, false)
 cbox.on_selected do
   puts "New combobox selection: #{cbox.selected}"
 end
 
 # Editable Combobox
-ebox = UIng::EditableCombobox.new
-ebox.append("Editable Item 1")
-ebox.append("Editable Item 2")
-ebox.append("Editable Item 3")
+ebox = UIng::EditableCombobox.new ["Editable Item 1", "Editable Item 2", "Editable Item 3"]
 inner.append(ebox, false)
 
 # Radio Buttons
-rb = UIng::RadioButtons.new
-rb.append("Radio Button 1")
-rb.append("Radio Button 2")
-rb.append("Radio Button 3")
+rb = UIng::RadioButtons.new ["Radio Button 1", "Radio Button 2", "Radio Button 3"]
 inner.append(rb, true)
 
 # Tab

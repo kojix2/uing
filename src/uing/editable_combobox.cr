@@ -14,6 +14,13 @@ module UIng
       @ref_ptr = LibUI.new_editable_combobox
     end
 
+    def initialize(items : Array(String))
+      initialize()
+      items.each do |item|
+        append(item)
+      end
+    end
+
     def on_changed(&block : -> Void)
       @on_changed_box = ::Box.box(block)
       UIng.editable_combobox_on_changed(@ref_ptr, @on_changed_box.not_nil!, &block)

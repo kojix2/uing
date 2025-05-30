@@ -14,6 +14,13 @@ module UIng
       @ref_ptr = LibUI.new_combobox
     end
 
+    def initialize(items : Array(String))
+      initialize()
+      items.each do |item|
+        append(item)
+      end
+    end
+
     def on_selected(&block : -> Void)
       @on_selected_box = ::Box.box(block)
       UIng.combobox_on_selected(@ref_ptr, @on_selected_box.not_nil!, &block)
