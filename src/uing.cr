@@ -44,6 +44,12 @@ module UIng
     raise err
   end
 
+  def self.init(&)
+    self.init
+    yield
+    self.uninit
+  end
+
   def self.init(init_options : Pointer(LibUI::InitOptions)) : String?
     @@init_options = init_options
     self.init
