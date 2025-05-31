@@ -4,6 +4,9 @@ module UIng
   class Tab
     include Control; block_constructor
 
+    # Store callback box to prevent GC collection
+    @on_selected_box : Pointer(Void)?
+
     def initialize(@ref_ptr : Pointer(LibUI::Tab))
     end
 
@@ -11,12 +14,17 @@ module UIng
       @ref_ptr = LibUI.new_tab
     end
 
+    def on_selected(&block : Int32 -> Void)
+      wrapper = -> {
+        idx = UIng.tab_selected(@ref_ptr)
+        block.call(idx)
+      }
+      @on_selected_box = ::Box.box(wrapper)
+      UIng.tab_on_selected(@ref_ptr, @on_selected_box.not_nil!, &wrapper)
+    end
+
     def to_unsafe
       @ref_ptr
     end
-
-    # def margined=(index : Int32, value : Bool)
-    #   set_margined(index, value ? 1 : 0)
-    # end
   end
 end
