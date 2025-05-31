@@ -14,9 +14,15 @@ module UIng
       @ref_ptr = LibUI.new_font_button
     end
 
-    def on_changed(&block : -> Void)
-      @on_changed_box = ::Box.box(block)
-      UIng.font_button_on_changed(@ref_ptr, @on_changed_box.not_nil!, &block)
+    def on_changed(&block : FontDescriptor -> Void)
+      wrapper = -> {
+        font_descriptor = FontDescriptor.new
+        LibUI.font_button_font(@ref_ptr, font_descriptor)
+        block.call(font_descriptor)
+        UIng.free_font_descriptor(font_descriptor)
+      }
+      @on_changed_box = ::Box.box(wrapper)
+      UIng.font_button_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
     end
 
     def font(&block : FontDescriptor -> Nil)

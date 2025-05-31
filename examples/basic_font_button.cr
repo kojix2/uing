@@ -2,13 +2,12 @@ require "../src/uing"
 
 UIng.init
 
-main_window = UIng.new_window("hello world", 300, 200, 1)
+main_window = UIng::Window.new("hello world", 300, 200)
 
 font_button = UIng.new_font_button
 font_descriptor = UIng::FontDescriptor.new
 
-font_button.on_changed do
-  font_button.font(font_descriptor)
+font_button.on_changed do |font_descriptor|
   p family: font_descriptor.family,
     size: font_descriptor.size,
     weight: font_descriptor.weight,
