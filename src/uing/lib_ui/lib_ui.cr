@@ -158,6 +158,9 @@ module UIng
     fun tab_num_pages = uiTabNumPages(t : Pointer(Tab)) : LibC::Int
     fun tab_margined = uiTabMargined(t : Pointer(Tab), index : LibC::Int) : Bool
     fun tab_set_margined = uiTabSetMargined(t : Pointer(Tab), index : LibC::Int, margined : Bool)
+    fun tab_selected = uiTabSelected(t : Pointer(Tab)) : LibC::Int
+    fun tab_set_selected = uiTabSetSelected(t : Pointer(Tab), index : LibC::Int)
+    fun tab_on_selected = uiTabOnSelected(t : Pointer(Tab), f : (Pointer(Tab), Pointer(Void) -> Void), data : Pointer(Void))
     fun new_tab = uiNewTab : Pointer(Tab)
     alias Group = Void
     fun group_title = uiGroupTitle(g : Pointer(Group)) : Pointer(LibC::Char)

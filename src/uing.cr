@@ -435,6 +435,21 @@ module UIng
     LibUI.tab_set_margined(tab, index, margined)
   end
 
+  def self.tab_selected(tab) : LibC::Int
+    LibUI.tab_selected(tab)
+  end
+
+  def self.tab_set_selected(tab, index) : Nil
+    LibUI.tab_set_selected(tab, index)
+  end
+
+  def self.tab_on_selected(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
+    LibUI.tab_on_selected(sender, ->(sender, data) do
+      data_as_callback = ::Box(typeof(callback)).unbox(data)
+      data_as_callback.call
+    end, boxed_data)
+  end
+
   def self.new_tab : Tab
     ref_ptr = LibUI.new_tab
     Tab.new(ref_ptr)
