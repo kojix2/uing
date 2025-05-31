@@ -21,9 +21,13 @@ module UIng
       end
     end
 
-    def on_selected(&block : -> Void)
-      @on_selected_box = ::Box.box(block)
-      UIng.radio_buttons_on_selected(@ref_ptr, @on_selected_box.not_nil!, &block)
+    def on_selected(&block : LibC::Int -> Void)
+      wrapper = -> {
+        idx = self.selected
+        block.call(idx)
+      }
+      @on_selected_box = ::Box.box(wrapper)
+      UIng.radio_buttons_on_selected(@ref_ptr, @on_selected_box.not_nil!, &wrapper)
     end
 
     def to_unsafe

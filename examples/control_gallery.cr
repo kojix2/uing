@@ -149,6 +149,9 @@ end
 # Radio Buttons
 rb = UIng::RadioButtons.new ["Radio Button 1", "Radio Button 2", "Radio Button 3"]
 inner.append(rb, true)
+rb.on_selected do |idx|
+  puts "Radio button selected: index #{idx}"
+end
 
 # Tab
 tab = UIng::Tab.new
