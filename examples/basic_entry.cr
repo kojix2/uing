@@ -2,32 +2,31 @@ require "../src/uing"
 
 UIng.init
 
-main_window = UIng.new_window("Basic Entry", 300, 50, 1)
-UIng.window_on_closing(main_window) do
-  puts "Bye Bye"
-  UIng.quit
-  1
+window = UIng::Window.new("Basic Entry", 300, 50) do
+  on_closing do
+    UIng.quit; true
+  end
+  show
 end
 
-hbox = UIng.new_horizontal_box
-UIng.window_set_child(main_window, hbox)
+box = UIng::Box.new(:horizontal) do
+  entry = UIng::Entry.new(:password) do
+    on_changed do |text|
+      puts text
+    end
+  end
+  append(entry, stretchy: true)
 
-entry = UIng.new_entry
-UIng.entry_on_changed(entry) do
-  puts UIng.entry_text(entry)
+  button = UIng::Button.new("Button") do
+    on_clicked do
+      text = UIng.entry_text(entry) || ""
+      UIng.msg_box(window, "You entered", text)
+      UIng.free_text(text)
+    end
+  end
+  append(button)
 end
+window.child = box
 
-UIng.box_append(hbox, entry, 1)
-
-button = UIng.new_button("Button")
-UIng.button_on_clicked(button) do
-  text = UIng.entry_text(entry)
-  UIng.msg_box(main_window, "You entered", text)
-  0
-end
-
-UIng.box_append(hbox, button, 0)
-
-UIng.control_show(main_window)
 UIng.main
 UIng.uninit
