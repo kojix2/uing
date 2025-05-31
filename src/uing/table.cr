@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Table
-    include Control
+    include Control; block_constructor
 
     # Store callback boxes to prevent GC collection
     @on_row_clicked_box : Pointer(Void)?

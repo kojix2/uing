@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Combobox
-    include Control
+    include Control; block_constructor
 
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?

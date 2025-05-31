@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Button
-    include Control
+    include Control; block_constructor
 
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
@@ -12,11 +12,6 @@ module UIng
 
     def initialize(text : String)
       @ref_ptr = LibUI.new_button(text)
-    end
-
-    def initialize(text : String, &block : -> Void)
-      initialize(text)
-      on_clicked(&block)
     end
 
     def on_clicked(&block : -> Void)

@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Grid
-    include Control
+    include Control; block_constructor
 
     def initialize(@ref_ptr : Pointer(LibUI::Grid))
     end

@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Checkbox
-    include Control
+    include Control; block_constructor
 
     # Store callback box to prevent GC collection
     @on_toggled_box : Pointer(Void)?
@@ -12,11 +12,6 @@ module UIng
 
     def initialize(text : String)
       @ref_ptr = LibUI.new_checkbox(text)
-    end
-
-    def initialize(text : String, &block : Bool -> Void)
-      initialize(text)
-      on_toggled(&block)
     end
 
     def on_toggled(&block : Bool -> Void)

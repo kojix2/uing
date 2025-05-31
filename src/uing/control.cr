@@ -34,6 +34,14 @@ module UIng
       end
       {% end %}
     end
+
+    macro block_constructor
+      def self.new(*args, &block)
+        instance = new(*args)
+        with instance yield
+        instance
+      end
+    end
   end
 
   module Control

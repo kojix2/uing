@@ -10,7 +10,7 @@ module UIng
   # However, we want methods like `box_xxx` to be generated.
 
   class Box
-    include Control
+    include Control; block_constructor
 
     def initialize(@ref_ptr : Pointer(LibUI::Box))
     end

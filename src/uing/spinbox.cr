@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Spinbox
-    include Control
+    include Control; block_constructor
 
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
