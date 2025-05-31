@@ -14,6 +14,11 @@ module UIng
       @ref_ptr = LibUI.new_button(text)
     end
 
+    def initialize(text : String, &block : -> Void)
+      initialize(text)
+      on_clicked(&block)
+    end
+
     def on_clicked(&block : -> Void)
       @on_clicked_box = ::Box.box(block)
       UIng.button_on_clicked(@ref_ptr, @on_clicked_box.not_nil!, &block)

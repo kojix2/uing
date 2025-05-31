@@ -73,8 +73,7 @@ inner.padded = true
 group.child = inner
 
 # Button
-button = UIng::Button.new("Button")
-button.on_clicked do
+button = UIng::Button.new("Button") do
   UIng.msg_box(MAIN_WINDOW, "Information", "You clicked the button")
 end
 inner.append(button, false)
