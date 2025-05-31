@@ -80,8 +80,7 @@ inner.append(button, false)
 
 # Checkbox
 checkbox = UIng::Checkbox.new("Checkbox")
-checkbox.on_toggled do
-  checked = (checkbox.checked == 1)
+checkbox.on_toggled do |checked|
   MAIN_WINDOW.title = "Checkbox is #{checked}"
   checkbox.text = "I am the checkbox (#{checked})"
 end

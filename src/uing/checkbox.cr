@@ -14,9 +14,18 @@ module UIng
       @ref_ptr = LibUI.new_checkbox(text)
     end
 
-    def on_toggled(&block : -> Void)
-      @on_toggled_box = ::Box.box(block)
-      UIng.checkbox_on_toggled(@ref_ptr, @on_toggled_box.not_nil!, &block)
+    def initialize(text : String, &block : Bool -> Void)
+      initialize(text)
+      on_toggled(&block)
+    end
+
+    def on_toggled(&block : Bool -> Void)
+      wrapper = -> {
+        checked = self.checked
+        block.call(checked)
+      }
+      @on_toggled_box = ::Box.box(wrapper)
+      UIng.checkbox_on_toggled(@ref_ptr, @on_toggled_box.not_nil!, &wrapper)
     end
 
     def to_unsafe
