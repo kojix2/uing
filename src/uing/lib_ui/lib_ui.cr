@@ -107,7 +107,7 @@ module UIng
     fun window_fullscreen = uiWindowFullscreen(w : Pointer(Window)) : Bool
     fun window_set_fullscreen = uiWindowSetFullscreen(w : Pointer(Window), fullscreen : Bool)
     fun window_on_content_size_changed = uiWindowOnContentSizeChanged(w : Pointer(Window), f : (Pointer(Window), Pointer(Void) -> Void), data : Pointer(Void))
-    fun window_on_closing = uiWindowOnClosing(w : Pointer(Window), f : (Pointer(Window), Pointer(Void) -> LibC::Int), data : Pointer(Void))
+    fun window_on_closing = uiWindowOnClosing(w : Pointer(Window), f : (Pointer(Window), Pointer(Void) -> Bool), data : Pointer(Void))
     fun window_on_focus_changed = uiWindowOnFocusChanged(w : Pointer(Window), f : (Pointer(Window), Pointer(Void) -> Void), data : Pointer(Void))
     fun window_focused = uiWindowFocused(w : Pointer(Window)) : Bool
     fun window_borderless = uiWindowBorderless(w : Pointer(Window)) : Bool

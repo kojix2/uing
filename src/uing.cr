@@ -221,7 +221,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_on_closing(sender, boxed_data : Pointer(Void), &callback : -> LibC::Int) : Nil
+  def self.window_on_closing(sender, boxed_data : Pointer(Void), &callback : -> Bool) : Nil
     LibUI.window_on_closing(sender, ->(sender, data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call

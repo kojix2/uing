@@ -28,17 +28,11 @@ module UIng
     end
 
     def on_closing(&block : -> U) forall U
-      # FIXME: This is a workaround for the block return type
-      block2 = -> {
-        case r = block.call
-        when Bool
-          r ? 1 : 0
-        else
-          r
-        end
+      wrapper = -> {
+        block.call ? true : false
       }
-      @on_closing_box = ::Box.box(block2)
-      UIng.window_on_closing(@ref_ptr, @on_closing_box.not_nil!, &block2)
+      @on_closing_box = ::Box.box(wrapper)
+      UIng.window_on_closing(@ref_ptr, @on_closing_box.not_nil!, &wrapper)
     end
 
     def on_focus_changed(&block : -> Void)
