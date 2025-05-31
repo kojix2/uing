@@ -15,15 +15,16 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Box))
     end
 
-    def initialize(orientation : (Symbol | String))
-      case orientation.to_s
-      when "horizontal"
+    def initialize(orientation : Symbol, padded : Bool = false)
+      case orientation
+      when :horizontal
         @ref_ptr = LibUI.new_horizontal_box
-      when "vertical"
+      when :vertical
         @ref_ptr = LibUI.new_vertical_box
       else
         raise "Invalid orientation: #{orientation}"
       end
+      self.padded = true if padded
     end
 
     def to_unsafe

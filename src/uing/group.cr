@@ -7,8 +7,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Group))
     end
 
-    def initialize(title : String)
+    def initialize(title : String, margined : Bool = false)
       @ref_ptr = LibUI.new_group(title)
+      self.margined = true if margined
     end
 
     def to_unsafe
