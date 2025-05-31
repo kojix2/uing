@@ -77,7 +77,7 @@ module UIng
     fun quit = uiQuit
     fun queue_main = uiQueueMain(f : (Pointer(Void) -> Void), data : Pointer(Void))
     fun timer = uiTimer(milliseconds : LibC::Int, f : (Pointer(Void) -> LibC::Int), data : Pointer(Void))
-    fun on_should_quit = uiOnShouldQuit(f : (Pointer(Void) -> LibC::Int), data : Pointer(Void))
+    fun on_should_quit = uiOnShouldQuit(f : (Pointer(Void) -> Bool), data : Pointer(Void))
     fun free_text = uiFreeText(text : Pointer(LibC::Char))
     # Control is a struct
     fun control_destroy = uiControlDestroy(c : Pointer(Control))

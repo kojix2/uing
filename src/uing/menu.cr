@@ -9,6 +9,12 @@ module UIng
       @ref_ptr = LibUI.new_menu(name)
     end
 
+    def append_check_item(name : String, checked : Bool) : MenuItem
+      item = append_check_item(name)
+      item.checked = checked
+      item
+    end
+
     def to_unsafe
       @ref_ptr
     end

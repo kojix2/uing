@@ -4,34 +4,31 @@ UIng.init
 
 # File menu
 UIng::Menu.new("File") do
-  open_menu_item = append_item("Open")
-  open_menu_item.on_clicked do |w|
+  append_item("Open").on_clicked do |w|
     pt = UIng.open_file(MAIN_WINDOW)
     puts pt
   end
-  save_menu_item = append_item("Save")
-  save_menu_item.on_clicked do |w|
+  append_item("Save").on_clicked do |w|
     pt = UIng.save_file(MAIN_WINDOW)
     puts pt
   end
   append_separator
-  should_quit_item = append_check_item("Should Quit_")
-  should_quit_item.checked = true
+  should_quit_item = append_check_item("Should Quit_", checked: true)
   append_quit_item
 
   # onShouldQuit callback is called when the user presses the quit menu item.
   UIng.on_should_quit do
-    if should_quit_item.checked == 1
+    if should_quit_item.checked
       puts "Bye Bye (on_should_quit)"
       MAIN_WINDOW.destroy # You have to destroy the window manually.
-      1                   # UIng.quit is automatically called in the C function onQuitClicked().
+      true                # UIng.quit is automatically called in the C function onQuitClicked().
     else
       UIng.msg_box(MAIN_WINDOW, "Warning", "Please check \"Should Quit\"")
-      0 # Don"t quit
+      false # Don"t quit
     end
   end
 
-  preferences = append_preferences_item
+  append_preferences_item
 end
 
 # Edit menu

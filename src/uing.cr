@@ -102,7 +102,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.on_should_quit(&callback : -> LibC::Int) : Nil
+  def self.on_should_quit(&callback : -> Bool) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
     @@special_callback_boxes << boxed_data
