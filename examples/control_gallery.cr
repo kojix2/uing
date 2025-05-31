@@ -120,8 +120,7 @@ progressbar = UIng::ProgressBar.new
 inner.append progressbar
 
 # FIXME
-slider.on_changed do
-  v = slider.value
+slider.on_changed do |v|
   puts "New Slider value: #{v}"
   progressbar.value = v
 end

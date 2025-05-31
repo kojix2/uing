@@ -15,18 +15,27 @@ module UIng
       @ref_ptr = LibUI.new_slider(min, max)
     end
 
-    # FIXME block argument should be LibC::Int -> Void
-
-    def on_changed(&block : -> Void)
-      @on_changed_box = ::Box.box(block)
-      UIng.slider_on_changed(@ref_ptr, @on_changed_box.not_nil!, &block)
+    def initialize(min, max, value)
+      @ref_ptr = LibUI.new_slider(min, max)
+      self.value = value
     end
 
-    # FIXME block argument should be LibC::Int -> Void
+    def on_changed(&block : LibC::Int -> Void)
+      wrapper = -> {
+        v = self.value
+        block.call(v)
+      }
+      @on_changed_box = ::Box.box(wrapper)
+      UIng.slider_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
+    end
 
-    def on_released(&block : -> Void)
-      @on_released_box = ::Box.box(block)
-      UIng.slider_on_released(@ref_ptr, @on_released_box.not_nil!, &block)
+    def on_released(&block : LibC::Int -> Void)
+      wrapper = -> {
+        v = self.value
+        block.call(v)
+      }
+      @on_released_box = ::Box.box(wrapper)
+      UIng.slider_on_released(@ref_ptr, @on_released_box.not_nil!, &wrapper)
     end
 
     def to_unsafe
