@@ -135,8 +135,8 @@ group.child = inner
 # Combobox
 cbox = UIng::Combobox.new ["Combobox Item 1", "Combobox Item 2", "Combobox Item 3"]
 inner.append cbox
-cbox.on_selected do
-  puts "New combobox selection: #{cbox.selected}"
+cbox.on_selected do |idx|
+  puts "New combobox selection: #{idx}"
 end
 
 # Editable Combobox
