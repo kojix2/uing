@@ -142,6 +142,9 @@ end
 # Editable Combobox
 ebox = UIng::EditableCombobox.new ["Editable Item 1", "Editable Item 2", "Editable Item 3"]
 inner.append ebox
+ebox.on_changed do |text|
+  puts "Editable Combobox changed: #{text}"
+end
 
 # Radio Buttons
 rb = UIng::RadioButtons.new ["Radio Button 1", "Radio Button 2", "Radio Button 3"]
