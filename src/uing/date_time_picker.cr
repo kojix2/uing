@@ -10,11 +10,11 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::DateTimePicker))
     end
 
-    def initialize(type : (Symbol | String))
-      case type.to_s
-      when "date"
+    def initialize(type : Symbol)
+      case type
+      when :date
         @ref_ptr = LibUI.new_date_picker
-      when "time"
+      when :time
         @ref_ptr = LibUI.new_time_picker
       else
         raise "Invalid type: #{type}"
