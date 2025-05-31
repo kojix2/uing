@@ -10,11 +10,14 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::MultilineEntry))
     end
 
-    def initialize(wrapping = true)
+    def initialize(wrapping = true, read_only = false)
       if wrapping
         @ref_ptr = LibUI.new_multiline_entry
       else
         @ref_ptr = LibUI.new_non_wrapping_multiline_entry
+      end
+      if read_only
+        self.read_only = true
       end
     end
 
