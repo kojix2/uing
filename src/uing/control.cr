@@ -41,6 +41,12 @@ module UIng
         with instance yield
         instance
       end
+
+      def self.new(*args, **kwargs, &block)
+        instance = new(*args, **kwargs)
+        with instance yield
+        instance
+      end
     end
   end
 

@@ -15,10 +15,14 @@ module UIng
       @ref_ptr = LibUI.new_slider(min, max)
     end
 
+    # FIXME block argument should be LibC::Int -> Void
+
     def on_changed(&block : -> Void)
       @on_changed_box = ::Box.box(block)
       UIng.slider_on_changed(@ref_ptr, @on_changed_box.not_nil!, &block)
     end
+
+    # FIXME block argument should be LibC::Int -> Void
 
     def on_released(&block : -> Void)
       @on_released_box = ::Box.box(block)

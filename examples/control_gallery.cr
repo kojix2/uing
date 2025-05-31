@@ -3,78 +3,69 @@ require "../src/uing"
 UIng.init
 
 # File menu
-menu = UIng::Menu.new("File")
-open_menu_item = menu.append_item("Open")
-open_menu_item.on_clicked do |w|
-  pt = UIng.open_file(MAIN_WINDOW)
-  puts pt
-end
-save_menu_item = menu.append_item("Save")
-save_menu_item.on_clicked do |w|
-  pt = UIng.save_file(MAIN_WINDOW)
-  puts pt
-end
-menu.append_separator
-should_quit_item = menu.append_check_item("Should Quit_")
-should_quit_item.checked = true
-menu.append_quit_item
-# onShouldQuit callback is called when the user presses the quit menu item.
-UIng.on_should_quit do
-  if should_quit_item.checked == 1
-    puts "Bye Bye (on_should_quit)"
-    MAIN_WINDOW.destroy # You have to destroy the window manually.
-    1                   # UIng.quit is automatically called in the C function onQuitClicked().
-  else
-    UIng.msg_box(MAIN_WINDOW, "Warning", "Please check \"Should Quit\"")
-    0 # Don"t quit
+UIng::Menu.new("File") do
+  open_menu_item = append_item("Open")
+  open_menu_item.on_clicked do |w|
+    pt = UIng.open_file(MAIN_WINDOW)
+    puts pt
   end
+  save_menu_item = append_item("Save")
+  save_menu_item.on_clicked do |w|
+    pt = UIng.save_file(MAIN_WINDOW)
+    puts pt
+  end
+  append_separator
+  should_quit_item = append_check_item("Should Quit_")
+  should_quit_item.checked = true
+  append_quit_item
+
+  # onShouldQuit callback is called when the user presses the quit menu item.
+  UIng.on_should_quit do
+    if should_quit_item.checked == 1
+      puts "Bye Bye (on_should_quit)"
+      MAIN_WINDOW.destroy # You have to destroy the window manually.
+      1                   # UIng.quit is automatically called in the C function onQuitClicked().
+    else
+      UIng.msg_box(MAIN_WINDOW, "Warning", "Please check \"Should Quit\"")
+      0 # Don"t quit
+    end
+  end
+
+  preferences = append_preferences_item
 end
 
 # Edit menu
-edit_menu = UIng::Menu.new("Edit")
-edit_menu.append_check_item("Checkable Item_")
-edit_menu.append_separator
-disabled_item = edit_menu.append_item("Disabled Item_")
-disabled_item.disable
-
-preferences = menu.append_preferences_item
-
-# Help menu
-help_menu = UIng::Menu.new("Help")
-help_menu.append_item("Help")
-help_menu.append_about_item
-
-# Main Window
-MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, true)
-MAIN_WINDOW.margined = true
-MAIN_WINDOW.on_closing do
-  puts "Bye Bye"
-  UIng.quit
-  # return 1 to destroys the window automatically.
-  # return 0 to keep the window. (You can destroy it manually.)
-  1
+UIng::Menu.new("Edit") do
+  append_check_item("Checkable Item_")
+  append_separator
+  disabled_item = append_item("Disabled Item_")
+  disabled_item.disable
 end
 
-vbox = UIng::Box.new(:vertical)
-MAIN_WINDOW.child = vbox
-hbox = UIng::Box.new(:horizontal)
-vbox.padded = true
-hbox.padded = true
+# Help menu
+UIng::Menu.new("Help") do
+  append_item("Help")
+  append_about_item
+end
 
-vbox.append(hbox, true)
+vbox = UIng::Box.new(:vertical, padded: true)
+MAIN_WINDOW.child = vbox
+hbox = UIng::Box.new(:horizontal, padded: true)
+
+vbox.append(hbox, stretchy: true)
 
 # Group - Basic Controls
-group = UIng::Group.new("Basic Controls")
-group.margined = true
-hbox.append(group, true) # OSX bug?
+group = UIng::Group.new("Basic Controls", margined: true)
+hbox.append(group, stretchy: true)
 
-inner = UIng::Box.new(:vertical)
-inner.padded = true
+inner = UIng::Box.new(:vertical, padded: true)
 group.child = inner
 
 # Button
 button = UIng::Button.new("Button") do
-  UIng.msg_box(MAIN_WINDOW, "Information", "You clicked the button")
+  on_clicked do
+    UIng.msg_box(MAIN_WINDOW, "Information", "You clicked the button")
+  end
 end
 inner.append(button, false)
 
@@ -84,58 +75,54 @@ checkbox.on_toggled do |checked|
   MAIN_WINDOW.title = "Checkbox is #{checked}"
   checkbox.text = "I am the checkbox (#{checked})"
 end
-inner.append(checkbox, false)
+inner.append checkbox
 
 # Label
-inner.append(UIng::Label.new("Label"), false)
+inner.append UIng::Label.new("Label")
 
 # Separator
-inner.append(UIng::Separator.new(:horizontal), false)
+inner.append UIng::Separator.new(:horizontal)
 
 # Date Picker
-inner.append(UIng::DateTimePicker.new(:date), false)
+inner.append UIng::DateTimePicker.new(:date)
 
 # Time Picker
-inner.append(UIng::DateTimePicker.new(:time), false)
+inner.append UIng::DateTimePicker.new(:time)
 
 # Date Time Picker
-inner.append(UIng::DateTimePicker.new, false)
+inner.append UIng::DateTimePicker.new
 
 # Font Button
-inner.append(UIng::FontButton.new, false)
+inner.append UIng::FontButton.new
 
 # Color Button
-inner.append(UIng::ColorButton.new, false)
+inner.append UIng::ColorButton.new
 
-inner2 = UIng::Box.new(:vertical)
-inner2.padded = true
+inner2 = UIng::Box.new(:vertical, padded: true)
 hbox.append(inner2, true)
 
 # Group - Numbers
-group = UIng::Group.new("Numbers")
-group.margined = true
-inner2.append(group, false)
+group = UIng::Group.new("Numbers", margined: true)
+inner2.append group
 
-inner = UIng::Box.new(:vertical)
-inner.padded = true
+inner = UIng::Box.new(:vertical, padded: true)
 group.child = inner
 
 # Spinbox
-spinbox = UIng::Spinbox.new(0, 100)
-spinbox.value = 42
-spinbox.on_changed do
-  puts "New Spinbox value: #{spinbox.value}"
+spinbox = UIng::Spinbox.new(0, 100, value: 42) do
+  on_changed { |v| puts "New Spinbox value: #{v}" }
 end
-inner.append(spinbox, false)
+inner.append spinbox
 
 # Slider
 slider = UIng::Slider.new(0, 100)
-inner.append(slider, false)
+inner.append slider
 
 # Progressbar
 progressbar = UIng::ProgressBar.new
-inner.append(progressbar, false)
+inner.append progressbar
 
+# FIXME
 slider.on_changed do
   v = slider.value
   puts "New Slider value: #{v}"
@@ -143,24 +130,22 @@ slider.on_changed do
 end
 
 # Group - Lists
-group = UIng::Group.new("Lists")
-group.margined = true
-inner2.append(group, false)
+group = UIng::Group.new("Lists", margined: true)
+inner2.append group
 
-inner = UIng::Box.new(:vertical)
-inner.padded = true
+inner = UIng::Box.new(:vertical, padded: true)
 group.child = inner
 
 # Combobox
 cbox = UIng::Combobox.new ["Combobox Item 1", "Combobox Item 2", "Combobox Item 3"]
-inner.append(cbox, false)
+inner.append cbox
 cbox.on_selected do
   puts "New combobox selection: #{cbox.selected}"
 end
 
 # Editable Combobox
 ebox = UIng::EditableCombobox.new ["Editable Item 1", "Editable Item 2", "Editable Item 3"]
-inner.append(ebox, false)
+inner.append ebox
 
 # Radio Buttons
 rb = UIng::RadioButtons.new ["Radio Button 1", "Radio Button 2", "Radio Button 3"]
@@ -169,9 +154,8 @@ inner.append(rb, true)
 # Tab
 tab = UIng::Tab.new
 hbox1 = UIng::Box.new(:horizontal)
-hbox2 = UIng::Box.new(:horizontal)
 tab.append("Page 1", hbox1)
-tab.append("Page 2", hbox2)
+tab.append("Page 2", UIng::Box.new(:horizontal))
 tab.append("Page 3", UIng::Box.new(:horizontal))
 inner2.append(tab, true)
 
@@ -183,8 +167,17 @@ text_entry.on_changed do
   puts text_entry.text
 end
 hbox1.append(text_entry, true)
+# Main Window
 
-MAIN_WINDOW.show
+MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, true) do
+  margined = true
+  on_closing do
+    puts "Bye Bye"
+    UIng.quit
+    true
+  end
+  show
+end
 
 UIng.main
 UIng.uninit

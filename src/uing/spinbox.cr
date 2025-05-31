@@ -14,9 +14,18 @@ module UIng
       @ref_ptr = LibUI.new_spinbox(min, max)
     end
 
-    def on_changed(&block : -> Void)
-      @on_changed_box = ::Box.box(block)
-      UIng.spinbox_on_changed(@ref_ptr, @on_changed_box.not_nil!, &block)
+    def initialize(min, max, value)
+      @ref_ptr = LibUI.new_spinbox(min, max)
+      self.value = value
+    end
+
+    def on_changed(&block : LibC::Int -> Void)
+      wrapper = -> {
+        v = self.value
+        block.call(v)
+      }
+      @on_changed_box = ::Box.box(wrapper)
+      UIng.spinbox_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
     end
 
     def to_unsafe

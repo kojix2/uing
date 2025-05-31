@@ -1,6 +1,6 @@
 module UIng
   class Menu
-    include MethodMissing
+    include MethodMissing; block_constructor
 
     def initialize(@ref_ptr : Pointer(LibUI::Menu))
     end

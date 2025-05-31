@@ -299,7 +299,7 @@ module UIng
     Button.new(ref_ptr)
   end
 
-  def self.box_append(box, control, stretchy) : Nil
+  def self.box_append(box, control, stretchy = false) : Nil
     LibUI.box_append(box, to_control(control), stretchy)
   end
 
@@ -453,7 +453,7 @@ module UIng
     LibUI.group_set_child(group, to_control(control))
   end
 
-  def self.group_margined(group) : LibC::Int
+  def self.group_margined(group) : Bool
     LibUI.group_margined(group)
   end
 
