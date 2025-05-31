@@ -1,14 +1,11 @@
 require "../src/uing"
 
-UIng.init
-
-w = UIng::Window.new("Hello", 300, 200)
-w.show
-
-w.on_closing do
-  UIng.quit
-  1
+UIng.init do
+  UIng::Window.new("Hello", 300, 200) do
+    on_closing do
+      UIng.quit; true
+    end
+    show
+  end
+  UIng.main
 end
-
-UIng.main
-UIng.uninit
