@@ -134,6 +134,7 @@ jobs:
           msystem: MINGW64
           update: true
           install: >-
+            mingw-w64-x86_64-pkg-config
             mingw-w64-x86_64-tools-git
             mingw-w64-x86_64-crystal
             mingw-w64-x86_64-shards
