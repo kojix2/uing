@@ -12,7 +12,11 @@ module UIng
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "/DEBUG")]
-      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug")]
+      # FIXME
+      {% puts "[uing] FIXME: Currently, pdb files are not available for libui." %}
+      {% puts "[uing] In MSVC, use libui release build even if debug mode is enabled." %}
+      # @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug")]
+      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release")]
     {% elsif flag?(:release) %}
       @[Link(ldflags: "/LTCG")]
       @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release")]
