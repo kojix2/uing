@@ -137,16 +137,26 @@ jobs:
             mingw-w64-x86_64-tools-git
             mingw-w64-x86_64-crystal
             mingw-w64-x86_64-shards
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-pcre2
 
       - name: Install dependencies
         shell: msys2 {0}
-        run: shards install
+        run: |
+          pacman -S --noconfirm git
+          shards install
 
       - name: Build MinGW64 package
         working-directory: examples/md5_checker
         shell: msys2 {0}
         run: |
           shards build
+
+      - name: Upload MinGW64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: md5checker-mingw64
+          path: examples/md5_checker/bin/md5checker.exe
 
   test-packages:
     name: Test Package Installation
