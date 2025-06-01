@@ -153,7 +153,10 @@ jobs:
         working-directory: examples/md5_checker
         shell: msys2 {0}
         run: |
-          shards build
+          export LIBRARY_PATH=/mingw64/lib:$LIBRARY_PATH
+          export C_INCLUDE_PATH=/mingw64/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=/mingw64/include:$CPLUS_INCLUDE_PATH
+          shards build --release --no-debug --static --link-flags "-lcrypto -lssl -mwindows"
 
       - name: Upload MinGW64 artifact
         uses: actions/upload-artifact@v4
