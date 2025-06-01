@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - "examples/md5_checker/**"
+      - ".github/workflows/md5checker.yml"
   pull_request:
     paths:
       - "examples/md5_checker/**"
+      - ".github/workflows/md5checker.yml"
   workflow_dispatch:
 
 jobs:
