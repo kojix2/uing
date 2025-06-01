@@ -81,7 +81,7 @@ end
 
   # Debug build (including PDB files)
   download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a", "builddir/meson-out/libui.a.p/"],
+    ["builddir/meson-out/libui.a", "builddir/meson-out/libui.a.p"],
     "Win-x64-static-debug.zip"
   )
   FileUtils.mkdir_p "libui/debug"
