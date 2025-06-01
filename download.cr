@@ -21,7 +21,7 @@ def download_from_url(lib_path, file_name, url)
   if file_name.ends_with?(".zip")
     Compress::Zip::File.open(file_name) do |zip_file|
       zip_file.entries.each do |entry|
-        if lib_path.any? { |path| entry.filename.includes?(path) }
+        if lib_path.any? { |path| entry.filename == path || entry.filename.starts_with?(path + "/") }
           print "Extracting #{entry.filename} from #{file_name}..."
 
           # Preserve complete directory structure
