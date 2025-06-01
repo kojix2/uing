@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  uing:
+    path: ../../
+    version: 0.1.0
+
