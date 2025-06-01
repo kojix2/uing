@@ -89,6 +89,10 @@ end
   # Copy entire libui.a.p/ directory
   if Dir.exists?("builddir/meson-out/libui.a.p")
     FileUtils.cp_r "builddir/meson-out/libui.a.p", "libui/debug/"
+    # Copy PDB files to the same directory as ui.lib for linker to find them
+    Dir.glob("libui/debug/libui.a.p/*.pdb").each do |pdb_file|
+      FileUtils.cp pdb_file, "libui/debug/"
+    end
   end
 {% elsif flag?(:win32) && flag?(:gnu) %}
   download_libui_ng_nightly(
@@ -105,6 +109,11 @@ end
   FileUtils.mv "builddir/meson-out/libui.a", "libui/debug/libui.a"
   system(p("windres comctl32.rc -O coff -o comctl32.res"))
 {% end %}
+
+# Clean up temporary directory
+if Dir.exists?("builddir")
+  FileUtils.rm_rf "builddir"
+end
 
 # {% if flag?(:win32) && flag?(:gnu) %}
 #   file_name = "libui.a"
