@@ -96,7 +96,7 @@ module UIng
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
     @@special_callback_boxes << boxed_data
-    LibUI.timer(sender, ->(sender, data) do
+    LibUI.timer(sender, ->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)
