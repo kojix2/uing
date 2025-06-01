@@ -1,15 +1,17 @@
 module UIng
-  macro block_constructor
-    def self.new(*args, &block)
-      instance = new(*args)
-      with instance yield
-      instance
-    end
+  module BlockConstructor
+    macro block_constructor
+      def self.new(*args, &block)
+        instance = new(*args)
+        with instance yield
+        instance
+      end
 
-    def self.new(*args, **kwargs, &block)
-      instance = new(*args, **kwargs)
-      with instance yield
-      instance
+      def self.new(*args, **kwargs, &block)
+        instance = new(*args, **kwargs)
+        with instance yield
+        instance
+      end
     end
   end
 
@@ -52,6 +54,7 @@ module UIng
 
   module Control
     include MethodMissing
+    include BlockConstructor
 
     def destroy
       UIng.control_destroy(@ref_ptr)

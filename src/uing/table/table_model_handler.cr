@@ -1,6 +1,6 @@
 module UIng
   class TableModelHandler
-    block_constructor
+    include BlockConstructor; block_constructor
 
     def initialize(@cstruct : LibUI::TableModelHandler = LibUI::TableModelHandler.new)
     end
