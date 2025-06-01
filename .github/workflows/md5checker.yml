@@ -146,6 +146,7 @@ jobs:
       - name: Install dependencies
         shell: msys2 {0}
         run: |
+          git --version
           pacman -S --noconfirm git
           shards install
 
