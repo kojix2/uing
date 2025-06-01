@@ -7,8 +7,9 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Form))
     end
 
-    def initialize
+    def initialize(padded : Bool = false)
       @ref_ptr = LibUI.new_form
+      self.padded = true if padded
     end
 
     def to_unsafe
