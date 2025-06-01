@@ -9,7 +9,7 @@ module UIng
 
     def initialize(padded : Bool = false)
       @ref_ptr = LibUI.new_form
-      self.padded = true if padded
+      set_padded(true) if padded
     end
 
     def to_unsafe

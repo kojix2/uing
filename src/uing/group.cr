@@ -9,7 +9,7 @@ module UIng
 
     def initialize(title : String, margined : Bool = false)
       @ref_ptr = LibUI.new_group(title)
-      self.margined = true if margined
+      set_margined(true) if margined
     end
 
     def to_unsafe

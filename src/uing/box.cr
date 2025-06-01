@@ -24,7 +24,7 @@ module UIng
       else
         raise "Invalid orientation: #{orientation}"
       end
-      self.padded = true if padded
+      set_padded(true) if padded
     end
 
     def to_unsafe
