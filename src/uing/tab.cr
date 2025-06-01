@@ -14,6 +14,17 @@ module UIng
       @ref_ptr = LibUI.new_tab
     end
 
+    def append(name : String, control, margined : Bool = false)
+      UIng.tab_append(@ref_ptr, name, control)
+      index = num_pages - 1
+      set_margined(index, margined) if margined
+    end
+
+    def insert_at(name : String, index : Int32, control, margined : Bool = false)
+      UIng.tab_insert_at(@ref_ptr, name, index, control)
+      set_margined(index, margined) if margined
+    end
+
     def on_selected(&block : Int32 -> Void)
       wrapper = -> {
         idx = UIng.tab_selected(@ref_ptr)
