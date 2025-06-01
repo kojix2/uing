@@ -25,15 +25,13 @@ model_handler = UIng::TableModelHandler.new do
   set_cell_value { |_, _, _, _, _| Void }
 end
 
-model = UIng::TableModel.new model_handler
+table_model = UIng::TableModel.new(model_handler)
+table_params = UIng::TableParams.new(table_model)
 
-table_params = UIng::TableParams.new
-table_params.model = model
-table_params.row_background_color_model_column = -1
-
-table = UIng::Table.new(table_params)
-table.append_text_column("Animal", 0, -1, nil)
-table.append_text_column("Description", 1, -1, nil)
+table = UIng::Table.new(table_params) do
+  append_text_column("Animal", 0, -1)
+  append_text_column("Description", 1, -1)
+end
 
 hbox.append(table, true)
 main_window.show
@@ -45,5 +43,5 @@ main_window.on_closing do
 end
 
 UIng.main
-UIng.free_table_model(model)
+UIng.free_table_model(table_model)
 UIng.uninit

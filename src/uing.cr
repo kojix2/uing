@@ -1322,7 +1322,7 @@ module UIng
     LibUI.table_model_row_deleted(table_model, old_index)
   end
 
-  def self.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params) : Nil
+  def self.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params = nil) : Nil
     LibUI.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
   end
 
@@ -1330,7 +1330,7 @@ module UIng
     LibUI.table_append_image_column(table, name, image_model_colum)
   end
 
-  def self.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params) : Nil
+  def self.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params = nil) : Nil
     LibUI.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
   end
 
@@ -1338,7 +1338,7 @@ module UIng
     LibUI.table_append_checkbox_column(table, name, checkbox_model_column, checkbox_editable_model_column)
   end
 
-  def self.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params) : Nil
+  def self.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params = nil) : Nil
     LibUI.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
   end
 
