@@ -1,4 +1,18 @@
 module UIng
+  macro block_constructor
+    def self.new(*args, &block)
+      instance = new(*args)
+      with instance yield
+      instance
+    end
+
+    def self.new(*args, **kwargs, &block)
+      instance = new(*args, **kwargs)
+      with instance yield
+      instance
+    end
+  end
+
   module MethodMissing
     # Dynamic method generation macro that automatically creates wrapper methods
     # for libui C API functions based on the calling class and method name.
@@ -33,20 +47,6 @@ module UIng
         UIng.{{ @type.name.split("::").last.underscore.id }}_{{call.name.id}}(@ref_ptr, *args, **kwargs)
       end
       {% end %}
-    end
-
-    macro block_constructor
-      def self.new(*args, &block)
-        instance = new(*args)
-        with instance yield
-        instance
-      end
-
-      def self.new(*args, **kwargs, &block)
-        instance = new(*args, **kwargs)
-        with instance yield
-        instance
-      end
     end
   end
 

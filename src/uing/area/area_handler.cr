@@ -1,5 +1,7 @@
 module UIng
   class AreaHandler
+    block_constructor
+    
     def initialize(@cstruct : LibUI::AreaHandler = LibUI::AreaHandler.new)
     end
 
