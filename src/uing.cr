@@ -132,7 +132,7 @@ module UIng
     LibUI.control_set_parent(to_control(control), to_control(parent))
   end
 
-  def self.control_toplevel(control)
+  def self.control_toplevel(control) : Bool
     LibUI.control_toplevel(to_control(control))
   end
 

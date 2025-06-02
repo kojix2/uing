@@ -80,8 +80,16 @@ module UIng
       UIng.control_toplevel(@ref_ptr)
     end
 
-    def visible? : Bool
-      UIng.control_visible?(@ref_ptr) == 1
+    def toplevel?
+      toplevel
+    end
+
+    def visible : Bool
+      UIng.control_visible(@ref_ptr)
+    end
+
+    def visible?
+      visible
     end
 
     def show
@@ -92,11 +100,15 @@ module UIng
       UIng.control_hide(@ref_ptr)
     end
 
-    def enabled? : Bool
-      UIng.control_enabled?(@ref_ptr) == 1
+    def enabled : Bool
+      UIng.control_enabled(@ref_ptr)
     end
 
-    def enable
+    def enabled?
+      enabled
+    end
+
+    def enable : Bool
       UIng.control_enable(@ref_ptr)
     end
 
