@@ -321,7 +321,7 @@ module UIng
     LibUI.box_delete(box, index)
   end
 
-  def self.box_padded(button) : LibC::Int
+  def self.box_padded(button) : Bool
     LibUI.box_padded(button)
   end
 
@@ -384,7 +384,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.entry_read_only(entry) : LibC::Int
+  def self.entry_read_only(entry) : Bool
     LibUI.entry_read_only(entry)
   end
 
@@ -437,7 +437,7 @@ module UIng
     LibUI.tab_num_pages(tab)
   end
 
-  def self.tab_margined(tab, index) : LibC::Int
+  def self.tab_margined(tab, index) : Bool
     LibUI.tab_margined(tab, index)
   end
 
@@ -519,7 +519,7 @@ module UIng
     LibUI.slider_set_value(slider, value)
   end
 
-  def self.slider_has_tool_tip(slider) : LibC::Int
+  def self.slider_has_tool_tip(slider) : Bool
     LibUI.slider_has_tool_tip(slider)
   end
 
@@ -712,7 +712,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.multiline_entry_read_only(multiline_entry) : LibC::Int
+  def self.multiline_entry_read_only(multiline_entry) : Bool
     LibUI.multiline_entry_read_only(multiline_entry)
   end
 
@@ -880,7 +880,7 @@ module UIng
     LibUI.draw_path_add_rectangle(draw_path, x, y, width, height)
   end
 
-  def self.draw_path_ended(draw_path) : LibC::Int
+  def self.draw_path_ended(draw_path) : Bool
     LibUI.draw_path_ended(draw_path)
   end
 
@@ -920,11 +920,11 @@ module UIng
     LibUI.draw_matrix_multiply(dest, src)
   end
 
-  def self.draw_matrix_invertible(draw_matrix) : LibC::Int
+  def self.draw_matrix_invertible(draw_matrix) : Bool
     LibUI.draw_matrix_invertible(draw_matrix)
   end
 
-  def self.draw_matrix_invert(draw_matrix) : LibC::Int
+  def self.draw_matrix_invert(draw_matrix) : Bool
     LibUI.draw_matrix_invert(draw_matrix)
   end
 
@@ -1057,7 +1057,7 @@ module UIng
     LibUI.open_type_features_remove(open_type_features, a, b, c, d)
   end
 
-  def self.open_type_features_get(open_type_features, a, b, c, d, value) : LibC::Int
+  def self.open_type_features_get(open_type_features, a, b, c, d, value) : Bool
     LibUI.open_type_features_get(open_type_features, a, b, c, d, value)
   end
 
@@ -1218,7 +1218,7 @@ module UIng
     LibUI.form_delete(form, index)
   end
 
-  def self.form_padded(form) : LibC::Int
+  def self.form_padded(form) : Bool
     LibUI.form_padded(form)
   end
 
@@ -1239,7 +1239,7 @@ module UIng
     LibUI.grid_insert_at(grid, to_control(control), to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
   end
 
-  def self.grid_padded(grid) : LibC::Int
+  def self.grid_padded(grid) : Bool
     LibUI.grid_padded(grid)
   end
 
@@ -1360,7 +1360,7 @@ module UIng
     LibUI.table_append_button_column(table, name, button_model_column, button_clickable_model_column)
   end
 
-  def self.table_header_visible(table) : LibC::Int
+  def self.table_header_visible(table) : Bool
     LibUI.table_header_visible(table)
   end
 
