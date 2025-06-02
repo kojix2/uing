@@ -189,8 +189,13 @@ module UIng
     LibUI.window_set_title(window, title)
   end
 
-  def self.window_position(window, x, y) : Nil
+  def self.window_position(
+    window,
+    x = Pointer(LibC::Int).malloc,
+    y = Pointer(LibC::Int).malloc,
+  ) : {LibC::Int, LibC::Int}
     LibUI.window_position(window, x, y)
+    {x.value, y.value}
   end
 
   def self.window_set_position(window, x, y) : Nil
@@ -204,15 +209,20 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_content_size(window, width, height) : Nil
+  def self.window_content_size(
+    window,
+    width = Pointer(LibC::Int).malloc,
+    height = Pointer(LibC::Int).malloc,
+  ) : {LibC::Int, LibC::Int}
     LibUI.window_content_size(window, width, height)
+    {width.value, height.value}
   end
 
   def self.window_set_content_size(window, width, height) : Nil
     LibUI.window_set_content_size(window, width, height)
   end
 
-  def self.window_fullscreen(window) : LibC::Int
+  def self.window_fullscreen(window) : Bool
     LibUI.window_fullscreen(window)
   end
 
@@ -241,11 +251,11 @@ module UIng
     end, boxed_data)
   end
 
-  def self.window_focused(window) : LibC::Int
+  def self.window_focused(window) : Bool
     LibUI.window_focused(window)
   end
 
-  def self.window_borderless(window) : LibC::Int
+  def self.window_borderless(window) : Bool
     LibUI.window_borderless(window)
   end
 
@@ -257,7 +267,7 @@ module UIng
     LibUI.window_set_child(window, to_control(control))
   end
 
-  def self.window_margined(window) : LibC::Int
+  def self.window_margined(window) : Bool
     LibUI.window_margined(window)
   end
 
@@ -265,7 +275,7 @@ module UIng
     LibUI.window_set_margined(window, margined)
   end
 
-  def self.window_resizeable(window) : LibC::Int
+  def self.window_resizeable(window) : Bool
     LibUI.window_resizeable(window)
   end
 
@@ -273,7 +283,7 @@ module UIng
     LibUI.window_set_resizeable(window, resizeable)
   end
 
-  def self.new_window(title, width, height, has_menu)
+  def self.new_window(title, width, height, has_menu) : Window
     ref_ptr = LibUI.new_window(title, width, height, has_menu)
     Window.new(ref_ptr)
   end
