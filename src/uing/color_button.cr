@@ -16,11 +16,7 @@ module UIng
 
     def on_changed(&block : Float64, Float64, Float64, Float64 -> Void)
       wrapper = -> {
-        r = uninitialized Float64
-        g = uninitialized Float64
-        b = uninitialized Float64
-        a = uninitialized Float64
-        LibUI.color_button_color(@ref_ptr, pointerof(r), pointerof(g), pointerof(b), pointerof(a))
+        LibUI.color_button_color(@ref_ptr, out r, out g, out b, out a)
         block.call(r, g, b, a)
       }
       @on_changed_box = ::Box.box(wrapper)

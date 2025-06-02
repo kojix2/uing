@@ -928,12 +928,22 @@ module UIng
     LibUI.draw_matrix_invert(draw_matrix)
   end
 
-  def self.draw_matrix_transform_point(draw_matrix, x, y) : Nil
+  def self.draw_matrix_transform_point(
+    draw_matrix,
+    x = Pointer(LibC::Double).malloc,
+    y = Pointer(LibC::Double).malloc,
+  ) : {LibC::Double, LibC::Double}
     LibUI.draw_matrix_transform_point(draw_matrix, x, y)
+    {x.value, y.value}
   end
 
-  def self.draw_matrix_transform_size(draw_matrix, x, y) : Nil
+  def self.draw_matrix_transform_size(
+    draw_matrix,
+    x = Pointer(LibC::Double).malloc,
+    y = Pointer(LibC::Double).malloc,
+  ) : {LibC::Double, LibC::Double}
     LibUI.draw_matrix_transform_size(draw_matrix, x, y)
+    {x.value, y.value}
   end
 
   def self.draw_transform(draw_context, draw_matrix) : Nil
@@ -1011,8 +1021,15 @@ module UIng
     Attribute.new(ref_ptr)
   end
 
-  def self.attribute_color(attribute, r, g, b, a) : Nil
+  def self.attribute_color(
+    attribute,
+    r = Pointer(LibC::Double).malloc,
+    g = Pointer(LibC::Double).malloc,
+    b = Pointer(LibC::Double).malloc,
+    a = Pointer(LibC::Double).malloc,
+  ) : {LibC::Double, LibC::Double, LibC::Double, LibC::Double}
     LibUI.attribute_color(attribute, r, g, b, a)
+    {r.value, g.value, b.value, a.value}
   end
 
   def self.new_background_attribute(r, g, b, a) : Attribute
@@ -1031,8 +1048,16 @@ module UIng
     LibUI.new_underline_color_attribute(underline_color, r, g, b, a)
   end
 
-  def self.attribute_underline_color(attribute, underline_color, r, g, b, a) : Nil
+  def self.attribute_underline_color(
+    attribute,
+    underline_color = Pointer(LibUI::UnderlineColor).malloc,
+    r = Pointer(LibC::Double).malloc,
+    g = Pointer(LibC::Double).malloc,
+    b = Pointer(LibC::Double).malloc,
+    a = Pointer(LibC::Double).malloc,
+  ) : {LibUI::UnderlineColor, LibC::Double, LibC::Double, LibC::Double, LibC::Double}
     LibUI.attribute_underline_color(attribute, underline_color, r, g, b, a)
+    {underline_color.value, r.value, g.value, b.value, a.value}
   end
 
   def self.new_open_type_features : OpenTypeFeatures
@@ -1057,8 +1082,16 @@ module UIng
     LibUI.open_type_features_remove(open_type_features, a, b, c, d)
   end
 
-  def self.open_type_features_get(open_type_features, a, b, c, d, value) : Bool
-    LibUI.open_type_features_get(open_type_features, a, b, c, d, value)
+  def self.open_type_features_get(
+    open_type_features,
+    a,
+    b,
+    c,
+    d,
+    value = Pointer(UInt32).malloc,
+  ) : {Bool, UInt32}
+    result = LibUI.open_type_features_get(open_type_features, a, b, c, d, value)
+    {result, value.value}
   end
 
   def self.open_type_features_for_each(sender, &callback : (Pointer(Void), LibC::Char, LibC::Char, LibC::Char, LibC::Char, Int32) -> Void)
@@ -1162,8 +1195,13 @@ module UIng
     LibUI.draw_text(draw_context, draw_text_layout, x, y)
   end
 
-  def self.draw_text_layout_extents(draw_text_layout, width, height) : Nil
+  def self.draw_text_layout_extents(
+    draw_text_layout,
+    width = Pointer(LibC::Double).malloc,
+    height = Pointer(LibC::Double).malloc,
+  ) : {LibC::Double, LibC::Double}
     LibUI.draw_text_layout_extents(draw_text_layout, width, height)
+    {width.value, height.value}
   end
 
   def self.font_button_font(font_button, font_descriptor) : Nil
@@ -1186,8 +1224,15 @@ module UIng
     LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.color_button_color(color_button, r, g, b, a) : Nil
+  def self.color_button_color(
+    color_button,
+    r = Pointer(LibC::Double).malloc,
+    g = Pointer(LibC::Double).malloc,
+    b = Pointer(LibC::Double).malloc,
+    a = Pointer(LibC::Double).malloc,
+  ) : {LibC::Double, LibC::Double, LibC::Double, LibC::Double}
     LibUI.color_button_color(color_button, r, g, b, a)
+    {r.value, g.value, b.value, a.value}
   end
 
   def self.color_button_set_color(color_button, r, g, b, a) : Nil
@@ -1307,8 +1352,15 @@ module UIng
     TableValue.new(ref_ptr)
   end
 
-  def self.table_value_color(table_value, r, g, b, a) : Nil
+  def self.table_value_color(
+    table_value,
+    r = Pointer(LibC::Double).malloc,
+    g = Pointer(LibC::Double).malloc,
+    b = Pointer(LibC::Double).malloc,
+    a = Pointer(LibC::Double).malloc,
+  ) : {LibC::Double, LibC::Double, LibC::Double, LibC::Double}
     LibUI.table_value_color(table_value, r, g, b, a)
+    {r.value, g.value, b.value, a.value}
   end
 
   def self.new_table_model(model_handler) : TableModel
