@@ -1196,7 +1196,7 @@ module UIng
     ColorButton.new(ref_ptr)
   end
 
-  def self.form_append(form, label, control, stretchy) : Nil
+  def self.form_append(form, label, control, stretchy = false) : Nil
     LibUI.form_append(form, label, to_control(control), stretchy)
   end
 
