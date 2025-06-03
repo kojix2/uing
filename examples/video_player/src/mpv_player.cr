@@ -60,23 +60,23 @@ class MPVPlayer
 
   # Platform-specific embedding implementations
   {% if flag?(:darwin) %}
-  include PlatformEmbedding::MacOS
+    include PlatformEmbedding::MacOS
 
-  private def apply_platform_settings
-    apply_macos_settings
-  end
+    private def apply_platform_settings
+      apply_macos_settings
+    end
   {% elsif flag?(:win32) %}
-  include PlatformEmbedding::Windows
+    include PlatformEmbedding::Windows
 
-  private def apply_platform_settings
-    apply_windows_settings
-  end
+    private def apply_platform_settings
+      apply_windows_settings
+    end
   {% else %}
-  include PlatformEmbedding::Linux
+    include PlatformEmbedding::Linux
 
-  private def apply_platform_settings
-    apply_linux_settings
-  end
+    private def apply_platform_settings
+      apply_linux_settings
+    end
   {% end %}
 
   # ============================================================================
@@ -93,7 +93,7 @@ class MPVPlayer
     if result < 0
       raise "Failed to load file '#{path}': #{error_string(result)}"
     end
-    
+
     puts "Load command sent successfully"
   end
 
@@ -193,7 +193,7 @@ class MPVPlayer
   private def validate_file_path(path : String)
     # For URLs, skip file existence check
     return if path.starts_with?("http://") || path.starts_with?("https://")
-    
+
     unless File.exists?(path)
       puts "Warning: File does not exist: #{path}"
     end

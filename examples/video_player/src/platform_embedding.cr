@@ -9,11 +9,11 @@ module PlatformEmbedding
   module MacOS
     def setup_macos_embedding(raw_handle : UInt64)
       handle = raw_handle.to_i64
-      
+
       set_window_id(handle)
       set_video_output("gpu")
       apply_platform_settings
-      
+
       puts "Set macOS NSView handle: #{handle} with gpu mode"
     end
 
@@ -27,11 +27,11 @@ module PlatformEmbedding
   module Windows
     def setup_windows_embedding(raw_handle : UInt64)
       handle = raw_handle.to_i64
-      
+
       set_window_id(handle)
       set_video_output("direct3d")
       apply_platform_settings
-      
+
       puts "Set Windows HWND handle: #{handle} with direct3d mode"
     end
 
@@ -67,7 +67,7 @@ module PlatformEmbedding
 
       set_video_output("x11")
       set_window_id(handle)
-      
+
       puts "Set X11 window ID: #{handle}"
     end
 

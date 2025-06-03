@@ -288,7 +288,6 @@ module UIng
     Window.new(ref_ptr)
   end
 
-
   def self.box_append(box, control, stretchy = false) : Nil
     LibUI.box_append(box, to_control(control), stretchy)
   end

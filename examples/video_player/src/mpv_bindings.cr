@@ -11,21 +11,21 @@ LC_NUMERIC = 1
 
 # GTK/GDK bindings for Linux window embedding
 {% unless flag?(:darwin) %}
-@[Link("gtk-3")]
-lib LibGTK
-  type GtkWidget = Void*
-  type GdkWindow = Void*
-  type GTypeInstance = Void*
+  @[Link("gtk-3")]
+  lib LibGTK
+    type GtkWidget = Void*
+    type GdkWindow = Void*
+    type GTypeInstance = Void*
 
-  fun gtk_widget_realize(widget : GtkWidget) : Void
-  fun gtk_widget_get_window(widget : GtkWidget) : GdkWindow
-  fun g_type_name_from_instance(instance : GTypeInstance) : UInt8*
-end
+    fun gtk_widget_realize(widget : GtkWidget) : Void
+    fun gtk_widget_get_window(widget : GtkWidget) : GdkWindow
+    fun g_type_name_from_instance(instance : GTypeInstance) : UInt8*
+  end
 
-@[Link("gdk-3")]
-lib LibGDK
-  fun gdk_x11_window_get_xid(window : LibGTK::GdkWindow) : UInt64
-end
+  @[Link("gdk-3")]
+  lib LibGDK
+    fun gdk_x11_window_get_xid(window : LibGTK::GdkWindow) : UInt64
+  end
 {% end %}
 
 @[Link("mpv")]
@@ -64,18 +64,18 @@ lib LibMPV
   end
 
   enum MPVEventID
-    None                =  0
-    LogMessage          =  2
-    GetPropertyReply    =  3
-    CommandReply        =  5
-    StartFile           =  6
-    EndFile             =  7
-    FileLoaded          =  8
-    Idle                = 11
-    VideoReconfig       = 17
-    AudioReconfig       = 18
-    PlaybackRestart     = 19
-    PropertyChange      = 20
+    None             =  0
+    LogMessage       =  2
+    GetPropertyReply =  3
+    CommandReply     =  5
+    StartFile        =  6
+    EndFile          =  7
+    FileLoaded       =  8
+    Idle             = 11
+    VideoReconfig    = 17
+    AudioReconfig    = 18
+    PlaybackRestart  = 19
+    PropertyChange   = 20
   end
 
   # Structures (used)
