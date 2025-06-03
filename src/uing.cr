@@ -436,46 +436,6 @@ module UIng
     Slider.new(ref_ptr)
   end
 
-  def self.combobox_append(combobox, text) : Nil
-    LibUI.combobox_append(combobox, text)
-  end
-
-  def self.combobox_insert_at(combobox, index, text) : Nil
-    LibUI.combobox_insert_at(combobox, index, text)
-  end
-
-  def self.combobox_delete(combobox, index) : Nil
-    LibUI.combobox_delete(combobox, index)
-  end
-
-  def self.combobox_clear(combobox) : Nil
-    LibUI.combobox_clear(combobox)
-  end
-
-  def self.combobox_num_items(combobox) : LibC::Int
-    LibUI.combobox_num_items(combobox)
-  end
-
-  def self.combobox_selected(combobox) : LibC::Int
-    LibUI.combobox_selected(combobox)
-  end
-
-  def self.combobox_set_selected(combobox) : Nil
-    LibUI.combobox_set_selected(combobox)
-  end
-
-  def self.combobox_on_selected(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.combobox_on_selected(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_combobox : Combobox
-    ref_ptr = LibUI.new_combobox
-    Combobox.new(ref_ptr)
-  end
-
   def self.editable_combobox_append(editable_combobox, text) : Nil
     LibUI.editable_combobox_append(editable_combobox, text)
   end
