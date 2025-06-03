@@ -93,7 +93,12 @@ inner.append UIng::DateTimePicker.new
 inner.append UIng::FontButton.new
 
 # Color Button
-inner.append UIng::ColorButton.new
+color_button = UIng::ColorButton.new do
+  on_changed do |r, g, b, a|
+    puts "Color changed: R=#{r}, G=#{g}, B=#{b}, A=#{a}"
+  end
+end
+inner.append color_button
 
 inner2 = UIng::Box.new(:vertical, padded: true)
 hbox.append(inner2, true)

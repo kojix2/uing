@@ -1160,33 +1160,6 @@ module UIng
     LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.color_button_color(
-    color_button,
-    r = Pointer(LibC::Double).malloc,
-    g = Pointer(LibC::Double).malloc,
-    b = Pointer(LibC::Double).malloc,
-    a = Pointer(LibC::Double).malloc,
-  ) : {LibC::Double, LibC::Double, LibC::Double, LibC::Double}
-    LibUI.color_button_color(color_button, r, g, b, a)
-    {r.value, g.value, b.value, a.value}
-  end
-
-  def self.color_button_set_color(color_button, r, g, b, a) : Nil
-    LibUI.color_button_set_color(color_button, r, g, b, a)
-  end
-
-  def self.color_button_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.color_button_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_color_button : ColorButton
-    ref_ptr = LibUI.new_color_button
-    ColorButton.new(ref_ptr)
-  end
-
   def self.form_append(form, label, control, stretchy = false) : Nil
     LibUI.form_append(form, label, to_control(control), stretchy)
   end
