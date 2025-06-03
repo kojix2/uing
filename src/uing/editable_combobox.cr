@@ -21,13 +21,29 @@ module UIng
       end
     end
 
+    def append(text : String) : Nil
+      LibUI.editable_combobox_append(@ref_ptr, text)
+    end
+
+    def text : String?
+      str_ptr = LibUI.editable_combobox_text(@ref_ptr)
+      UIng.string_from_pointer(str_ptr)
+    end
+
+    def text=(text : String) : Nil
+      LibUI.editable_combobox_set_text(@ref_ptr, text)
+    end
+
     def on_changed(&block : String -> Void)
       wrapper = -> {
-        text = UIng.editable_combobox_text(@ref_ptr) || ""
-        block.call(text)
+        current_text = self.text || ""
+        block.call(current_text)
       }
       @on_changed_box = ::Box.box(wrapper)
-      UIng.editable_combobox_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
+      LibUI.editable_combobox_on_changed(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_changed_box.not_nil!)
     end
 
     def to_unsafe

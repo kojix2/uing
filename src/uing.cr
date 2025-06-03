@@ -436,31 +436,6 @@ module UIng
     Slider.new(ref_ptr)
   end
 
-  def self.editable_combobox_append(editable_combobox, text) : Nil
-    LibUI.editable_combobox_append(editable_combobox, text)
-  end
-
-  def self.editable_combobox_text(editable_combobox) : String?
-    str_ptr = LibUI.editable_combobox_text(editable_combobox)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.editable_combobox_set_text(editable_combobox, text) : Nil
-    LibUI.editable_combobox_set_text(editable_combobox, text)
-  end
-
-  def self.editable_combobox_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.editable_combobox_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_editable_combobox : EditableCombobox
-    ref_ptr = LibUI.new_editable_combobox
-    EditableCombobox.new(ref_ptr)
-  end
-
   def self.radio_buttons_append(radio_buttons, text) : Nil
     LibUI.radio_buttons_append(radio_buttons, text)
   end
