@@ -21,9 +21,48 @@ module UIng
       end
     end
 
+    def text : String?
+      str_ptr = LibUI.multiline_entry_text(@ref_ptr)
+      UIng.string_from_pointer(str_ptr)
+    end
+
+    def text=(text : String) : Nil
+      LibUI.multiline_entry_set_text(@ref_ptr, text)
+    end
+
+    def append(text : String) : Nil
+      LibUI.multiline_entry_append(@ref_ptr, text)
+    end
+
+    def read_only? : Bool
+      LibUI.multiline_entry_read_only(@ref_ptr)
+    end
+
+    def read_only=(readonly : Bool) : Nil
+      LibUI.multiline_entry_set_read_only(@ref_ptr, readonly)
+    end
+
     def on_changed(&block : -> Void)
       @on_changed_box = ::Box.box(block)
-      UIng.multiline_entry_on_changed(@ref_ptr, @on_changed_box.not_nil!, &block)
+      LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(block)).unbox(data)
+        data_as_callback.call
+      end, @on_changed_box.not_nil!)
+    end
+
+    # If a large amount of text is entered in the multiline entry,
+    # it is heavy to get the text in the callback, so a separate method is provided.
+
+    def on_changed_with_text(&block : String -> Void)
+      wrapper = -> {
+        current_text = self.text || ""
+        block.call(current_text)
+      }
+      @on_changed_box = ::Box.box(wrapper)
+      LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_changed_box.not_nil!)
     end
 
     def to_unsafe

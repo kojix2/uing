@@ -395,44 +395,6 @@ module UIng
     RadioButtons.new(ref_ptr)
   end
 
-  def self.multiline_entry_text(multiline_entry) : String?
-    str_ptr = LibUI.multiline_entry_text(multiline_entry)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.multiline_entry_set_text(multiline_entry, text) : Nil
-    LibUI.multiline_entry_set_text(multiline_entry, text)
-  end
-
-  def self.multiline_entry_append(multiline_entry, text) : Nil
-    LibUI.multiline_entry_append(multiline_entry, text)
-  end
-
-  def self.multiline_entry_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.multiline_entry_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.multiline_entry_read_only(multiline_entry) : Bool
-    LibUI.multiline_entry_read_only(multiline_entry)
-  end
-
-  def self.multiline_entry_set_read_only(multiline_entry, readonly) : Nil
-    LibUI.multiline_entry_set_read_only(multiline_entry, readonly)
-  end
-
-  def self.new_multiline_entry : MultilineEntry
-    ref_ptr = LibUI.new_multiline_entry
-    MultilineEntry.new(ref_ptr)
-  end
-
-  def self.new_non_wrapping_multiline_entry : MultilineEntry
-    ref_ptr = LibUI.new_non_wrapping_multiline_entry
-    MultilineEntry.new(ref_ptr)
-  end
-
   def self.menu_item_enable(menu_item) : Nil
     LibUI.menu_item_enable(menu_item)
   end
