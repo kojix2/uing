@@ -482,7 +482,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L4" target="_blank">
         uing/slider.cr
       </a>
     
@@ -548,17 +548,47 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#on_changed%28%26block%3ALibC%3A%3AInt-%3EVoid%29-instance-method" class="signature"><strong>#on_changed</strong>(&block : LibC::Int -> Void)</a>
+        <a href="#has_tool_tip%3D%28has_tool_tip%3ABool%29%3ANil-instance-method" class="signature"><strong>#has_tool_tip=</strong>(has_tool_tip : Bool) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on_released%28%26block%3ALibC%3A%3AInt-%3EVoid%29-instance-method" class="signature"><strong>#on_released</strong>(&block : LibC::Int -> Void)</a>
+        <a href="#has_tool_tip%3F%3ABool-instance-method" class="signature"><strong>#has_tool_tip?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_changed%28%26block%3AInt32-%3EVoid%29-instance-method" class="signature"><strong>#on_changed</strong>(&block : Int32 -> Void)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_released%28%26block%3AInt32-%3EVoid%29-instance-method" class="signature"><strong>#on_released</strong>(&block : Int32 -> Void)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_range%28min%3AInt32%2Cmax%3AInt32%29%3ANil-instance-method" class="signature"><strong>#set_range</strong>(min : Int32, max : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_range%28range%3ARange%28Int32%2CInt32%29%29%3ANil-instance-method" class="signature"><strong>#set_range</strong>(range : Range(Int32, Int32)) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#value%3AInt32-instance-method" class="signature"><strong>#value</strong> : Int32</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#value%3D%28value%3AInt32%29%3ANil-instance-method" class="signature"><strong>#value=</strong>(value : Int32) : Nil</a>
         
       </li>
     
@@ -753,7 +783,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -769,7 +799,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -785,7 +815,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -801,7 +831,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -817,7 +847,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -838,34 +868,98 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="on_changed(&amp;block:LibC::Int-&gt;Void)-instance-method">
+    <div class="entry-detail" id="has_tool_tip=(has_tool_tip:Bool):Nil-instance-method">
       <div class="signature">
         
-        def <strong>on_changed</strong>(&block : LibC::Int -> Void)
+        def <strong>has_tool_tip=</strong>(has_tool_tip : Bool) : Nil
 
-        <a class="method-permalink" href="#on_changed%28%26block%3ALibC%3A%3AInt-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#has_tool_tip%3D%28has_tool_tip%3ABool%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_released(&amp;block:LibC::Int-&gt;Void)-instance-method">
+    <div class="entry-detail" id="has_tool_tip?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>on_released</strong>(&block : LibC::Int -> Void)
+        def <strong>has_tool_tip?</strong> : Bool
 
-        <a class="method-permalink" href="#on_released%28%26block%3ALibC%3A%3AInt-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#has_tool_tip%3F%3ABool-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L31" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_changed(&amp;block:Int32-&gt;Void)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_changed</strong>(&block : Int32 -> Void)
+
+        <a class="method-permalink" href="#on_changed%28%26block%3AInt32-%3EVoid%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L47" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_released(&amp;block:Int32-&gt;Void)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_released</strong>(&block : Int32 -> Void)
+
+        <a class="method-permalink" href="#on_released%28%26block%3AInt32-%3EVoid%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L59" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_range(min:Int32,max:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_range</strong>(min : Int32, max : Int32) : Nil
+
+        <a class="method-permalink" href="#set_range%28min%3AInt32%2Cmax%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L39" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_range(range:Range(Int32,Int32)):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_range</strong>(range : Range(Int32, Int32)) : Nil
+
+        <a class="method-permalink" href="#set_range%28range%3ARange%28Int32%2CInt32%29%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L43" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -881,7 +975,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/025bcad1214fabbdb33b46e18f04b8c296efb171/src/uing/slider.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L71" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="value:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>value</strong> : Int32
+
+        <a class="method-permalink" href="#value%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="value=(value:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>value=</strong>(value : Int32) : Nil
+
+        <a class="method-permalink" href="#value%3D%28value%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/slider.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
