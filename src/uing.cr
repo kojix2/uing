@@ -357,20 +357,6 @@ module UIng
     Entry.new(ref_ptr)
   end
 
-  def self.label_text(label) : String?
-    str_ptr = LibUI.label_text(label)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.label_set_text(label, text) : Nil
-    LibUI.label_set_text(label, text)
-  end
-
-  def self.new_label(text) : Label
-    ref_ptr = LibUI.new_label(text)
-    Label.new(ref_ptr)
-  end
-
   def self.tab_append(tab, name, control) : Nil
     LibUI.tab_append(tab, name, to_control(control))
   end
