@@ -20,9 +20,10 @@ class VideoPlayerApp
   def create_area_handler
     handler = UIng::AreaHandler.new
 
-    # Draw handler - do nothing, mpv will handle rendering
+    # Draw handler - simple drawing for now
     handler.draw do |area_handler, area, area_draw_params|
-      # MPV handles all drawing
+      # For now, just do basic drawing - mpv rendering will be handled separately
+      # TODO: Integrate mpv rendering here once we solve the closure issue
     end
 
     # Mouse event handler - do nothing for now
@@ -68,10 +69,29 @@ class VideoPlayerApp
         puts "MPV Event: #{player.event_name(event.event_id.to_i32)}"
 
         case event.event_id
+        when LibMPV::MPVEventID::LogMessage
+          if event.data
+            log_msg = event.data.as(LibMPV::MPVEventLogMessage*)
+            log_data = log_msg.value
+            if !log_data.prefix.null? && !log_data.text.null?
+              prefix = String.new(log_data.prefix)
+              text = String.new(log_data.text).strip
+              puts "[MPV #{prefix}] #{text}"
+            end
+          end
         when LibMPV::MPVEventID::VideoReconfig
+          puts "Video reconfiguration detected"
           # Request video dimensions
           player.get_property_async("dwidth", LibMPV::MPVFormat::Int64)
           player.get_property_async("dheight", LibMPV::MPVFormat::Int64)
+        when LibMPV::MPVEventID::EndFile
+          if event.data
+            end_file = event.data.as(LibMPV::MPVEventEndFile*)
+            puts "End file event - reason: #{end_file.value.reason}, error: #{end_file.value.error}"
+            if end_file.value.error != 0
+              puts "Playback error: #{player.error_string(end_file.value.error)}"
+            end
+          end
         when LibMPV::MPVEventID::PropertyChange
           # Handle property changes
           if event.data

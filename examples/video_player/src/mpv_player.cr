@@ -1,8 +1,13 @@
 require "./mpv_bindings"
+require "./platform_embedding"
 
 class MPVPlayer
   @mpv : Void*
   @initialized : Bool = false
+
+  # ============================================================================
+  # INITIALIZATION
+  # ============================================================================
 
   def initialize
     # Set locale for proper numeric formatting
@@ -13,53 +18,11 @@ class MPVPlayer
       raise "Failed to create MPV context"
     end
 
+    # Set normal logging level
+    set_property("msg-level", "all=info")
+
     # Configure MPV for embedding
     configure_for_embedding
-  end
-
-  def set_window_handle_from_area(area : UIng::Area)
-    # Get the raw handle from UIng
-    raw_handle = UIng.control_handle(area).address
-
-    # Convert to GTK widget and get proper X11 window ID
-    widget = Pointer(Void).new(raw_handle).as(LibGTK::GtkWidget)
-    LibGTK.gtk_widget_realize(widget)
-    gdk_window = LibGTK.gtk_widget_get_window(widget)
-
-    # Get window type name
-    type_name_ptr = LibGTK.g_type_name_from_instance(gdk_window.as(LibGTK::GTypeInstance))
-    type_name = String.new(type_name_ptr)
-
-    puts "Window type: #{type_name}"
-
-    # Handle X11 windows
-    if type_name == "GdkX11Window"
-      x11_window_id = LibGDK.gdk_x11_window_get_xid(gdk_window)
-      handle = x11_window_id.to_i64
-
-      # Set X11 video output
-      result = LibMPV.mpv_set_property_string(@mpv, "vo", "x11")
-      if result < 0
-        raise "Failed to set video output: #{error_string(result)}"
-      end
-
-      # Set window ID
-      result = LibMPV.mpv_set_property(@mpv, "wid", LibMPV::MPVFormat::Int64, pointerof(handle))
-      if result < 0
-        raise "Failed to set window handle: #{error_string(result)}"
-      end
-
-      puts "Set X11 window ID: #{handle}"
-    else
-      raise "Unsupported window type: #{type_name}"
-    end
-  end
-
-  def set_video_output(vo : String)
-    result = LibMPV.mpv_set_property_string(@mpv, "vo", vo)
-    if result < 0
-      raise "Failed to set video output: #{error_string(result)}"
-    end
   end
 
   def initialize_player
@@ -72,14 +35,66 @@ class MPVPlayer
     @initialized = true
   end
 
+  def finalize
+    LibMPV.mpv_terminate_destroy(@mpv) unless @mpv.null?
+  end
+
+  # ============================================================================
+  # WINDOW EMBEDDING
+  # ============================================================================
+
+  def set_window_handle_from_area(area : UIng::Area)
+    raw_handle = UIng.control_handle(area).address
+    setup_platform_embedding(raw_handle)
+  end
+
+  private def setup_platform_embedding(raw_handle : UInt64)
+    {% if flag?(:darwin) %}
+      setup_macos_embedding(raw_handle)
+    {% elsif flag?(:win32) %}
+      setup_windows_embedding(raw_handle)
+    {% else %}
+      setup_linux_embedding(raw_handle)
+    {% end %}
+  end
+
+  # Platform-specific embedding implementations
+  {% if flag?(:darwin) %}
+  include PlatformEmbedding::MacOS
+
+  private def apply_platform_settings
+    apply_macos_settings
+  end
+  {% elsif flag?(:win32) %}
+  include PlatformEmbedding::Windows
+
+  private def apply_platform_settings
+    apply_windows_settings
+  end
+  {% else %}
+  include PlatformEmbedding::Linux
+
+  private def apply_platform_settings
+    apply_linux_settings
+  end
+  {% end %}
+
+  # ============================================================================
+  # PLAYBACK CONTROL
+  # ============================================================================
+
   def load_file(path : String)
     ensure_initialized
 
-    cmd = [path.to_unsafe, Pointer(UInt8).null]
+    puts "Loading file: #{path}"
+    validate_file_path(path)
+
     result = LibMPV.mpv_command_async(@mpv, 0_u64, ["loadfile".to_unsafe, path.to_unsafe, Pointer(UInt8).null].to_unsafe)
     if result < 0
-      raise "Failed to load file: #{error_string(result)}"
+      raise "Failed to load file '#{path}': #{error_string(result)}"
     end
+    
+    puts "Load command sent successfully"
   end
 
   def play_pause
@@ -90,6 +105,10 @@ class MPVPlayer
       raise "Failed to toggle play/pause: #{error_string(result)}"
     end
   end
+
+  # ============================================================================
+  # PROPERTY MANAGEMENT
+  # ============================================================================
 
   def observe_property(name : String, format : LibMPV::MPVFormat = LibMPV::MPVFormat::None)
     ensure_initialized
@@ -120,6 +139,10 @@ class MPVPlayer
     end
   end
 
+  # ============================================================================
+  # EVENT HANDLING
+  # ============================================================================
+
   def wait_event(timeout : Float64 = 0.0) : LibMPV::MPVEvent?
     ensure_initialized
 
@@ -141,6 +164,10 @@ class MPVPlayer
     end
   end
 
+  # ============================================================================
+  # UTILITY METHODS
+  # ============================================================================
+
   def error_string(error_code : Int32) : String
     str_ptr = LibMPV.mpv_error_string(error_code)
     return "Unknown error" if str_ptr.null?
@@ -153,9 +180,9 @@ class MPVPlayer
     String.new(str_ptr)
   end
 
-  def finalize
-    LibMPV.mpv_terminate_destroy(@mpv) unless @mpv.null?
-  end
+  # ============================================================================
+  # PRIVATE METHODS
+  # ============================================================================
 
   private def ensure_initialized
     unless @initialized
@@ -163,18 +190,61 @@ class MPVPlayer
     end
   end
 
-  private def configure_for_embedding
-    # Set video output driver for Linux embedding
-    LibMPV.mpv_set_property_string(@mpv, "vo", "xv,x11")
+  private def validate_file_path(path : String)
+    # For URLs, skip file existence check
+    return if path.starts_with?("http://") || path.starts_with?("https://")
+    
+    unless File.exists?(path)
+      puts "Warning: File does not exist: #{path}"
+    end
+  end
 
+  private def set_window_id(handle : Int64)
+    result = LibMPV.mpv_set_property(@mpv, "wid", LibMPV::MPVFormat::Int64, pointerof(handle))
+    if result < 0
+      raise "Failed to set window handle: #{error_string(result)}"
+    end
+  end
+
+  private def set_video_output(driver : String)
+    result = LibMPV.mpv_set_property_string(@mpv, "vo", driver)
+    if result < 0
+      raise "Failed to set video output: #{error_string(result)}"
+    end
+  end
+
+  private def set_property(name : String, value : String)
+    LibMPV.mpv_set_property_string(@mpv, name, value)
+  end
+
+  # ============================================================================
+  # CONFIGURATION
+  # ============================================================================
+
+  private def configure_for_embedding
+    configure_video_output
+    configure_embedding_options
+  end
+
+  private def configure_video_output
+    {% if flag?(:darwin) %}
+      set_property("vo", "gpu")
+    {% elsif flag?(:win32) %}
+      set_property("vo", "direct3d,gpu")
+    {% else %}
+      set_property("vo", "xv,x11")
+    {% end %}
+  end
+
+  private def configure_embedding_options
     # Disable window decorations and controls
-    LibMPV.mpv_set_property_string(@mpv, "input-default-bindings", "no")
-    LibMPV.mpv_set_property_string(@mpv, "input-vo-keyboard", "no")
-    LibMPV.mpv_set_property_string(@mpv, "osc", "no")
+    set_property("input-default-bindings", "no")
+    set_property("input-vo-keyboard", "no")
+    set_property("osc", "no")
 
     # Set other embedding-friendly options
-    LibMPV.mpv_set_property_string(@mpv, "border", "no")
-    LibMPV.mpv_set_property_string(@mpv, "keepaspect", "yes")
-    LibMPV.mpv_set_property_string(@mpv, "force-window", "yes")
+    set_property("border", "no")
+    set_property("keepaspect", "yes")
+    set_property("force-window", "no")
   end
 end

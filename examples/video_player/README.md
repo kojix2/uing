@@ -13,49 +13,44 @@ A video player example using libmpv and UIng (Crystal bindings for libui-ng).
 ## Requirements
 
 - Crystal language
-- Ruby with RIDK (Ruby Installer Development Kit) for MinGW
 - libmpv library
 
 ## Setup
 
-### 1. Install libmpv (Windows with RIDK)
+### macOS
 
 ```bash
-# Enable RIDK environment
-ridk enable
-
-# Install libmpv development package
-ridk exec pacman -S mingw-w64-x86_64-mpv
+brew install mpv
+cd examples/video_player
+shards install
+shards build
 ```
 
-### 2. Install dependencies
+**Note**: On macOS, the video player uses mpv's "gpu" output driver for hardware-accelerated rendering with Vulkan/Metal backend.
+
+### Windows (with RIDK)
 
 ```bash
+ridk enable
+ridk exec pacman -S mingw-w64-x86_64-mpv
 cd examples/video_player
 ridk exec shards install
+ridk exec shards build
 ```
 
-### 3. Build the application
-
-```bash
-ridk exec crystal build video_player.cr -o bin/video_player.exe
-```
+**Note**: On Windows, the video player is designed to use mpv's "direct3d" or "gpu" output driver for hardware-accelerated rendering with DirectX backend.
 
 ## Usage
 
-### Play default video (Big Buck Bunny)
 ```bash
-./bin/video_player.exe
-```
+# Play default video (Big Buck Bunny)
+./bin/video_player
 
-### Play a local file
-```bash
-./bin/video_player.exe "path/to/your/video.mp4"
-```
+# Play a local file
+./bin/video_player "path/to/your/video.mp4"
 
-### Play a URL
-```bash
-./bin/video_player.exe "https://example.com/video.mp4"
+# Play a URL
+./bin/video_player "https://example.com/video.mp4"
 ```
 
 ## Controls
@@ -71,34 +66,6 @@ The video player consists of three main components:
 1. **MPV Bindings** (`src/mpv_bindings.cr`): Low-level Crystal bindings for libmpv
 2. **MPV Player** (`src/mpv_player.cr`): High-level wrapper class for mpv functionality
 3. **Video Player** (`video_player.cr`): Main application with GUI
-
-## Troubleshooting
-
-### Build Issues
-
-If you encounter linking errors:
-
-1. Make sure RIDK is properly enabled: `ridk enable`
-2. Verify libmpv is installed: `ridk exec pacman -Qs mpv`
-3. Check library paths: `ridk exec pkg-config --libs mpv`
-
-### Runtime Issues
-
-If the application fails to start:
-
-1. Ensure libmpv DLLs are in your PATH or in the same directory as the executable
-2. Check that the video file/URL is accessible
-3. Verify your system has proper video codecs installed
-
-### Missing DLLs
-
-You may need to copy these DLLs to your `bin/` directory:
-- `libmpv-2.dll`
-- Various FFmpeg DLLs (libavcodec, libavformat, etc.)
-
-## Based on
-
-This implementation is based on the C example from the mpv project, adapted for Crystal using the UIng library.
 
 ## License
 
