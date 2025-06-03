@@ -318,35 +318,6 @@ module UIng
     UIng::Box.new(ref_ptr)
   end
 
-  def self.checkbox_text(checkbox) : String?
-    str_ptr = LibUI.checkbox_text(checkbox)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.checkbox_set_text(checkbox, text) : Nil
-    LibUI.checkbox_set_text(checkbox, text)
-  end
-
-  def self.checkbox_on_toggled(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.checkbox_on_toggled(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.checkbox_checked(checkbox) : Bool
-    LibUI.checkbox_checked(checkbox)
-  end
-
-  def self.checkbox_set_checked(checkbox, checked) : Nil
-    LibUI.checkbox_set_checked(checkbox, checked)
-  end
-
-  def self.new_checkbox(text) : Checkbox
-    ref_ptr = LibUI.new_checkbox(text)
-    Checkbox.new(ref_ptr)
-  end
-
   def self.entry_text(entry) : String?
     str_ptr = LibUI.entry_text(entry)
     string_from_pointer(str_ptr)
