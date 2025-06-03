@@ -24,13 +24,33 @@ module UIng
       end
     end
 
+    def text : String?
+      str_ptr = LibUI.entry_text(@ref_ptr)
+      UIng.string_from_pointer(str_ptr)
+    end
+
+    def text=(text : String) : Nil
+      LibUI.entry_set_text(@ref_ptr, text)
+    end
+
+    def read_only? : Bool
+      LibUI.entry_read_only(@ref_ptr)
+    end
+
+    def read_only=(readonly : Bool) : Nil
+      LibUI.entry_set_read_only(@ref_ptr, readonly)
+    end
+
     def on_changed(&block : String -> Void)
       wrapper = -> {
-        text = UIng.entry_text(@ref_ptr)
-        block.call(text ? text : "")
+        current_text = self.text || ""
+        block.call(current_text)
       }
       @on_changed_box = ::Box.box(wrapper)
-      UIng.entry_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
+      LibUI.entry_on_changed(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_changed_box.not_nil!)
     end
 
     def to_unsafe

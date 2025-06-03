@@ -288,45 +288,6 @@ module UIng
     Window.new(ref_ptr)
   end
 
-  def self.entry_text(entry) : String?
-    str_ptr = LibUI.entry_text(entry)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.entry_set_text(entry, text) : Nil
-    LibUI.entry_set_text(entry, text)
-  end
-
-  def self.entry_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.entry_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.entry_read_only(entry) : Bool
-    LibUI.entry_read_only(entry)
-  end
-
-  def self.entry_set_read_only(entry, readonly) : Nil
-    LibUI.entry_set_read_only(entry, readonly)
-  end
-
-  def self.new_entry : Entry
-    ref_ptr = LibUI.new_entry
-    Entry.new(ref_ptr)
-  end
-
-  def self.new_password_entry : Entry
-    ref_ptr = LibUI.new_password_entry
-    Entry.new(ref_ptr)
-  end
-
-  def self.new_search_entry : Entry
-    ref_ptr LibUI.new_search_entry
-    Entry.new(ref_ptr)
-  end
-
   def self.tab_append(tab, name, control) : Nil
     LibUI.tab_append(tab, name, to_control(control))
   end
