@@ -1,7 +1,5 @@
 module UIng
   class MenuItem
-    include MethodMissing
-
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 
@@ -10,13 +8,32 @@ module UIng
 
     # no new_menu_item function in libui
 
+    def enable : Nil
+      LibUI.menu_item_enable(@ref_ptr)
+    end
+
+    def disable : Nil
+      LibUI.menu_item_disable(@ref_ptr)
+    end
+
+    def checked? : Bool
+      LibUI.menu_item_checked(@ref_ptr)
+    end
+
+    def checked=(checked : Bool) : Nil
+      LibUI.menu_item_set_checked(@ref_ptr, checked)
+    end
+
     def on_clicked(&block : UIng::Window -> Void)
-      # Convert to the internal callback format that matches UIng.cr expectation
+      # Convert to the internal callback format that matches LibUI expectation
       callback2 = ->(w : Pointer(LibUI::Window)) {
         block.call(UIng::Window.new(w))
       }
       @on_clicked_box = ::Box.box(callback2)
-      UIng.menu_item_on_clicked(@ref_ptr, @on_clicked_box.not_nil!, &block)
+      LibUI.menu_item_on_clicked(@ref_ptr, ->(sender, window, data) do
+        data_as_callback = ::Box(typeof(callback2)).unbox(data)
+        data_as_callback.call(window)
+      end, @on_clicked_box.not_nil!)
     end
 
     def to_unsafe

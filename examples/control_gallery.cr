@@ -18,7 +18,7 @@ UIng::Menu.new("File") do
 
   # onShouldQuit callback is called when the user presses the quit menu item.
   UIng.on_should_quit do
-    if should_quit_item.checked
+    if should_quit_item.checked?
       puts "Bye Bye (on_should_quit)"
       MAIN_WINDOW.destroy # You have to destroy the window manually.
       true                # UIng.quit is automatically called in the C function onQuitClicked().

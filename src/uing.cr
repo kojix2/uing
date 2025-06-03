@@ -288,32 +288,6 @@ module UIng
     Window.new(ref_ptr)
   end
 
-  def self.menu_item_enable(menu_item) : Nil
-    LibUI.menu_item_enable(menu_item)
-  end
-
-  def self.menu_item_disable(menu_item) : Nil
-    LibUI.menu_item_disable(menu_item)
-  end
-
-  def self.menu_item_on_clicked(sender, boxed_data : Pointer(Void), &callback : UIng::Window -> Void)
-    callback2 = ->(w : Pointer(LibUI::Window)) {
-      callback.call(UIng::Window.new(w))
-    }
-    LibUI.menu_item_on_clicked(sender, ->(sender, window, data) do
-      data_as_callback = ::Box(typeof(callback2)).unbox(data)
-      data_as_callback.call(window)
-    end, boxed_data)
-  end
-
-  def self.menu_item_checked(menu_item) : Bool
-    LibUI.menu_item_checked(menu_item)
-  end
-
-  def self.menu_item_set_checked(menu_item, checked) : Nil
-    LibUI.menu_item_set_checked(menu_item, checked)
-  end
-
   def self.open_file(window) : String?
     str_ptr = LibUI.open_file(window)
     string_from_pointer(str_ptr)
