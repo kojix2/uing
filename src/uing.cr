@@ -314,40 +314,6 @@ module UIng
     LibUI.menu_item_set_checked(menu_item, checked)
   end
 
-  def self.menu_append_item(menu, name) : MenuItem
-    ref_ptr = LibUI.menu_append_item(menu, name)
-    MenuItem.new(ref_ptr)
-  end
-
-  def self.menu_append_check_item(menu, name) : MenuItem
-    ref_ptr = LibUI.menu_append_check_item(menu, name)
-    MenuItem.new(ref_ptr)
-  end
-
-  def self.menu_append_quit_item(menu) : MenuItem
-    ref_ptr = LibUI.menu_append_quit_item(menu)
-    MenuItem.new(ref_ptr)
-  end
-
-  def self.menu_append_preferences_item(menu) : MenuItem
-    ref_ptr = LibUI.menu_append_preferences_item(menu)
-    MenuItem.new(ref_ptr)
-  end
-
-  def self.menu_append_about_item(menu) : MenuItem
-    ref_ptr = LibUI.menu_append_about_item(menu)
-    MenuItem.new(ref_ptr)
-  end
-
-  def self.menu_append_separator(menu) : Nil
-    LibUI.menu_append_separator(menu)
-  end
-
-  def self.new_menu(name) : Menu
-    ref_ptr = LibUI.new_menu(name)
-    Menu.new(ref_ptr)
-  end
-
   def self.open_file(window) : String?
     str_ptr = LibUI.open_file(window)
     string_from_pointer(str_ptr)
