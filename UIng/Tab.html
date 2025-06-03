@@ -482,7 +482,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L4" target="_blank">
         uing/tab.cr
       </a>
     
@@ -543,17 +543,47 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#append%28name%3AString%2Ccontrol%2Cmargined%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#append</strong>(name : String, control, margined : Bool = <span class="n">false</span>)</a>
+        <a href="#append%28name%3AString%2Ccontrol%2Cmargined%3ABool%3Dfalse%29%3ANil-instance-method" class="signature"><strong>#append</strong>(name : String, control, margined : Bool = <span class="n">false</span>) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#insert_at%28name%3AString%2Cindex%3AInt32%2Ccontrol%2Cmargined%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#insert_at</strong>(name : String, index : Int32, control, margined : Bool = <span class="n">false</span>)</a>
+        <a href="#delete%28index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#delete</strong>(index : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#insert_at%28name%3AString%2Cindex%3AInt32%2Ccontrol%2Cmargined%3ABool%3Dfalse%29%3ANil-instance-method" class="signature"><strong>#insert_at</strong>(name : String, index : Int32, control, margined : Bool = <span class="n">false</span>) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#margined%3F%28index%3AInt32%29%3ABool-instance-method" class="signature"><strong>#margined?</strong>(index : Int32) : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#num_pages%3AInt32-instance-method" class="signature"><strong>#num_pages</strong> : Int32</a>
         
       </li>
     
       <li class="entry-summary">
         <a href="#on_selected%28%26block%3AInt32-%3EVoid%29-instance-method" class="signature"><strong>#on_selected</strong>(&block : Int32 -> Void)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#selected%3AInt32-instance-method" class="signature"><strong>#selected</strong> : Int32</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#selected%3D%28index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#selected=</strong>(index : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_margined%28index%3AInt32%2Cmargined%3ABool%29%3ANil-instance-method" class="signature"><strong>#set_margined</strong>(index : Int32, margined : Bool) : Nil</a>
         
       </li>
     
@@ -753,7 +783,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -769,7 +799,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -785,7 +815,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -801,7 +831,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -822,34 +852,82 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="append(name:String,control,margined:Bool=false)-instance-method">
+    <div class="entry-detail" id="append(name:String,control,margined:Bool=false):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append</strong>(name : String, control, margined : Bool = <span class="n">false</span>)
+        def <strong>append</strong>(name : String, control, margined : Bool = <span class="n">false</span>) : Nil
 
-        <a class="method-permalink" href="#append%28name%3AString%2Ccontrol%2Cmargined%3ABool%3Dfalse%29-instance-method">#</a>
+        <a class="method-permalink" href="#append%28name%3AString%2Ccontrol%2Cmargined%3ABool%3Dfalse%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="insert_at(name:String,index:Int32,control,margined:Bool=false)-instance-method">
+    <div class="entry-detail" id="delete(index:Int32):Nil-instance-method">
       <div class="signature">
         
-        def <strong>insert_at</strong>(name : String, index : Int32, control, margined : Bool = <span class="n">false</span>)
+        def <strong>delete</strong>(index : Int32) : Nil
 
-        <a class="method-permalink" href="#insert_at%28name%3AString%2Cindex%3AInt32%2Ccontrol%2Cmargined%3ABool%3Dfalse%29-instance-method">#</a>
+        <a class="method-permalink" href="#delete%28index%3AInt32%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L28" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="insert_at(name:String,index:Int32,control,margined:Bool=false):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>insert_at</strong>(name : String, index : Int32, control, margined : Bool = <span class="n">false</span>) : Nil
+
+        <a class="method-permalink" href="#insert_at%28name%3AString%2Cindex%3AInt32%2Ccontrol%2Cmargined%3ABool%3Dfalse%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="margined?(index:Int32):Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>margined?</strong>(index : Int32) : Bool
+
+        <a class="method-permalink" href="#margined%3F%28index%3AInt32%29%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="num_pages:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>num_pages</strong> : Int32
+
+        <a class="method-permalink" href="#num_pages%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -865,7 +943,55 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L52" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="selected:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>selected</strong> : Int32
+
+        <a class="method-permalink" href="#selected%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="selected=(index:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>selected=</strong>(index : Int32) : Nil
+
+        <a class="method-permalink" href="#selected%3D%28index%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L48" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_margined(index:Int32,margined:Bool):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_margined</strong>(index : Int32, margined : Bool) : Nil
+
+        <a class="method-permalink" href="#set_margined%28index%3AInt32%2Cmargined%3ABool%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -881,7 +1007,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/822d7952c28870e7ab5c578d83002fa87811e8da/src/uing/tab.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/cc22cc1f92a0c2a407bb81ac9722fe53ac967df2/src/uing/tab.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>
