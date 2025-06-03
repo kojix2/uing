@@ -16,6 +16,8 @@ module UIng
         @ref_ptr = LibUI.new_date_picker
       when :time
         @ref_ptr = LibUI.new_time_picker
+      when :date_time
+        @ref_ptr = LibUI.new_date_time_picker
       else
         raise "Invalid type: #{type}"
       end
