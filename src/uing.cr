@@ -722,19 +722,6 @@ module UIng
     LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.new_image(width, height) : Image
-    ref_ptr = LibUI.new_image(width, height)
-    Image.new(ref_ptr)
-  end
-
-  def self.free_image(image) : Nil
-    LibUI.free_image(image)
-  end
-
-  def self.image_append(image, pixels, piexl_width, pixel_height, byte_stride) : Nil
-    LibUI.image_append(image, pixels, piexl_width, pixel_height, byte_stride)
-  end
-
   def self.free_table_value(table_value) : Nil
     LibUI.free_table_value(table_value)
   end
