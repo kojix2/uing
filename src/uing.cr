@@ -486,19 +486,6 @@ module UIng
     Slider.new(ref_ptr)
   end
 
-  def self.progress_bar_value(progress_bar) : LibC::Int
-    LibUI.progress_bar_value(progress_bar)
-  end
-
-  def self.progress_bar_set_value(progress_bar, n) : Nil
-    LibUI.progress_bar_set_value(progress_bar, n)
-  end
-
-  def self.new_progress_bar : ProgressBar
-    ref_ptr = LibUI.new_progress_bar
-    ProgressBar.new(ref_ptr)
-  end
-
   def self.new_horizontal_separator : Separator
     ref_ptr = LibUI.new_horizontal_separator
     Separator.new(ref_ptr)
