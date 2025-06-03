@@ -21,13 +21,28 @@ module UIng
       end
     end
 
-    def on_selected(&block : LibC::Int -> Void)
+    def append(text : String) : Nil
+      LibUI.radio_buttons_append(@ref_ptr, text)
+    end
+
+    def selected : Int32
+      LibUI.radio_buttons_selected(@ref_ptr)
+    end
+
+    def selected=(index : Int32) : Nil
+      LibUI.radio_buttons_set_selected(@ref_ptr, index)
+    end
+
+    def on_selected(&block : Int32 -> Void)
       wrapper = -> {
         idx = self.selected
         block.call(idx)
       }
       @on_selected_box = ::Box.box(wrapper)
-      UIng.radio_buttons_on_selected(@ref_ptr, @on_selected_box.not_nil!, &wrapper)
+      LibUI.radio_buttons_on_selected(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_selected_box.not_nil!)
     end
 
     def to_unsafe

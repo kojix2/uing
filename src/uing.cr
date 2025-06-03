@@ -371,30 +371,6 @@ module UIng
     Slider.new(ref_ptr)
   end
 
-  def self.radio_buttons_append(radio_buttons, text) : Nil
-    LibUI.radio_buttons_append(radio_buttons, text)
-  end
-
-  def self.radio_buttons_selected(radio_buttons) : LibC::Int
-    LibUI.radio_buttons_selected(radio_buttons)
-  end
-
-  def self.radio_buttons_set_selected(radio_buttons, index) : Nil
-    LibUI.radio_buttons_set_selected(radio_buttons, index)
-  end
-
-  def self.radio_buttons_on_selected(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.radio_buttons_on_selected(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_radio_buttons : RadioButtons
-    ref_ptr = LibUI.new_radio_buttons
-    RadioButtons.new(ref_ptr)
-  end
-
   def self.menu_item_enable(menu_item) : Nil
     LibUI.menu_item_enable(menu_item)
   end
