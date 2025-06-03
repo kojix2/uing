@@ -482,7 +482,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/b9a9d775260ba927d414f42a03fc19a0088b7bcb/src/uing/grid.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L4" target="_blank">
         uing/grid.cr
       </a>
     
@@ -541,6 +541,26 @@
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#append%28control%2Cleft%3AInt32%2Ctop%3AInt32%2Cxspan%3AInt32%2Cyspan%3AInt32%2Chexpand%3ABool%2Chalign%3AUIng%3A%3AAlign%2Cvexpand%3ABool%2Cvalign%3AUIng%3A%3AAlign%29%3ANil-instance-method" class="signature"><strong>#append</strong>(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#insert_at%28control%2Cexisting%2Cat%3AUIng%3A%3AAt%2Cxspan%3AInt32%2Cyspan%3AInt32%2Chexpand%3ABool%2Chalign%3AUIng%3A%3AAlign%2Cvexpand%3ABool%2Cvalign%3AUIng%3A%3AAlign%29%3ANil-instance-method" class="signature"><strong>#insert_at</strong>(control, existing, at : UIng::At, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#padded%3D%28padded%3ABool%29%3ANil-instance-method" class="signature"><strong>#padded=</strong>(padded : Bool) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#padded%3F%3ABool-instance-method" class="signature"><strong>#padded?</strong> : Bool</a>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
@@ -738,7 +758,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/b9a9d775260ba927d414f42a03fc19a0088b7bcb/src/uing/grid.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -754,7 +774,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/b9a9d775260ba927d414f42a03fc19a0088b7bcb/src/uing/grid.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -770,7 +790,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/b9a9d775260ba927d414f42a03fc19a0088b7bcb/src/uing/grid.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -786,7 +806,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/b9a9d775260ba927d414f42a03fc19a0088b7bcb/src/uing/grid.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -807,6 +827,70 @@
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="append(control,left:Int32,top:Int32,xspan:Int32,yspan:Int32,hexpand:Bool,halign:UIng::Align,vexpand:Bool,valign:UIng::Align):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>append</strong>(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : <a href="../UIng/Align.html">UIng::Align</a>, vexpand : Bool, valign : <a href="../UIng/Align.html">UIng::Align</a>) : Nil
+
+        <a class="method-permalink" href="#append%28control%2Cleft%3AInt32%2Ctop%3AInt32%2Cxspan%3AInt32%2Cyspan%3AInt32%2Chexpand%3ABool%2Chalign%3AUIng%3A%3AAlign%2Cvexpand%3ABool%2Cvalign%3AUIng%3A%3AAlign%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L15" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="insert_at(control,existing,at:UIng::At,xspan:Int32,yspan:Int32,hexpand:Bool,halign:UIng::Align,vexpand:Bool,valign:UIng::Align):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>insert_at</strong>(control, existing, at : <a href="../UIng/At.html">UIng::At</a>, xspan : Int32, yspan : Int32, hexpand : Bool, halign : <a href="../UIng/Align.html">UIng::Align</a>, vexpand : Bool, valign : <a href="../UIng/Align.html">UIng::Align</a>) : Nil
+
+        <a class="method-permalink" href="#insert_at%28control%2Cexisting%2Cat%3AUIng%3A%3AAt%2Cxspan%3AInt32%2Cyspan%3AInt32%2Chexpand%3ABool%2Chalign%3AUIng%3A%3AAlign%2Cvexpand%3ABool%2Cvalign%3AUIng%3A%3AAlign%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L19" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="padded=(padded:Bool):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>padded=</strong>(padded : Bool) : Nil
+
+        <a class="method-permalink" href="#padded%3D%28padded%3ABool%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="padded?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>padded?</strong> : Bool
+
+        <a class="method-permalink" href="#padded%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
         
@@ -818,7 +902,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/b9a9d775260ba927d414f42a03fc19a0088b7bcb/src/uing/grid.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/bf7748c288eaa281ef6ec967ab33c9409a5ac4ce/src/uing/grid.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
