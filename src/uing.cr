@@ -332,45 +332,6 @@ module UIng
     Tab.new(ref_ptr)
   end
 
-  def self.slider_value(slider) : LibC::Int
-    LibUI.slider_value(slider)
-  end
-
-  def self.slider_set_value(slider, value) : Nil
-    LibUI.slider_set_value(slider, value)
-  end
-
-  def self.slider_has_tool_tip(slider) : Bool
-    LibUI.slider_has_tool_tip(slider)
-  end
-
-  def self.slider_set_has_tool_tip(slider, has_tool_tip) : Nil
-    LibUI.slider_set_has_tool_tip(slider, has_tool_tip)
-  end
-
-  def self.slider_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.slider_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.slider_on_released(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.slider_on_released(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.slider_set_range(slider, min, max) : Nil
-    LibUI.slider_set_range(slider, min, max)
-  end
-
-  def self.new_slider(min, max) : Slider
-    ref_ptr = LibUI.new_slider(min, max)
-    Slider.new(ref_ptr)
-  end
-
   def self.menu_item_enable(menu_item) : Nil
     LibUI.menu_item_enable(menu_item)
   end

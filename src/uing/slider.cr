@@ -20,22 +20,52 @@ module UIng
       self.value = value
     end
 
-    def on_changed(&block : LibC::Int -> Void)
+    def value : Int32
+      LibUI.slider_value(@ref_ptr)
+    end
+
+    def value=(value : Int32) : Nil
+      LibUI.slider_set_value(@ref_ptr, value)
+    end
+
+    def has_tool_tip? : Bool
+      LibUI.slider_has_tool_tip(@ref_ptr)
+    end
+
+    def has_tool_tip=(has_tool_tip : Bool) : Nil
+      LibUI.slider_set_has_tool_tip(@ref_ptr, has_tool_tip)
+    end
+
+    def set_range(min : Int32, max : Int32) : Nil
+      LibUI.slider_set_range(@ref_ptr, min, max)
+    end
+
+    def set_range(range : Range(Int32, Int32)) : Nil
+      LibUI.slider_set_range(@ref_ptr, range.min, range.max)
+    end
+
+    def on_changed(&block : Int32 -> Void)
       wrapper = -> {
         v = self.value
         block.call(v)
       }
       @on_changed_box = ::Box.box(wrapper)
-      UIng.slider_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
+      LibUI.slider_on_changed(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_changed_box.not_nil!)
     end
 
-    def on_released(&block : LibC::Int -> Void)
+    def on_released(&block : Int32 -> Void)
       wrapper = -> {
         v = self.value
         block.call(v)
       }
       @on_released_box = ::Box.box(wrapper)
-      UIng.slider_on_released(@ref_ptr, @on_released_box.not_nil!, &wrapper)
+      LibUI.slider_on_released(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_released_box.not_nil!)
     end
 
     def to_unsafe
