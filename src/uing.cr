@@ -953,26 +953,6 @@ module UIng
     LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
-    LibUI.grid_append(grid, to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
-  end
-
-  def self.grid_insert_at(grid, control, existing, at, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
-    LibUI.grid_insert_at(grid, to_control(control), to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
-  end
-
-  def self.grid_padded(grid) : Bool
-    LibUI.grid_padded(grid)
-  end
-
-  def self.grid_set_padded(grid, padded) : Nil
-    LibUI.grid_set_padded(grid, padded)
-  end
-
-  def self.new_grid : Grid
-    ref_ptr = LibUI.new_grid
-    Grid.new(ref_ptr)
-  end
 
   def self.new_image(width, height) : Image
     ref_ptr = LibUI.new_image(width, height)
