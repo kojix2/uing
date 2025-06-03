@@ -19,13 +19,24 @@ module UIng
       self.value = value
     end
 
-    def on_changed(&block : LibC::Int -> Void)
+    def value : Int32
+      LibUI.spinbox_value(@ref_ptr)
+    end
+
+    def value=(value : Int32) : Nil
+      LibUI.spinbox_set_value(@ref_ptr, value)
+    end
+
+    def on_changed(&block : Int32 -> Void)
       wrapper = -> {
         v = self.value
         block.call(v)
       }
       @on_changed_box = ::Box.box(wrapper)
-      UIng.spinbox_on_changed(@ref_ptr, @on_changed_box.not_nil!, &wrapper)
+      LibUI.spinbox_on_changed(@ref_ptr, ->(sender, data) do
+        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+        data_as_callback.call
+      end, @on_changed_box.not_nil!)
     end
 
     def to_unsafe

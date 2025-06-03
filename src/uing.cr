@@ -427,26 +427,6 @@ module UIng
     Group.new(ref_ptr)
   end
 
-  def self.spinbox_value(spinbox) : LibC::Int
-    LibUI.spinbox_value(spinbox)
-  end
-
-  def self.spinbox_set_value(spinbox, value) : Nil
-    LibUI.spinbox_set_value(spinbox, value)
-  end
-
-  def self.spinbox_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.spinbox_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_spinbox(min, max) : Spinbox
-    ref_ptr = LibUI.new_spinbox(min, max)
-    Spinbox.new(ref_ptr)
-  end
-
   def self.slider_value(slider) : LibC::Int
     LibUI.slider_value(slider)
   end
@@ -485,7 +465,6 @@ module UIng
     ref_ptr = LibUI.new_slider(min, max)
     Slider.new(ref_ptr)
   end
-
 
   def self.combobox_append(combobox, text) : Nil
     LibUI.combobox_append(combobox, text)
