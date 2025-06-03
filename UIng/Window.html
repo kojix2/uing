@@ -482,7 +482,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L4" target="_blank">
         uing/window.cr
       </a>
     
@@ -543,32 +543,57 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#borderless%3F-instance-method" class="signature"><strong>#borderless?</strong></a>
+        <a href="#borderless%3D%28borderless%3ABool%29%3ANil-instance-method" class="signature"><strong>#borderless=</strong>(borderless : Bool) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#focused%3F-instance-method" class="signature"><strong>#focused?</strong></a>
+        <a href="#borderless%3F%3ABool-instance-method" class="signature"><strong>#borderless?</strong> : Bool</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#fullscreen%3F-instance-method" class="signature"><strong>#fullscreen?</strong></a>
+        <a href="#child%3D%28control%29%3ANil-instance-method" class="signature"><strong>#child=</strong>(control) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#margined%3F-instance-method" class="signature"><strong>#margined?</strong></a>
+        <a href="#content_size%3ATuple%28Int32%2CInt32%29-instance-method" class="signature"><strong>#content_size</strong> : Tuple(Int32, Int32)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on_closing%28%26block%3A-%3EU%29forallU-instance-method" class="signature"><strong>#on_closing</strong>(&block :  -> U) forall U</a>
+        <a href="#focused%3F%3ABool-instance-method" class="signature"><strong>#focused?</strong> : Bool</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on_content_size_changed%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt-%3EVoid%29-instance-method" class="signature"><strong>#on_content_size_changed</strong>(&block : LibC::Int, LibC::Int -> Void)</a>
+        <a href="#fullscreen%3D%28fullscreen%3ABool%29%3ANil-instance-method" class="signature"><strong>#fullscreen=</strong>(fullscreen : Bool) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fullscreen%3F%3ABool-instance-method" class="signature"><strong>#fullscreen?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#margined%3D%28margined%3ABool%29%3ANil-instance-method" class="signature"><strong>#margined=</strong>(margined : Bool) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#margined%3F%3ABool-instance-method" class="signature"><strong>#margined?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_closing%28%26block%3A-%3EBool%29-instance-method" class="signature"><strong>#on_closing</strong>(&block :  -> Bool)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_content_size_changed%28%26block%3AInt32%2CInt32-%3EVoid%29-instance-method" class="signature"><strong>#on_content_size_changed</strong>(&block : Int32, Int32 -> Void)</a>
         
       </li>
     
@@ -578,12 +603,42 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#on_position_changed%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt-%3EVoid%29-instance-method" class="signature"><strong>#on_position_changed</strong>(&block : LibC::Int, LibC::Int -> Void)</a>
+        <a href="#on_position_changed%28%26block%3AInt32%2CInt32-%3EVoid%29-instance-method" class="signature"><strong>#on_position_changed</strong>(&block : Int32, Int32 -> Void)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#resizeable%3F-instance-method" class="signature"><strong>#resizeable?</strong></a>
+        <a href="#position%3ATuple%28Int32%2CInt32%29-instance-method" class="signature"><strong>#position</strong> : Tuple(Int32, Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#resizeable%3D%28resizeable%3ABool%29%3ANil-instance-method" class="signature"><strong>#resizeable=</strong>(resizeable : Bool) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#resizeable%3F%3ABool-instance-method" class="signature"><strong>#resizeable?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_content_size%28width%3AInt32%2Cheight%3AInt32%29%3ANil-instance-method" class="signature"><strong>#set_content_size</strong>(width : Int32, height : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_position%28x%3AInt32%2Cy%3AInt32%29%3ANil-instance-method" class="signature"><strong>#set_position</strong>(x : Int32, y : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#title%3AString%7CNil-instance-method" class="signature"><strong>#title</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#title%3D%28title%3AString%29%3ANil-instance-method" class="signature"><strong>#title=</strong>(title : String) : Nil</a>
         
       </li>
     
@@ -783,7 +838,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -799,7 +854,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -815,7 +870,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -831,7 +886,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -852,98 +907,178 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="borderless?-instance-method">
+    <div class="entry-detail" id="borderless=(borderless:Bool):Nil-instance-method">
       <div class="signature">
         
-        def <strong>borderless?</strong>
+        def <strong>borderless=</strong>(borderless : Bool) : Nil
 
-        <a class="method-permalink" href="#borderless%3F-instance-method">#</a>
+        <a class="method-permalink" href="#borderless%3D%28borderless%3ABool%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="focused?-instance-method">
+    <div class="entry-detail" id="borderless?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>focused?</strong>
+        def <strong>borderless?</strong> : Bool
 
-        <a class="method-permalink" href="#focused%3F-instance-method">#</a>
+        <a class="method-permalink" href="#borderless%3F%3ABool-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="fullscreen?-instance-method">
+    <div class="entry-detail" id="child=(control):Nil-instance-method">
       <div class="signature">
         
-        def <strong>fullscreen?</strong>
+        def <strong>child=</strong>(control) : Nil
 
-        <a class="method-permalink" href="#fullscreen%3F-instance-method">#</a>
+        <a class="method-permalink" href="#child%3D%28control%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="margined?-instance-method">
+    <div class="entry-detail" id="content_size:Tuple(Int32,Int32)-instance-method">
       <div class="signature">
         
-        def <strong>margined?</strong>
+        def <strong>content_size</strong> : Tuple(Int32, Int32)
 
-        <a class="method-permalink" href="#margined%3F-instance-method">#</a>
+        <a class="method-permalink" href="#content_size%3ATuple%28Int32%2CInt32%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L57" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_closing(&amp;block:-&gt;U)forallU-instance-method">
+    <div class="entry-detail" id="focused?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>on_closing</strong>(&block :  -> U) forall U
+        def <strong>focused?</strong> : Bool
 
-        <a class="method-permalink" href="#on_closing%28%26block%3A-%3EU%29forallU-instance-method">#</a>
+        <a class="method-permalink" href="#focused%3F%3ABool-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L33" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_content_size_changed(&amp;block:LibC::Int,LibC::Int-&gt;Void)-instance-method">
+    <div class="entry-detail" id="fullscreen=(fullscreen:Bool):Nil-instance-method">
       <div class="signature">
         
-        def <strong>on_content_size_changed</strong>(&block : LibC::Int, LibC::Int -> Void)
+        def <strong>fullscreen=</strong>(fullscreen : Bool) : Nil
 
-        <a class="method-permalink" href="#on_content_size_changed%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#fullscreen%3D%28fullscreen%3ABool%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L52" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fullscreen?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>fullscreen?</strong> : Bool
+
+        <a class="method-permalink" href="#fullscreen%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L48" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="margined=(margined:Bool):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>margined=</strong>(margined : Bool) : Nil
+
+        <a class="method-permalink" href="#margined%3D%28margined%3ABool%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L76" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="margined?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>margined?</strong> : Bool
+
+        <a class="method-permalink" href="#margined%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L72" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_closing(&amp;block:-&gt;Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_closing</strong>(&block :  -> Bool)
+
+        <a class="method-permalink" href="#on_closing%28%26block%3A-%3EBool%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L106" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_content_size_changed(&amp;block:Int32,Int32-&gt;Void)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_content_size_changed</strong>(&block : Int32, Int32 -> Void)
+
+        <a class="method-permalink" href="#on_content_size_changed%28%26block%3AInt32%2CInt32-%3EVoid%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L97" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -959,39 +1094,135 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_position_changed(&amp;block:LibC::Int,LibC::Int-&gt;Void)-instance-method">
+    <div class="entry-detail" id="on_position_changed(&amp;block:Int32,Int32-&gt;Void)-instance-method">
       <div class="signature">
         
-        def <strong>on_position_changed</strong>(&block : LibC::Int, LibC::Int -> Void)
+        def <strong>on_position_changed</strong>(&block : Int32, Int32 -> Void)
 
-        <a class="method-permalink" href="#on_position_changed%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#on_position_changed%28%26block%3AInt32%2CInt32-%3EVoid%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L21" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="resizeable?-instance-method">
+    <div class="entry-detail" id="position:Tuple(Int32,Int32)-instance-method">
       <div class="signature">
         
-        def <strong>resizeable?</strong>
+        def <strong>position</strong> : Tuple(Int32, Int32)
 
-        <a class="method-permalink" href="#resizeable%3F-instance-method">#</a>
+        <a class="method-permalink" href="#position%3ATuple%28Int32%2CInt32%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L61" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="resizeable=(resizeable:Bool):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>resizeable=</strong>(resizeable : Bool) : Nil
+
+        <a class="method-permalink" href="#resizeable%3D%28resizeable%3ABool%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L84" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="resizeable?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>resizeable?</strong> : Bool
+
+        <a class="method-permalink" href="#resizeable%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L80" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_content_size(width:Int32,height:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_content_size</strong>(width : Int32, height : Int32) : Nil
+
+        <a class="method-permalink" href="#set_content_size%28width%3AInt32%2Cheight%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_position(x:Int32,y:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_position</strong>(x : Int32, y : Int32) : Nil
+
+        <a class="method-permalink" href="#set_position%28x%3AInt32%2Cy%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L35" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="title:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>title</strong> : String | Nil
+
+        <a class="method-permalink" href="#title%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L21" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="title=(title:String):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>title=</strong>(title : String) : Nil
+
+        <a class="method-permalink" href="#title%3D%28title%3AString%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1007,7 +1238,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/window.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/36d0ece8a8dde76ef7d447e74e911eae637cbc2d/src/uing/window.cr#L124" target="_blank">View source</a>]
         
       </div>
     </div>
