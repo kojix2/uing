@@ -332,32 +332,6 @@ module UIng
     Tab.new(ref_ptr)
   end
 
-  def self.group_title(group) : String?
-    str_ptr = LibUI.group_title(group)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.group_set_title(group, title) : Nil
-    LibUI.group_set_title(group, title)
-  end
-
-  def self.group_set_child(group, control) : Nil
-    LibUI.group_set_child(group, to_control(control))
-  end
-
-  def self.group_margined(group) : Bool
-    LibUI.group_margined(group)
-  end
-
-  def self.group_set_margined(group, margined) : Nil
-    LibUI.group_set_margined(group, margined)
-  end
-
-  def self.new_group(title) : Group
-    ref_ptr = LibUI.new_group(title)
-    Group.new(ref_ptr)
-  end
-
   def self.slider_value(slider) : LibC::Int
     LibUI.slider_value(slider)
   end
@@ -952,7 +926,6 @@ module UIng
   def self.free_font_button_font(font_descriptor) : Nil
     LibUI.free_font_button_font(font_descriptor)
   end
-
 
   def self.new_image(width, height) : Image
     ref_ptr = LibUI.new_image(width, height)
