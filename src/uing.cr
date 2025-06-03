@@ -29,7 +29,7 @@ module UIng
 
   # Convert string pointer to Crystal string
   # and free the pointer
-  private def self.string_from_pointer(str_ptr) : String?
+  def self.string_from_pointer(str_ptr) : String?
     return nil if str_ptr.null?
     str = String.new(str_ptr)
     LibUI.free_text(str_ptr)
@@ -288,26 +288,6 @@ module UIng
     Window.new(ref_ptr)
   end
 
-  def self.button_text(button) : String?
-    str_ptr = LibUI.button_text(button)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.button_set_text(button, text) : Nil
-    LibUI.button_set_text(button, text)
-  end
-
-  def self.button_on_clicked(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.button_on_clicked(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_button(text) : Button
-    ref_ptr = LibUI.new_button(text)
-    Button.new(ref_ptr)
-  end
 
   def self.box_append(box, control, stretchy = false) : Nil
     LibUI.box_append(box, to_control(control), stretchy)
