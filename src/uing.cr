@@ -288,50 +288,6 @@ module UIng
     Window.new(ref_ptr)
   end
 
-  def self.tab_append(tab, name, control) : Nil
-    LibUI.tab_append(tab, name, to_control(control))
-  end
-
-  def self.tab_insert_at(tab, name, index, control) : Nil
-    LibUI.tab_insert_at(tab, name, index, to_control(control))
-  end
-
-  def self.tab_delete(tab, index) : Nil
-    LibUI.tab_delete(tab, index)
-  end
-
-  def self.tab_num_pages(tab) : LibC::Int
-    LibUI.tab_num_pages(tab)
-  end
-
-  def self.tab_margined(tab, index) : Bool
-    LibUI.tab_margined(tab, index)
-  end
-
-  def self.tab_set_margined(tab, index, margined) : Nil
-    LibUI.tab_set_margined(tab, index, margined)
-  end
-
-  def self.tab_selected(tab) : LibC::Int
-    LibUI.tab_selected(tab)
-  end
-
-  def self.tab_set_selected(tab, index) : Nil
-    LibUI.tab_set_selected(tab, index)
-  end
-
-  def self.tab_on_selected(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.tab_on_selected(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_tab : Tab
-    ref_ptr = LibUI.new_tab
-    Tab.new(ref_ptr)
-  end
-
   def self.menu_item_enable(menu_item) : Nil
     LibUI.menu_item_enable(menu_item)
   end
