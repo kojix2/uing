@@ -19,7 +19,7 @@ module UIng
   @@special_callback_boxes = [] of Pointer(Void)
 
   # Convert control to Pointer(LibUI::Control)
-  private def self.to_control(control)
+  def self.to_control(control)
     if control.is_a?(Pointer)
       control.as(Pointer(LibUI::Control))
     else
@@ -286,36 +286,6 @@ module UIng
   def self.new_window(title, width, height, has_menu) : Window
     ref_ptr = LibUI.new_window(title, width, height, has_menu)
     Window.new(ref_ptr)
-  end
-
-  def self.box_append(box, control, stretchy = false) : Nil
-    LibUI.box_append(box, to_control(control), stretchy)
-  end
-
-  def self.box_num_children(button) : LibC::Int
-    LibUI.box_num_children(button)
-  end
-
-  def self.box_delete(box, index) : Nil
-    LibUI.box_delete(box, index)
-  end
-
-  def self.box_padded(button) : Bool
-    LibUI.box_padded(button)
-  end
-
-  def self.box_set_padded(box, padded) : Nil
-    LibUI.box_set_padded(box, padded)
-  end
-
-  def self.new_horizontal_box : UIng::Box
-    ref_ptr = LibUI.new_horizontal_box
-    UIng::Box.new(ref_ptr)
-  end
-
-  def self.new_vertical_box : UIng::Box
-    ref_ptr = LibUI.new_vertical_box
-    UIng::Box.new(ref_ptr)
   end
 
   def self.entry_text(entry) : String?

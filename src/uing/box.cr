@@ -24,7 +24,27 @@ module UIng
       else
         raise "Invalid orientation: #{orientation}"
       end
-      set_padded(true) if padded
+      self.padded = true if padded
+    end
+
+    def append(control, stretchy : Bool = false) : Nil
+      LibUI.box_append(@ref_ptr, UIng.to_control(control), stretchy)
+    end
+
+    def num_children : Int32
+      LibUI.box_num_children(@ref_ptr)
+    end
+
+    def delete(index : Int32) : Nil
+      LibUI.box_delete(@ref_ptr, index)
+    end
+
+    def padded? : Bool
+      LibUI.box_padded(@ref_ptr)
+    end
+
+    def padded=(padded : Bool) : Nil
+      LibUI.box_set_padded(@ref_ptr, padded)
     end
 
     def to_unsafe
