@@ -468,7 +468,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/c9498a15afce8e15a99d28ebf19e42955441997a/src/uing/image.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/image.cr#L2" target="_blank">
         uing/image.cr
       </a>
     
@@ -491,6 +491,11 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#new%28width%3AInt32%2Cheight%3AInt32%29-class-method" class="signature"><strong>.new</strong>(width : Int32, height : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3AImage%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::Image))</a>
         
       </li>
@@ -501,23 +506,6 @@
   
 
   
-  <h2>
-    <a id="macro-summary" class="anchor" href="#macro-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#method_missing%28call%29-macro" class="signature"><strong>method_missing</strong>(call)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
   <h2>
@@ -529,6 +517,16 @@
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#append%28pixels%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append</strong>(pixels, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#free%3ANil-instance-method" class="signature"><strong>#free</strong> : Nil</a>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
@@ -579,6 +577,22 @@
     Constructor Detail
   </h2>
   
+    <div class="entry-detail" id="new(width:Int32,height:Int32)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(width : Int32, height : Int32)
+
+        <a class="method-permalink" href="#new%28width%3AInt32%2Cheight%3AInt32%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/image.cr#L6" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::Image))-class-method">
       <div class="signature">
         
@@ -590,7 +604,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/c9498a15afce8e15a99d28ebf19e42955441997a/src/uing/image.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/image.cr#L3" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -600,32 +614,6 @@
   
 
   
-  <h2>
-    <a id="macro-detail" class="anchor" href="#macro-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Detail
-  </h2>
-  
-    <div class="entry-detail" id="method_missing(call)-macro">
-      <div class="signature">
-        
-        macro <strong>method_missing</strong>(call)
-
-        <a class="method-permalink" href="#method_missing%28call%29-macro">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/c9498a15afce8e15a99d28ebf19e42955441997a/src/uing/image.cr#L10" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
   <h2>
@@ -636,6 +624,38 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="append(pixels,pixel_width:Int32,pixel_height:Int32,byte_stride:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>append</strong>(pixels, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil
+
+        <a class="method-permalink" href="#append%28pixels%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/image.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="free:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>free</strong> : Nil
+
+        <a class="method-permalink" href="#free%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/image.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
@@ -648,7 +668,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/c9498a15afce8e15a99d28ebf19e42955441997a/src/uing/image.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/577f453accd10b1f025185a5fec0e1c0865fef45/src/uing/image.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
