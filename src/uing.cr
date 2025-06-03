@@ -953,31 +953,6 @@ module UIng
     LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.form_append(form, label, control, stretchy = false) : Nil
-    LibUI.form_append(form, label, to_control(control), stretchy)
-  end
-
-  def self.form_num_children(form) : LibC::Int
-    LibUI.form_num_children(form)
-  end
-
-  def self.form_delete(form, index) : Nil
-    LibUI.form_delete(form, index)
-  end
-
-  def self.form_padded(form) : Bool
-    LibUI.form_padded(form)
-  end
-
-  def self.form_set_padded(form, padded) : Nil
-    LibUI.form_set_padded(form, padded)
-  end
-
-  def self.new_form : Form
-    ref_ptr = LibUI.new_form
-    Form.new(ref_ptr)
-  end
-
   def self.grid_append(grid, control, left, top, xspan, yspan, hexpand, halign, vexpand, valign) : Nil
     LibUI.grid_append(grid, to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
   end
