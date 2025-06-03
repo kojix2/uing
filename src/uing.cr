@@ -486,15 +486,6 @@ module UIng
     Slider.new(ref_ptr)
   end
 
-  def self.new_horizontal_separator : Separator
-    ref_ptr = LibUI.new_horizontal_separator
-    Separator.new(ref_ptr)
-  end
-
-  def self.new_vertical_separator : Separator
-    ref_ptr = LibUI.new_vertical_separator
-    Separator.new(ref_ptr)
-  end
 
   def self.combobox_append(combobox, text) : Nil
     LibUI.combobox_append(combobox, text)
