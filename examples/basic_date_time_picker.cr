@@ -9,7 +9,7 @@ date_time_picker = UIng::DateTimePicker.new
 time = UIng::TM.new
 
 date_time_picker.on_changed do |tm|
-  p tm.to_time
+  p tm
 end
 vbox.append(date_time_picker, true)
 

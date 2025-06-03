@@ -485,36 +485,6 @@ module UIng
     RadioButtons.new(ref_ptr)
   end
 
-  def self.date_time_picker_time(date_time_picker, time) : Nil
-    LibUI.date_time_picker_time(date_time_picker, time)
-  end
-
-  def self.date_time_picker_set_time(date_time_picker, time) : Nil
-    LibUI.date_time_picker_set_time(date_time_picker, time)
-  end
-
-  def self.date_time_picker_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.date_time_picker_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_date_time_picker : DateTimePicker
-    ref_ptr = LibUI.new_date_time_picker
-    DateTimePicker.new(ref_ptr)
-  end
-
-  def self.new_date_picker : DateTimePicker
-    ref_ptr = LibUI.new_date_picker
-    DateTimePicker.new(ref_ptr)
-  end
-
-  def self.new_time_picker : DateTimePicker
-    ref_ptr = LibUI.new_time_picker
-    DateTimePicker.new(ref_ptr)
-  end
-
   def self.multiline_entry_text(multiline_entry) : String?
     str_ptr = LibUI.multiline_entry_text(multiline_entry)
     string_from_pointer(str_ptr)

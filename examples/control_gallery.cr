@@ -81,13 +81,28 @@ inner.append UIng::Label.new("Label")
 inner.append UIng::Separator.new(:horizontal)
 
 # Date Picker
-inner.append UIng::DateTimePicker.new(:date)
+dp = UIng::DateTimePicker.new(:date) do
+  on_changed do |tm|
+    puts "DateTimePicker changed: #{tm}"
+  end
+end
+inner.append dp
 
 # Time Picker
-inner.append UIng::DateTimePicker.new(:time)
+tp = UIng::DateTimePicker.new(:time) do
+  on_changed do |tm|
+    puts "TimePicker changed: #{tm}"
+  end
+end
+inner.append tp
 
 # Date Time Picker
-inner.append UIng::DateTimePicker.new
+dtp = UIng::DateTimePicker.new do
+  on_changed do |tm|
+    puts "DateTimePicker changed: #{tm}"
+  end
+end
+inner.append dtp
 
 # Font Button
 inner.append UIng::FontButton.new
