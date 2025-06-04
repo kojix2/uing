@@ -443,6 +443,17 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p><span class="flag yellow">FIXME</span>  The API for this class should be modified.</p>
+
 
 
 
@@ -468,7 +479,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/table/table_value.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L3" target="_blank">
         uing/table/table_value.cr
       </a>
     
@@ -495,29 +506,32 @@
         
       </li>
     
-  </ul>
-
-
-  
-
-  
-  <h2>
-    <a id="macro-summary" class="anchor" href="#macro-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Summary
-  </h2>
-  <ul class="list-summary">
+      <li class="entry-summary">
+        <a href="#new_color%28r%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%29%3ATableValue-class-method" class="signature"><strong>.new_color</strong>(r : Float64, g : Float64, b : Float64, a : Float64) : TableValue</a>
+        
+      </li>
     
       <li class="entry-summary">
-        <a href="#method_missing%28call%29-macro" class="signature"><strong>method_missing</strong>(call)</a>
+        <a href="#new_image%28image%3AImage%29%3ATableValue-class-method" class="signature"><strong>.new_image</strong>(image : Image) : TableValue</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new_int%28i%3AInt32%29%3ATableValue-class-method" class="signature"><strong>.new_int</strong>(i : Int32) : TableValue</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new_string%28str%3AString%29%3ATableValue-class-method" class="signature"><strong>.new_string</strong>(str : String) : TableValue</a>
         
       </li>
     
   </ul>
 
+
+  
+
+  
 
   
   <h2>
@@ -529,6 +543,36 @@
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#color%3ATuple%28Float64%2CFloat64%2CFloat64%2CFloat64%29-instance-method" class="signature"><strong>#color</strong> : Tuple(Float64, Float64, Float64, Float64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#free%3ANil-instance-method" class="signature"><strong>#free</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_type%3ATableValueType-instance-method" class="signature"><strong>#get_type</strong> : TableValueType</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#image%3AImage-instance-method" class="signature"><strong>#image</strong> : Image</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#int%3AInt32-instance-method" class="signature"><strong>#int</strong> : Int32</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#string%3AString%7CNil-instance-method" class="signature"><strong>#string</strong> : String | Nil</a>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
@@ -590,42 +634,80 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/table/table_value.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L4" target="_blank">View source</a>]
         
       </div>
     </div>
   
-
-
-  
-
-  
-  <h2>
-    <a id="macro-detail" class="anchor" href="#macro-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Detail
-  </h2>
-  
-    <div class="entry-detail" id="method_missing(call)-macro">
+    <div class="entry-detail" id="new_color(r:Float64,g:Float64,b:Float64,a:Float64):TableValue-class-method">
       <div class="signature">
         
-        macro <strong>method_missing</strong>(call)
+        def self.<strong>new_color</strong>(r : Float64, g : Float64, b : Float64, a : Float64) : <a href="../UIng/TableValue.html">TableValue</a>
 
-        <a class="method-permalink" href="#method_missing%28call%29-macro">#</a>
+        <a class="method-permalink" href="#new_color%28r%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%29%3ATableValue-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/table/table_value.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new_image(image:Image):TableValue-class-method">
+      <div class="signature">
+        
+        def self.<strong>new_image</strong>(image : <a href="../UIng/Image.html">Image</a>) : <a href="../UIng/TableValue.html">TableValue</a>
+
+        <a class="method-permalink" href="#new_image%28image%3AImage%29%3ATableValue-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L16" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new_int(i:Int32):TableValue-class-method">
+      <div class="signature">
+        
+        def self.<strong>new_int</strong>(i : Int32) : <a href="../UIng/TableValue.html">TableValue</a>
+
+        <a class="method-permalink" href="#new_int%28i%3AInt32%29%3ATableValue-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L21" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new_string(str:String):TableValue-class-method">
+      <div class="signature">
+        
+        def self.<strong>new_string</strong>(str : String) : <a href="../UIng/TableValue.html">TableValue</a>
+
+        <a class="method-permalink" href="#new_string%28str%3AString%29%3ATableValue-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
+
+  
+
+  
 
   
   <h2>
@@ -636,6 +718,102 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="color:Tuple(Float64,Float64,Float64,Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>color</strong> : Tuple(Float64, Float64, Float64, Float64)
+
+        <a class="method-permalink" href="#color%3ATuple%28Float64%2CFloat64%2CFloat64%2CFloat64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="free:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>free</strong> : Nil
+
+        <a class="method-permalink" href="#free%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L31" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get_type:TableValueType-instance-method">
+      <div class="signature">
+        
+        def <strong>get_type</strong> : <a href="../UIng/TableValueType.html">TableValueType</a>
+
+        <a class="method-permalink" href="#get_type%3ATableValueType-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L35" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="image:Image-instance-method">
+      <div class="signature">
+        
+        def <strong>image</strong> : <a href="../UIng/Image.html">Image</a>
+
+        <a class="method-permalink" href="#image%3AImage-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="int:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>int</strong> : Int32
+
+        <a class="method-permalink" href="#int%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="string:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>string</strong> : String | Nil
+
+        <a class="method-permalink" href="#string%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L39" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
@@ -648,7 +826,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/table/table_value.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b4e7b2c0e1ab1a5ebb54bde28e8e53ad2ae88e6c/src/uing/table/table_value.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>
