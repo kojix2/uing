@@ -134,36 +134,8 @@ module UIng
     AttributedString.new(ref_ptr)
   end
 
-  def self.load_control_font(font_descriptor) : Nil
-    LibUI.load_control_font(font_descriptor)
-  end
-
-  def self.free_font_descriptor(font_descriptor) : Nil
-    LibUI.free_font_descriptor(font_descriptor)
-  end
-
   def self.draw_new_text_layout(draw_text_layout_params) : DrawTextLayout
     ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
     DrawTextLayout.new(ref_ptr)
-  end
-
-  def self.font_button_font(font_button, font_descriptor) : Nil
-    LibUI.font_button_font(font_button, font_descriptor)
-  end
-
-  def self.font_button_on_changed(sender, boxed_data : Pointer(Void), &callback : -> Void) : Nil
-    LibUI.font_button_on_changed(sender, ->(sender, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-    end, boxed_data)
-  end
-
-  def self.new_font_button : FontButton
-    ref_ptr = LibUI.new_font_button
-    FontButton.new(ref_ptr)
-  end
-
-  def self.free_font_button_font(font_descriptor) : Nil
-    LibUI.free_font_button_font(font_descriptor)
   end
 end
