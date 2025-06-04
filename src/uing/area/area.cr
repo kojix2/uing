@@ -1,6 +1,8 @@
+require "../control"
+
 module UIng
   class Area
-    include MethodMissing
+    include Control; block_constructor
 
     def initialize(@ref_ptr : Pointer(LibUI::Area))
     end
@@ -11,6 +13,36 @@ module UIng
 
     def initialize(area_handler : AreaHandler)
       @ref_ptr = LibUI.new_area(area_handler.to_unsafe)
+    end
+
+    # scrolling area
+
+    def initialize(area_handler : Pointer(LibUI::AreaHandler), width : Int32, height : Int32)
+      @ref_ptr = LibUI.new_scrolling_area(area_handler, width, height)
+    end
+
+    def initialize(area_handler : AreaHandler, width : Int32, height : Int32)
+      @ref_ptr = LibUI.new_scrolling_area(area_handler.to_unsafe, width, height)
+    end
+
+    def set_size(width : Int32, height : Int32) : Nil
+      LibUI.area_set_size(@ref_ptr, width, height)
+    end
+
+    def queue_redraw_all : Nil
+      LibUI.area_queue_redraw_all(@ref_ptr)
+    end
+
+    def scroll_to(x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+      LibUI.area_scroll_to(@ref_ptr, x, y, width, height)
+    end
+
+    def begin_user_window_move : Nil
+      LibUI.area_begin_user_window_move(@ref_ptr)
+    end
+
+    def begin_user_window_resize(edge : WindowResizeEdge) : Nil
+      LibUI.area_begin_user_window_resize(@ref_ptr, edge)
     end
 
     def to_unsafe

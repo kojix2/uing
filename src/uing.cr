@@ -139,36 +139,6 @@ module UIng
     LibUI.msg_box_error(parent, title, description)
   end
 
-  def self.area_set_size(area, width, height) : Nil
-    LibUI.area_set_size(area, width, height)
-  end
-
-  def self.area_queue_redraw_all(area) : Nil
-    LibUI.area_queue_redraw_all(area)
-  end
-
-  def self.area_scroll_to(area, x, y, width, height) : Nil
-    LibUI.area_scroll_to(area, x, y, width, height)
-  end
-
-  def self.area_begin_user_window_move(area) : Nil
-    LibUI.area_begin_user_window_move(area)
-  end
-
-  def self.area_begin_user_window_resize(area, edge) : Nil
-    LibUI.area_begin_user_window_resize(area, edge)
-  end
-
-  def self.new_area(area_handler) : Area
-    ref_ptr = LibUI.new_area(area_handler)
-    Area.new(ref_ptr)
-  end
-
-  def self.new_scrolling_area(area_handler, width, height) : Area
-    ref_ptr = LibUI.new_scrolling_area(area_handler, width, height)
-    Area.new(ref_ptr)
-  end
-
   def self.draw_new_path(fill_mode) : DrawPath
     ref_ptr = LibUI.draw_new_path(fill_mode)
     DrawPath.new(ref_ptr)
