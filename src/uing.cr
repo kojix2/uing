@@ -123,7 +123,4 @@ module UIng
   def self.msg_box_error(parent, title, description) : Nil
     LibUI.msg_box_error(parent, title, description)
   end
-
-
-
 end
