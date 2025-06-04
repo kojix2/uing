@@ -459,7 +459,7 @@
   </h2>
   <ul class="other-types-list">
     
-      <li class="other-type"><a href="../UIng/MethodMissing.html">UIng::MethodMissing</a></li>
+      <li class="other-type"><a href="../UIng/Control.html">UIng::Control</a></li>
     
   </ul>
 
@@ -482,7 +482,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/a7e837d0ee71e10614a1c91ccc30350fa41206d3/src/uing/area/area.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L4" target="_blank">
         uing/area/area.cr
       </a>
     
@@ -503,6 +503,26 @@
     Constructors
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28%2Aargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, &)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, **kwargs, &)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28area_handler%3APointer%28LibUI%3A%3AAreaHandler%29%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method" class="signature"><strong>.new</strong>(area_handler : Pointer(LibUI::AreaHandler), width : Int32, height : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28area_handler%3AAreaHandler%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method" class="signature"><strong>.new</strong>(area_handler : AreaHandler, width : Int32, height : Int32)</a>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3AArea%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::Area))</a>
@@ -538,6 +558,31 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#begin_user_window_move%3ANil-instance-method" class="signature"><strong>#begin_user_window_move</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#begin_user_window_resize%28edge%3AWindowResizeEdge%29%3ANil-instance-method" class="signature"><strong>#begin_user_window_resize</strong>(edge : WindowResizeEdge) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#queue_redraw_all%3ANil-instance-method" class="signature"><strong>#queue_redraw_all</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#scroll_to%28x%3AFloat64%2Cy%3AFloat64%2Cwidth%3AFloat64%2Cheight%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#scroll_to</strong>(x : Float64, y : Float64, width : Float64, height : Float64) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_size%28width%3AInt32%2Cheight%3AInt32%29%3ANil-instance-method" class="signature"><strong>#set_size</strong>(width : Int32, height : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
         
       </li>
@@ -550,21 +595,108 @@
     
       
 
-
-      
-
-
-      
-
-
-      
-
-  <h3>Macros inherited from module <code><a href="../UIng/MethodMissing.html">UIng::MethodMissing</a></code></h3>
+  <h3>Instance methods inherited from module <code><a href="../UIng/Control.html">UIng::Control</a></code></h3>
   
   
-    <a href="../UIng/MethodMissing.html#method_missing%28call%29-macro" class="tooltip">
-      <span>method_missing(call)</span>
-    method_missing</a>
+    <a href="../UIng/Control.html#destroy%3ANil-instance-method" class="tooltip">
+      <span>destroy : Nil</span>
+    destroy</a>, 
+    
+  
+    <a href="../UIng/Control.html#disable%3ANil-instance-method" class="tooltip">
+      <span>disable : Nil</span>
+    disable</a>, 
+    
+  
+    <a href="../UIng/Control.html#enable%3ANil-instance-method" class="tooltip">
+      <span>enable : Nil</span>
+    enable</a>, 
+    
+  
+    <a href="../UIng/Control.html#enabled%3F%3ABool-instance-method" class="tooltip">
+      <span>enabled? : Bool</span>
+    enabled?</a>, 
+    
+  
+    <a href="../UIng/Control.html#enabled_to_user%3F%3ABool-instance-method" class="tooltip">
+      <span>enabled_to_user? : Bool</span>
+    enabled_to_user?</a>, 
+    
+  
+    <a href="../UIng/Control.html#handle-instance-method" class="tooltip">
+      <span>handle</span>
+    handle</a>, 
+    
+  
+    <a href="../UIng/Control.html#hide%3ANil-instance-method" class="tooltip">
+      <span>hide : Nil</span>
+    hide</a>, 
+    
+  
+    <a href="../UIng/Control.html#parent-instance-method" class="tooltip">
+      <span>parent</span>
+    parent</a>, 
+    
+  
+    <a href="../UIng/Control.html#parent%3D%28parent%29%3ANil-instance-method" class="tooltip">
+      <span>parent=(parent) : Nil</span>
+    parent=</a>, 
+    
+  
+    <a href="../UIng/Control.html#set_parent%28parent%29%3ANil-instance-method" class="tooltip">
+      <span>set_parent(parent) : Nil</span>
+    set_parent</a>, 
+    
+  
+    <a href="../UIng/Control.html#show%3ANil-instance-method" class="tooltip">
+      <span>show : Nil</span>
+    show</a>, 
+    
+  
+    <a href="../UIng/Control.html#toplevel%3F%3ABool-instance-method" class="tooltip">
+      <span>toplevel? : Bool</span>
+    toplevel?</a>, 
+    
+  
+    <a href="../UIng/Control.html#verify_set_parent%28parent%29%3ANil-instance-method" class="tooltip">
+      <span>verify_set_parent(parent) : Nil</span>
+    verify_set_parent</a>, 
+    
+  
+    <a href="../UIng/Control.html#visible%3F%3ABool-instance-method" class="tooltip">
+      <span>visible? : Bool</span>
+    visible?</a>
+    
+  
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+  <h3>Macros inherited from module <code><a href="../UIng/BlockConstructor.html">UIng::BlockConstructor</a></code></h3>
+  
+  
+    <a href="../UIng/BlockConstructor.html#block_constructor-macro" class="tooltip">
+      <span>block_constructor</span>
+    block_constructor</a>
     
   
 
@@ -608,6 +740,70 @@
     Constructor Detail
   </h2>
   
+    <div class="entry-detail" id="new(*args,&amp;)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(*args, &)
+
+        <a class="method-permalink" href="#new%28%2Aargs%2C%26%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(*args,**kwargs,&amp;)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(*args, **kwargs, &)
+
+        <a class="method-permalink" href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(area_handler:Pointer(LibUI::AreaHandler),width:Int32,height:Int32)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(area_handler : Pointer(LibUI::AreaHandler), width : Int32, height : Int32)
+
+        <a class="method-permalink" href="#new%28area_handler%3APointer%28LibUI%3A%3AAreaHandler%29%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L20" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(area_handler:AreaHandler,width:Int32,height:Int32)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(area_handler : <a href="../UIng/AreaHandler.html">AreaHandler</a>, width : Int32, height : Int32)
+
+        <a class="method-permalink" href="#new%28area_handler%3AAreaHandler%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L24" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::Area))-class-method">
       <div class="signature">
         
@@ -619,7 +815,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/a7e837d0ee71e10614a1c91ccc30350fa41206d3/src/uing/area/area.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -635,7 +831,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/a7e837d0ee71e10614a1c91ccc30350fa41206d3/src/uing/area/area.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -651,7 +847,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/a7e837d0ee71e10614a1c91ccc30350fa41206d3/src/uing/area/area.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -672,6 +868,86 @@
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="begin_user_window_move:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>begin_user_window_move</strong> : Nil
+
+        <a class="method-permalink" href="#begin_user_window_move%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L40" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="begin_user_window_resize(edge:WindowResizeEdge):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>begin_user_window_resize</strong>(edge : <a href="../UIng/WindowResizeEdge.html">WindowResizeEdge</a>) : Nil
+
+        <a class="method-permalink" href="#begin_user_window_resize%28edge%3AWindowResizeEdge%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="queue_redraw_all:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>queue_redraw_all</strong> : Nil
+
+        <a class="method-permalink" href="#queue_redraw_all%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L32" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="scroll_to(x:Float64,y:Float64,width:Float64,height:Float64):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>scroll_to</strong>(x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+
+        <a class="method-permalink" href="#scroll_to%28x%3AFloat64%2Cy%3AFloat64%2Cwidth%3AFloat64%2Cheight%3AFloat64%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_size(width:Int32,height:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_size</strong>(width : Int32, height : Int32) : Nil
+
+        <a class="method-permalink" href="#set_size%28width%3AInt32%2Cheight%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L28" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
         
@@ -683,7 +959,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/a7e837d0ee71e10614a1c91ccc30350fa41206d3/src/uing/area/area.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/759dab0402f8645aef7e4128b28ae99f9ece5614/src/uing/area/area.cr#L48" target="_blank">View source</a>]
         
       </div>
     </div>
