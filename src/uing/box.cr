@@ -4,10 +4,9 @@ module UIng
   # Note: The name Box is already taken by Crystal's built-in class Box.
 
   # Why not use HorizontalBox and VerticalBox?
-  # Because the method_missing macro generates methods based on the class name.
-  # If we use HorizontalBox and VerticalBox, methods like `horizontal_box_xxx`
-  # and `vertical_box_xxx` will be generated.
-  # However, we want methods like `box_xxx` to be generated.
+  # For consistency with the libui C API naming convention,
+  # we use a single Box class with orientation parameter.
+  # This matches the libui functions like `uiBoxAppend`, `uiBoxSetPadded`, etc.
 
   class Box
     include Control; block_constructor
