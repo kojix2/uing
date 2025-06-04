@@ -468,7 +468,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/42a342db9711fd4081f88d45de0f7f26f2ffd1c4/src/uing/area/draw_context.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L2" target="_blank">
         uing/area/draw_context.cr
       </a>
     
@@ -501,23 +501,6 @@
   
 
   
-  <h2>
-    <a id="macro-summary" class="anchor" href="#macro-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#method_missing%28call%29-macro" class="signature"><strong>method_missing</strong>(call)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
   <h2>
@@ -531,7 +514,37 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#clip%28draw_path%3ADrawPath%29%3ANil-instance-method" class="signature"><strong>#clip</strong>(draw_path : DrawPath) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fill%28draw_path%3ADrawPath%2Cdraw_brush%3ADrawBrush%29%3ANil-instance-method" class="signature"><strong>#fill</strong>(draw_path : DrawPath, draw_brush : DrawBrush) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#restore%3ANil-instance-method" class="signature"><strong>#restore</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#save%3ANil-instance-method" class="signature"><strong>#save</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#stroke%28draw_path%3ADrawPath%2Cdraw_brush%3ADrawBrush%2Cdraw_stroke_params%3ADrawStrokeParams%29%3ANil-instance-method" class="signature"><strong>#stroke</strong>(draw_path : DrawPath, draw_brush : DrawBrush, draw_stroke_params : DrawStrokeParams) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#transform%28draw_matrix%3ADrawMatrix%29%3ANil-instance-method" class="signature"><strong>#transform</strong>(draw_matrix : DrawMatrix) : Nil</a>
         
       </li>
     
@@ -590,7 +603,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/42a342db9711fd4081f88d45de0f7f26f2ffd1c4/src/uing/area/draw_context.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L3" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -600,32 +613,6 @@
   
 
   
-  <h2>
-    <a id="macro-detail" class="anchor" href="#macro-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Detail
-  </h2>
-  
-    <div class="entry-detail" id="method_missing(call)-macro">
-      <div class="signature">
-        
-        macro <strong>method_missing</strong>(call)
-
-        <a class="method-permalink" href="#method_missing%28call%29-macro">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/42a342db9711fd4081f88d45de0f7f26f2ffd1c4/src/uing/area/draw_context.cr#L10" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
   <h2>
@@ -636,6 +623,86 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="clip(draw_path:DrawPath):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>clip</strong>(draw_path : <a href="../UIng/DrawPath.html">DrawPath</a>) : Nil
+
+        <a class="method-permalink" href="#clip%28draw_path%3ADrawPath%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fill(draw_path:DrawPath,draw_brush:DrawBrush):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>fill</strong>(draw_path : <a href="../UIng/DrawPath.html">DrawPath</a>, draw_brush : <a href="../UIng/DrawBrush.html">DrawBrush</a>) : Nil
+
+        <a class="method-permalink" href="#fill%28draw_path%3ADrawPath%2Cdraw_brush%3ADrawBrush%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="restore:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>restore</strong> : Nil
+
+        <a class="method-permalink" href="#restore%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="save:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>save</strong> : Nil
+
+        <a class="method-permalink" href="#save%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="stroke(draw_path:DrawPath,draw_brush:DrawBrush,draw_stroke_params:DrawStrokeParams):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>stroke</strong>(draw_path : <a href="../UIng/DrawPath.html">DrawPath</a>, draw_brush : <a href="../UIng/DrawBrush.html">DrawBrush</a>, draw_stroke_params : <a href="../UIng/DrawStrokeParams.html">DrawStrokeParams</a>) : Nil
+
+        <a class="method-permalink" href="#stroke%28draw_path%3ADrawPath%2Cdraw_brush%3ADrawBrush%2Cdraw_stroke_params%3ADrawStrokeParams%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
@@ -648,7 +715,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/42a342db9711fd4081f88d45de0f7f26f2ffd1c4/src/uing/area/draw_context.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="transform(draw_matrix:DrawMatrix):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>transform</strong>(draw_matrix : <a href="../UIng/DrawMatrix.html">DrawMatrix</a>) : Nil
+
+        <a class="method-permalink" href="#transform%28draw_matrix%3ADrawMatrix%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6843a6e3e921200dd89f03c608ebae2f71350b52/src/uing/area/draw_context.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
