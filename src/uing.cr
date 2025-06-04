@@ -13,10 +13,13 @@ module UIng
   # See https://github.com/libui-ng/libui-ng/issues/208
   @@init_options = Pointer(LibUI::InitOptions).malloc
 
-  # Global storage for special API callback boxes to prevent GC collection
-  # This is a workaround for low-level APIs that don't have instance-level management
-  # WARNING: This may cause memory leaks if callbacks are not properly cleaned up
-  @@special_callback_boxes = [] of Pointer(Void)
+  # Global storage for timer and queue_main callback boxes to prevent GC collection
+  # queue_main callbacks are automatically removed after execution
+  # timer callbacks accumulate due to LibUI specification limitations
+  @@timer_and_queue_callback_boxes = [] of Pointer(Void)
+  
+  # Storage for on_should_quit callback (libui-ng supports only one callback)
+  @@should_quit_callback_box : Pointer(Void)?
 
   # Convert control to Pointer(LibUI::Control)
   def self.to_control(control)
@@ -57,8 +60,9 @@ module UIng
 
   def self.uninit : Nil
     LibUI.uninit
-    # Clear global callback array on uninit to prevent memory leaks
-    @@special_callback_boxes.clear
+    # Clear global callback arrays on uninit to prevent memory leaks
+    @@timer_and_queue_callback_boxes.clear
+    @@should_quit_callback_box = nil
   end
 
   # should not be used.
@@ -87,12 +91,12 @@ module UIng
   def self.queue_main(&callback : -> Void) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
-    @@special_callback_boxes << boxed_data
+    @@timer_and_queue_callback_boxes << boxed_data
     LibUI.queue_main(->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
       # Remove from global array after execution to prevent memory leak
-      @@special_callback_boxes.delete(data)
+      @@timer_and_queue_callback_boxes.delete(data)
     end, boxed_data)
   end
 
@@ -101,7 +105,7 @@ module UIng
     # Store in global array to prevent GC collection during callback execution
     # NOTE: Timer callback removal behavior is not standardized in LibUI
     # See: https://github.com/andlabs/libui/pull/277
-    @@special_callback_boxes << boxed_data
+    @@timer_and_queue_callback_boxes << boxed_data
     LibUI.timer(sender, ->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
@@ -110,8 +114,8 @@ module UIng
 
   def self.on_should_quit(&callback : -> Bool) : Nil
     boxed_data = ::Box.box(callback)
-    # Store in global array to prevent GC collection during callback execution
-    @@special_callback_boxes << boxed_data
+    # Store in dedicated variable (libui-ng supports only one callback, overwrites previous)
+    @@should_quit_callback_box = boxed_data
     LibUI.on_should_quit(->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
