@@ -431,59 +431,6 @@ module UIng
     LibUI.free_font_button_font(font_descriptor)
   end
 
-  def self.free_table_value(table_value) : Nil
-    LibUI.free_table_value(table_value)
-  end
-
-  def self.table_value_get_type(table_value) : TableValueType
-    LibUI.table_value_get_type(table_value)
-  end
-
-  def self.new_table_value_string(str) : TableValue
-    ref_ptr = LibUI.new_table_value_string(str)
-    TableValue.new(ref_ptr)
-  end
-
-  def self.table_value_string(table_value) : String?
-    str_ptr = LibUI.table_value_string(table_value)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.new_table_value_image(image) : TableValue
-    ref_ptr = LibUI.new_table_value_image(image)
-    TableValue.new(ref_ptr)
-  end
-
-  def self.table_value_image(table_value) : Image
-    ref_ptr = LibUI.table_value_image(table_value)
-    Image.new(ref_ptr)
-  end
-
-  def self.new_table_value_int(i) : TableValue
-    ref_ptr = LibUI.new_table_value_int(i)
-    TableValue.new(ref_ptr)
-  end
-
-  def self.table_value_int(table_value) : LibC::Int
-    LibUI.table_value_int(table_value)
-  end
-
-  def self.new_table_value_color(r, g, b, a) : TableValue
-    ref_ptr = LibUI.new_table_value_color(r, g, b, a)
-    TableValue.new(ref_ptr)
-  end
-
-  def self.table_value_color(
-    table_value,
-    r = Pointer(LibC::Double).malloc,
-    g = Pointer(LibC::Double).malloc,
-    b = Pointer(LibC::Double).malloc,
-    a = Pointer(LibC::Double).malloc,
-  ) : {LibC::Double, LibC::Double, LibC::Double, LibC::Double}
-    LibUI.table_value_color(table_value, r, g, b, a)
-    {r.value, g.value, b.value, a.value}
-  end
-
   def self.new_table_model(model_handler) : TableModel
     ref_ptr = LibUI.new_table_model(model_handler)
     TableModel.new(ref_ptr)
@@ -503,34 +450,6 @@ module UIng
 
   def self.table_model_row_deleted(table_model, old_index) : Nil
     LibUI.table_model_row_deleted(table_model, old_index)
-  end
-
-  def self.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params = nil) : Nil
-    LibUI.table_append_text_column(table_model, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
-  end
-
-  def self.table_append_image_column(table, name, image_model_colum) : Nil
-    LibUI.table_append_image_column(table, name, image_model_colum)
-  end
-
-  def self.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params = nil) : Nil
-    LibUI.table_append_image_text_column(table, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
-  end
-
-  def self.table_append_checkbox_column(table, name, checkbox_model_column, checkbox_editable_model_column) : Nil
-    LibUI.table_append_checkbox_column(table, name, checkbox_model_column, checkbox_editable_model_column)
-  end
-
-  def self.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params = nil) : Nil
-    LibUI.table_append_checkbox_text_column(table, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
-  end
-
-  def self.table_append_progress_bar_column(table, name, progress_model_column) : Nil
-    LibUI.table_append_progress_bar_column(table, name, progress_model_column)
-  end
-
-  def self.table_append_button_column(table, name, button_model_column, button_clickable_model_column) : Nil
-    LibUI.table_append_button_column(table, name, button_model_column, button_clickable_model_column)
   end
 
   def self.table_header_visible(table) : Bool
