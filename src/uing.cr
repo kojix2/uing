@@ -169,104 +169,6 @@ module UIng
     LibUI.draw_path_end(draw_path)
   end
 
-  def self.free_attribute(attribute) : Nil
-    LibUI.free_attribute(attribute)
-  end
-
-  def self.attribute_get_type(attribute) : AttributeType
-    LibUI.attribute_get_type(attribute)
-  end
-
-  def self.new_family_attribute(family) : Attribute
-    ref_ptr = LibUI.new_family_attribute(family)
-    Attribute.new(ref_ptr)
-  end
-
-  def self.attribute_family(attribute) : String?
-    str_ptr = LibUI.attribute_family(attribute)
-    # The returned string is owned by the attribute
-    # and should not be freed (probably)
-    str_ptr.null? ? nil : String.new(str_ptr)
-  end
-
-  def self.new_size_attribute(size) : Attribute
-    str_ptr = LibUI.new_size_attribute(size)
-    Attribute.new(ref_ptr)
-  end
-
-  def self.attribute_size(attribute) : LibC::Double
-    LibUI.attribute_size(attribute)
-  end
-
-  def self.new_weight_attribute(weight) : Attribute
-    ref_ptr = LibUI.new_weight_attribute(weight)
-    Attribute.new(ref_ptr)
-  end
-
-  def self.attribute_weight(attribute) : TextWeight
-    LibUI.attribute_weight(attribute)
-  end
-
-  def self.new_italic_attribute(test_italic) : Attribute
-    LibUI.new_italic_attribute(test_italic)
-  end
-
-  def self.attribute_italic(attribute) : TextItalic
-    LibUI.attribute_italic(attribute)
-  end
-
-  def self.new_stretch_attribute(text_search) : Attribute
-    LibUI.new_stretch_attribute(text_search)
-  end
-
-  def self.attribute_stretch(attribute) : TextStretch
-    LibUI.attribute_stretch(attribute)
-  end
-
-  def self.new_color_attribute(r, g, b, a) : Attribute
-    ref_ptr = LibUI.new_color_attribute(r, g, b, a)
-    Attribute.new(ref_ptr)
-  end
-
-  def self.attribute_color(
-    attribute,
-    r = Pointer(LibC::Double).malloc,
-    g = Pointer(LibC::Double).malloc,
-    b = Pointer(LibC::Double).malloc,
-    a = Pointer(LibC::Double).malloc,
-  ) : {LibC::Double, LibC::Double, LibC::Double, LibC::Double}
-    LibUI.attribute_color(attribute, r, g, b, a)
-    {r.value, g.value, b.value, a.value}
-  end
-
-  def self.new_background_attribute(r, g, b, a) : Attribute
-    LibUI.new_background_attribute(r, g, b, a)
-  end
-
-  def self.new_underline_attribute(underline) : Attribute
-    LibUI.new_underline_attribute(underline)
-  end
-
-  def self.attribute_underline(attribute) : Underline
-    LibUI.attribute_underline(attribute)
-  end
-
-  def self.new_underline_color_attribute(underline_color, r, g, b, a) : Attribute
-    LibUI.new_underline_color_attribute(underline_color, r, g, b, a)
-  end
-
-  def self.attribute_underline_color(
-    attribute,
-    underline_color = Pointer(LibUI::UnderlineColor).malloc,
-    r = Pointer(LibC::Double).malloc,
-    g = Pointer(LibC::Double).malloc,
-    b = Pointer(LibC::Double).malloc,
-    a = Pointer(LibC::Double).malloc,
-  ) : {LibUI::UnderlineColor, LibC::Double, LibC::Double, LibC::Double, LibC::Double}
-    LibUI.attribute_underline_color(attribute, underline_color, r, g, b, a)
-    {underline_color.value, r.value, g.value, b.value, a.value}
-  end
-
   def self.new_open_type_features : OpenTypeFeatures
     ref_ptr = LibUI.new_open_type_features
     OpenTypeFeatures.new(ref_ptr)
@@ -310,16 +212,6 @@ module UIng
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call(otf)
     end, boxed_data)
-  end
-
-  def self.new_features_attribute(open_type_features) : Attribute
-    ref_ptr = LibUI.new_features_attribute(open_type_features)
-    Attribute.new(ref_ptr)
-  end
-
-  def self.attribute_features(attribute) : OpenTypeFeatures
-    ref_ptr = LibUI.attribute_features(attribute)
-    OpenTypeFeatures.new(ref_ptr)
   end
 
   def self.new_attributed_string(text) : AttributedString

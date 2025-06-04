@@ -36,8 +36,8 @@ str5 = \
 
 ATTR_STR = UIng::AttributedString.new("")
 
-RED   = UIng.new_color_attribute(0.0, 0.5, 0.0, 0.7)
-GREEN = UIng.new_color_attribute(0.5, 0.0, 0.25, 0.7)
+RED   = UIng::Attribute.new_color(0.0, 0.5, 0.0, 0.7)
+GREEN = UIng::Attribute.new_color(0.5, 0.0, 0.25, 0.7)
 
 def append_to_attr_str(attr_str, text, color)
   start = attr_str.len
@@ -88,7 +88,7 @@ main_window.child = box
 main_window.on_closing do
   UIng.free_attributed_string(ATTR_STR)
   UIng.quit
-  1
+  true
 end
 main_window.show
 
