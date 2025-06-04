@@ -99,6 +99,8 @@ For more examples, see [examples](examples).
   </tbody>
 </table>
 
+We are currently in the process of replacing the MethodMissing mechanism. The middle level API is being phased out.
+
 ## Memory Safety
 
 UIng has been enhanced with comprehensive memory safety improvements:
