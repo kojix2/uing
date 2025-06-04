@@ -55,8 +55,8 @@ module UIng
       @ref_ptr
     end
 
-    def finalize
-      free
-    end
+    # def finalize
+    #   free
+    # end
   end
 end
