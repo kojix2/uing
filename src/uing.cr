@@ -13,11 +13,13 @@ module UIng
   # See https://github.com/libui-ng/libui-ng/issues/208
   @@init_options = Pointer(LibUI::InitOptions).malloc
 
-  # Global storage for timer and queue_main callback boxes to prevent GC collection
-  # queue_main callbacks are automatically removed after execution
+  # Global storage for timer callback boxes to prevent GC collection
   # timer callbacks accumulate due to LibUI specification limitations
-  @@timer_and_queue_callback_boxes = [] of Pointer(Void)
-  
+  @@timer_callback_boxes = [] of Pointer(Void)
+
+  # Temporary storage for queue_main callback boxes (automatically cleaned up)
+  @@queue_callback_boxes = [] of Pointer(Void)
+
   # Storage for on_should_quit callback (libui-ng supports only one callback)
   @@should_quit_callback_box : Pointer(Void)?
 
@@ -61,7 +63,8 @@ module UIng
   def self.uninit : Nil
     LibUI.uninit
     # Clear global callback arrays on uninit to prevent memory leaks
-    @@timer_and_queue_callback_boxes.clear
+    @@timer_callback_boxes.clear
+    @@queue_callback_boxes.clear
     @@should_quit_callback_box = nil
   end
 
@@ -91,12 +94,12 @@ module UIng
   def self.queue_main(&callback : -> Void) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
-    @@timer_and_queue_callback_boxes << boxed_data
+    @@queue_callback_boxes << boxed_data
     LibUI.queue_main(->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
       # Remove from global array after execution to prevent memory leak
-      @@timer_and_queue_callback_boxes.delete(data)
+      @@queue_callback_boxes.delete(data)
     end, boxed_data)
   end
 
@@ -105,7 +108,7 @@ module UIng
     # Store in global array to prevent GC collection during callback execution
     # NOTE: Timer callback removal behavior is not standardized in LibUI
     # See: https://github.com/andlabs/libui/pull/277
-    @@timer_and_queue_callback_boxes << boxed_data
+    @@timer_callback_boxes << boxed_data
     LibUI.timer(sender, ->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
