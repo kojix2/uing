@@ -192,56 +192,6 @@ module UIng
     LibUI.draw_fill(draw_context, draw_path, draw_brush)
   end
 
-  def self.draw_matrix_set_identity(draw_matrix) : Nil
-    LibUI.draw_matrix_set_identity(draw_matrix)
-  end
-
-  def self.draw_matrix_translate(draw_matrix, x, y) : Nil
-    LibUI.draw_matrix_translate(draw_matrix, x, y)
-  end
-
-  def self.draw_matrix_scale(draw_matrix, x_center, y_center, x, y) : Nil
-    LibUI.draw_matrix_scale(draw_matrix, x_center, y_center, x, y)
-  end
-
-  def self.draw_matrix_rotate(draw_matrix, x, y, amount) : Nil
-    LibUI.draw_matrix_rotate(draw_matrix, x, y, amount)
-  end
-
-  def self.draw_matrix_skew(draw_matrix, x, y, x_amount, y_amount) : Nil
-    LibUI.draw_matrix_skew(draw_matrix, x, y, x_amount, y_amount)
-  end
-
-  def self.draw_matrix_multiply(dest, src) : Nil
-    LibUI.draw_matrix_multiply(dest, src)
-  end
-
-  def self.draw_matrix_invertible(draw_matrix) : Bool
-    LibUI.draw_matrix_invertible(draw_matrix)
-  end
-
-  def self.draw_matrix_invert(draw_matrix) : Bool
-    LibUI.draw_matrix_invert(draw_matrix)
-  end
-
-  def self.draw_matrix_transform_point(
-    draw_matrix,
-    x = Pointer(LibC::Double).malloc,
-    y = Pointer(LibC::Double).malloc,
-  ) : {LibC::Double, LibC::Double}
-    LibUI.draw_matrix_transform_point(draw_matrix, x, y)
-    {x.value, y.value}
-  end
-
-  def self.draw_matrix_transform_size(
-    draw_matrix,
-    x = Pointer(LibC::Double).malloc,
-    y = Pointer(LibC::Double).malloc,
-  ) : {LibC::Double, LibC::Double}
-    LibUI.draw_matrix_transform_size(draw_matrix, x, y)
-    {x.value, y.value}
-  end
-
   def self.draw_transform(draw_context, draw_matrix) : Nil
     LibUI.draw_transform(draw_context, draw_matrix)
   end
