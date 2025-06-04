@@ -56,7 +56,7 @@ module UIng
         # Note: Cannot safely delete box here as LibUI may call multiple times
         0 # uiForEachContinue
       end, @for_each_attribute_box.not_nil!)
-      
+
       # Clear the box reference after enumeration completes
       @for_each_attribute_box = nil
     end
