@@ -134,60 +134,6 @@ module UIng
     AttributedString.new(ref_ptr)
   end
 
-  def self.free_attributed_string(attributed_string) : Nil
-    LibUI.free_attributed_string(attributed_string)
-    attributed_string.released = true
-  end
-
-  def self.attributed_string_string(attributed_string) : String?
-    str_ptr = LibUI.attributed_string_string(attributed_string)
-    # The returned string is owned by the attributed string?
-    str_ptr.null? ? nil : String.new(str_ptr)
-  end
-
-  def self.attributed_string_len(attributed_string) : LibC::SizeT
-    LibUI.attributed_string_len(attributed_string)
-  end
-
-  def self.attributed_string_append_unattributed(attributed_string, text) : Nil
-    LibUI.attributed_string_append_unattributed(attributed_string, text)
-  end
-
-  def self.attributed_string_insert_at_unattributed(attributed_string, text, at) : Nil
-    LibUI.attributed_string_insert_at_unattributed(attributed_string, text, at)
-  end
-
-  def self.attributed_string_delete(attributed_string, start, end_) : Nil
-    LibUI.attributed_string_delete(attributed_string, start, end_)
-  end
-
-  def self.attributed_string_set_attribute(attributed_string, attribute, start, end_) : Nil
-    LibUI.attributed_string_set_attribute(attributed_string, attribute, start, end_)
-  end
-
-  def self.attributed_string_for_each_attribute(sender, &callback : (Pointer(Void), Pointer(LibUI::Attribute), SizeT, SizeT, Pointer(Void)) -> Void)
-    boxed_data = ::Box.box(callback)
-    # Store in global array to prevent GC collection during callback execution
-    # NOTE: This may cause memory leaks for long-running applications
-    @@special_callback_boxes << boxed_data
-    LibUI.attributed_string_for_each_attribute(sender, ->(sender, attr, start, end_, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call(attr, start, end_)
-    end, boxed_data)
-  end
-
-  def self.attributed_string_num_graphemes(attributed_string) : LibC::SizeT
-    LibUI.attributed_string_num_graphemes(attributed_string)
-  end
-
-  def self.attributed_string_byte_index_to_grapheme(attributed_string, pos) : LibC::SizeT
-    LibUI.attributed_string_byte_index_to_grapheme(attributed_string, pos)
-  end
-
-  def self.attributed_string_grapheme_to_byte_index(attributed_string, pos) : LibC::SizeT
-    LibUI.attributed_string_grapheme_to_byte_index(attributed_string, pos)
-  end
-
   def self.load_control_font(font_descriptor) : Nil
     LibUI.load_control_font(font_descriptor)
   end

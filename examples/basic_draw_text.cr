@@ -87,7 +87,7 @@ main_window.margined = true
 main_window.child = box
 
 main_window.on_closing do
-  UIng.free_attributed_string(ATTR_STR)
+  ATTR_STR.free
   UIng.quit
   true
 end

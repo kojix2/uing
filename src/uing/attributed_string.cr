@@ -2,7 +2,6 @@ require "./control"
 
 module UIng
   class AttributedString
-    include MethodMissing
     property? released : Bool = false
 
     def initialize(@ref_ptr : Pointer(LibUI::AttributedString))
@@ -12,15 +11,64 @@ module UIng
       @ref_ptr = LibUI.new_attributed_string(string)
     end
 
+    def free : Nil
+      return if @released
+      LibUI.free_attributed_string(@ref_ptr)
+      @released = true
+    end
+
+    def string : String?
+      str_ptr = LibUI.attributed_string_string(@ref_ptr)
+      # The returned string is owned by the attributed string?
+      str_ptr.null? ? nil : String.new(str_ptr)
+    end
+
+    def len : LibC::SizeT
+      LibUI.attributed_string_len(@ref_ptr)
+    end
+
+    def append_unattributed(text : String) : Nil
+      LibUI.attributed_string_append_unattributed(@ref_ptr, text)
+    end
+
+    def insert_at_unattributed(text : String, at : LibC::SizeT) : Nil
+      LibUI.attributed_string_insert_at_unattributed(@ref_ptr, text, at)
+    end
+
+    def delete(start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+      LibUI.attributed_string_delete(@ref_ptr, start, end_)
+    end
+
+    def set_attribute(attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+      LibUI.attributed_string_set_attribute(@ref_ptr, attribute, start, end_)
+    end
+
+    def for_each_attribute(&callback : (Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT) -> Void) : Nil
+      boxed_data = ::Box.box(callback)
+      LibUI.attributed_string_for_each_attribute(@ref_ptr, ->(sender, attr, start, end_, data) do
+        data_as_callback = ::Box(typeof(callback)).unbox(data)
+        data_as_callback.call(attr, start, end_)
+      end, boxed_data)
+    end
+
+    def num_graphemes : LibC::SizeT
+      LibUI.attributed_string_num_graphemes(@ref_ptr)
+    end
+
+    def byte_index_to_grapheme(pos : LibC::SizeT) : LibC::SizeT
+      LibUI.attributed_string_byte_index_to_grapheme(@ref_ptr, pos)
+    end
+
+    def grapheme_to_byte_index(pos : LibC::SizeT) : LibC::SizeT
+      LibUI.attributed_string_grapheme_to_byte_index(@ref_ptr, pos)
+    end
+
     def to_unsafe
       @ref_ptr
     end
 
     def finalize
-      unless @released
-        LibUI.free_attributed_string(@ref_ptr)
-        @released = true
-      end
+      free
     end
   end
 end
