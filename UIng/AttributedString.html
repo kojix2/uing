@@ -449,20 +449,6 @@
 
 
 
-  <h2>
-    <a id="included-modules" class="anchor" href="#included-modules">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Included Modules
-  </h2>
-  <ul class="other-types-list">
-    
-      <li class="other-type"><a href="../UIng/MethodMissing.html">UIng::MethodMissing</a></li>
-    
-  </ul>
-
 
 
 
@@ -482,7 +468,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L4" target="_blank">
         uing/attributed_string.cr
       </a>
     
@@ -533,7 +519,52 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#append_unattributed%28text%3AString%29%3ANil-instance-method" class="signature"><strong>#append_unattributed</strong>(text : String) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#byte_index_to_grapheme%28pos%3ALibC%3A%3ASizeT%29%3ALibC%3A%3ASizeT-instance-method" class="signature"><strong>#byte_index_to_grapheme</strong>(pos : LibC::SizeT) : LibC::SizeT</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#delete%28start%3ALibC%3A%3ASizeT%2Cend_%3ALibC%3A%3ASizeT%29%3ANil-instance-method" class="signature"><strong>#delete</strong>(start : LibC::SizeT, end_ : LibC::SizeT) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#finalize-instance-method" class="signature"><strong>#finalize</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#for_each_attribute%28%26callback%3APointer%28LibUI%3A%3AAttribute%29%2CLibC%3A%3ASizeT%2CLibC%3A%3ASizeT-%3EVoid%29%3ANil-instance-method" class="signature"><strong>#for_each_attribute</strong>(&callback : Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT -> Void) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#free%3ANil-instance-method" class="signature"><strong>#free</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#grapheme_to_byte_index%28pos%3ALibC%3A%3ASizeT%29%3ALibC%3A%3ASizeT-instance-method" class="signature"><strong>#grapheme_to_byte_index</strong>(pos : LibC::SizeT) : LibC::SizeT</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#insert_at_unattributed%28text%3AString%2Cat%3ALibC%3A%3ASizeT%29%3ANil-instance-method" class="signature"><strong>#insert_at_unattributed</strong>(text : String, at : LibC::SizeT) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#len%3ALibC%3A%3ASizeT-instance-method" class="signature"><strong>#len</strong> : LibC::SizeT</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#num_graphemes%3ALibC%3A%3ASizeT-instance-method" class="signature"><strong>#num_graphemes</strong> : LibC::SizeT</a>
         
       </li>
     
@@ -548,6 +579,16 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#set_attribute%28attribute%2Cstart%3ALibC%3A%3ASizeT%2Cend_%3ALibC%3A%3ASizeT%29%3ANil-instance-method" class="signature"><strong>#set_attribute</strong>(attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#string%3AString%7CNil-instance-method" class="signature"><strong>#string</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
         
       </li>
@@ -557,28 +598,6 @@
 
 
   <div class="methods-inherited">
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-  <h3>Macros inherited from module <code><a href="../UIng/MethodMissing.html">UIng::MethodMissing</a></code></h3>
-  
-  
-    <a href="../UIng/MethodMissing.html#method_missing%28call%29-macro" class="tooltip">
-      <span>method_missing(call)</span>
-    method_missing</a>
-    
-  
-
-
     
       
 
@@ -629,7 +648,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -645,7 +664,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -666,6 +685,54 @@
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="append_unattributed(text:String):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>append_unattributed</strong>(text : String) : Nil
+
+        <a class="method-permalink" href="#append_unattributed%28text%3AString%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="byte_index_to_grapheme(pos:LibC::SizeT):LibC::SizeT-instance-method">
+      <div class="signature">
+        
+        def <strong>byte_index_to_grapheme</strong>(pos : LibC::SizeT) : LibC::SizeT
+
+        <a class="method-permalink" href="#byte_index_to_grapheme%28pos%3ALibC%3A%3ASizeT%29%3ALibC%3A%3ASizeT-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L58" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="delete(start:LibC::SizeT,end_:LibC::SizeT):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>delete</strong>(start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+
+        <a class="method-permalink" href="#delete%28start%3ALibC%3A%3ASizeT%2Cend_%3ALibC%3A%3ASizeT%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L38" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="finalize-instance-method">
       <div class="signature">
         
@@ -677,7 +744,103 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L70" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="for_each_attribute(&amp;callback:Pointer(LibUI::Attribute),LibC::SizeT,LibC::SizeT-&gt;Void):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>for_each_attribute</strong>(&callback : Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT -> Void) : Nil
+
+        <a class="method-permalink" href="#for_each_attribute%28%26callback%3APointer%28LibUI%3A%3AAttribute%29%2CLibC%3A%3ASizeT%2CLibC%3A%3ASizeT-%3EVoid%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L46" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="free:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>free</strong> : Nil
+
+        <a class="method-permalink" href="#free%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="grapheme_to_byte_index(pos:LibC::SizeT):LibC::SizeT-instance-method">
+      <div class="signature">
+        
+        def <strong>grapheme_to_byte_index</strong>(pos : LibC::SizeT) : LibC::SizeT
+
+        <a class="method-permalink" href="#grapheme_to_byte_index%28pos%3ALibC%3A%3ASizeT%29%3ALibC%3A%3ASizeT-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L62" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="insert_at_unattributed(text:String,at:LibC::SizeT):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>insert_at_unattributed</strong>(text : String, at : LibC::SizeT) : Nil
+
+        <a class="method-permalink" href="#insert_at_unattributed%28text%3AString%2Cat%3ALibC%3A%3ASizeT%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="len:LibC::SizeT-instance-method">
+      <div class="signature">
+        
+        def <strong>len</strong> : LibC::SizeT
+
+        <a class="method-permalink" href="#len%3ALibC%3A%3ASizeT-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="num_graphemes:LibC::SizeT-instance-method">
+      <div class="signature">
+        
+        def <strong>num_graphemes</strong> : LibC::SizeT
+
+        <a class="method-permalink" href="#num_graphemes%3ALibC%3A%3ASizeT-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -693,7 +856,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -709,7 +872,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_attribute(attribute,start:LibC::SizeT,end_:LibC::SizeT):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_attribute</strong>(attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+
+        <a class="method-permalink" href="#set_attribute%28attribute%2Cstart%3ALibC%3A%3ASizeT%2Cend_%3ALibC%3A%3ASizeT%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L42" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="string:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>string</strong> : String | Nil
+
+        <a class="method-permalink" href="#string%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -725,7 +920,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/1fb615a0a55865d89a2b8f038d78eb5447620cca/src/uing/attributed_string.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/7a1add47657cb00918d089bafe7a42623097e149/src/uing/attributed_string.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
