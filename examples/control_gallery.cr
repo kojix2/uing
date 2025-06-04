@@ -5,11 +5,11 @@ UIng.init
 # File menu
 UIng::Menu.new("File") do
   append_item("Open").on_clicked do |w|
-    pt = UIng.open_file(MAIN_WINDOW)
+    pt = MAIN_WINDOW.open_file
     puts pt
   end
   append_item("Save").on_clicked do |w|
-    pt = UIng.save_file(MAIN_WINDOW)
+    pt = MAIN_WINDOW.save_file
     puts pt
   end
   append_separator
@@ -191,8 +191,7 @@ end
 hbox1.append(text_entry, true)
 # Main Window
 
-MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, true) do
-  margined = true
+MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, margined: true) do
   on_closing do
     puts "Bye Bye"
     UIng.quit

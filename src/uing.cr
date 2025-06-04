@@ -116,21 +116,6 @@ module UIng
     LibUI.free_text(text)
   end
 
-  def self.open_file(window) : String?
-    str_ptr = LibUI.open_file(window)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.open_folder(window) : String?
-    str_ptr = LibUI.open_folder(window)
-    string_from_pointer(str_ptr)
-  end
-
-  def self.save_file(window) : String?
-    str_ptr = LibUI.save_file(window)
-    string_from_pointer(str_ptr)
-  end
-
   def self.msg_box(parent, title, description) : Nil
     LibUI.msg_box(parent, title, description)
   end

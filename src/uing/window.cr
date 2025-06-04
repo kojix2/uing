@@ -126,6 +126,21 @@ module UIng
       end, @on_focus_changed_box.not_nil!)
     end
 
+    def open_file : String?
+      str_ptr = LibUI.open_file(@ref_ptr)
+      UIng.string_from_pointer(str_ptr)
+    end
+
+    def open_folder : String?
+      str_ptr = LibUI.open_folder(@ref_ptr)
+      UIng.string_from_pointer(str_ptr)
+    end
+
+    def save_file : String?
+      str_ptr = LibUI.save_file(@ref_ptr)
+      UIng.string_from_pointer(str_ptr)
+    end
+
     def to_unsafe
       @ref_ptr
     end
