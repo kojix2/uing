@@ -468,7 +468,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/2db6d7df49a82a15706f4bf24bd6c3183aa08f8d/src/uing/area/draw_matrix.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L2" target="_blank">
         uing/area/draw_matrix.cr
       </a>
     
@@ -501,23 +501,6 @@
   
 
   
-  <h2>
-    <a id="macro-summary" class="anchor" href="#macro-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#method_missing%28call%29-macro" class="signature"><strong>method_missing</strong>(call)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
   <h2>
@@ -531,7 +514,57 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#invert%3ABool-instance-method" class="signature"><strong>#invert</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#invertible%3F%3ABool-instance-method" class="signature"><strong>#invertible?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#multiply%28src%3ADrawMatrix%29%3ANil-instance-method" class="signature"><strong>#multiply</strong>(src : DrawMatrix) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#rotate%28x%3AFloat64%2Cy%3AFloat64%2Camount%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#rotate</strong>(x : Float64, y : Float64, amount : Float64) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#scale%28x_center%3AFloat64%2Cy_center%3AFloat64%2Cx%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#scale</strong>(x_center : Float64, y_center : Float64, x : Float64, y : Float64) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set_identity%3ANil-instance-method" class="signature"><strong>#set_identity</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#skew%28x%3AFloat64%2Cy%3AFloat64%2Cx_amount%3AFloat64%2Cy_amount%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#skew</strong>(x : Float64, y : Float64, x_amount : Float64, y_amount : Float64) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#transform_point%28x%3AFloat64%2Cy%3AFloat64%29%3ATuple%28Float64%2CFloat64%29-instance-method" class="signature"><strong>#transform_point</strong>(x : Float64, y : Float64) : Tuple(Float64, Float64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#transform_size%28x%3AFloat64%2Cy%3AFloat64%29%3ATuple%28Float64%2CFloat64%29-instance-method" class="signature"><strong>#transform_size</strong>(x : Float64, y : Float64) : Tuple(Float64, Float64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#translate%28x%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#translate</strong>(x : Float64, y : Float64) : Nil</a>
         
       </li>
     
@@ -590,7 +623,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/2db6d7df49a82a15706f4bf24bd6c3183aa08f8d/src/uing/area/draw_matrix.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L3" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -600,32 +633,6 @@
   
 
   
-  <h2>
-    <a id="macro-detail" class="anchor" href="#macro-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Detail
-  </h2>
-  
-    <div class="entry-detail" id="method_missing(call)-macro">
-      <div class="signature">
-        
-        macro <strong>method_missing</strong>(call)
-
-        <a class="method-permalink" href="#method_missing%28call%29-macro">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/2db6d7df49a82a15706f4bf24bd6c3183aa08f8d/src/uing/area/draw_matrix.cr#L6" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
   <h2>
@@ -636,6 +643,118 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="invert:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>invert</strong> : Bool
+
+        <a class="method-permalink" href="#invert%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="invertible?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>invertible?</strong> : Bool
+
+        <a class="method-permalink" href="#invertible%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="multiply(src:DrawMatrix):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>multiply</strong>(src : <a href="../UIng/DrawMatrix.html">DrawMatrix</a>) : Nil
+
+        <a class="method-permalink" href="#multiply%28src%3ADrawMatrix%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="rotate(x:Float64,y:Float64,amount:Float64):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>rotate</strong>(x : Float64, y : Float64, amount : Float64) : Nil
+
+        <a class="method-permalink" href="#rotate%28x%3AFloat64%2Cy%3AFloat64%2Camount%3AFloat64%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L18" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="scale(x_center:Float64,y_center:Float64,x:Float64,y:Float64):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>scale</strong>(x_center : Float64, y_center : Float64, x : Float64, y : Float64) : Nil
+
+        <a class="method-permalink" href="#scale%28x_center%3AFloat64%2Cy_center%3AFloat64%2Cx%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set_identity:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>set_identity</strong> : Nil
+
+        <a class="method-permalink" href="#set_identity%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L6" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="skew(x:Float64,y:Float64,x_amount:Float64,y_amount:Float64):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>skew</strong>(x : Float64, y : Float64, x_amount : Float64, y_amount : Float64) : Nil
+
+        <a class="method-permalink" href="#skew%28x%3AFloat64%2Cy%3AFloat64%2Cx_amount%3AFloat64%2Cy_amount%3AFloat64%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="to_unsafe-instance-method">
       <div class="signature">
@@ -648,7 +767,55 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/2db6d7df49a82a15706f4bf24bd6c3183aa08f8d/src/uing/area/draw_matrix.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L48" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="transform_point(x:Float64,y:Float64):Tuple(Float64,Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>transform_point</strong>(x : Float64, y : Float64) : Tuple(Float64, Float64)
+
+        <a class="method-permalink" href="#transform_point%28x%3AFloat64%2Cy%3AFloat64%29%3ATuple%28Float64%2CFloat64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L38" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="transform_size(x:Float64,y:Float64):Tuple(Float64,Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>transform_size</strong>(x : Float64, y : Float64) : Tuple(Float64, Float64)
+
+        <a class="method-permalink" href="#transform_size%28x%3AFloat64%2Cy%3AFloat64%29%3ATuple%28Float64%2CFloat64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L43" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="translate(x:Float64,y:Float64):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>translate</strong>(x : Float64, y : Float64) : Nil
+
+        <a class="method-permalink" href="#translate%28x%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/d597542a2cfdaf753737fabbc50870edb5663b73/src/uing/area/draw_matrix.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
