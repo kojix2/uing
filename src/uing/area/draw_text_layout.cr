@@ -5,6 +5,10 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::DrawTextLayout))
     end
 
+    def initialize(draw_text_layout_params)
+      @ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
+    end
+
     def free : Nil
       return if @released
       LibUI.draw_free_text_layout(@ref_ptr)

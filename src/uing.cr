@@ -124,18 +124,6 @@ module UIng
     LibUI.msg_box_error(parent, title, description)
   end
 
-  def self.new_open_type_features : OpenTypeFeatures
-    ref_ptr = LibUI.new_open_type_features
-    OpenTypeFeatures.new(ref_ptr)
-  end
 
-  def self.new_attributed_string(text) : AttributedString
-    ref_ptr = LibUI.new_attributed_string(text)
-    AttributedString.new(ref_ptr)
-  end
 
-  def self.draw_new_text_layout(draw_text_layout_params) : DrawTextLayout
-    ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
-    DrawTextLayout.new(ref_ptr)
-  end
 end
