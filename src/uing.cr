@@ -124,17 +124,6 @@ module UIng
     LibUI.msg_box_error(parent, title, description)
   end
 
-  def self.draw_fill(draw_context, draw_path, draw_brush) : Nil
-    LibUI.draw_fill(draw_context, draw_path, draw_brush)
-  end
-
-  def self.draw_stroke(draw_context, draw_path, draw_brush, draw_stroke_params) : Nil
-    LibUI.draw_stroke(draw_context, draw_path, draw_brush, draw_stroke_params)
-  end
-
-  def self.draw_free_path(draw_path) : Nil
-    LibUI.draw_free_path(draw_path)
-  end
 
   def self.new_open_type_features : OpenTypeFeatures
     ref_ptr = LibUI.new_open_type_features

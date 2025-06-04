@@ -19,9 +19,9 @@ handler.draw do |area_handler, area, area_draw_params|
   brush.a = 1.0
 
   # from pointer to struct
-  ctx = area_draw_params.value.context
-  UIng.draw_fill(ctx, path, brush)
-  UIng.draw_free_path(path)
+  ctx = UIng::DrawContext.new(area_draw_params.value.context)
+  ctx.fill(path, brush)
+  path.free
 end
 
 handler.mouse_event { |_, _, _| }
@@ -40,7 +40,7 @@ main_window.margined = true
 
 main_window.on_closing do
   UIng.quit
-  1
+  true
 end
 
 main_window.show
