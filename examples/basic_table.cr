@@ -56,10 +56,11 @@ main_window.show
 
 main_window.on_closing do
   puts "Bye Bye"
+  # Clean up resources before quitting
+  table_model.free
   UIng.quit
   true
 end
 
 UIng.main
-table_model.free
 UIng.uninit

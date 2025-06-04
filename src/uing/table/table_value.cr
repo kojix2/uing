@@ -5,13 +5,13 @@ module UIng
     property? managed_by_libui : Bool = false
 
     def initialize(@ref_ptr : Pointer(LibUI::TableValue))
-      @managed_by_libui = true  # TableValue managed by LibUI
+      @managed_by_libui = true # TableValue managed by LibUI
     end
 
     # Overloaded initializers for convenient creation
     def initialize(str : String)
       @ref_ptr = LibUI.new_table_value_string(str)
-      @managed_by_libui = false  # TableValue created by ourselves
+      @managed_by_libui = false # TableValue created by ourselves
     end
 
     def initialize(image : Image)
@@ -39,7 +39,7 @@ module UIng
 
     def free : Nil
       return if @released
-      return if @managed_by_libui  # Don't free TableValue managed by LibUI
+      return if @managed_by_libui # Don't free TableValue managed by LibUI
       LibUI.free_table_value(@ref_ptr)
       @released = true
     end

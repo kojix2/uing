@@ -3,12 +3,12 @@ module UIng
     property? managed_by_libui : Bool = false
 
     def initialize(@cstruct : LibUI::TableSelection = LibUI::TableSelection.new)
-      @managed_by_libui = false  # TableSelection created by ourselves
+      @managed_by_libui = false # TableSelection created by ourselves
     end
 
     def initialize(ptr : Pointer(LibUI::TableSelection))
       @cstruct = ptr.value
-      @managed_by_libui = true  # TableSelection managed by LibUI
+      @managed_by_libui = true # TableSelection managed by LibUI
     end
 
     def num_rows : Int32
@@ -20,7 +20,7 @@ module UIng
     end
 
     def free : Nil
-      return if @managed_by_libui  # Don't free TableSelection managed by LibUI
+      return if @managed_by_libui # Don't free TableSelection managed by LibUI
       LibUI.free_table_selection(self.to_unsafe)
     end
 

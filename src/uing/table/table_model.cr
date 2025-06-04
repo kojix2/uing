@@ -4,17 +4,17 @@ module UIng
     property? managed_by_libui : Bool = false
 
     def initialize(@ref_ptr : Pointer(LibUI::TableModel))
-      @managed_by_libui = true  # TableModel managed by LibUI
+      @managed_by_libui = true # TableModel managed by LibUI
     end
 
     def initialize(model_handler : (TableModelHandler | LibUI::TableModelHandler))
       @ref_ptr = LibUI.new_table_model(model_handler)
-      @managed_by_libui = false  # TableModel created by ourselves
+      @managed_by_libui = false # TableModel created by ourselves
     end
 
     def free : Nil
       return if @released
-      return if @managed_by_libui  # Don't free TableModel managed by LibUI
+      return if @managed_by_libui # Don't free TableModel managed by LibUI
       LibUI.free_table_model(@ref_ptr)
       @released = true
     end
