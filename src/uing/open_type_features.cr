@@ -49,6 +49,9 @@ module UIng
         0 # uiForEachContinue
       end
       LibUI.open_type_features_for_each(@ref_ptr, proc, @for_each_box.not_nil!)
+      
+      # Clear the box reference after enumeration completes
+      @for_each_box = nil
     end
 
     def to_unsafe

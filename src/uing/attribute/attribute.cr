@@ -1,5 +1,7 @@
 module UIng
   class Attribute
+    property? released : Bool = false
+
     def initialize(@ref_ptr : Pointer(LibUI::Attribute))
     end
 
@@ -58,7 +60,9 @@ module UIng
     end
 
     def free : Nil
+      return if @released
       LibUI.free_attribute(@ref_ptr)
+      @released = true
     end
 
     def get_type : AttributeType
@@ -110,6 +114,10 @@ module UIng
 
     def to_unsafe
       @ref_ptr
+    end
+
+    def finalize
+      free
     end
   end
 end

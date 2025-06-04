@@ -42,6 +42,10 @@ module UIng
 
     def set_attribute(attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
       LibUI.attributed_string_set_attribute(@ref_ptr, attribute, start, end_)
+      # AttributedString takes ownership of the attribute
+      if attribute.responds_to?(:released=)
+        attribute.released = true
+      end
     end
 
     def for_each_attribute(&callback : (Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT) -> Void) : Nil
@@ -49,7 +53,12 @@ module UIng
       LibUI.attributed_string_for_each_attribute(@ref_ptr, ->(sender, attr, start, end_, data) do
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         data_as_callback.call(attr, start, end_)
+        # Note: Cannot safely delete box here as LibUI may call multiple times
+        0 # uiForEachContinue
       end, @for_each_attribute_box.not_nil!)
+      
+      # Clear the box reference after enumeration completes
+      @for_each_attribute_box = nil
     end
 
     def num_graphemes : LibC::SizeT
