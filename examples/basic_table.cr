@@ -43,5 +43,5 @@ main_window.on_closing do
 end
 
 UIng.main
-UIng.free_table_model(table_model)
+table_model.free
 UIng.uninit

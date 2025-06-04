@@ -72,5 +72,42 @@ module UIng
     def append_button_column(name : String, button_model_column : Int32, button_clickable_model_column : Int32) : Nil
       LibUI.table_append_button_column(@ref_ptr, name, button_model_column, button_clickable_model_column)
     end
+
+    def header_visible? : Bool
+      LibUI.table_header_visible(@ref_ptr)
+    end
+
+    def header_set_sort_indicator(column : Int32, sort_indicator : SortIndicator) : Nil
+      LibUI.table_header_set_sort_indicator(@ref_ptr, column, sort_indicator)
+    end
+
+    def header_sort_indicator(column : Int32) : SortIndicator
+      LibUI.table_header_sort_indicator(@ref_ptr, column)
+    end
+
+    def column_width(column : Int32) : Int32
+      LibUI.table_column_width(@ref_ptr, column)
+    end
+
+    def column_set_width(column : Int32, width : Int32) : Nil
+      LibUI.table_column_set_width(@ref_ptr, column, width)
+    end
+
+    def selection_mode : TableSelectionMode
+      LibUI.table_get_selection_mode(@ref_ptr)
+    end
+
+    def selection_mode=(mode : TableSelectionMode) : Nil
+      LibUI.table_set_selection_mode(@ref_ptr, mode)
+    end
+
+    def selection : TableSelection
+      ref_ptr = LibUI.table_get_selection(@ref_ptr)
+      TableSelection.new(ref_ptr)
+    end
+
+    def selection=(selection : TableSelection) : Nil
+      LibUI.table_set_selection(@ref_ptr, selection.to_unsafe)
+    end
   end
 end

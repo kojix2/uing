@@ -3,7 +3,9 @@ module UIng
     def initialize(@cstruct : LibUI::TableSelection = LibUI::TableSelection.new)
     end
 
-    forward_missing_to(@cstruct)
+    def free : Nil
+      LibUI.free_table_selection(self.to_unsafe)
+    end
 
     def to_unsafe
       pointerof(@cstruct)
