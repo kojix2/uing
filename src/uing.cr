@@ -57,6 +57,8 @@ module UIng
 
   def self.uninit : Nil
     LibUI.uninit
+    # Clear global callback array on uninit to prevent memory leaks
+    @@special_callback_boxes.clear
   end
 
   # should not be used.
@@ -89,12 +91,16 @@ module UIng
     LibUI.queue_main(->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
+      # Remove from global array after execution to prevent memory leak
+      @@special_callback_boxes.delete(data)
     end, boxed_data)
   end
 
   def self.timer(sender, &callback : -> LibC::Int) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
+    # NOTE: Timer callback removal behavior is not standardized in LibUI
+    # See: https://github.com/andlabs/libui/pull/277
     @@special_callback_boxes << boxed_data
     LibUI.timer(sender, ->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
