@@ -241,19 +241,6 @@ module UIng
     DrawTextLayout.new(ref_ptr)
   end
 
-  def self.draw_free_text_layout(draw_text_layout) : Nil
-    LibUI.draw_free_text_layout(draw_text_layout)
-  end
-
-  def self.draw_text_layout_extents(
-    draw_text_layout,
-    width = Pointer(LibC::Double).malloc,
-    height = Pointer(LibC::Double).malloc,
-  ) : {LibC::Double, LibC::Double}
-    LibUI.draw_text_layout_extents(draw_text_layout, width, height)
-    {width.value, height.value}
-  end
-
   def self.font_button_font(font_button, font_descriptor) : Nil
     LibUI.font_button_font(font_button, font_descriptor)
   end
