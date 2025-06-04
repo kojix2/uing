@@ -129,46 +129,6 @@ module UIng
     OpenTypeFeatures.new(ref_ptr)
   end
 
-  def self.free_open_type_features(open_type_features) : Nil
-    LibUI.free_open_type_features(open_type_features)
-  end
-
-  def self.open_type_features_clone(open_type_features) : OpenTypeFeatures
-    ref_ptr = LibUI.open_type_features_clone(open_type_features)
-    OpenTypeFeatures.new(ref_ptr)
-  end
-
-  def self.open_type_features_add(open_type_features, a, b, c, d, value) : Nil
-    LibUI.open_type_features_add(open_type_features, a, b, c, d, value)
-  end
-
-  def self.open_type_features_remove(open_type_features, a, b, c, d) : Nil
-    LibUI.open_type_features_remove(open_type_features, a, b, c, d)
-  end
-
-  def self.open_type_features_get(
-    open_type_features,
-    a,
-    b,
-    c,
-    d,
-    value = Pointer(UInt32).malloc,
-  ) : {Bool, UInt32}
-    result = LibUI.open_type_features_get(open_type_features, a, b, c, d, value)
-    {result, value.value}
-  end
-
-  def self.open_type_features_for_each(sender, &callback : (Pointer(Void), LibC::Char, LibC::Char, LibC::Char, LibC::Char, Int32) -> Void)
-    boxed_data = ::Box.box(callback)
-    # Store in global array to prevent GC collection during callback execution
-    # NOTE: This may cause memory leaks for long-running applications
-    @@special_callback_boxes << boxed_data
-    LibUI.open_type_features_for_each(sender, ->(otf, a, b, c, d, value, data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call(otf)
-    end, boxed_data)
-  end
-
   def self.new_attributed_string(text) : AttributedString
     ref_ptr = LibUI.new_attributed_string(text)
     AttributedString.new(ref_ptr)

@@ -320,7 +320,7 @@ module UIng
     fun open_type_features_add = uiOpenTypeFeaturesAdd(otf : Pointer(OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32)
     fun open_type_features_remove = uiOpenTypeFeaturesRemove(otf : Pointer(OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char)
     fun open_type_features_get = uiOpenTypeFeaturesGet(otf : Pointer(OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : Pointer(UInt32)) : Bool
-    fun open_type_features_for_each = uiOpenTypeFeaturesForEach(otf : Pointer(OpenTypeFeatures), f : Pointer(Void), data : Pointer(Void)) # FIXME: f is a function pointer
+    fun open_type_features_for_each = uiOpenTypeFeaturesForEach(otf : Pointer(OpenTypeFeatures), f : (Pointer(OpenTypeFeatures), LibC::Char, LibC::Char, LibC::Char, LibC::Char, UInt32, Pointer(Void)) -> LibC::Int, data : Pointer(Void))
     fun new_features_attribute = uiNewFeaturesAttribute(otf : Pointer(OpenTypeFeatures)) : Pointer(Attribute)
     fun attribute_features = uiAttributeFeatures(a : Pointer(Attribute)) : Pointer(OpenTypeFeatures)
     alias AttributedString = Void
