@@ -41,7 +41,7 @@ end
 
 handler = UIng::AreaHandler.new do
   draw do |area_handler, area, area_draw_params|
-    ctx = area_draw_params.value.context
+    ctx = UIng::DrawContext.new(area_draw_params.value.context)
 
     # Scale factor to fit tiger in window
     scale_x = 600.0
@@ -67,7 +67,7 @@ handler = UIng::AreaHandler.new do
         brush.b = b
         brush.a = 1.0
 
-        UIng.draw_fill(ctx, path, brush)
+        ctx.fill(path, brush)
       end
 
       # Handle stroke
@@ -83,10 +83,10 @@ handler = UIng::AreaHandler.new do
         stroke_params = UIng::DrawStrokeParams.new
         stroke_params.thickness = 1.0
 
-        UIng.draw_stroke(ctx, path, stroke_brush, stroke_params)
+        ctx.stroke(path, stroke_brush, stroke_params)
       end
 
-      UIng.draw_free_path(path)
+      path.free
     end
   end
   mouse_event { |_, _, _| }

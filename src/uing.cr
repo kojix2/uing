@@ -124,49 +124,16 @@ module UIng
     LibUI.msg_box_error(parent, title, description)
   end
 
-  def self.draw_new_path(fill_mode) : DrawPath
-    ref_ptr = LibUI.draw_new_path(fill_mode)
-    DrawPath.new(ref_ptr)
+  def self.draw_fill(draw_context, draw_path, draw_brush) : Nil
+    LibUI.draw_fill(draw_context, draw_path, draw_brush)
+  end
+
+  def self.draw_stroke(draw_context, draw_path, draw_brush, draw_stroke_params) : Nil
+    LibUI.draw_stroke(draw_context, draw_path, draw_brush, draw_stroke_params)
   end
 
   def self.draw_free_path(draw_path) : Nil
     LibUI.draw_free_path(draw_path)
-  end
-
-  def self.draw_path_new_figure(draw_path, x, y) : Nil
-    LibUI.draw_path_new_figure(draw_path, x, y)
-  end
-
-  def self.draw_path_new_figure_with_arc(draw_path, x_center, y_center, radius, start_angle, sweep, negative) : Nil
-    LibUI.draw_path_new_figure_with_arc(draw_path, x_center, y_center, radius, start_angle, sweep, negative)
-  end
-
-  def self.draw_path_line_to(draw_path, x, y) : Nil
-    LibUI.draw_path_line_to(draw_path, x, y)
-  end
-
-  def self.draw_path_arc_to(draw_path, x_center, y_center, radius, start_angle, sweep, negative) : Nil
-    LibUI.draw_path_arc_to(draw_path, x_center, y_center, radius, start_angle, sweep, negative)
-  end
-
-  def self.draw_path_bezier_to(draw_path, c1x, c1y, c2x, c2y, end_x, end_y) : Nil
-    LibUI.draw_path_bezier_to(draw_path, c1x, c1y, c2x, c2y, end_x, end_y)
-  end
-
-  def self.draw_path_close_figure(draw_path) : Nil
-    LibUI.draw_path_close_figure(draw_path)
-  end
-
-  def self.draw_path_add_rectangle(draw_path, x, y, width, height) : Nil
-    LibUI.draw_path_add_rectangle(draw_path, x, y, width, height)
-  end
-
-  def self.draw_path_ended(draw_path) : Bool
-    LibUI.draw_path_ended(draw_path)
-  end
-
-  def self.draw_path_end(draw_path) : Nil
-    LibUI.draw_path_end(draw_path)
   end
 
   def self.new_open_type_features : OpenTypeFeatures
