@@ -101,7 +101,7 @@ box = UIng::Box.new(:vertical)
 box.append(area, true)
 
 UIng::Window.new("Tiger Area Example", 600, 600) do
-  set_child(box)
+  child = box
   on_closing do
     UIng.quit
     true

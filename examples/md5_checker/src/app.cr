@@ -40,7 +40,7 @@ class MD5CheckerApp
     # Create layout
     main_vbox = UIng::Box.new(:vertical)
     main_vbox.padded = true
-    @main_window.set_child(main_vbox)
+    @main_window.child = main_vbox
 
     # Top box
     top_hbox = UIng::Box.new(:horizontal)
