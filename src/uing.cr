@@ -169,30 +169,6 @@ module UIng
     LibUI.draw_path_end(draw_path)
   end
 
-  def self.draw_stroke(draw_context, draw_path, dra_brush, draw_stroke_params) : Nil
-    LibUI.draw_stroke(draw_context, draw_path, dra_brush, draw_stroke_params)
-  end
-
-  def self.draw_fill(draw_context, draw_path, draw_brush) : Nil
-    LibUI.draw_fill(draw_context, draw_path, draw_brush)
-  end
-
-  def self.draw_transform(draw_context, draw_matrix) : Nil
-    LibUI.draw_transform(draw_context, draw_matrix)
-  end
-
-  def self.draw_clip(draw_context, draw_path) : Nil
-    LibUI.draw_clip(draw_context, draw_path)
-  end
-
-  def self.draw_save(draw_context) : Nil
-    LibUI.draw_save(draw_context)
-  end
-
-  def self.draw_restore(draw_context) : Nil
-    LibUI.draw_restore(draw_context)
-  end
-
   def self.free_attribute(attribute) : Nil
     LibUI.free_attribute(attribute)
   end
