@@ -1,6 +1,7 @@
 module UIng
   class OpenTypeFeatures
     property? released : Bool = false
+    @for_each_box : Pointer(Void)?
 
     def initialize(@ref_ptr : Pointer(LibUI::OpenTypeFeatures))
     end
@@ -40,14 +41,14 @@ module UIng
     end
 
     def for_each(&callback : (String, Int32) -> Void) : Nil
-      boxed_data = ::Box.box(callback)
+      @for_each_box = ::Box.box(callback)
       proc = ->(otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
         data_as_callback.call(tag, value.to_i32)
         0 # uiForEachContinue
       end
-      LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_data)
+      LibUI.open_type_features_for_each(@ref_ptr, proc, @for_each_box.not_nil!)
     end
 
     def to_unsafe

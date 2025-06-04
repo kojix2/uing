@@ -3,6 +3,7 @@ require "./control"
 module UIng
   class AttributedString
     property? released : Bool = false
+    @for_each_attribute_box : Pointer(Void)?
 
     def initialize(@ref_ptr : Pointer(LibUI::AttributedString))
     end
@@ -44,11 +45,11 @@ module UIng
     end
 
     def for_each_attribute(&callback : (Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT) -> Void) : Nil
-      boxed_data = ::Box.box(callback)
+      @for_each_attribute_box = ::Box.box(callback)
       LibUI.attributed_string_for_each_attribute(@ref_ptr, ->(sender, attr, start, end_, data) do
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         data_as_callback.call(attr, start, end_)
-      end, boxed_data)
+      end, @for_each_attribute_box.not_nil!)
     end
 
     def num_graphemes : LibC::SizeT
