@@ -1,35 +1,40 @@
 module UIng
   # FIXME: The API for this class should be modified.
   class TableValue
+    property? released : Bool = false
+
     def initialize(@ref_ptr : Pointer(LibUI::TableValue))
+    end
+
+    # Overloaded initializers for convenient creation
+    def initialize(str : String)
+      @ref_ptr = LibUI.new_table_value_string(str)
+    end
+
+    def initialize(image : Image)
+      @ref_ptr = LibUI.new_table_value_image(image.to_unsafe)
+    end
+
+    def initialize(i : Int32)
+      @ref_ptr = LibUI.new_table_value_int(i)
+    end
+
+    def initialize(r : Float64, g : Float64, b : Float64, a : Float64)
+      @ref_ptr = LibUI.new_table_value_color(r, g, b, a)
     end
 
     # def initialize
     #   @ref_ptr = LibUI.new_table_value
     # end
 
-    def self.new_string(str : String) : TableValue
-      ref_ptr = LibUI.new_table_value_string(str)
-      TableValue.new(ref_ptr)
-    end
-
-    def self.new_image(image : Image) : TableValue
-      ref_ptr = LibUI.new_table_value_image(image.to_unsafe)
-      TableValue.new(ref_ptr)
-    end
-
-    def self.new_int(i : Int32) : TableValue
-      ref_ptr = LibUI.new_table_value_int(i)
-      TableValue.new(ref_ptr)
-    end
-
     def self.new_color(r : Float64, g : Float64, b : Float64, a : Float64) : TableValue
-      ref_ptr = LibUI.new_table_value_color(r, g, b, a)
-      TableValue.new(ref_ptr)
+      TableValue.new(r, g, b, a)
     end
 
     def free : Nil
+      return if @released
       LibUI.free_table_value(@ref_ptr)
+      @released = true
     end
 
     def get_type : TableValueType
@@ -55,8 +60,27 @@ module UIng
       {r, g, b, a}
     end
 
+    def value
+      case get_type
+      when TableValueType::String
+        string
+      when TableValueType::Image
+        image
+      when TableValueType::Int
+        int
+      when TableValueType::Color
+        color
+      else
+        raise "Unknown TableValue type: #{get_type}"
+      end
+    end
+
     def to_unsafe
       @ref_ptr
+    end
+
+    def finalize
+      free
     end
   end
 end

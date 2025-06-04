@@ -21,7 +21,7 @@ model_handler = UIng::TableModelHandler.new do
   num_columns { |_, _| 2 }
   column_type { |_, _, _| UIng::TableValueType::String }
   num_rows { |_, _| 5 }
-  cell_value { |_, _, row, column| UIng::TableValue.new_string(DATA[row][column]).to_unsafe }
+  cell_value { |_, _, row, column| UIng::TableValue.new(DATA[row][column]).to_unsafe }
   set_cell_value { |_, _, _, _, _| Void }
 end
 
