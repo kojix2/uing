@@ -474,7 +474,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L3" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L3" target="_blank">
         uing/table/table_value.cr
       </a>
     
@@ -497,27 +497,34 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#new%28r%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%29-class-method" class="signature"><strong>.new</strong>(r : Float64, g : Float64, b : Float64, a : Float64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableValue%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableValue))</a>
         
       </li>
     
       <li class="entry-summary">
+        <a href="#new%28str%3AString%29-class-method" class="signature"><strong>.new</strong>(str : String)</a>
+        
+          <div class="summary"><p>Overloaded initializers for convenient creation</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28image%3AImage%29-class-method" class="signature"><strong>.new</strong>(image : Image)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28i%3AInt32%29-class-method" class="signature"><strong>.new</strong>(i : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#new_color%28r%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%29%3ATableValue-class-method" class="signature"><strong>.new_color</strong>(r : Float64, g : Float64, b : Float64, a : Float64) : TableValue</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new_image%28image%3AImage%29%3ATableValue-class-method" class="signature"><strong>.new_image</strong>(image : Image) : TableValue</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new_int%28i%3AInt32%29%3ATableValue-class-method" class="signature"><strong>.new_int</strong>(i : Int32) : TableValue</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new_string%28str%3AString%29%3ATableValue-class-method" class="signature"><strong>.new_string</strong>(str : String) : TableValue</a>
         
       </li>
     
@@ -545,6 +552,11 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#finalize-instance-method" class="signature"><strong>#finalize</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#free%3ANil-instance-method" class="signature"><strong>#free</strong> : Nil</a>
         
       </li>
@@ -565,12 +577,27 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#released%3D%28released%3ABool%29-instance-method" class="signature"><strong>#released=</strong>(released : Bool)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#released%3F%3ABool-instance-method" class="signature"><strong>#released?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#string%3AString%7CNil-instance-method" class="signature"><strong>#string</strong> : String | Nil</a>
         
       </li>
     
       <li class="entry-summary">
         <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#value-instance-method" class="signature"><strong>#value</strong></a>
         
       </li>
     
@@ -618,6 +645,22 @@
     Constructor Detail
   </h2>
   
+    <div class="entry-detail" id="new(r:Float64,g:Float64,b:Float64,a:Float64)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(r : Float64, g : Float64, b : Float64, a : Float64)
+
+        <a class="method-permalink" href="#new%28r%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableValue))-class-method">
       <div class="signature">
         
@@ -629,7 +672,60 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L6" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(str:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(str : String)
+
+        <a class="method-permalink" href="#new%28str%3AString%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Overloaded initializers for convenient creation</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(image:Image)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(image : <a href="../UIng/Image.html">Image</a>)
+
+        <a class="method-permalink" href="#new%28image%3AImage%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(i:Int32)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(i : Int32)
+
+        <a class="method-permalink" href="#new%28i%3AInt32%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -645,55 +741,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L26" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new_image(image:Image):TableValue-class-method">
-      <div class="signature">
-        
-        def self.<strong>new_image</strong>(image : <a href="../UIng/Image.html">Image</a>) : <a href="../UIng/TableValue.html">TableValue</a>
-
-        <a class="method-permalink" href="#new_image%28image%3AImage%29%3ATableValue-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L16" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new_int(i:Int32):TableValue-class-method">
-      <div class="signature">
-        
-        def self.<strong>new_int</strong>(i : Int32) : <a href="../UIng/TableValue.html">TableValue</a>
-
-        <a class="method-permalink" href="#new_int%28i%3AInt32%29%3ATableValue-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L21" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new_string(str:String):TableValue-class-method">
-      <div class="signature">
-        
-        def self.<strong>new_string</strong>(str : String) : <a href="../UIng/TableValue.html">TableValue</a>
-
-        <a class="method-permalink" href="#new_string%28str%3AString%29%3ATableValue-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -725,7 +773,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L58" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="finalize-instance-method">
+      <div class="signature">
+        
+        def <strong>finalize</strong>
+
+        <a class="method-permalink" href="#finalize-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -741,7 +805,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -757,7 +821,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -773,7 +837,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L44" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L49" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -789,7 +853,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L54" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="released=(released:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>released=</strong>(released : Bool)
+
+        <a class="method-permalink" href="#released%3D%28released%3ABool%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L4" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="released?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>released?</strong> : Bool
+
+        <a class="method-permalink" href="#released%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L4" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -805,7 +901,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -821,7 +917,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e3885431a33a959fe2ce28d483825d6d9f342cc4/src/uing/table/table_value.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L78" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="value-instance-method">
+      <div class="signature">
+        
+        def <strong>value</strong>
+
+        <a class="method-permalink" href="#value-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/656a8d6a27aa083404430457a0b523d825d42394/src/uing/table/table_value.cr#L63" target="_blank">View source</a>]
         
       </div>
     </div>
