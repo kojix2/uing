@@ -31,6 +31,10 @@ module UIng
       LibUI.draw_restore(@ref_ptr)
     end
 
+    def text(draw_text_layout : DrawTextLayout, x : Float64, y : Float64) : Nil
+      LibUI.draw_text(@ref_ptr, draw_text_layout.to_unsafe, x, y)
+    end
+
     def to_unsafe
       @ref_ptr
     end
