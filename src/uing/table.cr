@@ -19,22 +19,34 @@ module UIng
 
     def on_row_clicked(&block : LibC::Int -> Void)
       @on_row_clicked_box = ::Box.box(block)
-      UIng.table_on_row_clicked(@ref_ptr, @on_row_clicked_box.not_nil!, &block)
+      LibUI.table_on_row_clicked(@ref_ptr, ->(table, row, data) do
+        callback = ::Box(typeof(block)).unbox(data)
+        callback.call(row)
+      end, @on_row_clicked_box.not_nil!)
     end
 
     def on_row_double_clicked(&block : LibC::Int -> Void)
       @on_row_double_clicked_box = ::Box.box(block)
-      UIng.table_on_row_double_clicked(@ref_ptr, @on_row_double_clicked_box.not_nil!, &block)
+      LibUI.table_on_row_double_clicked(@ref_ptr, ->(table, row, data) do
+        callback = ::Box(typeof(block)).unbox(data)
+        callback.call(row)
+      end, @on_row_double_clicked_box.not_nil!)
     end
 
     def on_header_clicked(&block : LibC::Int -> Void)
       @on_header_clicked_box = ::Box.box(block)
-      UIng.table_header_on_clicked(@ref_ptr, @on_header_clicked_box.not_nil!, &block)
+      LibUI.table_header_on_clicked(@ref_ptr, ->(table, column, data) do
+        callback = ::Box(typeof(block)).unbox(data)
+        callback.call(column)
+      end, @on_header_clicked_box.not_nil!)
     end
 
     def on_selection_changed(&block : -> Void)
       @on_selection_changed_box = ::Box.box(block)
-      UIng.table_on_selection_changed(@ref_ptr, @on_selection_changed_box.not_nil!, &block)
+      LibUI.table_on_selection_changed(@ref_ptr, ->(table, data) do
+        callback = ::Box(typeof(block)).unbox(data)
+        callback.call
+      end, @on_selection_changed_box.not_nil!)
     end
 
     def to_unsafe
@@ -42,7 +54,7 @@ module UIng
     end
 
     def header_visible=(value : Bool)
-      UIng.table_header_set_visible(@ref_ptr, value ? 1 : 0)
+      LibUI.table_header_set_visible(@ref_ptr, value ? 1 : 0)
     end
 
     def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params = nil) : Nil

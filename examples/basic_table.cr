@@ -33,6 +33,24 @@ table = UIng::Table.new(table_params) do
   append_text_column("Description", 1, -1)
 end
 
+table.on_selection_changed do
+  selection = table.selection
+  if selection.num_rows > 0
+    selected_row = selection.rows[0]
+    animal = DATA[selected_row][0]
+    sound = DATA[selected_row][1]
+    puts "Selected: #{animal} says #{sound}"
+  else
+    puts "No selection"
+  end
+end
+
+table.on_row_double_clicked do |row|
+  animal = DATA[row][0]
+  sound = DATA[row][1]
+  puts "Double-clicked: #{animal} goes #{sound}!"
+end
+
 hbox.append(table, true)
 main_window.show
 

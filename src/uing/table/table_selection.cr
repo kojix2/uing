@@ -3,6 +3,18 @@ module UIng
     def initialize(@cstruct : LibUI::TableSelection = LibUI::TableSelection.new)
     end
 
+    def initialize(ptr : Pointer(LibUI::TableSelection))
+      @cstruct = ptr.value
+    end
+
+    def num_rows : Int32
+      @cstruct.num_rows
+    end
+
+    def rows : Pointer(Int32)
+      @cstruct.rows
+    end
+
     def free : Nil
       LibUI.free_table_selection(self.to_unsafe)
     end
