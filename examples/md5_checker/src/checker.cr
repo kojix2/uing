@@ -65,12 +65,12 @@ class MD5Checker
   end
 
   # Calculate MD5 hash for a file
-  private def calculate_md5(file_path)
-    Digest::MD5.new.file(file_path).hexfinal
+  private def calculate_md5(file_path : String) : String
+    Digest::MD5.hexdigest(File.read(file_path))
   end
 
   # Process MD5 checksum file
-  def process_md5_file(md5_file_path)
+  def process_md5_file(md5_file_path : String) : Nil
     @results.clear
 
     # Check if file exists
