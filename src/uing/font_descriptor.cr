@@ -1,17 +1,23 @@
 module UIng
   class FontDescriptor
+    @family_string : String?
+
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
-      @family = ""
+      @cstruct.family = Pointer(UInt8).null
     end
 
     # Auto convert to and from String
     def family
-      String.new(@cstruct.family)
+      if @cstruct.family.null?
+        ""
+      else
+        String.new(@cstruct.family)
+      end
     end
 
     def family=(value : String)
-      @family = value
-      @cstruct.family = @family.to_unsafe
+      @family_string = value
+      @cstruct.family = @family_string.not_nil!.to_unsafe
     end
 
     def size
