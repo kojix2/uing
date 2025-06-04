@@ -69,6 +69,11 @@ module UIng
       LibUI.window_set_child(@ref_ptr, UIng.to_control(control))
     end
 
+    # FIXME: This is workaround
+    def set_child(control : Control) : Nil
+      LibUI.window_set_child(@ref_ptr, UIng.to_control(control))
+    end
+
     def margined? : Bool
       LibUI.window_margined(@ref_ptr)
     end
