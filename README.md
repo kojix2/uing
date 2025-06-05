@@ -47,7 +47,7 @@ UIng.init
 window = UIng::Window.new("Hello World", 300, 200)
 window.on_closing do
   UIng.quit
-  1
+  true
 end
 
 button = UIng::Button.new("Click me")
@@ -83,12 +83,6 @@ For more examples, see [examples](examples).
       <td>Object-oriented API</td>
     </tr>
     <tr>
-      <td><strong>Middle-Level</strong></td>
-      <td><code>src/uing.cr</code></td>
-      <td><code>UIng.button_text</code>, etc.</td>
-      <td>Handles memory management</td>
-    </tr>
-    <tr>
       <td><strong>Low-Level</strong></td>
       <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
       <td><code>UIng::LibUI.new_button</code>, etc.</td>
@@ -97,8 +91,6 @@ For more examples, see [examples](examples).
   </tbody>
 </table>
 
-We are currently in the process of replacing the MethodMissing mechanism. The middle level API is being phased out.
-
 ## Memory Safety
 
 UIng has been enhanced with comprehensive memory safety improvements:
@@ -106,8 +98,6 @@ UIng has been enhanced with comprehensive memory safety improvements:
 - **Instance-level management**: Each UI component maintains its own callback references
 - **GC protection**: All callback functions are properly protected from Crystal's garbage collector
 - **Crash prevention**: Eliminates segmentation faults caused by accessing freed callback memory
-
-This ensures stable operation even with complex callback scenarios and long-running applications.
 
 ## Windows Setup
 
