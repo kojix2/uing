@@ -471,7 +471,7 @@
 window <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Window</span>.new(<span class="s">&quot;Hello World&quot;</span>, <span class="n">300</span>, <span class="n">200</span>)
 window.on_closing <span class="k">do</span>
   <span class="t">UIng</span>.quit
-  <span class="n">1</span>
+  <span class="n">true</span>
 <span class="k">end</span>
 
 button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Click me&quot;</span>)
@@ -507,12 +507,6 @@ window.show
       <td>Object-oriented API</td>
     </tr>
     <tr>
-      <td><strong>Middle-Level</strong></td>
-      <td><code>src/uing.cr</code></td>
-      <td><code>UIng.button_text</code>, etc.</td>
-      <td>Handles memory management</td>
-    </tr>
-    <tr>
       <td><strong>Low-Level</strong></td>
       <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
       <td><code>UIng::LibUI.new_button</code>, etc.</td>
@@ -520,7 +514,6 @@ window.show
     </tr>
   </tbody>
 </table>
-<p>We are currently in the process of replacing the MethodMissing mechanism. The middle level API is being phased out.</p>
 <h2><a id="memory-safety" class="anchor" href="#memory-safety">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
