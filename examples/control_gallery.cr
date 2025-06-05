@@ -191,7 +191,7 @@ end
 hbox1.append(text_entry, true)
 # Main Window
 
-MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, margined: true) do
+MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, menubar: true, margined: true) do
   on_closing do
     puts "Bye Bye"
     UIng.quit

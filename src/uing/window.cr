@@ -13,8 +13,8 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 
-    def initialize(title, width, height, has_menubar = false, margined : Bool = false)
-      @ref_ptr = LibUI.new_window(title, width, height, has_menubar)
+    def initialize(title, width, height, menubar = false, margined : Bool = false)
+      @ref_ptr = LibUI.new_window(title, width, height, menubar)
       self.margined = true if margined
     end
 
