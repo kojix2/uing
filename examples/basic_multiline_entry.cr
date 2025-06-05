@@ -6,7 +6,7 @@ main_window = UIng::Window.new("Notepad", 500, 300)
 main_window.on_closing do
   puts "Bye Bye"
   UIng.quit
-  1
+  true
 end
 
 vbox = UIng::Box.new(:vertical)
