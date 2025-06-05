@@ -23,15 +23,13 @@ module PlatformEmbedding
     end
   end
 
-  # Windows-specific embedding module (future implementation)
+  # Windows-specific embedding module
   module Windows
     def setup_windows_embedding(raw_handle : UInt64)
       handle = raw_handle.to_i64
-
       set_window_id(handle)
       set_video_output("direct3d")
       apply_platform_settings
-
       puts "Set Windows HWND handle: #{handle} with direct3d mode"
     end
 

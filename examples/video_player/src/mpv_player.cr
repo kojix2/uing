@@ -1,6 +1,7 @@
 require "./mpv_bindings"
 require "./platform_embedding"
 
+# High-level wrapper for libmpv with cross-platform window embedding
 class MPVPlayer
   @mpv : Void*
   @initialized : Bool = false
@@ -44,14 +45,14 @@ class MPVPlayer
   # ============================================================================
 
   def set_window_handle_from_area(area : UIng::Area)
-    raw_handle = UIng.control_handle(area).address
+    raw_handle = area.handle.address
     setup_platform_embedding(raw_handle)
   end
 
   private def setup_platform_embedding(raw_handle : UInt64)
     {% if flag?(:darwin) %}
       setup_macos_embedding(raw_handle)
-    {% elsif flag?(:win32) %}
+    {% elsif flag?(:windows) %}
       setup_windows_embedding(raw_handle)
     {% else %}
       setup_linux_embedding(raw_handle)
@@ -65,7 +66,7 @@ class MPVPlayer
     private def apply_platform_settings
       apply_macos_settings
     end
-  {% elsif flag?(:win32) %}
+  {% elsif flag?(:windows) %}
     include PlatformEmbedding::Windows
 
     private def apply_platform_settings
@@ -229,8 +230,8 @@ class MPVPlayer
   private def configure_video_output
     {% if flag?(:darwin) %}
       set_property("vo", "gpu")
-    {% elsif flag?(:win32) %}
-      set_property("vo", "direct3d,gpu")
+    {% elsif flag?(:windows) %}
+      set_property("vo", "direct3d,gpu,opengl")
     {% else %}
       set_property("vo", "xv,x11")
     {% end %}

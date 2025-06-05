@@ -28,7 +28,7 @@ shards build
 
 **Note**: On macOS, the video player uses mpv's "gpu" output driver for hardware-accelerated rendering with Vulkan/Metal backend.
 
-### Windows (with RIDK)
+### Windows (MSVC/RIDK)
 
 ```bash
 ridk enable
@@ -38,7 +38,16 @@ ridk exec shards install
 ridk exec shards build
 ```
 
-**Note**: On Windows, the video player is designed to use mpv's "direct3d" or "gpu" output driver for hardware-accelerated rendering with DirectX backend.
+### Windows (MinGW/MSYS2)
+
+```bash
+# Open MSYS2 MinGW 64-bit shell
+pacman -Syu
+pacman -S mingw-w64-x86_64-crystal mingw-w64-x86_64-mpv
+cd /path/to/your/clone/examples/video_player
+shards install
+shards build
+```
 
 ## Usage
 

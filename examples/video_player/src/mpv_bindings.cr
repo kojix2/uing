@@ -1,5 +1,4 @@
 # Crystal bindings for libmpv
-# Based on mpv/client.h
 
 # Set locale for proper numeric formatting
 lib LibC
@@ -9,8 +8,8 @@ end
 # Locale categories
 LC_NUMERIC = 1
 
-# GTK/GDK bindings for Linux window embedding
-{% unless flag?(:darwin) %}
+# GTK/GDK bindings for Linux only
+{% if flag?(:linux) %}
   @[Link("gtk-3")]
   lib LibGTK
     type GtkWidget = Void*

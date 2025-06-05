@@ -5,6 +5,7 @@ require "./src/mpv_player"
 # Default video URL (Big Buck Bunny from archive.org)
 BLENDER_OPEN_MOVIE = "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4"
 
+# Video Player Application using libmpv and UIng
 class VideoPlayerApp
   @main_window : UIng::Window?
   @video_area : UIng::Area?
@@ -155,7 +156,7 @@ class VideoPlayerApp
 
   def on_window_closing
     UIng.quit
-    1
+    true
   end
 
   def on_should_quit
