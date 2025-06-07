@@ -427,11 +427,13 @@
 <h1 class="type-name">
 
   <span class="kind">
-    module
+    abstract class
   </span> UIng::<wbr>Control
 
 </h1>
 
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/Control.html">UIng::Control</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -460,15 +462,13 @@
 
 
 
-
-
   <h2>
-    <a id="direct-including-types" class="anchor" href="#direct-including-types">
+    <a id="direct-known-subclasses" class="anchor" href="#direct-known-subclasses">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Direct including types
+    Direct Known Subclasses
   </h2>
   <ul class="other-types-list">
     
@@ -523,6 +523,8 @@
 
 
 
+
+
   <h2>
     <a id="defined-in" class="anchor" href="#defined-in">
   <svg class="octicon-link" aria-hidden="true">
@@ -533,7 +535,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L18" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L18" target="_blank">
         uing/control.cr
       </a>
     
@@ -560,6 +562,20 @@
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#__parent__-instance-method" class="signature"><strong>#__parent__</strong></a>
+        
+          <div class="summary"><p>native libui function</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#__set_parent__%28parent%29%3ANil-instance-method" class="signature"><strong>#__set_parent__</strong>(parent) : Nil</a>
+        
+          <div class="summary"><p>native libui function should not be used directly</p></div>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#destroy%3ANil-instance-method" class="signature"><strong>#destroy</strong> : Nil</a>
@@ -597,22 +613,19 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#parent-instance-method" class="signature"><strong>#parent</strong></a>
+        <a href="#parent%3AControl%7CNil-instance-method" class="signature"><strong>#parent</strong> : Control | Nil</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#parent%3D%28parent%29%3ANil-instance-method" class="signature"><strong>#parent=</strong>(parent) : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#set_parent%28parent%29%3ANil-instance-method" class="signature"><strong>#set_parent</strong>(parent) : Nil</a>
+          <div class="summary"><p>Note: This method is implemented in Crystal.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#show%3ANil-instance-method" class="signature"><strong>#show</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
         
       </li>
     
@@ -659,6 +672,32 @@
 
 
     
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
   </div>
 
   
@@ -677,6 +716,49 @@
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="__parent__-instance-method">
+      <div class="signature">
+        
+        def <strong>__parent__</strong>
+
+        <a class="method-permalink" href="#__parent__-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>native libui function</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L43" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="__set_parent__(parent):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>__set_parent__</strong>(parent) : Nil
+
+        <a class="method-permalink" href="#__set_parent__%28parent%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>native libui function
+should not be used directly</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="destroy:Nil-instance-method">
       <div class="signature">
         
@@ -688,7 +770,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L21" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -704,7 +786,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L77" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -720,7 +802,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L61" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -736,7 +818,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L57" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L69" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -752,7 +834,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L69" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -768,7 +850,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -784,55 +866,29 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="parent-instance-method">
+    <div class="entry-detail" id="parent:Control|Nil-instance-method">
       <div class="signature">
         
-        def <strong>parent</strong>
+        def <strong>parent</strong> : <a href="../UIng/Control.html">Control</a> | Nil
 
-        <a class="method-permalink" href="#parent-instance-method">#</a>
+        <a class="method-permalink" href="#parent%3AControl%7CNil-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Note: This method is implemented in Crystal.
+Use <strong>parent</strong> if you want to access the native libui function</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L29" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="parent=(parent):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>parent=</strong>(parent) : Nil
-
-        <a class="method-permalink" href="#parent%3D%28parent%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L37" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="set_parent(parent):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>set_parent</strong>(parent) : Nil
-
-        <a class="method-permalink" href="#set_parent%28parent%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L33" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -848,7 +904,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L61" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_unsafe-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>to_unsafe</strong>
+
+        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -864,7 +936,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L53" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -880,7 +952,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -896,7 +968,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/195607b5d8feb1c2f59eb81d5b81372981ed01aa/src/uing/control.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8c96523ab3f089f3399c54d4a203463b687b5f64/src/uing/control.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
