@@ -17,7 +17,7 @@ main_window = UIng::Window.new("Date Time Pickers", 300, 200)
 main_window.on_closing do
   puts "Bye Bye"
   UIng.quit
-  1
+  true
 end
 
 main_window.child = vbox
