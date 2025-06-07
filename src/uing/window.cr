@@ -10,6 +10,8 @@ module UIng
     @on_closing_box : Pointer(Void)?
     @on_focus_changed_box : Pointer(Void)?
 
+    @child_ref : Control? # Reference to the child control
+
     def initialize(@ref_ptr : Pointer(LibUI::Window))
     end
 
@@ -67,11 +69,13 @@ module UIng
 
     def child=(control) : Nil
       LibUI.window_set_child(@ref_ptr, UIng.to_control(control))
+      @child_ref = control
     end
 
     # FIXME: This is workaround
     def set_child(control : Control) : Nil
       LibUI.window_set_child(@ref_ptr, UIng.to_control(control))
+      @child_ref = control
     end
 
     def margined? : Bool

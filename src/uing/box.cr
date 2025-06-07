@@ -11,6 +11,9 @@ module UIng
   class Box
     include Control; block_constructor
 
+    @ref_ptr : Pointer(LibUI::Box)
+    @children_refs : Array(Control) = [] of Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Box))
     end
 
@@ -28,6 +31,7 @@ module UIng
 
     def append(control, stretchy : Bool = false) : Nil
       LibUI.box_append(@ref_ptr, UIng.to_control(control), stretchy)
+      @children_refs << control
     end
 
     def num_children : Int32
@@ -36,6 +40,7 @@ module UIng
 
     def delete(index : Int32) : Nil
       LibUI.box_delete(@ref_ptr, index)
+      @children_refs.delete_at(index)
     end
 
     def padded? : Bool
