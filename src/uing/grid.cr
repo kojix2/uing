@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Grid
-    include Control; block_constructor
+  class Grid < Control
+    block_constructor
 
     @children_refs : Array(Control) = [] of Control
 

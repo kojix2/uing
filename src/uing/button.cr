@@ -1,9 +1,8 @@
 require "./control"
 
 module UIng
-  class Button
-    include Control; block_constructor
-
+  class Button < Control
+    block_constructor
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 

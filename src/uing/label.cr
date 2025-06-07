@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Label
-    include Control; block_constructor
+  class Label < Control
+    block_constructor
 
     def initialize(@ref_ptr : Pointer(LibUI::Label))
     end

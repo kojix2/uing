@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Slider
-    include Control; block_constructor
+  class Slider < Control
+    block_constructor
 
     # Store callback boxes to prevent GC collection
     @on_changed_box : Pointer(Void)?

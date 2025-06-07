@@ -8,8 +8,8 @@ module UIng
   # we use a single Box class with orientation parameter.
   # This matches the libui functions like `uiBoxAppend`, `uiBoxSetPadded`, etc.
 
-  class Box
-    include Control; block_constructor
+  class Box < Control
+    block_constructor
 
     @ref_ptr : Pointer(LibUI::Box)
     @children_refs : Array(Control) = [] of Control

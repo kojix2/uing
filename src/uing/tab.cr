@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Tab
-    include Control; block_constructor
+  class Tab < Control
+    block_constructor
 
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?

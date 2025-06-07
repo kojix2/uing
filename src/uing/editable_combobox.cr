@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class EditableCombobox
-    include Control; block_constructor
+  class EditableCombobox < Control
+    block_constructor
 
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?

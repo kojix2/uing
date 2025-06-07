@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Window
-    include Control; block_constructor
+  class Window < Control
+    block_constructor
 
     # Store callback boxes to prevent GC collection
     @on_position_changed_box : Pointer(Void)?

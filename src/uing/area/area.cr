@@ -1,8 +1,8 @@
 require "../control"
 
 module UIng
-  class Area
-    include Control; block_constructor
+  class Area < Control
+    block_constructor
 
     def initialize(@ref_ptr : Pointer(LibUI::Area))
     end

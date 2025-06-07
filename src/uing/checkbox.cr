@@ -1,9 +1,8 @@
 require "./control"
 
 module UIng
-  class Checkbox
-    include Control; block_constructor
-
+  class Checkbox < Control
+    block_constructor
     # Store callback box to prevent GC collection
     @on_toggled_box : Pointer(Void)?
 

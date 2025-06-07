@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Form
-    include Control; block_constructor
+  class Form < Control
+    block_constructor
 
     @children_refs : Array(Control) = [] of Control
 

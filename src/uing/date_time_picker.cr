@@ -1,9 +1,8 @@
 require "./control"
 
 module UIng
-  class DateTimePicker
-    include Control; block_constructor
-
+  class DateTimePicker < Control
+    block_constructor
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
 

@@ -1,9 +1,8 @@
 require "./control"
 
 module UIng
-  class ColorButton
-    include Control; block_constructor
-
+  class ColorButton < Control
+    block_constructor
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
 

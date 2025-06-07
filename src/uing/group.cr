@@ -1,8 +1,8 @@
 require "./control"
 
 module UIng
-  class Group
-    include Control; block_constructor
+  class Group < Control
+    block_constructor
 
     @child_ref : Control?
 
