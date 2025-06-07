@@ -6,6 +6,7 @@ module UIng
 
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?
+    @children_refs : Array(Control) = [] of Control
 
     def initialize(@ref_ptr : Pointer(LibUI::Tab))
     end
@@ -16,17 +17,20 @@ module UIng
 
     def append(name : String, control, margined : Bool = false) : Nil
       LibUI.tab_append(@ref_ptr, name, UIng.to_control(control))
+      @children_refs << control
       index = num_pages - 1
       set_margined(index, margined) if margined
     end
 
     def insert_at(name : String, index : Int32, control, margined : Bool = false) : Nil
       LibUI.tab_insert_at(@ref_ptr, name, index, UIng.to_control(control))
+      @children_refs.insert(index, control)
       set_margined(index, margined) if margined
     end
 
     def delete(index : Int32) : Nil
       LibUI.tab_delete(@ref_ptr, index)
+      @children_refs.delete_at(index)
     end
 
     def num_pages : Int32

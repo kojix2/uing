@@ -4,6 +4,8 @@ module UIng
   class Group
     include Control; block_constructor
 
+    @child_ref : Control?
+
     def initialize(@ref_ptr : Pointer(LibUI::Group))
     end
 
@@ -23,6 +25,7 @@ module UIng
 
     def child=(control) : Nil
       LibUI.group_set_child(@ref_ptr, UIng.to_control(control))
+      @child_ref = control
     end
 
     def margined? : Bool

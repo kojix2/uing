@@ -4,6 +4,8 @@ module UIng
   class Form
     include Control; block_constructor
 
+    @children_refs : Array(Control) = [] of Control
+
     def initialize(@ref_ptr : Pointer(LibUI::Form))
     end
 
@@ -14,6 +16,7 @@ module UIng
 
     def append(label : String, control, stretchy : Bool = false) : Nil
       LibUI.form_append(@ref_ptr, label, UIng.to_control(control), stretchy)
+      @children_refs << control
     end
 
     def num_children : Int32
@@ -22,6 +25,7 @@ module UIng
 
     def delete(index : Int32) : Nil
       LibUI.form_delete(@ref_ptr, index)
+      @children_refs.delete_at(index)
     end
 
     def padded? : Bool
