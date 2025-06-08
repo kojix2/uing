@@ -464,6 +464,8 @@ rows = selection.num_rows    # Extract data immediately</p>
   </svg>
 </a>... use rows data ...</h1>
 <p>selection.free               # Free immediately after use</p>
+<p><span class="flag purple">NOTE</span>  Users should NOT create TableSelection instances directly.
+TableSelection objects are only created by libui-ng and returned from Table methods.</p>
 
 
 
@@ -490,7 +492,7 @@ rows = selection.num_rows    # Extract data immediately</p>
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L15" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L18" target="_blank">
         uing/table/table_selection.cr
       </a>
     
@@ -502,28 +504,6 @@ rows = selection.num_rows    # Extract data immediately</p>
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28cstruct%3ALibUI%3A%3ATableSelection%3DLibUI%3A%3ATableSelection.new%29-class-method" class="signature"><strong>.new</strong>(cstruct : LibUI::TableSelection = <span class="t">LibUI</span><span class="t">::</span><span class="t">TableSelection</span>.new)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28ptr%3APointer%28LibUI%3A%3ATableSelection%29%29-class-method" class="signature"><strong>.new</strong>(ptr : Pointer(LibUI::TableSelection))</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
@@ -546,12 +526,12 @@ rows = selection.num_rows    # Extract data immediately</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method" class="signature"><strong>#managed_by_libui=</strong>(managed_by_libui : Bool)</a>
+        <a href="#freed%3D%28freed%3ABool%29-instance-method" class="signature"><strong>#freed=</strong>(freed : Bool)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#managed_by_libui%3F%3ABool-instance-method" class="signature"><strong>#managed_by_libui?</strong> : Bool</a>
+        <a href="#freed%3F%3ABool-instance-method" class="signature"><strong>#freed?</strong> : Bool</a>
         
       </li>
     
@@ -566,7 +546,7 @@ rows = selection.num_rows    # Extract data immediately</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
+        <a href="#to_unsafe%3APointer%28UIng%3A%3ALibUI%3A%3ATableSelection%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(UIng::LibUI::TableSelection)</a>
         
       </li>
     
@@ -605,48 +585,6 @@ rows = selection.num_rows    # Extract data immediately</p>
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(cstruct:LibUI::TableSelection=LibUI::TableSelection.new)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(cstruct : LibUI::TableSelection = <span class="t">LibUI</span><span class="t">::</span><span class="t">TableSelection</span>.new)
-
-        <a class="method-permalink" href="#new%28cstruct%3ALibUI%3A%3ATableSelection%3DLibUI%3A%3ATableSelection.new%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L18" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(ptr:Pointer(LibUI::TableSelection))-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(ptr : Pointer(LibUI::TableSelection))
-
-        <a class="method-permalink" href="#new%28ptr%3APointer%28LibUI%3A%3ATableSelection%29%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L22" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
@@ -673,39 +611,39 @@ rows = selection.num_rows    # Extract data immediately</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="managed_by_libui=(managed_by_libui:Bool)-instance-method">
+    <div class="entry-detail" id="freed=(freed:Bool)-instance-method">
       <div class="signature">
         
-        def <strong>managed_by_libui=</strong>(managed_by_libui : Bool)
+        def <strong>freed=</strong>(freed : Bool)
 
-        <a class="method-permalink" href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method">#</a>
+        <a class="method-permalink" href="#freed%3D%28freed%3ABool%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="managed_by_libui?:Bool-instance-method">
+    <div class="entry-detail" id="freed?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>managed_by_libui?</strong> : Bool
+        def <strong>freed?</strong> : Bool
 
-        <a class="method-permalink" href="#managed_by_libui%3F%3ABool-instance-method">#</a>
+        <a class="method-permalink" href="#freed%3F%3ABool-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -721,7 +659,7 @@ rows = selection.num_rows    # Extract data immediately</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -737,23 +675,23 @@ rows = selection.num_rows    # Extract data immediately</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="to_unsafe-instance-method">
+    <div class="entry-detail" id="to_unsafe:Pointer(UIng::LibUI::TableSelection)-instance-method">
       <div class="signature">
         
-        def <strong>to_unsafe</strong>
+        def <strong>to_unsafe</strong> : Pointer(UIng::LibUI::TableSelection)
 
-        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
+        <a class="method-permalink" href="#to_unsafe%3APointer%28UIng%3A%3ALibUI%3A%3ATableSelection%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
