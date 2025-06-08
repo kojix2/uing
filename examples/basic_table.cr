@@ -43,6 +43,8 @@ table.on_selection_changed do
   else
     puts "No selection"
   end
+  # Free TableSelection immediately after use
+  selection.free
 end
 
 table.on_row_double_clicked do |row|
