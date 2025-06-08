@@ -1,8 +1,22 @@
 module UIng
+  # TableModelHandler provides callbacks for Table data operations.
+  #
+  # CRITICAL MEMORY MANAGEMENT WARNINGS:
+  # 1. TableModelHandler MUST remain alive while TableModel exists
+  # 2. Callbacks become invalid if handler is GC'd - causes crashes
+  # 3. Avoid circular references in callback closures (don't capture self/TableModel)
+  # 4. Use weak references or external data structures instead of capturing large objects
+  #
+  # Safe callback pattern:
+  #   handler.cell_value do |handler_ptr, model_ptr, row, col|
+  #     # Access external data, NOT self or captured TableModel
+  #     external_data_source.get_value(row, col)
+  #   end
   class TableModelHandler
     include BlockConstructor; block_constructor
 
     # Store callback blocks to prevent GC collection
+    # CRITICAL: These must remain alive while TableModel exists
     @num_columns_block : Proc(LibUI::TableModelHandler*, LibUI::TableModel*, LibC::Int)?
     @column_type_block : Proc(LibUI::TableModelHandler*, LibUI::TableModel*, LibC::Int, UIng::TableValueType)?
     @num_rows_block : Proc(LibUI::TableModelHandler*, LibUI::TableModel*, LibC::Int)?

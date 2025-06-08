@@ -1,11 +1,29 @@
 module UIng
-  # FIXME: The API for this class should be modified.
+  # TableValue represents data values in Table cells.
+  #
+  # CRITICAL MEMORY MANAGEMENT WARNINGS:
+  # 1. TableValue returned from TableModelHandler callbacks is "borrowed" - DO NOT free
+  # 2. TableValue created by Crystal code MUST be freed after use
+  # 3. DO NOT store TableValue references long-term - use immediately and free
+  # 4. libui-ng takes ownership when TableValue is passed to Table methods
+  #
+  # Safe usage patterns:
+  #   # In TableModelHandler callback (borrowed):
+  #   def cell_value(...)
+  #     value = LibUI.new_table_value_string("data")
+  #     return value  # libui-ng will free this
+  #   end
+  #
+  #   # Creating for immediate use:
+  #   value = TableValue.new("data")
+  #   # use value immediately
+  #   value.free  # free when done
   class TableValue
     property? released : Bool = false
     property? managed_by_libui : Bool = false
 
     def initialize(@ref_ptr : Pointer(LibUI::TableValue))
-      @managed_by_libui = true # TableValue managed by LibUI
+      @managed_by_libui = true # TableValue managed by LibUI - DO NOT free
     end
 
     # Overloaded initializers for convenient creation

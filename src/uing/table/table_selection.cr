@@ -1,4 +1,17 @@
 module UIng
+  # TableSelection represents selected rows in a Table.
+  #
+  # CRITICAL MEMORY MANAGEMENT WARNINGS:
+  # 1. TableSelection returned from Table methods MUST be freed after use
+  # 2. DO NOT store TableSelection references long-term - use immediately and free
+  # 3. Double-free causes crashes - only free once
+  # 4. TableSelection is "disposable" - get data, use it, free it immediately
+  #
+  # Safe usage pattern:
+  #   selection = table.selection  # Get selection
+  #   rows = selection.num_rows    # Extract data immediately
+  #   # ... use rows data ...
+  #   selection.free               # Free immediately after use
   class TableSelection
     property? managed_by_libui : Bool = false
 
@@ -8,7 +21,7 @@ module UIng
 
     def initialize(ptr : Pointer(LibUI::TableSelection))
       @cstruct = ptr.value
-      @managed_by_libui = true # TableSelection managed by LibUI
+      @managed_by_libui = true # TableSelection managed by LibUI - MUST be freed
     end
 
     def num_rows : Int32
