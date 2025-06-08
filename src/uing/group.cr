@@ -24,8 +24,20 @@ module UIng
     end
 
     def child=(control) : Nil
+      control.check_can_move
+      # libui-ng automatically replaces existing child, but we need to
+      # release ownership on Crystal side to maintain reference consistency
+      if @child_ref
+        @child_ref.not_nil!.release_ownership
+      end
       LibUI.group_set_child(@ref_ptr, UIng.to_control(control))
       @child_ref = control
+      control.take_ownership(self)
+    end
+
+    # alias for `child=`
+    def set_child(control) : Nil
+      self.child = control
     end
 
     def margined? : Bool

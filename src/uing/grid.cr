@@ -15,13 +15,17 @@ module UIng
     end
 
     def append(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil
+      control.check_can_move
       LibUI.grid_append(@ref_ptr, UIng.to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
       @children_refs << control
+      control.take_ownership(self)
     end
 
     def insert_at(control, existing, at : UIng::At, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil
+      control.check_can_move
       LibUI.grid_insert_at(@ref_ptr, UIng.to_control(control), UIng.to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
       @children_refs << control
+      control.take_ownership(self)
     end
 
     def padded? : Bool

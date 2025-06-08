@@ -30,8 +30,10 @@ module UIng
     end
 
     def append(control, stretchy : Bool = false) : Nil
+      control.check_can_move
       LibUI.box_append(@ref_ptr, UIng.to_control(control), stretchy)
       @children_refs << control
+      control.take_ownership(self)
     end
 
     def num_children : Int32
@@ -39,8 +41,10 @@ module UIng
     end
 
     def delete(index : Int32) : Nil
+      child = @children_refs[index]
       LibUI.box_delete(@ref_ptr, index)
       @children_refs.delete_at(index)
+      child.release_ownership
     end
 
     def padded? : Bool

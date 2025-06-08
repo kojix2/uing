@@ -8,6 +8,30 @@ module UIng
     # Use `__parent__` and `__set_parent__` if you need to access native functions for some reason
     protected property parent : Control?
 
+    # Public getter for parent (for testing and debugging)
+    def parent : Control?
+      @parent
+    end
+
+    # Helper method to check if this control can be moved to a new parent
+    # Raises an exception if the control already has a parent (following libui-ng behavior)
+    protected def check_can_move : Nil
+      if @parent
+        raise "You cannot give a uiControl a parent while it already has one"
+      end
+    end
+
+    # Helper method to take ownership of this control by a new parent
+    # Should only be called after check_can_move
+    protected def take_ownership(new_parent : Control) : Nil
+      @parent = new_parent
+    end
+
+    # Helper method to release ownership of this control (remove parent reference)
+    protected def release_ownership : Nil
+      @parent = nil
+    end
+
     def destroy : Nil
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
     end
