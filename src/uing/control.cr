@@ -18,18 +18,9 @@ module UIng
   abstract class Control
     include BlockConstructor
 
-    # Parent reference for GC protection and tree uniqueness
-    @parent : Control?
-
-    # Note: This method is implemented in Crystal.
-    # Use __parent__ if you want to access the native libui function
-    def parent : Control?
-      @parent
-    end
-
-    protected def set_parent_reference(parent : Control?) : Nil
-      @parent = parent
-    end
+    # Parent reference (for GC protection and tree uniqueness)
+    # Use `__parent__` and `__set_parent__` if you need to access native functions for some reason
+    protected property parent : Control? 
 
     def destroy : Nil
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
