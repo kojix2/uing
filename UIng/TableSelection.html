@@ -438,6 +438,33 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>TableSelection represents selected rows in a Table.</p>
+<p>CRITICAL MEMORY MANAGEMENT WARNINGS:</p>
+<ol>
+<li>TableSelection returned from Table methods MUST be freed after use</li>
+<li>DO NOT store TableSelection references long-term - use immediately and free</li>
+<li>Double-free causes crashes - only free once</li>
+<li>TableSelection is &quot;disposable&quot; - get data, use it, free it immediately</li>
+</ol>
+<p>Safe usage pattern:
+selection = table.selection  # Get selection
+rows = selection.num_rows    # Extract data immediately</p>
+<h1><a id="...-use-rows-data-..." class="anchor" href="#...-use-rows-data-...">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>... use rows data ...</h1>
+<p>selection.free               # Free immediately after use</p>
+
 
 
 
@@ -463,7 +490,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L15" target="_blank">
         uing/table/table_selection.cr
       </a>
     
@@ -598,7 +625,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -614,7 +641,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -646,7 +673,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -662,7 +689,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -678,7 +705,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -694,7 +721,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -710,7 +737,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -726,7 +753,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_selection.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_selection.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>

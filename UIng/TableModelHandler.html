@@ -438,6 +438,29 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>TableModelHandler provides callbacks for Table data operations.</p>
+<p>CRITICAL MEMORY MANAGEMENT WARNINGS:</p>
+<ol>
+<li>TableModelHandler MUST remain alive while TableModel exists</li>
+<li>Callbacks become invalid if handler is GC'd - causes crashes</li>
+<li>Avoid circular references in callback closures (don't capture self/TableModel)</li>
+<li>Use weak references or external data structures instead of capturing large objects</li>
+</ol>
+<p>Safe callback pattern:
+handler.cell_value do |handler_ptr, model_ptr, row, col|
+# Access external data, NOT self or captured TableModel
+external_data_source.get_value(row, col)
+end</p>
+
 
 
 
@@ -477,7 +500,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L15" target="_blank">
         uing/table/table_model_handler.cr
       </a>
     
@@ -639,7 +662,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -655,7 +678,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -671,7 +694,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -703,7 +726,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -719,7 +742,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -735,7 +758,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -751,7 +774,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -767,7 +790,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L49" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -783,7 +806,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9fcbab3448c7e8c646b63a0572728c2059cff668/src/uing/table/table_model_handler.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/027f96b07c2a4ff7c5c8a0a67876c80ea285bd9e/src/uing/table/table_model_handler.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
