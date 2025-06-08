@@ -448,24 +448,45 @@
   </h2>
 
   <p>TableSelection represents selected rows in a Table.</p>
-<p>CRITICAL MEMORY MANAGEMENT WARNINGS:</p>
+<p>AUTOMATIC MEMORY MANAGEMENT:
+TableSelection is automatically managed by the UIng library.
+Users do NOT need to manually free TableSelection objects.</p>
+<p>Recommended usage patterns:</p>
 <ol>
-<li>TableSelection returned from Table methods MUST be freed after use</li>
-<li>DO NOT store TableSelection references long-term - use immediately and free</li>
-<li>Double-free causes crashes - only free once</li>
-<li>TableSelection is &quot;disposable&quot; - get data, use it, free it immediately</li>
-</ol>
-<p>Safe usage pattern:
-selection = table.selection  # Get selection
-rows = selection.num_rows    # Extract data immediately</p>
-<h1><a id="...-use-rows-data-..." class="anchor" href="#...-use-rows-data-...">
+<li>Using on_selection_changed callback (RECOMMENDED):
+table.on_selection_changed do |selection|
+if selection.num_rows &gt; 0
+selected_row = selection.rows[0]<h1><a id="...-use-selection-data-..." class="anchor" href="#...-use-selection-data-...">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>... use rows data ...</h1>
-<p>selection.free               # Free immediately after use</p>
-<p><span class="flag purple">NOTE</span>  Users should NOT create TableSelection instances directly.
-TableSelection objects are only created by libui-ng and returned from Table methods.</p>
+</a>... use selection data ...</h1>
+end<h1><a id="table-selection-is-automatically-freed-after-this-block" class="anchor" href="#table-selection-is-automatically-freed-after-this-block">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>TableSelection is automatically freed after this block</h1>
+</li>
+</ol>
+<p>end</p>
+<ol start="2">
+<li>Manual selection access (use with caution):
+selection = table.selection  # Get selection
+rows = selection.num_rows    # Extract data immediately</li>
+</ol>
+<h1><a id="...-use-selection-data-...-1" class="anchor" href="#...-use-selection-data-...-1">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>... use selection data ...</h1>
+<p>selection.free               # MUST free manually when using this pattern</p>
+<p>IMPORTANT NOTES:</p>
+<ul>
+<li>Users should NOT create TableSelection instances directly</li>
+<li>TableSelection objects are only created by libui-ng and returned from Table methods</li>
+<li>When using table.selection directly, you MUST call free() after use</li>
+<li>The on_selection_changed callback automatically handles memory management</li>
+</ul>
 
 
 
@@ -492,7 +513,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L18" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L30" target="_blank">
         uing/table/table_selection.cr
       </a>
     
@@ -611,7 +632,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -627,7 +648,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -643,7 +664,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -659,7 +680,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L26" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -675,7 +696,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -691,7 +712,7 @@ TableSelection objects are only created by libui-ng and returned from Table meth
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/e113b7ccf24ba1214a415c4e147deec854f32b3f/src/uing/table/table_selection.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/67dbd8da7f708a3e78bf479738d261001a0f9b3e/src/uing/table/table_selection.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
