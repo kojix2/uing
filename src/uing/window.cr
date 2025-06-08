@@ -81,7 +81,7 @@ module UIng
 
     # alias for `child=`
     def set_child(control : Control) : Nil
-      self.child = control 
+      self.child = control
     end
 
     def margined? : Bool
