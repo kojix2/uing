@@ -260,6 +260,12 @@ delete_button.on_clicked do
     rows_to_delete.sort!.reverse!
 
     rows_to_delete.each do |row|
+      # Free avatar image before deleting the employee, but not if it's DEFAULT_AVATAR or nil
+      if avatar = EMPLOYEES[row].avatar
+        unless avatar.same?(DEFAULT_AVATAR)
+          avatar.free
+        end
+      end
       EMPLOYEES.delete_at(row)
       table_model.row_deleted(row)
     end
