@@ -448,35 +448,45 @@
   </h2>
 
   <p>TableValue represents data values in Table cells.</p>
-<p>CRITICAL MEMORY MANAGEMENT WARNINGS:</p>
+<p>UNIFIED MEMORY MANAGEMENT:
+TableValue uses a borrowed flag to automatically handle memory management.</p>
+<p>CRITICAL WARNINGS:</p>
 <ol>
-<li>TableValue returned from TableModelHandler callbacks is &quot;borrowed&quot; - DO NOT free</li>
+<li>TableValue from TableModelHandler callbacks is &quot;borrowed&quot; - automatically protected from free</li>
 <li>TableValue created by Crystal code MUST be freed after use</li>
-<li>DO NOT store TableValue references long-term - use immediately and free</li>
+<li>DO NOT store TableValue references long-term</li>
 <li>libui-ng takes ownership when TableValue is passed to Table methods</li>
+<li>Image data returned from TableValue.image is borrowed - DO NOT free</li>
+<li>String data returned from TableValue.string is borrowed - DO NOT free</li>
 </ol>
 <p>Safe usage patterns:</p>
-<h1><a id="in-table-model-handler-callback-borrowed" class="anchor" href="#in-table-model-handler-callback-borrowed">
+<h1><a id="in-table-model-handler-callback-borrowed-automatically-protected" class="anchor" href="#in-table-model-handler-callback-borrowed-automatically-protected">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>In TableModelHandler callback (borrowed):</h1>
+</a>In TableModelHandler callback (borrowed - automatically protected):</h1>
 <p>def cell_value(...)
 value = LibUI.new_table_value_string(&quot;data&quot;)
 return value  # libui-ng will free this
 end</p>
-<h1><a id="creating-for-immediate-use" class="anchor" href="#creating-for-immediate-use">
+<h1><a id="creating-for-immediate-use-must-free" class="anchor" href="#creating-for-immediate-use-must-free">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Creating for immediate use:</h1>
-<p>value = TableValue.new(&quot;data&quot;)</p>
-<h1><a id="use-value-immediately" class="anchor" href="#use-value-immediately">
+</a>Creating for immediate use (must free):</h1>
+<p>value = TableValue.new(&quot;data&quot;)
+data = value.string  # Extract data immediately
+value.free           # Free immediately after use</p>
+<h1><a id="reading-from-borrowed-table-value-automatically-protected" class="anchor" href="#reading-from-borrowed-table-value-automatically-protected">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>use value immediately</h1>
-<p>value.free  # free when done</p>
+</a>Reading from borrowed TableValue (automatically protected):</h1>
+<p>def set_cell_value(row, column, value_ptr)
+table_value = TableValue.new(value_ptr, borrowed: true)  # Marked as borrowed
+data = table_value.string                               # Extract data
+table_value.free  # Safe to call - will be ignored for borrowed values
+end</p>
 
 
 
@@ -503,7 +513,7 @@ end</p>
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L21" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L33" target="_blank">
         uing/table/table_value.cr
       </a>
     
@@ -531,14 +541,16 @@ end</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableValue%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableValue))</a>
+        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableValue%29%2Cborrowed%3ABool%3Dfalse%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableValue), borrowed : Bool = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Unified constructor - handles both borrowed and owned TableValue</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#new%28str%3AString%29-class-method" class="signature"><strong>.new</strong>(str : String)</a>
         
-          <div class="summary"><p>Overloaded initializers for convenient creation</p></div>
+          <div class="summary"><p>Public constructors for creating new TableValue objects These MUST be freed after use</p></div>
         
       </li>
     
@@ -576,6 +588,16 @@ end</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#borrowed%3D%28borrowed%3ABool%29-instance-method" class="signature"><strong>#borrowed=</strong>(borrowed : Bool)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#borrowed%3F%3ABool-instance-method" class="signature"><strong>#borrowed?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#color%3ATuple%28Float64%2CFloat64%2CFloat64%2CFloat64%29-instance-method" class="signature"><strong>#color</strong> : Tuple(Float64, Float64, Float64, Float64)</a>
         
       </li>
@@ -591,22 +613,12 @@ end</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#image%3AImage-instance-method" class="signature"><strong>#image</strong> : Image</a>
+        <a href="#image%3APointer%28LibUI%3A%3AImage%29-instance-method" class="signature"><strong>#image</strong> : Pointer(LibUI::Image)</a>
         
       </li>
     
       <li class="entry-summary">
         <a href="#int%3AInt32-instance-method" class="signature"><strong>#int</strong> : Int32</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method" class="signature"><strong>#managed_by_libui=</strong>(managed_by_libui : Bool)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#managed_by_libui%3F%3ABool-instance-method" class="signature"><strong>#managed_by_libui?</strong> : Bool</a>
         
       </li>
     
@@ -690,23 +702,28 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableValue))-class-method">
+    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableValue),borrowed:Bool=false)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::TableValue))
+        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::TableValue), borrowed : Bool = <span class="n">false</span>)
 
-        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableValue%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableValue%29%2Cborrowed%3ABool%3Dfalse%29-class-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Unified constructor - handles both borrowed and owned TableValue</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -721,13 +738,14 @@ end</p>
       
         <div class="doc">
           
-          <p>Overloaded initializers for convenient creation</p>
+          <p>Public constructors for creating new TableValue objects
+These MUST be freed after use</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -743,7 +761,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L49" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -759,7 +777,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -775,7 +793,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -796,6 +814,38 @@ end</p>
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="borrowed=(borrowed:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>borrowed=</strong>(borrowed : Bool)
+
+        <a class="method-permalink" href="#borrowed%3D%28borrowed%3ABool%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L35" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="borrowed?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>borrowed?</strong> : Bool
+
+        <a class="method-permalink" href="#borrowed%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L35" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="color:Tuple(Float64,Float64,Float64,Float64)-instance-method">
       <div class="signature">
         
@@ -807,7 +857,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L100" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -823,7 +873,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -839,23 +889,23 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L79" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="image:Image-instance-method">
+    <div class="entry-detail" id="image:Pointer(LibUI::Image)-instance-method">
       <div class="signature">
         
-        def <strong>image</strong> : <a href="../UIng/Image.html">Image</a>
+        def <strong>image</strong> : Pointer(LibUI::Image)
 
-        <a class="method-permalink" href="#image%3AImage-instance-method">#</a>
+        <a class="method-permalink" href="#image%3APointer%28LibUI%3A%3AImage%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L90" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -871,39 +921,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L79" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="managed_by_libui=(managed_by_libui:Bool)-instance-method">
-      <div class="signature">
-        
-        def <strong>managed_by_libui=</strong>(managed_by_libui : Bool)
-
-        <a class="method-permalink" href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L23" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="managed_by_libui?:Bool-instance-method">
-      <div class="signature">
-        
-        def <strong>managed_by_libui?</strong> : Bool
-
-        <a class="method-permalink" href="#managed_by_libui%3F%3ABool-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -919,7 +937,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -935,7 +953,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -951,7 +969,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L69" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -967,7 +985,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L120" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -983,7 +1001,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/25514d28dd041834d99d19097103e5a2a1e93568/src/uing/table/table_value.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4e512d9f62ee31e7429fac004eac70f05e6d0cce/src/uing/table/table_value.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
