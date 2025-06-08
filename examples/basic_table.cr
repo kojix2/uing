@@ -33,8 +33,7 @@ table = UIng::Table.new(table_params) do
   append_text_column("Description", 1, -1)
 end
 
-table.on_selection_changed do
-  selection = table.selection
+table.on_selection_changed do |selection|
   if selection.num_rows > 0
     selected_row = selection.rows[0]
     animal = DATA[selected_row][0]
@@ -43,8 +42,7 @@ table.on_selection_changed do
   else
     puts "No selection"
   end
-  # Free TableSelection immediately after use
-  selection.free
+  # TableSelection is automatically freed after this block
 end
 
 table.on_row_double_clicked do |row|

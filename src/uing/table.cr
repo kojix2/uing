@@ -59,11 +59,16 @@ module UIng
       end, @on_header_clicked_box.not_nil!)
     end
 
-    def on_selection_changed(&block : -> Void)
+    def on_selection_changed(&block : TableSelection -> Void)
       @on_selection_changed_box = ::Box.box(block)
       LibUI.table_on_selection_changed(@ref_ptr, ->(table, data) do
         callback = ::Box(typeof(block)).unbox(data)
-        callback.call
+        # Get current selection and pass it to the callback
+        selection_ptr = LibUI.table_get_selection(table)
+        selection = TableSelection.new(selection_ptr)
+        callback.call(selection)
+        # Automatically free the selection after callback
+        selection.free
       end, @on_selection_changed_box.not_nil!)
     end
 

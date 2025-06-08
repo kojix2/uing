@@ -1,20 +1,32 @@
 module UIng
   # TableSelection represents selected rows in a Table.
   #
-  # CRITICAL MEMORY MANAGEMENT WARNINGS:
-  # 1. TableSelection returned from Table methods MUST be freed after use
-  # 2. DO NOT store TableSelection references long-term - use immediately and free
-  # 3. Double-free causes crashes - only free once
-  # 4. TableSelection is "disposable" - get data, use it, free it immediately
+  # AUTOMATIC MEMORY MANAGEMENT:
+  # TableSelection is automatically managed by the UIng library.
+  # Users do NOT need to manually free TableSelection objects.
   #
-  # Safe usage pattern:
+  # Recommended usage patterns:
+  #
+  # 1. Using on_selection_changed callback (RECOMMENDED):
+  #   table.on_selection_changed do |selection|
+  #     if selection.num_rows > 0
+  #       selected_row = selection.rows[0]
+  #       # ... use selection data ...
+  #     end
+  #     # TableSelection is automatically freed after this block
+  #   end
+  #
+  # 2. Manual selection access (use with caution):
   #   selection = table.selection  # Get selection
   #   rows = selection.num_rows    # Extract data immediately
-  #   # ... use rows data ...
-  #   selection.free               # Free immediately after use
+  #   # ... use selection data ...
+  #   selection.free               # MUST free manually when using this pattern
   #
-  # NOTE: Users should NOT create TableSelection instances directly.
-  # TableSelection objects are only created by libui-ng and returned from Table methods.
+  # IMPORTANT NOTES:
+  # - Users should NOT create TableSelection instances directly
+  # - TableSelection objects are only created by libui-ng and returned from Table methods
+  # - When using table.selection directly, you MUST call free() after use
+  # - The on_selection_changed callback automatically handles memory management
   class TableSelection
     property? freed : Bool = false
 
