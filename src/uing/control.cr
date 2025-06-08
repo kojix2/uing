@@ -1,26 +1,12 @@
+require "./block_constructor"
+
 module UIng
-  module BlockConstructor
-    macro block_constructor
-      def self.new(*args, &block)
-        instance = new(*args)
-        with instance yield
-        instance
-      end
-
-      def self.new(*args, **kwargs, &block)
-        instance = new(*args, **kwargs)
-        with instance yield
-        instance
-      end
-    end
-  end
-
   abstract class Control
     include BlockConstructor
 
     # Parent reference (for GC protection and tree uniqueness)
     # Use `__parent__` and `__set_parent__` if you need to access native functions for some reason
-    protected property parent : Control? 
+    protected property parent : Control?
 
     def destroy : Nil
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
