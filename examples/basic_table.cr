@@ -45,6 +45,10 @@ table.on_selection_changed do |selection|
   # TableSelection is automatically freed after this block
 end
 
+table.on_header_clicked do |idx|
+  puts "Header clicked: #{idx}"
+end
+
 table.on_row_double_clicked do |row|
   animal = DATA[row][0]
   sound = DATA[row][1]
