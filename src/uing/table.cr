@@ -77,7 +77,7 @@ module UIng
     end
 
     def header_visible=(value : Bool)
-      LibUI.table_header_set_visible(@ref_ptr, value ? 1 : 0)
+      LibUI.table_header_set_visible(@ref_ptr, value)
     end
 
     def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params = nil) : Nil
