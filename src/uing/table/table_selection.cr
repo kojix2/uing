@@ -12,33 +12,35 @@ module UIng
   #   rows = selection.num_rows    # Extract data immediately
   #   # ... use rows data ...
   #   selection.free               # Free immediately after use
+  #
+  # NOTE: Users should NOT create TableSelection instances directly.
+  # TableSelection objects are only created by libui-ng and returned from Table methods.
   class TableSelection
-    property? managed_by_libui : Bool = false
+    property? freed : Bool = false
 
-    def initialize(@cstruct : LibUI::TableSelection = LibUI::TableSelection.new)
-      @managed_by_libui = false # TableSelection created by ourselves
-    end
-
-    def initialize(ptr : Pointer(LibUI::TableSelection))
-      @cstruct = ptr.value
-      @managed_by_libui = true # TableSelection managed by LibUI - MUST be freed
+    # Internal constructor - only used by libui-ng bindings
+    # Users should NOT call this directly
+    protected def initialize(@ptr : Pointer(LibUI::TableSelection))
     end
 
     def num_rows : Int32
-      @cstruct.num_rows
+      @ptr.value.num_rows
     end
 
     def rows : Pointer(Int32)
-      @cstruct.rows
+      @ptr.value.rows
     end
 
     def free : Nil
-      return if @managed_by_libui # Don't free TableSelection managed by LibUI
-      LibUI.free_table_selection(self.to_unsafe)
+      return if @freed # Prevent double-free
+      # TableSelection returned from libui-ng MUST be freed by caller
+      # This is different from other libui-ng objects
+      LibUI.free_table_selection(@ptr)
+      @freed = true
     end
 
     def to_unsafe
-      pointerof(@cstruct)
+      @ptr
     end
 
     # Note: No finalize method needed for TableSelection
