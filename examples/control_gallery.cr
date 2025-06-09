@@ -105,7 +105,16 @@ end
 inner.append dtp
 
 # Font Button
-inner.append UIng::FontButton.new
+font_button = UIng::FontButton.new do
+  on_changed do |font_descriptor|
+    p family: font_descriptor.family,
+      size: font_descriptor.size,
+      weight: font_descriptor.weight,
+      italic: font_descriptor.italic,
+      stretch: font_descriptor.stretch
+  end
+end
+inner.append font_button
 
 # Color Button
 color_button = UIng::ColorButton.new do
