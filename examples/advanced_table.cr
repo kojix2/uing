@@ -2,6 +2,20 @@ require "../src/uing"
 
 UIng.init
 
+# Column constants
+enum Column
+  Avatar     = 0
+  Name       = 1
+  Age        = 2
+  Department = 3
+  Salary     = 4
+  Progress   = 5
+  Active     = 6
+end
+
+COLUMN_NAMES     = ["Avatar", "Name", "Age", "Department", "Salary", "Progress", "Active"]
+SORTABLE_COLUMNS = [Column::Name, Column::Age, Column::Department, Column::Salary, Column::Active]
+
 # Sample data structure for a more complex table
 class Employee
   property name : String
@@ -41,7 +55,7 @@ end
 # Create a default gray avatar for employees without avatars
 DEFAULT_AVATAR = create_avatar_image(0.5, 0.5, 0.5)
 
-# Global employee data (following C pattern)
+# Global employee data (mutable for sorting)
 EMPLOYEES = [
   Employee.new("Alice Johnson", 28, "Engineering", 75000, true, create_avatar_image(0.8, 0.2, 0.2), 85),
   Employee.new("Bob Smith", 35, "Marketing", 65000, true, create_avatar_image(0.2, 0.8, 0.2), 72),
@@ -53,7 +67,11 @@ EMPLOYEES = [
   Employee.new("Henry Taylor", 45, "Sales", 70000, true, create_avatar_image(0.4, 0.6, 0.8), 78),
   Employee.new("Ivy Chen", 33, "Engineering", 80000, true, create_avatar_image(0.8, 0.6, 0.4), 92),
   Employee.new("Jack Anderson", 27, "HR", 52000, true, create_avatar_image(0.4, 0.8, 0.6), -1), # Indeterminate progress
-]
+] of Employee
+
+# Global sort state
+SORT_COLUMN    = -1
+SORT_ASCENDING = true
 
 main_window = UIng::Window.new("Advanced Table Example", 800, 600)
 main_window.margined = true
@@ -96,17 +114,17 @@ vbox.append(status_label, false)
 
 # Create table model handler
 model_handler = UIng::TableModelHandler.new do
-  num_columns { |_, _| 7 } # Avatar, Name, Age, Department, Salary, Progress, Active
+  num_columns { |_, _| COLUMN_NAMES.size }
 
   column_type do |_, _, column|
-    case column
-    when 0 # Avatar (image)
+    case Column.new(column)
+    when .avatar?
       UIng::TableValueType::Image
-    when 1, 2, 3, 4 # Name, Age, Department, Salary (all as text)
+    when .name?, .age?, .department?, .salary?
       UIng::TableValueType::String
-    when 5 # Progress (progress bar)
+    when .progress?
       UIng::TableValueType::Int
-    when 6 # Active (checkbox)
+    when .active?
       UIng::TableValueType::Int
     else
       UIng::TableValueType::String
@@ -119,25 +137,21 @@ model_handler = UIng::TableModelHandler.new do
     next UIng::TableValue.new("").to_unsafe if row >= EMPLOYEES.size
 
     employee = EMPLOYEES[row]
-    case column
-    when 0 # Avatar
-      if avatar = employee.avatar
-        UIng::TableValue.new(avatar)
-      else
-        # Use the shared default avatar
-        UIng::TableValue.new(DEFAULT_AVATAR)
-      end
-    when 1 # Name
+    case Column.new(column)
+    when .avatar?
+      avatar = employee.avatar || DEFAULT_AVATAR
+      UIng::TableValue.new(avatar)
+    when .name?
       UIng::TableValue.new(employee.name)
-    when 2 # Age
+    when .age?
       UIng::TableValue.new(employee.age.to_s)
-    when 3 # Department
+    when .department?
       UIng::TableValue.new(employee.department)
-    when 4 # Salary
+    when .salary?
       UIng::TableValue.new(employee.salary.to_s)
-    when 5 # Progress
+    when .progress?
       UIng::TableValue.new(employee.progress)
-    when 6 # Active
+    when .active?
       UIng::TableValue.new(employee.active ? 1 : 0)
     else
       UIng::TableValue.new("")
@@ -149,34 +163,28 @@ model_handler = UIng::TableModelHandler.new do
 
     table_value = UIng::TableValue.new(value, borrowed: true)
 
-    case column
-    when 0 # Avatar (read-only)
-      # Images are typically read-only in tables
-    when 1 # Name
+    case Column.new(column)
+    when .avatar?, .progress?
+      # Read-only columns
+    when .name?
       if name = table_value.string
         EMPLOYEES[row].name = name
       end
-    when 2 # Age
+    when .age?
       if age_str = table_value.string
         EMPLOYEES[row].age = age_str.to_i? || EMPLOYEES[row].age
       end
-    when 3 # Department
+    when .department?
       if dept = table_value.string
         EMPLOYEES[row].department = dept
       end
-    when 4 # Salary
+    when .salary?
       if salary_str = table_value.string
         EMPLOYEES[row].salary = salary_str.to_i? || EMPLOYEES[row].salary
       end
-    when 5 # Progress (read-only)
-      # Progress bars are typically read-only in tables
-    when 6 # Active
+    when .active?
       EMPLOYEES[row].active = table_value.int != 0
     end
-
-    # DO NOT free borrowed TableValue - it's managed by libui-ng
-    # Note: Avoid creating new TableModel instances for memory safety
-    # libui-ng should handle view updates automatically
   end
 end
 
@@ -226,20 +234,52 @@ table.on_row_double_clicked do |row|
 end
 
 table.on_header_clicked do |column|
-  column_names = ["Avatar", "Name", "Age", "Department", "Salary", "Progress", "Active"]
-  puts "Header clicked: #{column_names[column]? || "Unknown"}"
+  puts "Header clicked: #{COLUMN_NAMES[column]? || "Unknown"}"
 
-  # Toggle sort indicator (demo)
+  # Skip sorting for non-sortable columns
+  column_enum = Column.new(column)
+  next unless SORTABLE_COLUMNS.includes?(column_enum)
+
+  # Clear previous sort indicators
+  (0...7).each do |col|
+    table.header_set_sort_indicator(col, UIng::SortIndicator::None) if col != column
+  end
+
+  # Determine new sort direction
   current = table.header_sort_indicator(column)
-  new_indicator = case current
-                  when UIng::SortIndicator::None
-                    UIng::SortIndicator::Ascending
-                  when UIng::SortIndicator::Ascending
-                    UIng::SortIndicator::Descending
-                  else
-                    UIng::SortIndicator::None
-                  end
+  ascending = case current
+              when UIng::SortIndicator::None
+                true
+              when UIng::SortIndicator::Ascending
+                false
+              else
+                true
+              end
+
+  # Sort the data
+  case column_enum
+  when .name?
+    EMPLOYEES.sort! { |a, b| ascending ? a.name <=> b.name : b.name <=> a.name }
+  when .age?
+    EMPLOYEES.sort! { |a, b| ascending ? a.age <=> b.age : b.age <=> a.age }
+  when .department?
+    EMPLOYEES.sort! { |a, b| ascending ? a.department <=> b.department : b.department <=> a.department }
+  when .salary?
+    EMPLOYEES.sort! { |a, b| ascending ? a.salary <=> b.salary : b.salary <=> a.salary }
+  when .active?
+    EMPLOYEES.sort! { |a, b| ascending ? (a.active ? 1 : 0) <=> (b.active ? 1 : 0) : (b.active ? 1 : 0) <=> (a.active ? 1 : 0) }
+  end
+
+  # Update sort indicator
+  new_indicator = ascending ? UIng::SortIndicator::Ascending : UIng::SortIndicator::Descending
   table.header_set_sort_indicator(column, new_indicator)
+
+  # Refresh the entire table
+  (0...EMPLOYEES.size).each do |row|
+    table_model.row_changed(row)
+  end
+
+  status_label.text = "Sorted by #{COLUMN_NAMES[column]} (#{ascending ? "ascending" : "descending"})"
 end
 
 # Button event handlers
