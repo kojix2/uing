@@ -62,7 +62,7 @@ UIng.main
 UIng.uninit
 ```
 
-For more examples, see [examples](examples).
+For more examples, see [examples](examples).　
 
 ## API Levels
 
@@ -90,6 +90,9 @@ For more examples, see [examples](examples).
     </tr>
   </tbody>
 </table>
+
+- Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
+- APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
 
 ## Memory Safety
 
@@ -132,7 +135,8 @@ $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ## Development
 
 - `UIng::LibUI` is the module for direct C bindings
-- Use [crystal_lib](https://github.com/crystal-lang/crystal_lib) to generate low-level bindings
+- Initially, [crystal_lib](https://github.com/crystal-lang/crystal_lib) was used to generate low-level bindings
+　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
 
@@ -146,3 +150,5 @@ $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ## License
 
 MIT License
+
+This project includes code generated using AI.
