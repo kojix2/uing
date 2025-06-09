@@ -94,7 +94,9 @@ For more examples, see [examples](examples).
 ## Memory Safety
 
 - Most callbacks are stored as instance variables of their respective controls, which protects them from garbage collection (GC). Some callbacks are stored as UIng class variables, which serves the same purpose.
+
 - Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window → Box → Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.
+
 - The use of `finalize` is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, an API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.
 
 ## Windows Setup
@@ -125,7 +127,7 @@ $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 
 - Many methods support Crystal closures as arguments because the underlying libui-ng native functions often accept a `data` parameter, enabling flexible callbacks.
 
-However, closures cannot be registered in scenarios requiring a C function to be assigned to a struct member, as there is no provision for a `data` argument in that case. Note that attempting to do so will result in a runtime error.
+- However, closures cannot be registered in scenarios requiring a C function to be assigned to a struct member, as there is no provision for a `data` argument in that case. Note that attempting to do so will result in a runtime error.
 
 ## Development
 
