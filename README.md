@@ -123,7 +123,9 @@ $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 
 ## Closures and Limitations
 
-Crystal blocks passed as callbacks to C functions are captured blocks. The mid-level API implements closures using the Box class to work around limitations. The recent memory safety improvements have resolved most callback-related crashes.
+- Many methods support Crystal closures as arguments because the underlying libui-ng native functions often accept a `data` parameter, enabling flexible callbacks.
+
+However, closures cannot be registered in scenarios requiring a C function to be assigned to a struct member, as there is no provision for a `data` argument in that case. Note that attempting to do so will result in a runtime error.
 
 ## Development
 
