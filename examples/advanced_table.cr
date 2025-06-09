@@ -122,26 +122,26 @@ model_handler = UIng::TableModelHandler.new do
     case column
     when 0 # Avatar
       if avatar = employee.avatar
-        UIng::TableValue.new(avatar).to_unsafe
+        UIng::TableValue.new(avatar)
       else
         # Use the shared default avatar
-        UIng::TableValue.new(DEFAULT_AVATAR).to_unsafe
+        UIng::TableValue.new(DEFAULT_AVATAR)
       end
     when 1 # Name
-      UIng::TableValue.new(employee.name).to_unsafe
+      UIng::TableValue.new(employee.name)
     when 2 # Age
-      UIng::TableValue.new(employee.age.to_s).to_unsafe
+      UIng::TableValue.new(employee.age.to_s)
     when 3 # Department
-      UIng::TableValue.new(employee.department).to_unsafe
+      UIng::TableValue.new(employee.department)
     when 4 # Salary
-      UIng::TableValue.new(employee.salary.to_s).to_unsafe
+      UIng::TableValue.new(employee.salary.to_s)
     when 5 # Progress
-      UIng::TableValue.new(employee.progress).to_unsafe
+      UIng::TableValue.new(employee.progress)
     when 6 # Active
-      UIng::TableValue.new(employee.active ? 1 : 0).to_unsafe
+      UIng::TableValue.new(employee.active ? 1 : 0)
     else
-      UIng::TableValue.new("").to_unsafe
-    end
+      UIng::TableValue.new("")
+    end.to_unsafe
   end
 
   set_cell_value do |_, _, row, column, value|
