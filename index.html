@@ -514,6 +514,10 @@ window.show
     </tr>
   </tbody>
 </table>
+<ul>
+<li>Almost all basic control functions such as <code>Window</code>, <code>Label</code>, and <code>Button</code> are covered.</li>
+<li>APIs for advanced controls such as <code>Table</code> and <code>Area</code> are also provided. However, these are still under development and there may still be memory management issues.</li>
+</ul>
 <h2><a id="memory-safety" class="anchor" href="#memory-safety">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -571,7 +575,8 @@ window.show
 </a>Development</h2>
 <ul>
 <li><code>UIng::LibUI</code> is the module for direct C bindings</li>
-<li>Use <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> to generate low-level bindings</li>
+<li>Initially, <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> was used to generate low-level bindings
+　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.</li>
 <li>When adding new UI components, follow the established callback management patterns</li>
 <li>libui libraries are generated using GitHub Actions at <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> in the pre-build branch.</li>
 </ul>
@@ -592,6 +597,7 @@ window.show
   </svg>
 </a>License</h2>
 <p>MIT License</p>
+<p>This project includes code generated using AI.</p>
 </div>
 </body>
 </html>
