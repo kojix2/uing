@@ -28,7 +28,9 @@ UIng::Menu.new("File") do
     end
   end
 
-  append_preferences_item
+  append_preferences_item.on_clicked do
+    puts "Preference item clicked"
+  end
 end
 
 # Edit menu
@@ -42,7 +44,9 @@ end
 # Help menu
 UIng::Menu.new("Help") do
   append_item("Help")
-  append_about_item
+  append_about_item.on_clicked do
+    puts "About item clicked"
+  end
 end
 
 vbox = UIng::Box.new(:vertical, padded: true)
@@ -188,6 +192,9 @@ hbox1 = UIng::Box.new(:horizontal)
 tab.append("Page 1", hbox1)
 tab.append("Page 2", UIng::Box.new(:horizontal))
 tab.append("Page 3", UIng::Box.new(:horizontal))
+tab.on_selected do |idx|
+  puts "Tab selected: index #{idx}"
+end
 inner2.append(tab, true)
 
 # Text Entry
