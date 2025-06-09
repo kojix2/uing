@@ -324,29 +324,6 @@ end
 
 # Show window and start main loop
 main_window.show
-puts "Advanced Table Example started"
-puts "Features demonstrated:"
-puts "- Multiple column types (image, text, number, checkbox, progress bar)"
-puts "- Image columns with custom avatar generation"
-puts "- Progress bar columns with determinate and indeterminate values"
-puts "- Editable cells (text and checkbox)"
-puts "- Selection handling (single/multiple)"
-puts "- Row operations (add, delete)"
-puts "- Header sorting indicators"
-puts "- Event handling (click, double-click, header click)"
-puts "- Dynamic data updates"
-puts "- Automatic memory management for TableSelection"
-puts "- Proper TableValueType::Int usage (checkbox and progress bar)"
-puts ""
-puts "Usage instructions:"
-puts "1. Click on rows to select employees"
-puts "2. Edit text fields (Name, Age, Department, Salary) by double-clicking"
-puts "3. Click checkboxes in the Active column to toggle active status"
-puts "4. Use 'Toggle Selected Active' button to toggle active status of selected rows"
-puts "5. Use 'Add Employee' to add new employees"
-puts "6. Use 'Delete Selected' to remove selected employees"
-puts "7. Change selection mode between Single and Multiple"
-puts "8. Click column headers to toggle sort indicators"
 
 UIng.main
 UIng.uninit
