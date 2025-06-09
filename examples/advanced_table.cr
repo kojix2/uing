@@ -3,7 +3,7 @@ require "../src/uing"
 UIng.init
 
 # Sample data structure for a more complex table
-struct Employee
+class Employee
   property name : String
   property age : Int32
   property department : String
@@ -41,7 +41,7 @@ end
 # Create a default gray avatar for employees without avatars
 DEFAULT_AVATAR = create_avatar_image(0.5, 0.5, 0.5)
 
-# Sample employee data with avatars and progress values
+# Global employee data (following C pattern)
 EMPLOYEES = [
   Employee.new("Alice Johnson", 28, "Engineering", 75000, true, create_avatar_image(0.8, 0.2, 0.2), 85),
   Employee.new("Bob Smith", 35, "Marketing", 65000, true, create_avatar_image(0.2, 0.8, 0.2), 72),
@@ -144,10 +144,9 @@ model_handler = UIng::TableModelHandler.new do
     end.to_unsafe
   end
 
-  set_cell_value do |_, _, row, column, value|
+  set_cell_value do |_, model_ptr, row, column, value|
     next if row >= EMPLOYEES.size
 
-    employee = EMPLOYEES[row]
     table_value = UIng::TableValue.new(value, borrowed: true)
 
     case column
@@ -155,27 +154,29 @@ model_handler = UIng::TableModelHandler.new do
       # Images are typically read-only in tables
     when 1 # Name
       if name = table_value.string
-        employee.name = name
+        EMPLOYEES[row].name = name
       end
     when 2 # Age
       if age_str = table_value.string
-        employee.age = age_str.to_i? || employee.age
+        EMPLOYEES[row].age = age_str.to_i? || EMPLOYEES[row].age
       end
     when 3 # Department
       if dept = table_value.string
-        employee.department = dept
+        EMPLOYEES[row].department = dept
       end
     when 4 # Salary
       if salary_str = table_value.string
-        employee.salary = salary_str.to_i? || employee.salary
+        EMPLOYEES[row].salary = salary_str.to_i? || EMPLOYEES[row].salary
       end
     when 5 # Progress (read-only)
       # Progress bars are typically read-only in tables
     when 6 # Active
-      employee.active = table_value.int != 0
+      EMPLOYEES[row].active = table_value.int != 0
     end
 
     # DO NOT free borrowed TableValue - it's managed by libui-ng
+    # Note: Avoid creating new TableModel instances for memory safety
+    # libui-ng should handle view updates automatically
   end
 end
 
@@ -282,8 +283,10 @@ toggle_button.on_clicked do
   if selection.num_rows > 0
     (0...selection.num_rows).each do |i|
       row = selection.rows[i]
-      EMPLOYEES[row].active = !EMPLOYEES[row].active
-      table_model.row_changed(row)
+      if row < EMPLOYEES.size
+        EMPLOYEES[row].active = !EMPLOYEES[row].active
+        table_model.row_changed(row)
+      end
     end
     status_label.text = "Toggled active status for #{selection.num_rows} employee(s)"
   else
