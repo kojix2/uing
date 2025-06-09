@@ -550,7 +550,10 @@ window.show
     <use href="#octicon-link"/>
   </svg>
 </a>Closures and Limitations</h2>
-<p>Crystal blocks passed as callbacks to C functions are captured blocks. The mid-level API implements closures using the Box class to work around limitations. The recent memory safety improvements have resolved most callback-related crashes.</p>
+<ul>
+<li>Many methods support Crystal closures as arguments because the underlying libui-ng native functions often accept a <code>data</code> parameter, enabling flexible callbacks.</li>
+</ul>
+<p>However, closures cannot be registered in scenarios requiring a C function to be assigned to a struct member, as there is no provision for a <code>data</code> argument in that case. Note that attempting to do so will result in a runtime error.</p>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
