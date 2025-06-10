@@ -141,6 +141,17 @@ module UIng
       TableSelection.new(ref_ptr)
     end
 
+    # Block version that automatically frees the selection after the block
+    # This eliminates the need for manual free() calls
+    def selection(&block : TableSelection -> T) : T forall T
+      selection_obj = selection
+      begin
+        yield selection_obj
+      ensure
+        selection_obj.free
+      end
+    end
+
     def selection=(selection : TableSelection) : Nil
       LibUI.table_set_selection(@ref_ptr, selection.to_unsafe)
     end

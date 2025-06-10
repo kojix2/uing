@@ -137,25 +137,26 @@ model_handler = UIng::TableModelHandler.new do
     next UIng::TableValue.new("").to_unsafe if row >= EMPLOYEES.size
 
     employee = EMPLOYEES[row]
-    case Column.new(column)
-    when .avatar?
-      avatar = employee.avatar || DEFAULT_AVATAR
-      UIng::TableValue.new(avatar)
-    when .name?
-      UIng::TableValue.new(employee.name)
-    when .age?
-      UIng::TableValue.new(employee.age.to_s)
-    when .department?
-      UIng::TableValue.new(employee.department)
-    when .salary?
-      UIng::TableValue.new(employee.salary.to_s)
-    when .progress?
-      UIng::TableValue.new(employee.progress)
-    when .active?
-      UIng::TableValue.new(employee.active ? 1 : 0)
-    else
-      UIng::TableValue.new("")
-    end.to_unsafe
+    value = case Column.new(column)
+            when .avatar?
+              avatar = employee.avatar || DEFAULT_AVATAR
+              UIng::TableValue.new(avatar)
+            when .name?
+              UIng::TableValue.new(employee.name)
+            when .age?
+              UIng::TableValue.new(employee.age.to_s)
+            when .department?
+              UIng::TableValue.new(employee.department)
+            when .salary?
+              UIng::TableValue.new(employee.salary.to_s)
+            when .progress?
+              UIng::TableValue.new(employee.progress)
+            when .active?
+              UIng::TableValue.new(employee.active ? 1 : 0)
+            else
+              UIng::TableValue.new("")
+            end
+    value.to_unsafe
   end
 
   set_cell_value do |_, model_ptr, row, column, value|
