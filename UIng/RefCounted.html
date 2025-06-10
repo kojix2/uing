@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::TableModel - uing main</title>
+  <title>UIng::RefCounted - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -302,7 +302,7 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/RefCounted" data-name="uing::refcounted">
+  <li class=" current" data-id="uing/UIng/RefCounted" data-name="uing::refcounted">
       <a href="../UIng/RefCounted.html">RefCounted</a>
       
     </li>
@@ -337,7 +337,7 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/TableModel" data-name="uing::tablemodel">
+  <li class=" " data-id="uing/UIng/TableModel" data-name="uing::tablemodel">
       <a href="../UIng/TableModel.html">TableModel</a>
       
     </li>
@@ -432,13 +432,11 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> UIng::<wbr>TableModel
+    module
+  </span> UIng::<wbr>RefCounted
 
 </h1>
 
-
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/TableModel.html">UIng::TableModel</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -452,25 +450,21 @@
     Overview
   </h2>
 
-  <p>TableModel manages data for Table controls.</p>
-<p>CRITICAL MEMORY MANAGEMENT WARNINGS:</p>
-<ol>
-<li>TableModel MUST be freed AFTER all Tables using it are destroyed</li>
-<li>TableModelHandler callbacks become invalid after TableModel is freed</li>
-<li>DO NOT rely on GC/finalize for automatic cleanup - use explicit free()</li>
-<li>Avoid circular references in TableModelHandler callbacks</li>
-</ol>
-<p>Safe usage pattern:
-model_handler = TableModelHandler.new
-model = TableModel.new(model_handler)
-table = Table.new(TableParams.new(model))</p>
-<h1><a id="...-use-table-..." class="anchor" href="#...-use-table-...">
+  <p>RefCounted provides reference counting functionality for libui-ng resources
+that can be shared across multiple objects.</p>
+<p>CRITICAL THREAD SAFETY WARNING:
+All reference counting operations (acquire/release) MUST be performed on the
+main thread only, as libui-ng is not thread-safe.</p>
+<p>Usage pattern:
+resource = SomeRefCountedResource.new(...)  # ref_count = 1
+other_object.use(resource)                  # calls resource.acquire (ref_count = 2)</p>
+<h1><a id="...-later-..." class="anchor" href="#...-later-...">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>... use table ...</h1>
-<p>table.destroy  # Destroy table first
-model.free     # Then free model</p>
+</a>... later ...</h1>
+<p>other_object.cleanup                        # calls resource.release (ref_count = 1)
+resource.release                            # ref_count = 0, resource freed</p>
 
 
 
@@ -497,8 +491,8 @@ model.free     # Then free model</p>
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L17" target="_blank">
-        uing/table/table_model.cr
+      <a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L15" target="_blank">
+        uing/ref_counted.cr
       </a>
     
     <br/>
@@ -509,28 +503,6 @@ model.free     # Then free model</p>
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableModel))</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28model_handler%3ATableModelHandler%7CLibUI%3A%3ATableModelHandler%29-class-method" class="signature"><strong>.new</strong>(model_handler : TableModelHandler | LibUI::TableModelHandler)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
@@ -548,49 +520,44 @@ model.free     # Then free model</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#free%3ANil-instance-method" class="signature"><strong>#free</strong> : Nil</a>
+        <a href="#acquire%3ANil-instance-method" class="signature"><strong>#acquire</strong> : Nil</a>
         
-          <div class="summary"><p>Explicitly free the TableModel.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method" class="signature"><strong>#managed_by_libui=</strong>(managed_by_libui : Bool)</a>
+          <div class="summary"><p>Increment the reference count for this resource.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#managed_by_libui%3F%3ABool-instance-method" class="signature"><strong>#managed_by_libui?</strong> : Bool</a>
+        <a href="#borrowed%3F%3ABool-instance-method" class="signature"><strong>#borrowed?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns true if this wrapper is borrowing the resource.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#released%3D%28released%3ABool%29-instance-method" class="signature"><strong>#released=</strong>(released : Bool)</a>
+        <a href="#free_resource%3ANil-instance-method" class="signature"><strong>#free_resource</strong> : Nil</a>
+        
+          <div class="summary"><p>Abstract method that must be implemented by including classes.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#released%3F%3ABool-instance-method" class="signature"><strong>#released?</strong> : Bool</a>
+        <a href="#owned%3F%3ABool-instance-method" class="signature"><strong>#owned?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns true if this wrapper owns the underlying resource.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#row_changed%28index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#row_changed</strong>(index : Int32) : Nil</a>
+        <a href="#ref_count%3AInt32-instance-method" class="signature"><strong>#ref_count</strong> : Int32</a>
+        
+          <div class="summary"><p>Returns the current reference count.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#row_deleted%28old_index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#row_deleted</strong>(old_index : Int32) : Nil</a>
+        <a href="#release%3ANil-instance-method" class="signature"><strong>#release</strong> : Nil</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#row_inserted%28new_index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#row_inserted</strong>(new_index : Int32) : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+          <div class="summary"><p>Decrement the reference count for this resource.</p></div>
         
       </li>
     
@@ -600,77 +567,9 @@ model.free     # Then free model</p>
 
   <div class="methods-inherited">
     
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableModel))-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::TableModel))
-
-        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L25" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(model_handler:TableModelHandler|LibUI::TableModelHandler)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(model_handler : <a href="../UIng/TableModelHandler.html">TableModelHandler</a> | LibUI::TableModelHandler)
-
-        <a class="method-permalink" href="#new%28model_handler%3ATableModelHandler%7CLibUI%3A%3ATableModelHandler%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L29" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
@@ -686,153 +585,134 @@ model.free     # Then free model</p>
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="free:Nil-instance-method">
+    <div class="entry-detail" id="acquire:Nil-instance-method">
       <div class="signature">
         
-        def <strong>free</strong> : Nil
+        def <strong>acquire</strong> : Nil
 
-        <a class="method-permalink" href="#free%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#acquire%3ANil-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Explicitly free the TableModel.</p>
-<p><span class="flag yellow">WARNING</span>  Only call this AFTER all Tables using this model are destroyed.
-Calling this while Tables are still active will cause crashes.</p>
+          <p>Increment the reference count for this resource.
+Should be called when a new object starts using this resource.</p>
+<p><span class="flag purple">NOTE</span>  Borrowed resources do not participate in reference counting.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L47" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="managed_by_libui=(managed_by_libui:Bool)-instance-method">
+    <div class="entry-detail" id="borrowed?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>managed_by_libui=</strong>(managed_by_libui : Bool)
+        def <strong>borrowed?</strong> : Bool
 
-        <a class="method-permalink" href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method">#</a>
+        <a class="method-permalink" href="#borrowed%3F%3ABool-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns true if this wrapper is borrowing the resource.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L67" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="managed_by_libui?:Bool-instance-method">
+    <div class="entry-detail" id="free_resource:Nil-instance-method">
       <div class="signature">
-        
-        def <strong>managed_by_libui?</strong> : Bool
+        abstract 
+        def <strong>free_resource</strong> : Nil
 
-        <a class="method-permalink" href="#managed_by_libui%3F%3ABool-instance-method">#</a>
+        <a class="method-permalink" href="#free_resource%3ANil-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Abstract method that must be implemented by including classes.
+This method should free the underlying C resource.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="released=(released:Bool)-instance-method">
+    <div class="entry-detail" id="owned?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>released=</strong>(released : Bool)
+        def <strong>owned?</strong> : Bool
 
-        <a class="method-permalink" href="#released%3D%28released%3ABool%29-instance-method">#</a>
+        <a class="method-permalink" href="#owned%3F%3ABool-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns true if this wrapper owns the underlying resource.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="released?:Bool-instance-method">
+    <div class="entry-detail" id="ref_count:Int32-instance-method">
       <div class="signature">
         
-        def <strong>released?</strong> : Bool
+        def <strong>ref_count</strong> : Int32
 
-        <a class="method-permalink" href="#released%3F%3ABool-instance-method">#</a>
+        <a class="method-permalink" href="#ref_count%3AInt32-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns the current reference count.
+Primarily for debugging and testing purposes.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="row_changed(index:Int32):Nil-instance-method">
+    <div class="entry-detail" id="release:Nil-instance-method">
       <div class="signature">
         
-        def <strong>row_changed</strong>(index : Int32) : Nil
+        def <strong>release</strong> : Nil
 
-        <a class="method-permalink" href="#row_changed%28index%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#release%3ANil-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Decrement the reference count for this resource.
+When the count reaches zero and the resource is owned, it will be freed.</p>
+<p><span class="flag purple">NOTE</span>  Borrowed resources do not participate in reference counting.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L60" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="row_deleted(old_index:Int32):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>row_deleted</strong>(old_index : Int32) : Nil
-
-        <a class="method-permalink" href="#row_deleted%28old_index%3AInt32%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L64" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="row_inserted(new_index:Int32):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>row_inserted</strong>(new_index : Int32) : Nil
-
-        <a class="method-permalink" href="#row_inserted%28new_index%3AInt32%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L56" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
-      <div class="signature">
-        
-        def <strong>to_unsafe</strong> : Pointer(Void)
-
-        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/table/table_model.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/de6b965ca7cf6e7875cff5c27d50a5fc14764090/src/uing/ref_counted.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
