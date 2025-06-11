@@ -1,6 +1,12 @@
 module UIng
   # TableModelHandler provides callbacks for Table data operations with closure support.
   #
+  # DESIGN PHILOSOPHY: Pure Data Access (Functional Approach)
+  # - Callbacks are pure functions focused on data retrieval and computation
+  # - No TableModel parameter passed to avoid side effects and maintain data purity
+  # - Emphasizes immutable data access patterns
+  # - Callbacks should not modify external state beyond returning requested data
+  #
   # CRITICAL MEMORY MANAGEMENT WARNINGS:
   # 1. TableModelHandler MUST remain alive while TableModel exists
   # 2. Callbacks become invalid if handler is GC'd - causes crashes

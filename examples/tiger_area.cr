@@ -40,8 +40,8 @@ def draw_path_from_codes(path : UIng::DrawPath, x : Array(Float64), y : Array(Fl
 end
 
 handler = UIng::AreaHandler.new do
-  draw do |area_handler, area, area_draw_params|
-    ctx = UIng::DrawContext.new(area_draw_params.value.context)
+  draw do |area, area_draw_params|
+    ctx = UIng::DrawContext.new(area_draw_params.context)
 
     # Scale factor to fit tiger in window
     scale_x = 600.0
@@ -89,10 +89,10 @@ handler = UIng::AreaHandler.new do
       path.free
     end
   end
-  mouse_event { |_, _, _| }
-  mouse_crossed { |_, _, _| }
-  drag_broken { |_, _| }
-  key_event { |_, _, _| 0 }
+  mouse_event { |area, event| }
+  mouse_crossed { |area, left| }
+  drag_broken { |area| }
+  key_event { |area, event| false }
 end
 
 area = UIng::Area.new(handler)

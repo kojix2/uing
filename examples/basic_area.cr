@@ -6,7 +6,7 @@ main_window = UIng::Window.new("Basic Area", 400, 400)
 
 handler = UIng::AreaHandler.new
 
-handler.draw do |area_handler, area, area_draw_params|
+handler.draw do |area, area_draw_params|
   path = UIng::DrawPath.new(UIng::DrawFillMode::Winding)
   path.add_rectangle(0, 0, 400, 400)
   path.end_ # `end` will also work, but it is a keyword in Crystal
@@ -18,16 +18,16 @@ handler.draw do |area_handler, area, area_draw_params|
   brush.b = 0.8
   brush.a = 1.0
 
-  # from pointer to struct
-  ctx = UIng::DrawContext.new(area_draw_params.value.context)
+  # area_draw_params is now a wrapped AreaDrawParams object
+  ctx = UIng::DrawContext.new(area_draw_params.context)
   ctx.fill(path, brush)
   path.free
 end
 
-handler.mouse_event { |_, _, _| }
-handler.mouse_crossed { |_, _, _| }
-handler.drag_broken { |_, _| }
-handler.key_event { |_, _, _| 0 }
+handler.mouse_event { |area, event| }
+handler.mouse_crossed { |area, left| }
+handler.drag_broken { |area| }
+handler.key_event { |area, event| false }
 
 area = UIng::Area.new(handler)
 
