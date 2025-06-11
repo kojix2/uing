@@ -461,11 +461,9 @@
 </ol>
 <p>Closure-friendly callback pattern:
 data = [&quot;row1&quot;, &quot;row2&quot;, &quot;row3&quot;]
-handler = TableModelHandler.new do |callbacks|
-callbacks.num_rows = -&gt; { data.size }
-callbacks.cell_value = -&gt;(row, col) {
-TableValue.new(data[row]) # Can safely capture 'data'
-}
+handler = TableModelHandler.new do
+num_rows { data.size }
+cell_value { |row, col| TableValue.new(data[row][col]) }
 end</p>
 
 
@@ -507,7 +505,7 @@ end</p>
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L17" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L15" target="_blank">
         uing/table/table_model_handler.cr
       </a>
     
@@ -573,16 +571,7 @@ end</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#finalize-instance-method" class="signature"><strong>#finalize</strong></a>
-        
-          <div class="summary"><p>Clean up registry entry when handler is finalized</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
         <a href="#num_columns%28%26block%3A-%3EInt32%29-instance-method" class="signature"><strong>#num_columns</strong>(&block :  -> Int32)</a>
-        
-          <div class="summary"><p>Convenience methods for setting individual callbacks These provide a more familiar API similar to the old implementation</p></div>
         
       </li>
     
@@ -592,7 +581,7 @@ end</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#set_cell_value%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt%2CPointer%28UIng%3A%3ALibUI%3A%3ATableValue%29-%3EVoid%29-instance-method" class="signature"><strong>#set_cell_value</strong>(&block : LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Void)</a>
+        <a href="#set_cell_value%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt%2CPointer%28UIng%3A%3ALibUI%3A%3ATableValue%29-%3ENil%29-instance-method" class="signature"><strong>#set_cell_value</strong>(&block : LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Nil)</a>
         
       </li>
     
@@ -678,7 +667,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -694,7 +683,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -710,7 +699,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -742,7 +731,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L158" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L134" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -758,28 +747,7 @@ end</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L146" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="finalize-instance-method">
-      <div class="signature">
-        
-        def <strong>finalize</strong>
-
-        <a class="method-permalink" href="#finalize-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Clean up registry entry when handler is finalized</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L176" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L124" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -792,16 +760,10 @@ end</p>
         <a class="method-permalink" href="#num_columns%28%26block%3A-%3EInt32%29-instance-method">#</a>
       </div>
       
-        <div class="doc">
-          
-          <p>Convenience methods for setting individual callbacks
-These provide a more familiar API similar to the old implementation</p>
-        </div>
-      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L119" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -817,23 +779,23 @@ These provide a more familiar API similar to the old implementation</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L150" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="set_cell_value(&amp;block:LibC::Int,LibC::Int,Pointer(UIng::LibUI::TableValue)-&gt;Void)-instance-method">
+    <div class="entry-detail" id="set_cell_value(&amp;block:LibC::Int,LibC::Int,Pointer(UIng::LibUI::TableValue)-&gt;Nil)-instance-method">
       <div class="signature">
         
-        def <strong>set_cell_value</strong>(&block : LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Void)
+        def <strong>set_cell_value</strong>(&block : LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Nil)
 
-        <a class="method-permalink" href="#set_cell_value%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt%2CPointer%28UIng%3A%3ALibUI%3A%3ATableValue%29-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#set_cell_value%28%26block%3ALibC%3A%3AInt%2CLibC%3A%3AInt%2CPointer%28UIng%3A%3ALibUI%3A%3ATableValue%29-%3ENil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L166" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -849,7 +811,7 @@ These provide a more familiar API similar to the old implementation</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/09561e1d56192396f61d451fc50667a82ea8ce66/src/uing/table/table_model_handler.cr#L170" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/table/table_model_handler.cr#L144" target="_blank">View source</a>]
         
       </div>
     </div>
