@@ -9,6 +9,16 @@ module UIng
       @ref_ptr = LibUI.draw_new_path(mode)
     end
 
+    # RAII pattern: automatically free path when block exits
+    def self.new(mode : UIng::DrawFillMode, &block : DrawPath -> Nil)
+      path = new(mode)
+      begin
+        yield path
+      ensure
+        path.free
+      end
+    end
+
     def new_figure(x : Float64, y : Float64) : Nil
       LibUI.draw_path_new_figure(@ref_ptr, x, y)
     end
@@ -54,9 +64,5 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
-
-    # def finalize
-    #   free
-    # end
   end
 end

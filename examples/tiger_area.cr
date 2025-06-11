@@ -48,45 +48,43 @@ handler = UIng::AreaHandler.new do
     scale_y = 600.0
 
     TIGER_PATHS.each do |path_data|
-      path = UIng::DrawPath.new(UIng::DrawFillMode::Winding)
+      UIng::DrawPath.new(UIng::DrawFillMode::Winding) do |path|
+        # Convert coordinates to Float64 arrays
+        x_coords = path_data[:x].map(&.to_f64)
+        y_coords = path_data[:y].map { |y| 1.0 - y.to_f64 }
 
-      # Convert coordinates to Float64 arrays
-      x_coords = path_data[:x].map(&.to_f64)
-      y_coords = path_data[:y].map { |y| 1.0 - y.to_f64 }
+        draw_path_from_codes(path, x_coords, y_coords, path_data[:codes], scale_x, scale_y)
+        path.end_
 
-      draw_path_from_codes(path, x_coords, y_coords, path_data[:codes], scale_x, scale_y)
-      path.end_
+        # Handle fill
+        if path_data[:fill] != -1
+          brush = UIng::DrawBrush.new
+          brush.type = UIng::DrawBrushType::Solid
+          r, g, b = hex_to_rgb(path_data[:fill])
+          brush.r = r
+          brush.g = g
+          brush.b = b
+          brush.a = 1.0
 
-      # Handle fill
-      if path_data[:fill] != -1
-        brush = UIng::DrawBrush.new
-        brush.type = UIng::DrawBrushType::Solid
-        r, g, b = hex_to_rgb(path_data[:fill])
-        brush.r = r
-        brush.g = g
-        brush.b = b
-        brush.a = 1.0
+          ctx.fill(path, brush)
+        end
 
-        ctx.fill(path, brush)
-      end
+        # Handle stroke
+        if path_data[:stroke] != -1 && path_data[:stroke] != 0
+          stroke_brush = UIng::DrawBrush.new
+          stroke_brush.type = UIng::DrawBrushType::Solid
+          r, g, b = hex_to_rgb(path_data[:stroke])
+          stroke_brush.r = r
+          stroke_brush.g = g
+          stroke_brush.b = b
+          stroke_brush.a = 1.0
 
-      # Handle stroke
-      if path_data[:stroke] != -1 && path_data[:stroke] != 0
-        stroke_brush = UIng::DrawBrush.new
-        stroke_brush.type = UIng::DrawBrushType::Solid
-        r, g, b = hex_to_rgb(path_data[:stroke])
-        stroke_brush.r = r
-        stroke_brush.g = g
-        stroke_brush.b = b
-        stroke_brush.a = 1.0
+          stroke_params = UIng::DrawStrokeParams.new
+          stroke_params.thickness = 1.0
 
-        stroke_params = UIng::DrawStrokeParams.new
-        stroke_params.thickness = 1.0
-
-        ctx.stroke(path, stroke_brush, stroke_params)
-      end
-
-      path.free
+          ctx.stroke(path, stroke_brush, stroke_params)
+        end
+      end # 自動でpath.free
     end
   end
   mouse_event { |area, event| }
