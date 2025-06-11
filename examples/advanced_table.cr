@@ -114,9 +114,11 @@ vbox.append(status_label, false)
 
 # Create table model handler
 model_handler = UIng::TableModelHandler.new do
-  num_columns { |_, _| COLUMN_NAMES.size }
+  num_columns do
+    COLUMN_NAMES.size
+  end
 
-  column_type do |_, _, column|
+  column_type do |column|
     case Column.new(column)
     when .avatar?
       UIng::TableValueType::Image
@@ -131,35 +133,36 @@ model_handler = UIng::TableModelHandler.new do
     end
   end
 
-  num_rows { |_, _| EMPLOYEES.size }
-
-  cell_value do |_, _, row, column|
-    next UIng::TableValue.new("").to_unsafe if row >= EMPLOYEES.size
-
-    employee = EMPLOYEES[row]
-    value = case Column.new(column)
-            when .avatar?
-              avatar = employee.avatar || DEFAULT_AVATAR
-              UIng::TableValue.new(avatar)
-            when .name?
-              UIng::TableValue.new(employee.name)
-            when .age?
-              UIng::TableValue.new(employee.age.to_s)
-            when .department?
-              UIng::TableValue.new(employee.department)
-            when .salary?
-              UIng::TableValue.new(employee.salary.to_s)
-            when .progress?
-              UIng::TableValue.new(employee.progress)
-            when .active?
-              UIng::TableValue.new(employee.active ? 1 : 0)
-            else
-              UIng::TableValue.new("")
-            end
-    value.to_unsafe
+  num_rows do
+    EMPLOYEES.size
   end
 
-  set_cell_value do |_, model_ptr, row, column, value|
+  cell_value do |row, column|
+    next UIng::TableValue.new("") if row >= EMPLOYEES.size
+
+    employee = EMPLOYEES[row]
+    case Column.new(column)
+    when .avatar?
+      avatar = employee.avatar || DEFAULT_AVATAR
+      UIng::TableValue.new(avatar)
+    when .name?
+      UIng::TableValue.new(employee.name)
+    when .age?
+      UIng::TableValue.new(employee.age.to_s)
+    when .department?
+      UIng::TableValue.new(employee.department)
+    when .salary?
+      UIng::TableValue.new(employee.salary.to_s)
+    when .progress?
+      UIng::TableValue.new(employee.progress)
+    when .active?
+      UIng::TableValue.new(employee.active ? 1 : 0)
+    else
+      UIng::TableValue.new("")
+    end
+  end
+
+  set_cell_value do |row, column, value|
     next if row >= EMPLOYEES.size
 
     table_value = UIng::TableValue.new(value, borrowed: true)

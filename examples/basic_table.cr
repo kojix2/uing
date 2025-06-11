@@ -18,11 +18,25 @@ DATA = [
 ]
 
 model_handler = UIng::TableModelHandler.new do
-  num_columns { |_, _| 2 }
-  column_type { |_, _, _| UIng::TableValueType::String }
-  num_rows { |_, _| 5 }
-  cell_value { |_, _, row, column| UIng::TableValue.new(DATA[row][column]).to_unsafe }
-  set_cell_value { |_, _, _, _, _| Void }
+  num_columns do
+    2
+  end
+
+  column_type do |column|
+    UIng::TableValueType::String
+  end
+
+  num_rows do
+    DATA.size
+  end
+
+  cell_value do |row, column|
+    UIng::TableValue.new(DATA[row][column])
+  end
+
+  set_cell_value do |row, column, value|
+    # This example doesn't support editing, so we do nothing
+  end
 end
 
 table_model = UIng::TableModel.new(model_handler)
@@ -61,7 +75,8 @@ main_window.show
 main_window.on_closing do
   puts "Bye Bye"
   # Clean up resources before quitting
-  table_model.free
+  # Note: TableModel should be freed AFTER the table is destroyed
+  # The table is automatically destroyed when the window closes
   UIng.quit
   true
 end
