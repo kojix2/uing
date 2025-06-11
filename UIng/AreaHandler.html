@@ -443,6 +443,36 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>AreaHandler provides callbacks for Area events with closure support.</p>
+<p>DESIGN PHILOSOPHY: UI Event Handling (Object-Oriented Approach)</p>
+<ul>
+<li>Callbacks receive Area parameter to enable direct UI manipulation</li>
+<li>Supports stateful operations like triggering redraws, cursor changes, etc.</li>
+<li>Emphasizes interactive UI patterns where callbacks modify UI state</li>
+<li>Area parameter enables fine-grained control over UI behavior</li>
+</ul>
+<p>CRITICAL MEMORY MANAGEMENT WARNINGS:</p>
+<ol>
+<li>AreaHandler MUST remain alive while Area exists</li>
+<li>Callbacks become invalid if handler is GC'd - causes crashes</li>
+<li>Use closures safely - they can capture external data and variables</li>
+</ol>
+<p>Closure-friendly callback pattern:
+handler = AreaHandler.new do
+draw { |area, params| puts &quot;Drawing...&quot; }
+mouse_event { |area, event| puts &quot;Mouse event&quot; }
+key_event { |area, event| true } # Return true if handled
+end</p>
+
 
 
 
@@ -482,7 +512,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L21" target="_blank">
         uing/area/area_handler.cr
       </a>
     
@@ -515,7 +545,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28cstruct%3ALibUI%3A%3AAreaHandler%3DLibUI%3A%3AAreaHandler.new%29-class-method" class="signature"><strong>.new</strong>(cstruct : LibUI::AreaHandler = <span class="t">LibUI</span><span class="t">::</span><span class="t">AreaHandler</span>.new)</a>
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
         
       </li>
     
@@ -538,27 +568,27 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#drag_broken%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29-%3EVoid%29-instance-method" class="signature"><strong>#drag_broken</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area) -> Void)</a>
+        <a href="#drag_broken%28%26block%3AArea-%3EVoid%29-instance-method" class="signature"><strong>#drag_broken</strong>(&block : Area -> Void)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#draw%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CPointer%28LibUI%3A%3AAreaDrawParams%29-%3EVoid%29-instance-method" class="signature"><strong>#draw</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), Pointer(LibUI::AreaDrawParams) -> Void)</a>
+        <a href="#draw%28%26block%3AArea%2CAreaDrawParams-%3EVoid%29-instance-method" class="signature"><strong>#draw</strong>(&block : Area, AreaDrawParams -> Void)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#key_event%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CPointer%28LibUI%3A%3AAreaKeyEvent%29-%3ELibC%3A%3AInt%29-instance-method" class="signature"><strong>#key_event</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), Pointer(LibUI::AreaKeyEvent) -> LibC::Int)</a>
+        <a href="#key_event%28%26block%3AArea%2CAreaKeyEvent-%3EBool%29-instance-method" class="signature"><strong>#key_event</strong>(&block : Area, AreaKeyEvent -> Bool)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#mouse_crossed%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CLibC%3A%3AInt-%3EVoid%29-instance-method" class="signature"><strong>#mouse_crossed</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), LibC::Int -> Void)</a>
+        <a href="#mouse_crossed%28%26block%3AArea%2CBool-%3EVoid%29-instance-method" class="signature"><strong>#mouse_crossed</strong>(&block : Area, Bool -> Void)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#mouse_event%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CPointer%28LibUI%3A%3AAreaMouseEvent%29-%3EVoid%29-instance-method" class="signature"><strong>#mouse_event</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), Pointer(LibUI::AreaMouseEvent) -> Void)</a>
+        <a href="#mouse_event%28%26block%3AArea%2CAreaMouseEvent-%3EVoid%29-instance-method" class="signature"><strong>#mouse_event</strong>(&block : Area, AreaMouseEvent -> Void)</a>
         
       </li>
     
@@ -644,7 +674,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -660,23 +690,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(cstruct:LibUI::AreaHandler=LibUI::AreaHandler.new)-class-method">
+    <div class="entry-detail" id="new-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(cstruct : LibUI::AreaHandler = <span class="t">LibUI</span><span class="t">::</span><span class="t">AreaHandler</span>.new)
+        def self.<strong>new</strong>
 
-        <a class="method-permalink" href="#new%28cstruct%3ALibUI%3A%3AAreaHandler%3DLibUI%3A%3AAreaHandler.new%29-class-method">#</a>
+        <a class="method-permalink" href="#new-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -697,82 +727,82 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="drag_broken(&amp;block:Pointer(LibUI::AreaHandler),Pointer(LibUI::Area)-&gt;Void)-instance-method">
+    <div class="entry-detail" id="drag_broken(&amp;block:Area-&gt;Void)-instance-method">
       <div class="signature">
         
-        def <strong>drag_broken</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area) -> Void)
+        def <strong>drag_broken</strong>(&block : <a href="../UIng/Area.html">Area</a> -> Void)
 
-        <a class="method-permalink" href="#drag_broken%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#drag_broken%28%26block%3AArea-%3EVoid%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L146" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="draw(&amp;block:Pointer(LibUI::AreaHandler),Pointer(LibUI::Area),Pointer(LibUI::AreaDrawParams)-&gt;Void)-instance-method">
+    <div class="entry-detail" id="draw(&amp;block:Area,AreaDrawParams-&gt;Void)-instance-method">
       <div class="signature">
         
-        def <strong>draw</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), Pointer(LibUI::AreaDrawParams) -> Void)
+        def <strong>draw</strong>(&block : <a href="../UIng/Area.html">Area</a>, <a href="../UIng/AreaDrawParams.html">AreaDrawParams</a> -> Void)
 
-        <a class="method-permalink" href="#draw%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CPointer%28LibUI%3A%3AAreaDrawParams%29-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#draw%28%26block%3AArea%2CAreaDrawParams-%3EVoid%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L131" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="key_event(&amp;block:Pointer(LibUI::AreaHandler),Pointer(LibUI::Area),Pointer(LibUI::AreaKeyEvent)-&gt;LibC::Int)-instance-method">
+    <div class="entry-detail" id="key_event(&amp;block:Area,AreaKeyEvent-&gt;Bool)-instance-method">
       <div class="signature">
         
-        def <strong>key_event</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), Pointer(LibUI::AreaKeyEvent) -> LibC::Int)
+        def <strong>key_event</strong>(&block : <a href="../UIng/Area.html">Area</a>, <a href="../UIng/AreaKeyEvent.html">AreaKeyEvent</a> -> Bool)
 
-        <a class="method-permalink" href="#key_event%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CPointer%28LibUI%3A%3AAreaKeyEvent%29-%3ELibC%3A%3AInt%29-instance-method">#</a>
+        <a class="method-permalink" href="#key_event%28%26block%3AArea%2CAreaKeyEvent-%3EBool%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L151" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="mouse_crossed(&amp;block:Pointer(LibUI::AreaHandler),Pointer(LibUI::Area),LibC::Int-&gt;Void)-instance-method">
+    <div class="entry-detail" id="mouse_crossed(&amp;block:Area,Bool-&gt;Void)-instance-method">
       <div class="signature">
         
-        def <strong>mouse_crossed</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), LibC::Int -> Void)
+        def <strong>mouse_crossed</strong>(&block : <a href="../UIng/Area.html">Area</a>, Bool -> Void)
 
-        <a class="method-permalink" href="#mouse_crossed%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CLibC%3A%3AInt-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#mouse_crossed%28%26block%3AArea%2CBool-%3EVoid%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="mouse_event(&amp;block:Pointer(LibUI::AreaHandler),Pointer(LibUI::Area),Pointer(LibUI::AreaMouseEvent)-&gt;Void)-instance-method">
+    <div class="entry-detail" id="mouse_event(&amp;block:Area,AreaMouseEvent-&gt;Void)-instance-method">
       <div class="signature">
         
-        def <strong>mouse_event</strong>(&block : Pointer(LibUI::AreaHandler), Pointer(LibUI::Area), Pointer(LibUI::AreaMouseEvent) -> Void)
+        def <strong>mouse_event</strong>(&block : <a href="../UIng/Area.html">Area</a>, <a href="../UIng/AreaMouseEvent.html">AreaMouseEvent</a> -> Void)
 
-        <a class="method-permalink" href="#mouse_event%28%26block%3APointer%28LibUI%3A%3AAreaHandler%29%2CPointer%28LibUI%3A%3AArea%29%2CPointer%28LibUI%3A%3AAreaMouseEvent%29-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#mouse_event%28%26block%3AArea%2CAreaMouseEvent-%3EVoid%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L136" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -788,7 +818,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/5c3528a813d4a03bb92850ba66b63f287fd49c25/src/uing/area/area_handler.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0f624f1f70426690a28a1600e0c20e006a9393be/src/uing/area/area_handler.cr#L156" target="_blank">View source</a>]
         
       </div>
     </div>
