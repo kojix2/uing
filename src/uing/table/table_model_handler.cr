@@ -8,56 +8,42 @@ module UIng
   #
   # Closure-friendly callback pattern:
   #   data = ["row1", "row2", "row3"]
-  #   handler = TableModelHandler.new do |callbacks|
-  #     callbacks.num_rows = -> { data.size }
-  #     callbacks.cell_value = ->(row, col) { 
-  #       TableValue.new(data[row]) # Can safely capture 'data'
-  #     }
+  #   handler = TableModelHandler.new do
+  #     num_rows { data.size }
+  #     cell_value { |row, col| TableValue.new(data[row][col]) }
   #   end
   class TableModelHandler
     include BlockConstructor; block_constructor
 
-    # Global registry to map handler pointers to callback data
-    # This prevents GC collection and allows safe callback lookup
-    @@handler_registry = {} of Pointer(LibUI::TableModelHandler) => Pointer(Void)
-
-    # Callback class that holds all user-defined callbacks
-    # Changed from struct to class to ensure reference semantics
-    private class CallbackData
-      property num_columns : (-> LibC::Int)?
-      property column_type : (LibC::Int -> UIng::TableValueType)?
-      property num_rows : (-> LibC::Int)?
-      property cell_value : (LibC::Int, LibC::Int -> Pointer(UIng::LibUI::TableValue))?
-      property set_cell_value : (LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Void)?
-
-      def initialize
-      end
-    end
-
-    # Store the handler structure, callback data, and boxed callback data
-    @handler : LibUI::TableModelHandler
-    @callback_data : CallbackData
-    @callback_data_box : Pointer(Void)
+    # Store the extended handler structure and individual boxes for GC protection
+    @extended_handler : LibUI::TableModelHandlerExtended
+    @num_columns_box : Pointer(Void)
+    @column_type_box : Pointer(Void)
+    @num_rows_box : Pointer(Void)
+    @cell_value_box : Pointer(Void)
+    @set_cell_value_box : Pointer(Void)
 
     def initialize
-      # Create callback data structure
-      @callback_data = CallbackData.new
-      
-      # Box the callback data to prevent GC collection
-      @callback_data_box = ::Box.box(@callback_data)
-      
-      # Create handler with static callback functions
-      @handler = LibUI::TableModelHandler.new(
+      # Initialize instance variables
+      @num_columns_box = Pointer(Void).null
+      @column_type_box = Pointer(Void).null
+      @num_rows_box = Pointer(Void).null
+      @cell_value_box = Pointer(Void).null
+      @set_cell_value_box = Pointer(Void).null
+
+      # Create extended handler with static callback functions
+      @extended_handler = uninitialized LibUI::TableModelHandlerExtended
+
+      # Initialize the base handler with static callbacks
+      @extended_handler.base_handler = LibUI::TableModelHandler.new(
         num_columns: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*) {
           begin
-            # Look up callback data from global registry
-            if callback_data_box = @@handler_registry[mh]?
-              callbacks = ::Box(CallbackData).unbox(callback_data_box)
-              if callback = callbacks.num_columns
-                callback.call
-              else
-                0_i32
-              end
+            # Cast the handler pointer to our extended structure
+            extended = mh.as(LibUI::TableModelHandlerExtended*)
+            if !extended.value.num_columns_box.null?
+              callback = ::Box(Proc(Int32)).unbox(extended.value.num_columns_box)
+              result = callback.call
+              result.as(LibC::Int)
             else
               0_i32
             end
@@ -67,13 +53,10 @@ module UIng
         },
         column_type: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*, column : LibC::Int) {
           begin
-            if callback_data_box = @@handler_registry[mh]?
-              callbacks = ::Box(CallbackData).unbox(callback_data_box)
-              if callback = callbacks.column_type
-                callback.call(column)
-              else
-                UIng::TableValueType::String
-              end
+            extended = mh.as(LibUI::TableModelHandlerExtended*)
+            if !extended.value.column_type_box.null?
+              callback = ::Box(Proc(LibC::Int, UIng::TableValueType)).unbox(extended.value.column_type_box)
+              callback.call(column)
             else
               UIng::TableValueType::String
             end
@@ -83,13 +66,11 @@ module UIng
         },
         num_rows: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*) {
           begin
-            if callback_data_box = @@handler_registry[mh]?
-              callbacks = ::Box(CallbackData).unbox(callback_data_box)
-              if callback = callbacks.num_rows
-                callback.call
-              else
-                0_i32
-              end
+            extended = mh.as(LibUI::TableModelHandlerExtended*)
+            if !extended.value.num_rows_box.null?
+              callback = ::Box(Proc(Int32)).unbox(extended.value.num_rows_box)
+              result = callback.call
+              result.as(LibC::Int)
             else
               0_i32
             end
@@ -99,13 +80,11 @@ module UIng
         },
         cell_value: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
           begin
-            if callback_data_box = @@handler_registry[mh]?
-              callbacks = ::Box(CallbackData).unbox(callback_data_box)
-              if callback = callbacks.cell_value
-                callback.call(row, column)
-              else
-                LibUI.new_table_value_string("")
-              end
+            extended = mh.as(LibUI::TableModelHandlerExtended*)
+            if !extended.value.cell_value_box.null?
+              callback = ::Box(Proc(LibC::Int, LibC::Int, UIng::TableValue)).unbox(extended.value.cell_value_box)
+              result = callback.call(row, column)
+              result.to_unsafe
             else
               LibUI.new_table_value_string("")
             end
@@ -115,67 +94,57 @@ module UIng
         },
         set_cell_value: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int, value : Pointer(UIng::LibUI::TableValue)) {
           begin
-            if callback_data_box = @@handler_registry[mh]?
-              callbacks = ::Box(CallbackData).unbox(callback_data_box)
-              if callback = callbacks.set_cell_value
-                callback.call(row, column, value)
-              end
+            extended = mh.as(LibUI::TableModelHandlerExtended*)
+            if !extended.value.set_cell_value_box.null?
+              callback = ::Box(Proc(LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue), Nil)).unbox(extended.value.set_cell_value_box)
+              callback.call(row, column, value)
             end
           rescue
             # Ignore errors in set_cell_value
           end
         }
       )
-      
-      # Register the handler pointer with callback data
-      handler_ptr = pointerof(@handler)
-      @@handler_registry[handler_ptr] = @callback_data_box
+
+      # Initialize the box pointers to null in the extended handler
+      @extended_handler.num_columns_box = Pointer(Void).null
+      @extended_handler.column_type_box = Pointer(Void).null
+      @extended_handler.num_rows_box = Pointer(Void).null
+      @extended_handler.cell_value_box = Pointer(Void).null
+      @extended_handler.set_cell_value_box = Pointer(Void).null
     end
 
     # Convenience methods for setting individual callbacks
-    # These provide a more familiar API similar to the old implementation
-    
+    # Each method boxes the callback individually for type safety and efficiency
+
     def num_columns(&block : -> Int32)
-      # Wrap the user's block to automatically convert to LibC::Int
-      @callback_data.num_columns = -> {
-        result = block.call
-        result.as(LibC::Int)
-      }
+      @num_columns_box = ::Box.box(block)
+      @extended_handler.num_columns_box = @num_columns_box
     end
 
     def column_type(&block : LibC::Int -> UIng::TableValueType)
-      @callback_data.column_type = block
+      @column_type_box = ::Box.box(block)
+      @extended_handler.column_type_box = @column_type_box
     end
 
     def num_rows(&block : -> Int32)
-      # Wrap the user's block to automatically convert to LibC::Int
-      @callback_data.num_rows = -> {
-        result = block.call
-        result.as(LibC::Int)
-      }
+      @num_rows_box = ::Box.box(block)
+      @extended_handler.num_rows_box = @num_rows_box
     end
 
     def cell_value(&block : LibC::Int, LibC::Int -> UIng::TableValue)
-      # Wrap the user's block to automatically call to_unsafe
-      @callback_data.cell_value = ->(row : LibC::Int, column : LibC::Int) {
-        result = block.call(row, column)
-        result.to_unsafe
-      }
+      @cell_value_box = ::Box.box(block)
+      @extended_handler.cell_value_box = @cell_value_box
     end
 
-    def set_cell_value(&block : LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Void)
-      @callback_data.set_cell_value = block
+    def set_cell_value(&block : LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue) -> Nil)
+      @set_cell_value_box = ::Box.box(block)
+      @extended_handler.set_cell_value_box = @set_cell_value_box
     end
 
     def to_unsafe
-      # Return pointer to the handler structure
-      pointerof(@handler)
-    end
-
-    # Clean up registry entry when handler is finalized
-    def finalize
-      handler_ptr = pointerof(@handler)
-      @@handler_registry.delete(handler_ptr)
+      # Return pointer to the base_handler field of the extended handler
+      # This ensures libui-ng receives a valid TableModelHandler pointer
+      pointerof(@extended_handler).as(LibUI::TableModelHandler*)
     end
   end
 end
