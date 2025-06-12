@@ -22,29 +22,29 @@ class VideoPlayerApp
     handler = UIng::AreaHandler.new
 
     # Draw handler - simple drawing for now
-    handler.draw do |area_handler, area, area_draw_params|
+    handler.draw do |area, area_draw_params|
       # For now, just do basic drawing - mpv rendering will be handled separately
       # TODO: Integrate mpv rendering here once we solve the closure issue
     end
 
     # Mouse event handler - do nothing for now
-    handler.mouse_event do |area_handler, area, mouse_event|
+    handler.mouse_event do |area, mouse_event|
       # Could add mouse controls here
     end
 
     # Mouse crossed handler
-    handler.mouse_crossed do |area_handler, area, left|
+    handler.mouse_crossed do |area, left|
       # Do nothing
     end
 
     # Drag broken handler
-    handler.drag_broken do |area_handler, area|
+    handler.drag_broken do |area|
       # Do nothing
     end
 
     # Key event handler - reject all keys for now
-    handler.key_event do |area_handler, area, key_event|
-      0 # Reject all keys
+    handler.key_event do |area, key_event|
+      false # Reject all keys
     end
 
     handler
