@@ -5,14 +5,14 @@ require "./checker"
 class MD5TableHandler
   def initialize
     @handler = UIng::TableModelHandler.new do
-      num_columns { |_, _| 3 }
-      column_type { |_, _, _| UIng::TableValueType::String }
-      num_rows { |_, _| MD5Checker.instance.result_count }
-      cell_value { |_, _, row, column|
+      num_columns { 3 }
+      column_type { |i| UIng::TableValueType::String }
+      num_rows { MD5Checker.instance.result_count }
+      cell_value { |row, column|
         value = MD5Checker.instance.result_at(row, column)
-        UIng::TableValue.new(value).to_unsafe
+        UIng::TableValue.new(value)
       }
-      set_cell_value { |_, _, _, _, _| Void }
+      set_cell_value { |_, _, _| }
     end
   end
 
