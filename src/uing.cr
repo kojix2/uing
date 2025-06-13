@@ -9,6 +9,9 @@ require "./uing/grid/*"
 require "./uing/table/*"
 
 module UIng
+  # Mutex for thread-safe access to callbacks
+  @@callback_mutex = Mutex.new
+
   # uiInitOptions is not used (but it is required)
   # See https://github.com/libui-ng/libui-ng/issues/208
   @@init_options = Pointer(LibUI::InitOptions).malloc
@@ -63,9 +66,11 @@ module UIng
   def self.uninit : Nil
     LibUI.uninit
     # Clear global callback arrays on uninit to prevent memory leaks
-    @@timer_callback_boxes.clear
-    @@queue_callback_boxes.clear
-    @@should_quit_callback_box = nil
+    @@callback_mutex.synchronize do
+      @@timer_callback_boxes.clear
+      @@queue_callback_boxes.clear
+      @@should_quit_callback_box = nil
+    end
   end
 
   # should not be used.
@@ -94,12 +99,19 @@ module UIng
   def self.queue_main(&callback : -> Void) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
-    @@queue_callback_boxes << boxed_data
+    @@callback_mutex.synchronize do
+      @@queue_callback_boxes << boxed_data
+    end
     LibUI.queue_main(->(data) do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
-      # Remove from global array after execution to prevent memory leak
-      @@queue_callback_boxes.delete(data)
+      begin
+        data_as_callback = ::Box(typeof(callback)).unbox(data)
+        data_as_callback.call
+      ensure
+        # Remove from global array after execution to prevent memory leak
+        @@callback_mutex.synchronize do
+          @@queue_callback_boxes.delete(data)
+        end
+      end
     end, boxed_data)
   end
 
@@ -108,10 +120,18 @@ module UIng
     # Store in global array to prevent GC collection during callback execution
     # NOTE: Timer callback removal behavior is not standardized in LibUI
     # See: https://github.com/andlabs/libui/pull/277
-    @@timer_callback_boxes << boxed_data
+    @@callback_mutex.synchronize do
+      @@timer_callback_boxes << boxed_data
+    end
     LibUI.timer(sender, ->(data) do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
+      result = data_as_callback.call
+      if result == 0
+        @@callback_mutex.synchronize do
+          @@timer_callback_boxes.delete(data)
+        end
+      end
+      result
     end, boxed_data)
   end
 
