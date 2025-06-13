@@ -4,7 +4,6 @@ module UIng
     @family_string : String?
 
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
-      @cstruct.family = Pointer(UInt8).null
     end
 
     def initialize(family : String, size : Int32, weight : TextWeight, italic : TextItalic, stretch : TextStretch)
