@@ -5,11 +5,13 @@ UIng.init
 window = UIng::Window.new("hello world", 300, 200)
 window.on_closing do
   UIng.quit
-  1
+  true
 end
 
 button = UIng::Button.new("Button") do
-  UIng.msg_box(window, "Information", "You clicked the button")
+  on_clicked do
+    UIng.msg_box(window, "Information", "You clicked the button")
+  end
 end
 
 window.child = button
