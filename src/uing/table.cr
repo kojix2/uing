@@ -13,26 +13,15 @@ module UIng
     # Store TableModel reference to prevent GC collection
     @table_model_ref : TableModel?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Table))
-    end
-
     def initialize(table_params : TableParams)
       @ref_ptr = LibUI.new_table(table_params)
       # Store reference to TableModel to prevent GC collection
-      # TableParams has a model property accessible via forward_missing_to
       model_ptr = table_params.model
       if model_ptr
         @table_model_ref = TableModel.new(model_ptr)
       end
-    end
-
-    def initialize(table_params : LibUI::TableParams)
-      @ref_ptr = LibUI.new_table(table_params)
-      # Store reference to TableModel to prevent GC collection
-      # LibUI::TableParams struct has model field directly
-      if table_params.model
-        @table_model_ref = TableModel.new(table_params.model)
-      end
+      # table_params is only used during table creation,
+      # so we don't need to worry about its lifetime.
     end
 
     def on_row_clicked(&block : LibC::Int -> Void)
