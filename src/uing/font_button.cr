@@ -19,7 +19,7 @@ module UIng
         font_descriptor = FontDescriptor.new
         self.font(font_descriptor)
         block.call(font_descriptor)
-        font_descriptor.free
+        free_font(font_descriptor)
       }
       @on_changed_box = ::Box.box(wrapper)
       boxed_data = @on_changed_box.not_nil!
@@ -33,10 +33,10 @@ module UIng
       font_descriptor = FontDescriptor.new
       self.font(font_descriptor)
       block.call(font_descriptor)
-      font_descriptor.free
+      free_font(font_descriptor)
     end
 
-    def font(descriptor : (FontDescriptor | LibUI::FontDescriptor))
+    def font(descriptor : FontDescriptor)
       LibUI.font_button_font(@ref_ptr, descriptor)
     end
 
