@@ -27,37 +27,53 @@ module UIng
     def on_row_clicked(&block : LibC::Int -> Void)
       @on_row_clicked_box = ::Box.box(block)
       LibUI.table_on_row_clicked(@ref_ptr, ->(table, row, data) do
-        callback = ::Box(typeof(block)).unbox(data)
-        callback.call(row)
+        begin
+          callback = ::Box(typeof(block)).unbox(data)
+          callback.call(row)
+        rescue e
+          UIng.handle_callback_error(e, "Table on_row_clicked")
+        end
       end, @on_row_clicked_box.not_nil!)
     end
 
     def on_row_double_clicked(&block : LibC::Int -> Void)
       @on_row_double_clicked_box = ::Box.box(block)
       LibUI.table_on_row_double_clicked(@ref_ptr, ->(table, row, data) do
-        callback = ::Box(typeof(block)).unbox(data)
-        callback.call(row)
+        begin
+          callback = ::Box(typeof(block)).unbox(data)
+          callback.call(row)
+        rescue e
+          UIng.handle_callback_error(e, "Table on_row_double_clicked")
+        end
       end, @on_row_double_clicked_box.not_nil!)
     end
 
     def on_header_clicked(&block : LibC::Int -> Void)
       @on_header_clicked_box = ::Box.box(block)
       LibUI.table_header_on_clicked(@ref_ptr, ->(table, column, data) do
-        callback = ::Box(typeof(block)).unbox(data)
-        callback.call(column)
+        begin
+          callback = ::Box(typeof(block)).unbox(data)
+          callback.call(column)
+        rescue e
+          UIng.handle_callback_error(e, "Table on_header_clicked")
+        end
       end, @on_header_clicked_box.not_nil!)
     end
 
     def on_selection_changed(&block : TableSelection -> Void)
       @on_selection_changed_box = ::Box.box(block)
       LibUI.table_on_selection_changed(@ref_ptr, ->(table, data) do
-        callback = ::Box(typeof(block)).unbox(data)
-        # Get current selection and pass it to the callback
-        selection_ptr = LibUI.table_get_selection(table)
-        selection = TableSelection.new(selection_ptr)
-        callback.call(selection)
-        # Automatically free the selection after callback
-        selection.free
+        begin
+          callback = ::Box(typeof(block)).unbox(data)
+          # Get current selection and pass it to the callback
+          selection_ptr = LibUI.table_get_selection(table)
+          selection = TableSelection.new(selection_ptr)
+          callback.call(selection)
+          # Automatically free the selection after callback
+          selection.free
+        rescue e
+          UIng.handle_callback_error(e, "Table on_selection_changed")
+        end
       end, @on_selection_changed_box.not_nil!)
     end
 

@@ -24,8 +24,12 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       boxed_data = @on_changed_box.not_nil!
       LibUI.font_button_on_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "FontButton on_changed")
+        end
       end, boxed_data)
     end
 

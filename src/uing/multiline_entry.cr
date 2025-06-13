@@ -45,8 +45,12 @@ module UIng
     def on_changed(&block : -> Void)
       @on_changed_box = ::Box.box(block)
       LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(block)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(block)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "MultilineEntry on_changed")
+        end
       end, @on_changed_box.not_nil!)
     end
 
@@ -60,8 +64,12 @@ module UIng
       }
       @on_changed_box = ::Box.box(wrapper)
       LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "MultilineEntry on_changed_with_text")
+        end
       end, @on_changed_box.not_nil!)
     end
 

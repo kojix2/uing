@@ -37,8 +37,12 @@ module UIng
       }
       @on_toggled_box = ::Box.box(wrapper)
       LibUI.checkbox_on_toggled(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Checkbox on_toggled")
+        end
       end, @on_toggled_box.not_nil!)
     end
 

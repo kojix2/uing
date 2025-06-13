@@ -40,8 +40,12 @@ module UIng
       }
       @on_selected_box = ::Box.box(wrapper)
       LibUI.radio_buttons_on_selected(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "RadioButtons on_selected")
+        end
       end, @on_selected_box.not_nil!)
     end
 

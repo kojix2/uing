@@ -53,8 +53,8 @@ module UIng
               params_wrapper = AreaDrawParams.new(params)
               callback.call(area_wrapper, params_wrapper)
             end
-          rescue
-            # Ignore errors in draw callback
+          rescue e
+            UIng.handle_callback_error(e, "Area draw")
           end
         },
         mouse_event: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, event : LibUI::AreaMouseEvent*) {
@@ -67,8 +67,8 @@ module UIng
               event_wrapper = AreaMouseEvent.new(event.value)
               callback.call(area_wrapper, event_wrapper)
             end
-          rescue
-            # Ignore errors in mouse_event callback
+          rescue e
+            UIng.handle_callback_error(e, "Area mouse_event")
           end
         },
         mouse_crossed: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, left : LibC::Int) {
@@ -81,8 +81,8 @@ module UIng
               left_bool = left != 0
               callback.call(area_wrapper, left_bool)
             end
-          rescue
-            # Ignore errors in mouse_crossed callback
+          rescue e
+            UIng.handle_callback_error(e, "Area mouse_crossed")
           end
         },
         drag_broken: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*) {
@@ -94,8 +94,8 @@ module UIng
               area_wrapper = Area.new(area)
               callback.call(area_wrapper)
             end
-          rescue
-            # Ignore errors in drag_broken callback
+          rescue e
+            UIng.handle_callback_error(e, "Area drag_broken")
           end
         },
         key_event: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, event : LibUI::AreaKeyEvent*) : LibC::Int {
@@ -111,7 +111,8 @@ module UIng
             else
               0_i32
             end
-          rescue
+          rescue e
+            UIng.handle_callback_error(e, "Area key_event")
             0_i32
           end
         }

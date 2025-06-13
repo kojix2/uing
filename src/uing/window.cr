@@ -104,8 +104,12 @@ module UIng
       wrapper = -> { block.call(*self.position) }
       @on_position_changed_box = ::Box.box(wrapper)
       LibUI.window_on_position_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Window on_position_changed")
+        end
       end, @on_position_changed_box.not_nil!)
     end
 
@@ -113,8 +117,12 @@ module UIng
       wrapper = -> { block.call(*self.content_size) }
       @on_content_size_changed_box = ::Box.box(wrapper)
       LibUI.window_on_content_size_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Window on_content_size_changed")
+        end
       end, @on_content_size_changed_box.not_nil!)
     end
 
@@ -122,8 +130,13 @@ module UIng
       wrapper = -> { block.call }
       @on_closing_box = ::Box.box(wrapper)
       LibUI.window_on_closing(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Window on_closing")
+          false
+        end
       end, @on_closing_box.not_nil!)
     end
 
@@ -131,8 +144,12 @@ module UIng
       wrapper = -> { block.call(self.focused?) }
       @on_focus_changed_box = ::Box.box(wrapper)
       LibUI.window_on_focus_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Window on_focus_changed")
+        end
       end, @on_focus_changed_box.not_nil!)
     end
 

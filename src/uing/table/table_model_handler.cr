@@ -53,7 +53,8 @@ module UIng
             else
               0_i32
             end
-          rescue
+          rescue e
+            UIng.handle_callback_error(e, "TableModelHandler num_columns")
             0_i32
           end
         },
@@ -66,7 +67,8 @@ module UIng
             else
               UIng::TableValueType::String
             end
-          rescue
+          rescue e
+            UIng.handle_callback_error(e, "TableModelHandler column_type")
             UIng::TableValueType::String
           end
         },
@@ -80,7 +82,8 @@ module UIng
             else
               0_i32
             end
-          rescue
+          rescue e
+            UIng.handle_callback_error(e, "TableModelHandler num_rows")
             0_i32
           end
         },
@@ -94,7 +97,8 @@ module UIng
             else
               LibUI.new_table_value_string("")
             end
-          rescue
+          rescue e
+            UIng.handle_callback_error(e, "TableModelHandler cell_value")
             LibUI.new_table_value_string("")
           end
         },
@@ -105,8 +109,8 @@ module UIng
               callback = ::Box(Proc(LibC::Int, LibC::Int, Pointer(UIng::LibUI::TableValue), Nil)).unbox(extended.value.set_cell_value_box)
               callback.call(row, column, value)
             end
-          rescue
-            # Ignore errors in set_cell_value
+          rescue e
+            UIng.handle_callback_error(e, "TableModelHandler set_cell_value")
           end
         }
       )

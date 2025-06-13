@@ -51,8 +51,12 @@ module UIng
       }
       @on_changed_box = ::Box.box(wrapper)
       LibUI.slider_on_changed(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Slider on_changed")
+        end
       end, @on_changed_box.not_nil!)
     end
 
@@ -63,8 +67,12 @@ module UIng
       }
       @on_released_box = ::Box.box(wrapper)
       LibUI.slider_on_released(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Slider on_released")
+        end
       end, @on_released_box.not_nil!)
     end
 

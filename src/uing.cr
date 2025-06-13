@@ -44,6 +44,18 @@ module UIng
     str
   end
 
+  # Handle callback errors by printing the error message and backtrace
+  def self.handle_callback_error(ex : Exception, ctx : String = "callback")
+    # As UIng is a UI library, applications may not have standard output available
+    # Use Crystal's system error output to ensure error messages are properly logged
+    Crystal::System.print_error "%s error: %s\n", ctx, ex.message
+    if backtrace = ex.backtrace?
+      backtrace.each { |frame| Crystal::System.print_error "  from %s\n", frame }
+    end
+    # Show error message in a message box
+    UIng.msg_box_error(nil, "Error in #{ctx}", ex.message.to_s)
+  end
+
   def self.init : Nil
     str_ptr = LibUI.init(@@init_options)
     return if str_ptr.null?

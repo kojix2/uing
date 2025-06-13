@@ -25,8 +25,12 @@ module UIng
     def on_clicked(&block : -> Void)
       @on_clicked_box = ::Box.box(block)
       LibUI.button_on_clicked(@ref_ptr, ->(sender, data) do
-        data_as_callback = ::Box(typeof(block)).unbox(data)
-        data_as_callback.call
+        begin
+          data_as_callback = ::Box(typeof(block)).unbox(data)
+          data_as_callback.call
+        rescue e
+          UIng.handle_callback_error(e, "Button on_clicked")
+        end
       end, @on_clicked_box.not_nil!)
     end
 
