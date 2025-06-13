@@ -31,8 +31,12 @@ module UIng
       }
       @on_clicked_box = ::Box.box(callback2)
       LibUI.menu_item_on_clicked(@ref_ptr, ->(sender, window, data) do
-        data_as_callback = ::Box(typeof(callback2)).unbox(data)
-        data_as_callback.call(window)
+        begin
+          data_as_callback = ::Box(typeof(callback2)).unbox(data)
+          data_as_callback.call(window)
+        rescue e
+          UIng.handle_callback_error(e, "MenuItem on_clicked")
+        end
       end, @on_clicked_box.not_nil!)
     end
 
