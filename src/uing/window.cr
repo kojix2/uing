@@ -12,6 +12,9 @@ module UIng
 
     @child_ref : Control? # Reference to the child control
 
+    def initialize(@ref_ptr : Pointer(LibUI::Window))
+    end
+
     def initialize(title, width, height, menubar = false, margined : Bool = false)
       @ref_ptr = LibUI.new_window(title, width, height, menubar)
       self.margined = true if margined
