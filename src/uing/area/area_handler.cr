@@ -154,8 +154,8 @@ module UIng
     end
 
     def to_unsafe
-      # Return pointer to the base_handler field of the extended handler
-      # This ensures libui-ng receives a valid AreaHandler pointer
+      # Return pointer to the extended handler, but cast to base handler type
+      # This maintains the extended structure layout while providing C compatibility
       pointerof(@extended_handler).as(LibUI::AreaHandler*)
     end
   end

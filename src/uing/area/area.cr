@@ -4,14 +4,14 @@ module UIng
   class Area < Control
     block_constructor
 
+    # Keep a reference to the AreaHandler to prevent GC
+    @area_handler : AreaHandler?
+
     def initialize(@ref_ptr : Pointer(LibUI::Area))
     end
 
-    def initialize(area_handler : Pointer(LibUI::AreaHandler))
-      @ref_ptr = LibUI.new_area(area_handler)
-    end
-
     def initialize(area_handler : AreaHandler)
+      @area_handler = area_handler # Keep reference to prevent GC
       @ref_ptr = LibUI.new_area(area_handler.to_unsafe)
     end
 
@@ -22,6 +22,7 @@ module UIng
     end
 
     def initialize(area_handler : AreaHandler, width : Int32, height : Int32)
+      @area_handler = area_handler # Keep reference to prevent GC
       @ref_ptr = LibUI.new_scrolling_area(area_handler.to_unsafe, width, height)
     end
 
