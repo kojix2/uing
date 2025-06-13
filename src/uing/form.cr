@@ -6,9 +6,6 @@ module UIng
 
     @children_refs : Array(Control) = [] of Control
 
-    def initialize(@ref_ptr : Pointer(LibUI::Form))
-    end
-
     def initialize(padded : Bool = false)
       @ref_ptr = LibUI.new_form
       self.padded = true if padded

@@ -6,9 +6,6 @@ module UIng
 
     @child_ref : Control?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Group))
-    end
-
     def initialize(title : String, margined : Bool = false)
       @ref_ptr = LibUI.new_group(title)
       self.margined = true if margined

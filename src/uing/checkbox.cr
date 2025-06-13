@@ -6,9 +6,6 @@ module UIng
     # Store callback box to prevent GC collection
     @on_toggled_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Checkbox))
-    end
-
     def initialize(text : String)
       @ref_ptr = LibUI.new_checkbox(text)
     end

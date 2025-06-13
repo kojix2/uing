@@ -4,9 +4,6 @@ module UIng
   class Separator < Control
     block_constructor
 
-    def initialize(@ref_ptr : Pointer(LibUI::Separator))
-    end
-
     def initialize(orientation : (Symbol | String))
       case orientation.to_s
       when "horizontal"

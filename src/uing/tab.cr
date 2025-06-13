@@ -8,9 +8,6 @@ module UIng
     @on_selected_box : Pointer(Void)?
     @children_refs : Array(Control) = [] of Control
 
-    def initialize(@ref_ptr : Pointer(LibUI::Tab))
-    end
-
     def initialize
       @ref_ptr = LibUI.new_tab
     end

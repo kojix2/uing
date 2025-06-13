@@ -5,9 +5,6 @@ module UIng
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Combobox))
-    end
-
     def initialize
       @ref_ptr = LibUI.new_combobox
     end

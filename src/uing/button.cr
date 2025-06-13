@@ -6,9 +6,6 @@ module UIng
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Button))
-    end
-
     def initialize(text : String)
       @ref_ptr = LibUI.new_button(text)
     end

@@ -7,9 +7,6 @@ module UIng
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::MultilineEntry))
-    end
-
     def initialize(wrapping = true, read_only = false)
       if wrapping
         @ref_ptr = LibUI.new_multiline_entry

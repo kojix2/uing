@@ -3,9 +3,6 @@ module UIng
     property? released : Bool = false
     @for_each_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::OpenTypeFeatures))
-    end
-
     def initialize
       @ref_ptr = LibUI.new_open_type_features
     end

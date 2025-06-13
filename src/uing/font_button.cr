@@ -7,9 +7,6 @@ module UIng
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::FontButton))
-    end
-
     def initialize
       @ref_ptr = LibUI.new_font_button
     end

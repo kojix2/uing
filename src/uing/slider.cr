@@ -8,9 +8,6 @@ module UIng
     @on_changed_box : Pointer(Void)?
     @on_released_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Slider))
-    end
-
     def initialize(min, max)
       @ref_ptr = LibUI.new_slider(min, max)
     end

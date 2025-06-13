@@ -4,9 +4,6 @@ module UIng
   class Label < Control
     block_constructor
 
-    def initialize(@ref_ptr : Pointer(LibUI::Label))
-    end
-
     def initialize(text : String)
       @ref_ptr = LibUI.new_label(text)
     end

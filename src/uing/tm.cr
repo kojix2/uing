@@ -1,6 +1,5 @@
 module UIng
   class TM
-    # Default constructor
     def initialize(@cstruct : LibUI::TM = LibUI::TM.new)
     end
 

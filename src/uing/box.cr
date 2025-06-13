@@ -14,9 +14,6 @@ module UIng
     @ref_ptr : Pointer(LibUI::Box)
     @children_refs : Array(Control) = [] of Control
 
-    def initialize(@ref_ptr : Pointer(LibUI::Box))
-    end
-
     def initialize(orientation : Symbol, padded : Bool = false)
       case orientation
       when :horizontal
