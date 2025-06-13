@@ -5,12 +5,10 @@ UIng.init
 # File menu
 UIng::Menu.new("File") do
   append_item("Open").on_clicked do |w|
-    pt = MAIN_WINDOW.open_file
-    puts pt
+    puts w.open_file
   end
   append_item("Save").on_clicked do |w|
-    pt = MAIN_WINDOW.save_file
-    puts pt
+    puts w.save_file
   end
   append_separator
   should_quit_item = append_check_item("Should Quit_", checked: true)
@@ -44,8 +42,8 @@ end
 # Help menu
 UIng::Menu.new("Help") do
   append_item("Help")
-  append_about_item.on_clicked do
-    puts "About item clicked"
+  append_about_item.on_clicked do |w|
+    UIng.msg_box(w, "About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
   end
 end
 
