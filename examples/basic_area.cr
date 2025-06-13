@@ -21,7 +21,7 @@ handler.draw do |area, area_draw_params|
     # area_draw_params is now a wrapped AreaDrawParams object
     ctx = UIng::DrawContext.new(area_draw_params.context)
     ctx.fill(path, brush)
-  end # 自動でpath.free
+  end # Automatically releases the path
 end
 
 handler.mouse_event { |area, event| }

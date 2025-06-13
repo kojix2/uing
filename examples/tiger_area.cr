@@ -84,7 +84,7 @@ handler = UIng::AreaHandler.new do
 
           ctx.stroke(path, stroke_brush, stroke_params)
         end
-      end # 自動でpath.free
+      end # Automatically releases the path
     end
   end
   mouse_event { |area, event| }
