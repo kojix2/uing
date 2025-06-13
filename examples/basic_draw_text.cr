@@ -52,14 +52,14 @@ append_to_attr_str(ATTR_STR, str3, GREEN)
 append_to_attr_str(ATTR_STR, str4, RED)
 append_to_attr_str(ATTR_STR, str5, GREEN)
 
-handler.draw do |_, _, adp|
-  area_draw_params = UIng::AreaDrawParams.new(adp)
-  default_font = UIng::FontDescriptor.new
-  default_font.family = "Georgia"
-  default_font.size = 13
-  default_font.weight = UIng::TextWeight::Normal
-  default_font.italic = UIng::TextItalic::Normal
-  default_font.stretch = UIng::TextStretch::Normal
+handler.draw do |area, area_draw_params|
+  default_font = UIng::FontDescriptor.new(
+    family: "Georgia",
+    size: 13,
+    weight: UIng::TextWeight::Normal,
+    italic: UIng::TextItalic::Normal,
+    stretch: UIng::TextStretch::Normal
+  )
 
   params = UIng::DrawTextLayoutParams.new
   params.string = ATTR_STR
@@ -73,10 +73,10 @@ handler.draw do |_, _, adp|
   text_layout.free
 end
 
-handler.mouse_event { |_, _, _| }
-handler.mouse_crossed { |_, _, _| }
-handler.drag_broken { |_, _| }
-handler.key_event { |_, _, _| 0 }
+handler.mouse_event { |_, _| }
+handler.mouse_crossed { |_, _| }
+handler.drag_broken { |_| }
+handler.key_event { |_, _| false }
 
 box = UIng::Box.new(:vertical)
 box.padded = true

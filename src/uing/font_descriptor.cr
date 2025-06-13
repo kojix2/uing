@@ -1,9 +1,19 @@
 module UIng
   class FontDescriptor
+    # Store reference to family string to prevent garbage collection
     @family_string : String?
 
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
       @cstruct.family = Pointer(UInt8).null
+    end
+
+    def initialize(family : String, size : Int32, weight : TextWeight, italic : TextItalic, stretch : TextStretch)
+      @cstruct = LibUI::FontDescriptor.new
+      self.family = family
+      self.size = size
+      self.weight = weight
+      self.italic = italic
+      self.stretch = stretch
     end
 
     # Auto convert to and from String
@@ -11,6 +21,7 @@ module UIng
       if @cstruct.family.null?
         ""
       else
+        # This copies the string from the C struct to a Crystal String
         String.new(@cstruct.family)
       end
     end
