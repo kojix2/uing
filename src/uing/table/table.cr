@@ -148,7 +148,7 @@ module UIng
 
     # Block version that automatically frees the selection after the block
     # This eliminates the need for manual free() calls
-    def selection(&block : TableSelection -> T) : T forall T
+    def selection(&block : TableSelection -> Nil) : Nil
       selection_obj = selection
       begin
         yield selection_obj
