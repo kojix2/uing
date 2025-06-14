@@ -56,9 +56,9 @@ handler.draw do |area, area_draw_params|
   default_font = UIng::FontDescriptor.new(
     family: "Georgia",
     size: 13,
-    weight: UIng::TextWeight::Normal,
-    italic: UIng::TextItalic::Normal,
-    stretch: UIng::TextStretch::Normal
+    weight: :normal,
+    italic: :normal,
+    stretch: :normal
   )
 
   params = UIng::DrawTextLayoutParams.new

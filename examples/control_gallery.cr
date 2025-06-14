@@ -27,7 +27,7 @@ UIng::Menu.new("File") do
   end
 
   append_preferences_item.on_clicked do
-    puts "Preference item clicked"
+    create_ref_window
   end
 end
 
@@ -212,6 +212,49 @@ MAIN_WINDOW = UIng::Window.new("Control Gallery", 600, 500, menubar: true, margi
     true
   end
   show
+end
+
+def create_ref_window
+  UIng::Window.new("Preferences", 300, 200, margined: true) do
+    on_closing do
+      puts "Preferences window closed"
+      true # Allow closing
+    end
+    set_child(
+      UIng::Box.new(:vertical, padded: true) do
+        append(label = UIng::Label.new("Preferences"), stretchy: false)
+        append(
+          UIng::Form.new(padded: true) do
+            append("name: ", UIng::Entry.new)
+            append("mail: ", UIng::Entry.new)
+            append("password: ", UIng::Entry.new(:password))
+          end
+        )
+        append(
+          UIng::Grid.new do
+            append(UIng::Checkbox.new("Check 1"), 0, 0, 1, 1, true, :fill, true, :fill)
+            append(UIng::Checkbox.new("Check 2"), 1, 0, 1, 1, true, :fill, true, :fill)
+            append(UIng::Checkbox.new("Check 3"), 0, 1, 1, 1, true, :fill, true, :fill)
+            append(UIng::Checkbox.new("Check 4"), 1, 1, 1, 1, true, :fill, true, :fill)
+            append(UIng::Checkbox.new("Check 5"), 0, 2, 1, 1, true, :fill, true, :fill)
+            append(UIng::Checkbox.new("Check 6"), 1, 2, 1, 1, true, :fill, true, :fill)
+          end
+        )
+        append(
+          UIng::Button.new("OK") do
+            on_clicked do
+              label.text = "Preferences saved"
+            end
+          end,
+          stretchy: false
+        )
+      end
+    )
+    show
+    x = MAIN_WINDOW.position[0] + MAIN_WINDOW.content_size[0] / 2 - content_size[0] / 2
+    y = MAIN_WINDOW.position[1] + MAIN_WINDOW.content_size[1] / 2 - content_size[1] / 2
+    set_position(x.to_i, y.to_i)
+  end
 end
 
 UIng.main

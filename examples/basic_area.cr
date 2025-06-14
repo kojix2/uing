@@ -7,7 +7,7 @@ main_window = UIng::Window.new("Basic Area", 400, 400)
 handler = UIng::AreaHandler.new
 
 handler.draw do |area, area_draw_params|
-  UIng::DrawPath.new(UIng::DrawFillMode::Winding) do |path|
+  UIng::DrawPath.new(:winding) do |path|
     path.add_rectangle(0, 0, 400, 400)
     path.end_ # `end` will also work, but it is a keyword in Crystal
 
