@@ -246,15 +246,15 @@ table.on_header_clicked do |column|
 
   # Clear previous sort indicators
   (0...7).each do |col|
-    table.header_set_sort_indicator(col, UIng::SortIndicator::None) if col != column
+    table.header_set_sort_indicator(col, :none) if col != column
   end
 
   # Determine new sort direction
   current = table.header_sort_indicator(column)
   ascending = case current
-              when UIng::SortIndicator::None
+              when .none?
                 true
-              when UIng::SortIndicator::Ascending
+              when .ascending?
                 false
               else
                 true
