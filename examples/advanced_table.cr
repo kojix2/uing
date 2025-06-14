@@ -361,7 +361,11 @@ main_window.on_closing do
   # Free the default avatar
   DEFAULT_AVATAR.free
 
+  # FIXME: Free the table model and table
+  vbox.delete(2)
+  table.destroy 
   table_model.free
+
   UIng.quit
   true
 end
