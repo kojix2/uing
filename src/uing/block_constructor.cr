@@ -9,7 +9,7 @@ module UIng
 
       def self.new(*args, **kwargs, &block)
         instance = new(*args, **kwargs)
-        with instance yield
+        with instance yield(instance)
         instance
       end
     end
