@@ -1,11 +1,11 @@
 require "../src/uing"
 
 # Application constants
-WINDOW_TITLE     = "World Clock"
-WINDOW_WIDTH     = 700
-WINDOW_HEIGHT    = 700
-UPDATE_INTERVAL  = 1000 # milliseconds
-TIME_FORMAT      = "%H:%M:%S"
+WINDOW_TITLE    = "World Clock"
+WINDOW_WIDTH    =  700
+WINDOW_HEIGHT   =  700
+UPDATE_INTERVAL = 1000 # milliseconds
+TIME_FORMAT     = "%H:%M:%S"
 
 # City data structure for type safety
 struct CityInfo
@@ -108,16 +108,16 @@ WORLD_CITIES = [
 # Get time-of-day emoji based on hour (0-23)
 def get_time_emoji(hour : Int32) : String
   case hour
-  when 0..3   then "🛌" # sleeping
-  when 4..5   then "🌃" # late night
-  when 6      then "🌄" # dawn
+  when 0..3   then "🛌"  # sleeping
+  when 4..5   then "🌃"  # late night
+  when 6      then "🌄"  # dawn
   when 7..10  then "☀️" # morning
   when 11     then "🍽️" # lunch time
-  when 12     then "🕛" # noon
+  when 12     then "🕛"  # noon
   when 13..15 then "🌤️" # afternoon
-  when 16..17 then "🌇" # dusk
-  when 18..20 then "🌆" # evening
-  else             "🌙" # night
+  when 16..17 then "🌇"  # dusk
+  when 18..20 then "🌆"  # evening
+  else             "🌙"  # night
   end
 end
 
@@ -163,30 +163,30 @@ def build_grid_layout(cities : Array(CityInfo)) : {UIng::Grid, Array(CityTimeLab
   left_cities.each_with_index do |city, row|
     name_label = UIng::Label.new("#{city.flag} #{city.name}")
     time_label = UIng::Label.new("00:00:00")
-    
-    grid.append(name_label, left: 0, top: row, xspan: 1, yspan: 1, 
-                hexpand: true, halign: :fill, vexpand: false, valign: :fill)
-    grid.append(time_label, left: 1, top: row, xspan: 1, yspan: 1, 
-                hexpand: true, halign: :fill, vexpand: false, valign: :fill)
-    
+
+    grid.append(name_label, left: 0, top: row, xspan: 1, yspan: 1,
+      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+    grid.append(time_label, left: 1, top: row, xspan: 1, yspan: 1,
+      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+
     time_labels << CityTimeLabel.new(city.timezone, time_label)
   end
 
   # Add vertical separator between columns
   separator = UIng::Separator.new(:vertical)
-  grid.append(separator, left: 2, top: 0, xspan: 1, yspan: left_cities.size, 
-              hexpand: false, halign: :fill, vexpand: true, valign: :fill)
+  grid.append(separator, left: 2, top: 0, xspan: 1, yspan: left_cities.size,
+    hexpand: false, halign: :fill, vexpand: true, valign: :fill)
 
   # Add right column cities (offset by separator)
   right_cities.each_with_index do |city, row|
     name_label = UIng::Label.new("#{city.flag} #{city.name}")
     time_label = UIng::Label.new("00:00:00")
-    
-    grid.append(name_label, left: 3, top: row, xspan: 1, yspan: 1, 
-                hexpand: true, halign: :fill, vexpand: false, valign: :fill)
-    grid.append(time_label, left: 4, top: row, xspan: 1, yspan: 1, 
-                hexpand: true, halign: :fill, vexpand: false, valign: :fill)
-    
+
+    grid.append(name_label, left: 3, top: row, xspan: 1, yspan: 1,
+      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+    grid.append(time_label, left: 4, top: row, xspan: 1, yspan: 1,
+      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+
     time_labels << CityTimeLabel.new(city.timezone, time_label)
   end
 
