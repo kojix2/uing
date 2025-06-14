@@ -22,17 +22,26 @@ module UIng
   #   # ... use selection data ...
   #   selection.free               # MUST free manually when using this pattern
   #
-  # IMPORTANT NOTES:
-  # - Users should NOT create TableSelection instances directly
-  # - TableSelection objects are only created by libui-ng and returned from Table methods
-  # - When using table.selection directly, you MUST call free() after use
-  # - The on_selection_changed callback automatically handles memory management
+  # 3. Setting a custom TableSelection object via `table.selection =`:
+  #   You can create a TableSelection manually using `TableSelection.new(...)`
+  #   and assign it to a table.
+  #   The data will be immediately copied or consumed by libui-ng,
+  #   so the object does **not** need to be freed manually.
+  #   Memory is automatically managed by Crystal's garbage collector.
   class TableSelection
+    rows : Array(Int32)?
     property? freed : Bool = false
 
-    # Internal constructor - only used by libui-ng bindings
-    # Users should NOT call this directly
-    protected def initialize(@ptr : Pointer(LibUI::TableSelection))
+    def initialize(@ptr : Pointer(LibUI::TableSelection))
+      @rows = nil
+      @cstruct = nil
+    end
+
+    def initialize(rows : Array(Int32))
+      # Create a new TableSelection with the given rows
+      @rows = rows
+      @cstruct = LibUI::TableSelection.new(@rows.to_unsafe, @rows.size)
+      @ptr = Pointer(LibUI::TableSelection).new(@cstruct)
     end
 
     def num_rows : Int32
@@ -44,9 +53,8 @@ module UIng
     end
 
     def free : Nil
+      return if @rows
       return if @freed # Prevent double-free
-      # TableSelection returned from libui-ng MUST be freed by caller
-      # This is different from other libui-ng objects
       LibUI.free_table_selection(@ptr)
       @freed = true
     end
@@ -56,10 +64,5 @@ module UIng
     end
 
     # Note: No finalize method needed for TableSelection
-    # According to libui-ng developers:
-    # - TableSelection objects returned from libui-ng are managed internally
-    # - Language bindings should treat these as "borrowed" references that don't need cleanup
-    # - libui-ng uses strict ownership model where it manages TableSelection memory internally
-    # - Adding finalize would cause double-free errors since libui-ng already manages the memory
   end
 end
