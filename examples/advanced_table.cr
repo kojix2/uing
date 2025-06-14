@@ -363,7 +363,7 @@ main_window.on_closing do
 
   # FIXME: Free the table model and table
   vbox.delete(2)
-  table.destroy 
+  table.destroy
   table_model.free
 
   UIng.quit
