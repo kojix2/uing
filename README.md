@@ -126,11 +126,13 @@ Use Developer Command Prompt or add Windows Kits path:
 $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ```
 
-## Closures and Limitations
+## Closures in Low-Level Contexts
 
-- Many methods support Crystal closures as arguments because the underlying libui-ng native functions often accept a `data` parameter, enabling flexible callbacks.
+- Many methods support Crystal closures because the underlying libui-ng functions accept a `data` parameter.
 
-- However, closures cannot be registered in scenarios requiring a C function to be assigned to a struct member, as there is no provision for a `data` argument in that case. Note that attempting to do so will result in a runtime error.
+- In some low-level APIs, such as function pointers assigned to struct members, no `data` can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.
+
+- This approach is used in controls like `Table` and `Area`.
 
 ## Development
 
