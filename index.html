@@ -560,17 +560,20 @@ window.show
 </a>MSVC Setup</h3>
 <p>Use Developer Command Prompt or add Windows Kits path:</p>
 <pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
-<h2><a id="closures-and-limitations" class="anchor" href="#closures-and-limitations">
+<h2><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Closures and Limitations</h2>
+</a>Closures in Low-Level Contexts</h2>
 <ul>
 <li>
-<p>Many methods support Crystal closures as arguments because the underlying libui-ng native functions often accept a <code>data</code> parameter, enabling flexible callbacks.</p>
+<p>Many methods support Crystal closures because the underlying libui-ng functions accept a <code>data</code> parameter.</p>
 </li>
 <li>
-<p>However, closures cannot be registered in scenarios requiring a C function to be assigned to a struct member, as there is no provision for a <code>data</code> argument in that case. Note that attempting to do so will result in a runtime error.</p>
+<p>In some low-level APIs, such as function pointers assigned to struct members, no <code>data</code> can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.</p>
+</li>
+<li>
+<p>This approach is used in controls like <code>Table</code> and <code>Area</code>.</p>
 </li>
 </ul>
 <h2><a id="development" class="anchor" href="#development">
