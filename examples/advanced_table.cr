@@ -162,10 +162,8 @@ model_handler = UIng::TableModelHandler.new do
     end
   end
 
-  set_cell_value do |row, column, value|
+  set_cell_value do |row, column, table_value|
     next if row >= EMPLOYEES.size
-
-    table_value = UIng::TableValue.new(value, borrowed: true)
 
     case Column.new(column)
     when .avatar?, .progress?
