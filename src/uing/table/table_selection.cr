@@ -30,7 +30,7 @@ module UIng
   #   Memory is automatically managed by Crystal's garbage collector.
   class TableSelection
     rows : Array(Int32)?
-    property? freed : Bool = false
+    property? released : Bool = false
 
     def initialize(@ptr : Pointer(LibUI::TableSelection))
       @rows = nil
@@ -54,9 +54,9 @@ module UIng
 
     def free : Nil
       return if @rows
-      return if @freed # Prevent double-free
+      return if @released # Prevent double-free
       LibUI.free_table_selection(@ptr)
-      @freed = true
+      @released = true
     end
 
     def to_unsafe
