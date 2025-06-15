@@ -360,6 +360,7 @@ main_window.on_closing do
   DEFAULT_AVATAR.free
 
   # FIXME: Free the table model and table
+  # https://github.com/kojix2/uing/issues/6
   vbox.delete(2)
   table.destroy
   table_model.free

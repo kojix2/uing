@@ -74,9 +74,12 @@ main_window.show
 
 main_window.on_closing do
   puts "Bye Bye"
-  # Clean up resources before quitting
-  # Note: TableModel should be freed AFTER the table is destroyed
-  # The table is automatically destroyed when the window closes
+
+  # FIXME: https://github.com/kojix2/uing/issues/6
+  hbox.delete(0)
+  table.destroy    # Destroy table firs
+  table_model.free # Then free model
+
   UIng.quit
   true
 end
