@@ -1,5 +1,7 @@
 module UIng
   class Image
+    property? released : Bool = false
+
     def initialize(@ref_ptr : Pointer(LibUI::Image))
     end
 
@@ -12,7 +14,9 @@ module UIng
     end
 
     def free : Nil
+      return if @released
       LibUI.free_image(@ref_ptr)
+      @released = true
     end
 
     def to_unsafe
