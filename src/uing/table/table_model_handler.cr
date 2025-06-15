@@ -107,7 +107,8 @@ module UIng
             extended = mh.as(LibUI::TableModelHandlerExtended*)
             if !extended.value.set_cell_value_box.null?
               callback = ::Box(Proc(LibC::Int, LibC::Int, UIng::TableValue, Nil)).unbox(extended.value.set_cell_value_box)
-              callback.call(row, column, UIng::TableValue.new(value, borrowed: true))
+              table_value = UIng::TableValue.new(value, borrowed: true)
+              callback.call(row, column, table_value)
             end
           rescue e
             UIng.handle_callback_error(e, "TableModelHandler set_cell_value")
