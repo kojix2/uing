@@ -10,6 +10,8 @@ class MD5CheckerApp
   @run_button : UIng::Button
   @table_handler : MD5TableHandler
   @table_model : UIng::TableModel
+  @main_vbox : UIng::Box
+  @table : UIng::Table
 
   def initialize
     UIng.init
@@ -36,27 +38,14 @@ class MD5CheckerApp
     @table_handler = MD5TableHandler.new
     @table_model = @table_handler.create_model
 
-    setup_ui
-  end
-
-  # Run the application
-  def run
-    @main_window.show
-    UIng.main
-    cleanup
-  end
-
-  # Setup UI components
-  private def setup_ui
     # Create layout
-    main_vbox = UIng::Box.new(:vertical)
-    main_vbox.padded = true
-    @main_window.child = main_vbox
+    @main_vbox = UIng::Box.new(:vertical, padded: true)
+    @main_window.child = @main_vbox
 
     # Top box
     top_hbox = UIng::Box.new(:horizontal)
     top_hbox.padded = true
-    main_vbox.append(top_hbox, false)
+    @main_vbox.append(top_hbox, false)
 
     # File path entry
     top_hbox.append(@file_path_entry, true)
@@ -68,8 +57,15 @@ class MD5CheckerApp
     top_hbox.append(@run_button, false)
 
     # Create table
-    table = create_table
-    main_vbox.append(table, true)
+    @table = create_table
+    @main_vbox.append(@table, true)
+  end
+
+  # Run the application
+  def run
+    @main_window.show
+    UIng.main
+    cleanup
   end
 
   # Create and configure table
@@ -131,6 +127,9 @@ class MD5CheckerApp
 
   # Cleanup resources
   private def cleanup
+    # Table cleanup. See: https://github.com/kojix2/uing/issues/6
+    @main_vbox.delete(1)
+    @table.destroy
     @table_model.free
     UIng.uninit
   end
