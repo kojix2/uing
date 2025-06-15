@@ -12,7 +12,7 @@ class MD5TableHandler
         value = MD5Checker.instance.result_at(row, column)
         UIng::TableValue.new(value)
       }
-      set_cell_value { |_, _, _| }
+      set_cell_value { |row, column, value| }
     end
   end
 
