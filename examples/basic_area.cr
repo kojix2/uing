@@ -24,10 +24,37 @@ handler.draw do |area, area_draw_params|
   end # Automatically releases the path
 end
 
-handler.mouse_event { |area, event| }
-handler.mouse_crossed { |area, left| }
-handler.drag_broken { |area| }
-handler.key_event { |area, event| false }
+handler.mouse_event { |area, event|
+  puts "Mouse event:"
+  p! event.x
+  p! event.y
+  p! event.area_width
+  p! event.area_height
+  p! event.down
+  p! event.up
+  p! event.count
+  p! event.modifiers
+  p! event.held1_to64
+  nil
+}
+
+handler.mouse_crossed { |area, left|
+  puts "Mouse crossed: #{left}"
+  nil
+}
+handler.drag_broken { |area|
+  puts "Drag broken"
+  nil
+}
+handler.key_event { |area, event|
+  puts "Key event:"
+  p! event.key.chr
+  p! event.ext_key
+  p! event.modifier
+  p! event.modifiers
+  p! event.up
+  false
+}
 
 area = UIng::Area.new(handler)
 

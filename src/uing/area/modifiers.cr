@@ -1,4 +1,5 @@
 module UIng
+  @[Flags]
   enum Modifiers
     Ctrl  = 1 << 0
     Alt   = 1 << 1
