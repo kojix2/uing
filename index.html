@@ -536,7 +536,7 @@ window.show
 <p>Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window → Box → Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.</p>
 </li>
 <li>
-<p>The use of <code>finalize</code> is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, an API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.</p>
+<p>The use of <code>finalize</code> is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.</p>
 </li>
 </ul>
 <h2><a id="windows-setup" class="anchor" href="#windows-setup">
