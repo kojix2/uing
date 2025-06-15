@@ -1,35 +1,4 @@
 module UIng
-  # TableValue represents data values in Table cells.
-  #
-  # UNIFIED MEMORY MANAGEMENT:
-  # TableValue uses a borrowed flag to automatically handle memory management.
-  #
-  # CRITICAL WARNINGS:
-  # 1. TableValue from TableModelHandler callbacks is "borrowed" - automatically protected from free
-  # 2. TableValue created by Crystal code MUST be freed after use
-  # 3. DO NOT store TableValue references long-term
-  # 4. libui-ng takes ownership when TableValue is passed to Table methods
-  # 5. Image data returned from TableValue.image is borrowed - DO NOT free
-  # 6. String data returned from TableValue.string is borrowed - DO NOT free
-  #
-  # Safe usage patterns:
-  #   # In TableModelHandler callback (borrowed - automatically protected):
-  #   def cell_value(...)
-  #     value = LibUI.new_table_value_string("data")
-  #     return value  # libui-ng will free this
-  #   end
-  #
-  #   # Creating for immediate use (must free):
-  #   value = TableValue.new("data")
-  #   data = value.string  # Extract data immediately
-  #   value.free           # Free immediately after use
-  #
-  #   # Reading from borrowed TableValue (automatically protected):
-  #   def set_cell_value(row, column, value_ptr)
-  #     table_value = TableValue.new(value_ptr, borrowed: true)  # Marked as borrowed
-  #     data = table_value.string                               # Extract data
-  #     table_value.free  # Safe to call - will be ignored for borrowed values
-  #   end
   class TableValue
     property? released : Bool = false
     property? borrowed : Bool = false
@@ -60,10 +29,6 @@ module UIng
       @ref_ptr = LibUI.new_table_value_color(r, g, b, a)
       @borrowed = false
     end
-
-    # def initialize
-    #   @ref_ptr = LibUI.new_table_value
-    # end
 
     def self.new_color(r : Float64, g : Float64, b : Float64, a : Float64) : TableValue
       TableValue.new(r, g, b, a)
@@ -120,11 +85,5 @@ module UIng
     def to_unsafe
       @ref_ptr
     end
-
-    # Note: No finalize method needed for TableValue
-    # - TableValue objects returned from table model callbacks are immediately freed by libui-ng
-    # - Language bindings should treat these as "borrowed" references that don't need cleanup
-    # - libui-ng uses strict ownership model where it manages TableValue memory internally
-    # - Adding finalize would cause double-free errors since libui-ng already frees the memory
   end
 end
