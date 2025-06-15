@@ -1,4 +1,4 @@
-require "./control"
+require "../control"
 
 module UIng
   class AttributedString
