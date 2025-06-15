@@ -492,7 +492,7 @@ model.free     # Then free model</p>
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L17" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L17" target="_blank">
         uing/table/table_model.cr
       </a>
     
@@ -515,7 +515,7 @@ model.free     # Then free model</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableModel))</a>
+        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%2Cborrowed%3ABool%3Dtrue%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableModel), borrowed : Bool = <span class="n">true</span>)</a>
         
       </li>
     
@@ -543,19 +543,19 @@ model.free     # Then free model</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#borrowed%3D%28borrowed%3ABool%29-instance-method" class="signature"><strong>#borrowed=</strong>(borrowed : Bool)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#borrowed%3F%3ABool-instance-method" class="signature"><strong>#borrowed?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#free%3ANil-instance-method" class="signature"><strong>#free</strong> : Nil</a>
         
           <div class="summary"><p>Explicitly free the TableModel.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method" class="signature"><strong>#managed_by_libui=</strong>(managed_by_libui : Bool)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#managed_by_libui%3F%3ABool-instance-method" class="signature"><strong>#managed_by_libui?</strong> : Bool</a>
         
       </li>
     
@@ -633,18 +633,18 @@ model.free     # Then free model</p>
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableModel))-class-method">
+    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableModel),borrowed:Bool=true)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::TableModel))
+        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::TableModel), borrowed : Bool = <span class="n">true</span>)
 
-        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%2Cborrowed%3ABool%3Dtrue%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -660,7 +660,7 @@ model.free     # Then free model</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -681,6 +681,38 @@ model.free     # Then free model</p>
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="borrowed=(borrowed:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>borrowed=</strong>(borrowed : Bool)
+
+        <a class="method-permalink" href="#borrowed%3D%28borrowed%3ABool%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L19" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="borrowed?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>borrowed?</strong> : Bool
+
+        <a class="method-permalink" href="#borrowed%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L19" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="free:Nil-instance-method">
       <div class="signature">
         
@@ -699,39 +731,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L47" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="managed_by_libui=(managed_by_libui:Bool)-instance-method">
-      <div class="signature">
-        
-        def <strong>managed_by_libui=</strong>(managed_by_libui : Bool)
-
-        <a class="method-permalink" href="#managed_by_libui%3D%28managed_by_libui%3ABool%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L19" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="managed_by_libui?:Bool-instance-method">
-      <div class="signature">
-        
-        def <strong>managed_by_libui?</strong> : Bool
-
-        <a class="method-permalink" href="#managed_by_libui%3F%3ABool-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L47" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -747,7 +747,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -763,7 +763,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -779,7 +779,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L60" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -795,7 +795,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -811,7 +811,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -827,7 +827,7 @@ Calling this while Tables are still active will cause crashes.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/76d583d281944d9e415bb4fe6c7f0bad5adaf599/src/uing/table/table_model.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/dbdcbd64a764b01168cf2ebe78b9a5d3cce52cb3/src/uing/table/table_model.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
