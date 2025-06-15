@@ -74,9 +74,7 @@ class MD5CheckerApp
 
   # Create and configure table
   private def create_table
-    table_params = UIng::TableParams.new(@table_model)
-
-    UIng::Table.new(table_params) do
+    UIng::Table.new(@table_model) do
       append_text_column("Filename", 0, -1)
       append_text_column("Status", 1, -1)
       append_text_column("Message", 2, -1)

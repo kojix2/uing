@@ -8,7 +8,21 @@ module UIng
       @cstruct.row_background_color_model_column = row_background_color_model_column
     end
 
-    forward_missing_to(@cstruct)
+    def model
+      TableModel.new(@cstruct.model)
+    end
+
+    def model=(value : TableModel)
+      @cstruct.model = value.to_unsafe
+    end
+
+    def row_background_color_model_column
+      @cstruct.row_background_color_model_column
+    end
+
+    def row_background_color_model_column=(value : LibC::Int)
+      @cstruct.row_background_color_model_column = value
+    end
 
     def to_unsafe
       pointerof(@cstruct)

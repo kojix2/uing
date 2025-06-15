@@ -40,9 +40,8 @@ model_handler = UIng::TableModelHandler.new do
 end
 
 table_model = UIng::TableModel.new(model_handler)
-table_params = UIng::TableParams.new(table_model)
 
-table = UIng::Table.new(table_params) do
+table = UIng::Table.new(table_model) do
   append_text_column("Animal", 0, -1)
   append_text_column("Description", 1, -1)
 end

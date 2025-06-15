@@ -13,15 +13,11 @@ module UIng
     # Store TableModel reference to prevent GC collection
     @table_model_ref : TableModel?
 
-    def initialize(table_params : TableParams)
+    # IMPORTANT: This method accepts TableModel instead of TableParams
+    def initialize(model : TableModel, row_background_color_model_column : LibC::Int = -1)
+      table_params = TableParams.new(model, row_background_color_model_column)
       @ref_ptr = LibUI.new_table(table_params)
-      # Store reference to TableModel to prevent GC collection
-      model_ptr = table_params.model
-      if model_ptr
-        @table_model_ref = TableModel.new(model_ptr)
-      end
-      # table_params is only used during table creation,
-      # so we don't need to worry about its lifetime.
+      @table_model_ref = model
     end
 
     def on_row_clicked(&block : LibC::Int -> Void)

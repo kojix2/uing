@@ -16,29 +16,17 @@ module UIng
   #   model.free     # Then free model
   class TableModel
     property? released : Bool = false
-    property? borrowed : Bool = false
 
     # Store TableModelHandler reference to prevent GC collection
     # IMPORTANT: This prevents GC of handler while model is alive
     @model_handler_ref : TableModelHandler?
 
-    def initialize(@ref_ptr : Pointer(LibUI::TableModel), borrowed : Bool = true)
-      @borrowed = borrowed # TableModel managed by LibUI
+    def initialize(@ref_ptr : Pointer(LibUI::TableModel))
     end
 
-    def initialize(model_handler : (TableModelHandler | LibUI::TableModelHandler))
+    def initialize(model_handler : TableModelHandler)
       @ref_ptr = LibUI.new_table_model(model_handler)
-      @borrowed = false # TableModel created by ourselves
-
-      # Store reference to TableModelHandler to prevent GC collection
-      # This is CRITICAL - if handler is GC'd, callbacks become invalid
-      case model_handler
-      when TableModelHandler
-        @model_handler_ref = model_handler
-      when LibUI::TableModelHandler
-        # For LibUI::TableModelHandler, caller MUST maintain the reference
-        # to prevent GC collection and callback invalidation
-      end
+      @model_handler_ref = model_handler
     end
 
     # Explicitly free the TableModel.
@@ -46,7 +34,6 @@ module UIng
     # Calling this while Tables are still active will cause crashes.
     def free : Nil
       return if @released
-      return if @borrowed # Don't free TableModel managed by LibUI
       LibUI.free_table_model(@ref_ptr)
       @released = true
       # Clear handler reference to allow GC

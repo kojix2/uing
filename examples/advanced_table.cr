@@ -192,9 +192,8 @@ end
 
 # Create table model and table
 table_model = UIng::TableModel.new(model_handler)
-table_params = UIng::TableParams.new(table_model)
 
-table = UIng::Table.new(table_params) do
+table = UIng::Table.new(table_model) do
   # Add columns with different types
   append_image_column("Avatar", 0)          # Image column (read-only)
   append_text_column("Name", 1, 1)          # Editable text

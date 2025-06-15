@@ -1,5 +1,7 @@
 module UIng
   class TableTextColumnOptionalParams
+    include BlockConstructor; block_constructor
+
     def initialize(color_model_column : LibC::Int)
       @cstruct = LibUI::TableTextColumnOptionalParams.new
       @cstruct.color_model_column = color_model_column
