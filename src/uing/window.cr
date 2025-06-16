@@ -4,6 +4,15 @@ module UIng
   class Window < Control
     block_constructor
 
+    # Mutex
+    @@mutex = Mutex.new
+
+    # Store references to Window to prevent GC collection
+    @@windows : Array(Window) = [] of Window
+
+    @released : Bool = false # Flag to track if the window is released
+    @borrowed : Bool = false # Flag to track if the window is borrowed
+
     # Store callback boxes to prevent GC collection
     @on_position_changed_box : Pointer(Void)?
     @on_content_size_changed_box : Pointer(Void)?
@@ -12,12 +21,28 @@ module UIng
 
     @child_ref : Control? # Reference to the child control
 
-    def initialize(@ref_ptr : Pointer(LibUI::Window))
+    def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
     end
 
     def initialize(title, width, height, menubar = false, margined : Bool = false)
       @ref_ptr = LibUI.new_window(title, width, height, menubar)
+      @@mutex.synchronize do
+        @@windows << self
+      end
       self.margined = true if margined
+    end
+
+    def destroy
+      return if @released
+      return if @borrowed
+      @@mutex.synchronize do
+        @@windows.delete(self)
+      end
+      @on_position_changed_box = nil
+      @on_content_size_changed_box = nil
+      @on_closing_box = nil
+      @on_focus_changed_box = nil
+      super.tap { @released = true }
     end
 
     def title : String?
