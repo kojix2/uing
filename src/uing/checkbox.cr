@@ -3,11 +3,20 @@ require "./control"
 module UIng
   class Checkbox < Control
     block_constructor
+
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_toggled_box : Pointer(Void)?
 
     def initialize(text : String)
       @ref_ptr = LibUI.new_checkbox(text)
+    end
+
+    def destroy
+      return if @released
+      @on_toggled_box = nil
+      super.tap { @released = true }
     end
 
     def text : String?

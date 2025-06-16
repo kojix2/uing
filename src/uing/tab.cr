@@ -4,12 +4,20 @@ module UIng
   class Tab < Control
     block_constructor
 
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?
     @children_refs : Array(Control) = [] of Control
 
     def initialize
       @ref_ptr = LibUI.new_tab
+    end
+
+    def destroy
+      return if @released
+      @on_selected_box = nil
+      super.tap { @released = true }
     end
 
     def append(name : String, control, margined : Bool = false) : Nil

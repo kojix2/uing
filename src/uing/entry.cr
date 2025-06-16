@@ -3,6 +3,9 @@ require "./control"
 module UIng
   class Entry < Control
     block_constructor
+
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
 
@@ -18,6 +21,12 @@ module UIng
       if read_only
         self.read_only = true
       end
+    end
+
+    def destroy
+      return if @released
+      @on_changed_box = nil
+      super.tap { @released = true }
     end
 
     def text : String?

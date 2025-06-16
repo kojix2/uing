@@ -4,11 +4,19 @@ module UIng
   class EditableCombobox < Control
     block_constructor
 
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
 
     def initialize
       @ref_ptr = LibUI.new_editable_combobox
+    end
+
+    def destroy
+      return if @released
+      @on_changed_box = nil
+      super.tap { @released = true }
     end
 
     def initialize(items : Array(String))

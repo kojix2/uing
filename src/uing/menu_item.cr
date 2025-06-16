@@ -1,9 +1,17 @@
 module UIng
   class MenuItem
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 
     def initialize(@ref_ptr : Pointer(LibUI::MenuItem))
+    end
+
+    def destroy
+      return if @released
+      @on_clicked_box = nil
+      @released = true
     end
 
     # no new_menu_item function in libui

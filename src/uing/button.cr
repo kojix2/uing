@@ -3,11 +3,20 @@ require "./control"
 module UIng
   class Button < Control
     block_constructor
+
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 
     def initialize(text : String)
       @ref_ptr = LibUI.new_button(text)
+    end
+
+    def destroy
+      return if @released
+      @on_clicked_box = nil
+      super.tap { @released = true }
     end
 
     def text : String?

@@ -4,11 +4,19 @@ module UIng
   class RadioButtons < Control
     block_constructor
 
+    @released : Bool = false
+
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?
 
     def initialize
       @ref_ptr = LibUI.new_radio_buttons
+    end
+
+    def destroy
+      return if @released
+      @on_selected_box = nil
+      super.tap { @released = true }
     end
 
     def initialize(items : Array(String))

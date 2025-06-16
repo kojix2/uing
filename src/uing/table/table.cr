@@ -4,6 +4,8 @@ module UIng
   class Table < Control
     block_constructor
 
+    @released : Bool = false
+
     # Store callback boxes to prevent GC collection
     @on_row_clicked_box : Pointer(Void)?
     @on_row_double_clicked_box : Pointer(Void)?
@@ -18,6 +20,15 @@ module UIng
       table_params = TableParams.new(model, row_background_color_model_column)
       @ref_ptr = LibUI.new_table(table_params)
       @table_model_ref = model
+    end
+
+    def destroy
+      return if @released
+      @on_row_clicked_box = nil
+      @on_row_double_clicked_box = nil
+      @on_header_clicked_box = nil
+      @on_selection_changed_box = nil
+      super.tap { @released = true }
     end
 
     def on_row_clicked(&block : LibC::Int -> Void)
