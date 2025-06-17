@@ -39,7 +39,7 @@ def draw_path_from_codes(path : UIng::DrawPath, x : Array(Float64), y : Array(Fl
   end
 end
 
-handler = UIng::AreaHandler.new do
+handler = UIng::Area::Handler.new do
   draw do |area, area_draw_params|
     ctx = area_draw_params.context
 

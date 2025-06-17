@@ -4,7 +4,7 @@ UIng.init
 
 main_window = UIng::Window.new("Basic Area", 400, 400)
 
-handler = UIng::AreaHandler.new
+handler = UIng::Area::Handler.new
 
 handler.draw do |area, area_draw_params|
   UIng::DrawPath.new(:winding) do |path|
@@ -18,7 +18,7 @@ handler.draw do |area, area_draw_params|
     brush.b = 0.8
     brush.a = 1.0
 
-    # area_draw_params is now a wrapped AreaDrawParams object
+    # area_draw_params is now a wrapped Area::DrawParams object
     ctx = area_draw_params.context
     ctx.fill(path, brush)
   end # Automatically releases the path

@@ -5,7 +5,7 @@ UIng.init
 # Application state management with GC protection
 module App
   # Keep references to prevent GC
-  @@handler : UIng::AreaHandler? = nil
+  @@handler : UIng::Area::Handler? = nil
   @@area : UIng::Area? = nil
   @@main_window : UIng::Window? = nil
 
@@ -21,7 +21,7 @@ module App
     @@main_window.not_nil!
   end
 
-  def self.set_handler(handler : UIng::AreaHandler)
+  def self.set_handler(handler : UIng::Area::Handler)
     @@handler = handler
   end
 
@@ -183,7 +183,7 @@ module RandomLines
 end
 
 # Create and setup handler with GC protection
-handler = UIng::AreaHandler.new
+handler = UIng::Area::Handler.new
 App.set_handler(handler)
 
 handler.draw do |area, area_draw_params|

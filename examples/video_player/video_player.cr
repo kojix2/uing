@@ -19,7 +19,7 @@ class VideoPlayerApp
   end
 
   def create_area_handler
-    handler = UIng::AreaHandler.new
+    handler = UIng::Area::Handler.new
 
     # Draw handler - simple drawing for now
     handler.draw do |area, area_draw_params|

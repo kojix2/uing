@@ -162,7 +162,7 @@ class LorenzAttractor
   end
 
   private def create_draw_handler
-    UIng::AreaHandler.new.tap do |handler|
+    UIng::Area::Handler.new.tap do |handler|
       handler.draw do |area, area_draw_params|
         ctx = area_draw_params.context
 

@@ -2,7 +2,7 @@ require "../src/uing"
 
 UIng.init
 
-handler = UIng::AreaHandler.new
+handler = UIng::Area::Handler.new
 area = UIng::Area.new(handler)
 
 title = "Michael Ende (1929-1995) The Neverending Story"
