@@ -67,28 +67,33 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/Area" data-name="uing::area">
+  <li class="parent open current" data-id="uing/UIng/Area" data-name="uing::area">
       <a href="../UIng/Area.html">Area</a>
       
-    </li>
+        <ul>
   
-  <li class=" " data-id="uing/UIng/AreaDrawParams" data-name="uing::areadrawparams">
-      <a href="../UIng/AreaDrawParams.html">AreaDrawParams</a>
+  <li class=" " data-id="uing/UIng/Area/DrawParams" data-name="uing::area::drawparams">
+      <a href="../UIng/Area/DrawParams.html">DrawParams</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/AreaHandler" data-name="uing::areahandler">
-      <a href="../UIng/AreaHandler.html">AreaHandler</a>
+  <li class=" " data-id="uing/UIng/Area/Handler" data-name="uing::area::handler">
+      <a href="../UIng/Area/Handler.html">Handler</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/AreaKeyEvent" data-name="uing::areakeyevent">
-      <a href="../UIng/AreaKeyEvent.html">AreaKeyEvent</a>
+  <li class=" " data-id="uing/UIng/Area/KeyEvent" data-name="uing::area::keyevent">
+      <a href="../UIng/Area/KeyEvent.html">KeyEvent</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/AreaMouseEvent" data-name="uing::areamouseevent">
-      <a href="../UIng/AreaMouseEvent.html">AreaMouseEvent</a>
+  <li class=" " data-id="uing/UIng/Area/MouseEvent" data-name="uing::area::mouseevent">
+      <a href="../UIng/Area/MouseEvent.html">MouseEvent</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -438,6 +443,17 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>This class provides read-only access to key event properties.</p>
+
 
 
 
@@ -463,8 +479,36 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L5" target="_blank">
         uing/area/area.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area/draw_params.cr#L2" target="_blank">
+        uing/area/area/draw_params.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area/handler.cr#L21" target="_blank">
+        uing/area/area/handler.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area/key_event.cr#L2" target="_blank">
+        uing/area/area/key_event.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area/mouse_event.cr#L3" target="_blank">
+        uing/area/area/mouse_event.cr
       </a>
     
     <br/>
@@ -501,7 +545,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28area_handler%3AAreaHandler%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method" class="signature"><strong>.new</strong>(area_handler : AreaHandler, width : Int32, height : Int32)</a>
+        <a href="#new%28area_handler%3AHandler%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method" class="signature"><strong>.new</strong>(area_handler : Handler, width : Int32, height : Int32)</a>
         
       </li>
     
@@ -511,7 +555,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28area_handler%3AAreaHandler%29-class-method" class="signature"><strong>.new</strong>(area_handler : AreaHandler)</a>
+        <a href="#new%28area_handler%3AHandler%29-class-method" class="signature"><strong>.new</strong>(area_handler : Handler)</a>
         
       </li>
     
@@ -732,7 +776,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -748,7 +792,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -764,23 +808,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L21" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(area_handler:AreaHandler,width:Int32,height:Int32)-class-method">
+    <div class="entry-detail" id="new(area_handler:Handler,width:Int32,height:Int32)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(area_handler : <a href="../UIng/AreaHandler.html">AreaHandler</a>, width : Int32, height : Int32)
+        def self.<strong>new</strong>(area_handler : <a href="../UIng/Area/Handler.html">Handler</a>, width : Int32, height : Int32)
 
-        <a class="method-permalink" href="#new%28area_handler%3AAreaHandler%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28area_handler%3AHandler%2Cwidth%3AInt32%2Cheight%3AInt32%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -796,23 +840,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(area_handler:AreaHandler)-class-method">
+    <div class="entry-detail" id="new(area_handler:Handler)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(area_handler : <a href="../UIng/AreaHandler.html">AreaHandler</a>)
+        def self.<strong>new</strong>(area_handler : <a href="../UIng/Area/Handler.html">Handler</a>)
 
-        <a class="method-permalink" href="#new%28area_handler%3AAreaHandler%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28area_handler%3AHandler%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -844,7 +888,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -860,7 +904,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -876,7 +920,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L33" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -892,7 +936,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -908,7 +952,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -924,7 +968,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3853d33bf0fc483482a81ab9ca67ad90c761445e/src/uing/area/area.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/area/area.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
