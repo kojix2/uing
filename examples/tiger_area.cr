@@ -41,7 +41,7 @@ end
 
 handler = UIng::AreaHandler.new do
   draw do |area, area_draw_params|
-    ctx = UIng::DrawContext.new(area_draw_params.context)
+    ctx = area_draw_params.context
 
     # Scale factor to fit tiger in window
     scale_x = 600.0

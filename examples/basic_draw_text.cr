@@ -68,7 +68,7 @@ handler.draw do |area, area_draw_params|
   params.align = UIng::DrawTextAlign::Left
 
   text_layout = UIng::DrawTextLayout.new(params)
-  ctx = UIng::DrawContext.new(area_draw_params.context)
+  ctx = area_draw_params.context
   ctx.text(text_layout, 0, 0)
   text_layout.free
 end

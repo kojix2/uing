@@ -19,7 +19,7 @@ handler.draw do |area, area_draw_params|
     brush.a = 1.0
 
     # area_draw_params is now a wrapped AreaDrawParams object
-    ctx = UIng::DrawContext.new(area_draw_params.context)
+    ctx = area_draw_params.context
     ctx.fill(path, brush)
   end # Automatically releases the path
 end

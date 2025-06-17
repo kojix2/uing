@@ -164,7 +164,7 @@ class LorenzAttractor
   private def create_draw_handler
     UIng::AreaHandler.new.tap do |handler|
       handler.draw do |area, area_draw_params|
-        ctx = UIng::DrawContext.new(area_draw_params.context)
+        ctx = area_draw_params.context
 
         i, result = Channel.non_blocking_select(@points_channel.receive_select_action)
         if i == 0 && !result.is_a?(Channel::NotReady)
