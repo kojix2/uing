@@ -1,10 +1,9 @@
 module UIng
+  # This class provides read-only access to area draw parameters.
   class AreaDrawParams
     def initialize(ptr_ref : LibUI::AreaDrawParams*)
       @cstruct = ptr_ref.value
     end
-
-    # This class is read-only
 
     def context : DrawContext
       DrawContext.new(@cstruct.context)

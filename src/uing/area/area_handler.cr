@@ -105,7 +105,7 @@ module UIng
               callback = ::Box(Proc(Area, AreaKeyEvent, Bool)).unbox(extended.value.key_event_box)
               # Create wrapper instances for type-safe access
               area_wrapper = Area.new(area)
-              event_wrapper = AreaKeyEvent.new(event.value)
+              event_wrapper = AreaKeyEvent.new(event)
               result = callback.call(area_wrapper, event_wrapper)
               result ? 1_i32 : 0_i32
             else
