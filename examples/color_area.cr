@@ -186,8 +186,8 @@ end
 handler = UIng::AreaHandler.new
 App.set_handler(handler)
 
-handler.draw do |area_handler, area_ptr, area_draw_params|
-  ctx = UIng::DrawContext.new(area_draw_params.value.context)
+handler.draw do |area, area_draw_params|
+  ctx = area_draw_params.context
 
   # Draw animated background
   bg_path = UIng::DrawPath.new(UIng::DrawFillMode::Winding)
@@ -242,8 +242,8 @@ area = UIng::Area.new(handler)
 App.set_area(area)
 
 # Mouse event handler (with GC protection)
-handler.mouse_event do |area_handler, area_ptr, mouse_event|
-  mouse_data = mouse_event.value
+handler.mouse_event do |area, mouse_event|
+  mouse_data = mouse_event
 
   # Update mouse position for line generation
   RandomLines.set_mouse_position(mouse_data.x, mouse_data.y)
@@ -257,25 +257,25 @@ handler.mouse_event do |area_handler, area_ptr, mouse_event|
 
   # Update animation and queue redraw
   RandomLines.update_lines
-  UIng::LibUI.area_queue_redraw_all(area_ptr)
+  UIng::LibUI.area_queue_redraw_all(area)
 end
 
-handler.mouse_crossed { |_, _, _| }
-handler.drag_broken { |_, _| }
+handler.mouse_crossed { |_, _| }
+handler.drag_broken { |_| }
 
 # Simplified key event handler
-handler.key_event do |area_handler, area_ptr, key_event|
-  key_data = key_event.value
+handler.key_event do |area, key_event|
+  key_data = key_event
 
   if key_data.up == 0 # Key pressed (not released)
     case key_data.key
     when 'c'.ord, 'C'.ord
       RandomLines.clear_lines
-      UIng::LibUI.area_queue_redraw_all(area_ptr)
+      UIng::LibUI.area_queue_redraw_all(area)
     end
   end
 
-  1 # Return 1 to indicate the key event was handled
+  true # Return 1 to indicate the key event was handled
 end
 
 main_window = UIng::Window.new("Random Lines Animation", 600, 500)
