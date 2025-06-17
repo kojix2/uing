@@ -64,7 +64,7 @@ module UIng
               callback = ::Box(Proc(Area, AreaMouseEvent, Void)).unbox(extended.value.mouse_event_box)
               # Create wrapper instances for type-safe access
               area_wrapper = Area.new(area)
-              event_wrapper = AreaMouseEvent.new(event.value)
+              event_wrapper = AreaMouseEvent.new(event)
               callback.call(area_wrapper, event_wrapper)
             end
           rescue e

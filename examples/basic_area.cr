@@ -48,7 +48,7 @@ handler.drag_broken { |area|
 }
 handler.key_event { |area, event|
   puts "Key event:"
-  p! event.key.chr
+  p! event.key
   p! event.ext_key
   p! event.modifier
   p! event.modifiers

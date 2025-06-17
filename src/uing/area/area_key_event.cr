@@ -5,23 +5,23 @@ module UIng
       @cstruct = ref_ptr.value
     end
 
-    def key
-      @cstruct.key
+    def key : Char
+      @cstruct.key.chr
     end
 
-    def ext_key
+    def ext_key : ExtKey
       @cstruct.ext_key
     end
 
-    def modifier
+    def modifier : Modifiers
       @cstruct.modifier
     end
 
-    def modifiers
+    def modifiers : Modifiers
       @cstruct.modifiers
     end
 
-    def up
+    def up : Int32
       @cstruct.up
     end
 
