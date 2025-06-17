@@ -438,6 +438,17 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>This class provides read-only access to key event properties.</p>
+
 
 
 
@@ -463,7 +474,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L3" target="_blank">
         uing/area/area_mouse_event.cr
       </a>
     
@@ -486,7 +497,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28cstruct%3ALibUI%3A%3AAreaMouseEvent%3DLibUI%3A%3AAreaMouseEvent.new%29-class-method" class="signature"><strong>.new</strong>(cstruct : LibUI::AreaMouseEvent = <span class="t">LibUI</span><span class="t">::</span><span class="t">AreaMouseEvent</span>.new)</a>
+        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3AAreaMouseEvent%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::AreaMouseEvent))</a>
         
       </li>
     
@@ -509,32 +520,32 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#area_height-instance-method" class="signature"><strong>#area_height</strong></a>
+        <a href="#area_height%3AFloat64-instance-method" class="signature"><strong>#area_height</strong> : Float64</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#area_width-instance-method" class="signature"><strong>#area_width</strong></a>
+        <a href="#area_width%3AFloat64-instance-method" class="signature"><strong>#area_width</strong> : Float64</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#count-instance-method" class="signature"><strong>#count</strong></a>
+        <a href="#count%3AInt32-instance-method" class="signature"><strong>#count</strong> : Int32</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#down-instance-method" class="signature"><strong>#down</strong></a>
+        <a href="#down%3AInt32-instance-method" class="signature"><strong>#down</strong> : Int32</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#held1_to64-instance-method" class="signature"><strong>#held1_to64</strong></a>
+        <a href="#held1_to64%3AUInt64-instance-method" class="signature"><strong>#held1_to64</strong> : UInt64</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#modifiers-instance-method" class="signature"><strong>#modifiers</strong></a>
+        <a href="#modifiers%3AModifiers-instance-method" class="signature"><strong>#modifiers</strong> : Modifiers</a>
         
       </li>
     
@@ -544,17 +555,17 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#up-instance-method" class="signature"><strong>#up</strong></a>
+        <a href="#up%3AInt32-instance-method" class="signature"><strong>#up</strong> : Int32</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#x-instance-method" class="signature"><strong>#x</strong></a>
+        <a href="#x%3AFloat64-instance-method" class="signature"><strong>#x</strong> : Float64</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#y-instance-method" class="signature"><strong>#y</strong></a>
+        <a href="#y%3AFloat64-instance-method" class="signature"><strong>#y</strong> : Float64</a>
         
       </li>
     
@@ -602,18 +613,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(cstruct:LibUI::AreaMouseEvent=LibUI::AreaMouseEvent.new)-class-method">
+    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::AreaMouseEvent))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(cstruct : LibUI::AreaMouseEvent = <span class="t">LibUI</span><span class="t">::</span><span class="t">AreaMouseEvent</span>.new)
+        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::AreaMouseEvent))
 
-        <a class="method-permalink" href="#new%28cstruct%3ALibUI%3A%3AAreaMouseEvent%3DLibUI%3A%3AAreaMouseEvent.new%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3AAreaMouseEvent%29%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L4" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -634,98 +645,98 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="area_height-instance-method">
+    <div class="entry-detail" id="area_height:Float64-instance-method">
       <div class="signature">
         
-        def <strong>area_height</strong>
+        def <strong>area_height</strong> : Float64
 
-        <a class="method-permalink" href="#area_height-instance-method">#</a>
+        <a class="method-permalink" href="#area_height%3AFloat64-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="area_width-instance-method">
+    <div class="entry-detail" id="area_width:Float64-instance-method">
       <div class="signature">
         
-        def <strong>area_width</strong>
+        def <strong>area_width</strong> : Float64
 
-        <a class="method-permalink" href="#area_width-instance-method">#</a>
+        <a class="method-permalink" href="#area_width%3AFloat64-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="count-instance-method">
+    <div class="entry-detail" id="count:Int32-instance-method">
       <div class="signature">
         
-        def <strong>count</strong>
+        def <strong>count</strong> : Int32
 
-        <a class="method-permalink" href="#count-instance-method">#</a>
+        <a class="method-permalink" href="#count%3AInt32-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="down-instance-method">
+    <div class="entry-detail" id="down:Int32-instance-method">
       <div class="signature">
         
-        def <strong>down</strong>
+        def <strong>down</strong> : Int32
 
-        <a class="method-permalink" href="#down-instance-method">#</a>
+        <a class="method-permalink" href="#down%3AInt32-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="held1_to64-instance-method">
+    <div class="entry-detail" id="held1_to64:UInt64-instance-method">
       <div class="signature">
         
-        def <strong>held1_to64</strong>
+        def <strong>held1_to64</strong> : UInt64
 
-        <a class="method-permalink" href="#held1_to64-instance-method">#</a>
+        <a class="method-permalink" href="#held1_to64%3AUInt64-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L38" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="modifiers-instance-method">
+    <div class="entry-detail" id="modifiers:Modifiers-instance-method">
       <div class="signature">
         
-        def <strong>modifiers</strong>
+        def <strong>modifiers</strong> : <a href="../UIng/Modifiers.html">Modifiers</a>
 
-        <a class="method-permalink" href="#modifiers-instance-method">#</a>
+        <a class="method-permalink" href="#modifiers%3AModifiers-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -741,55 +752,55 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="up-instance-method">
+    <div class="entry-detail" id="up:Int32-instance-method">
       <div class="signature">
         
-        def <strong>up</strong>
+        def <strong>up</strong> : Int32
 
-        <a class="method-permalink" href="#up-instance-method">#</a>
+        <a class="method-permalink" href="#up%3AInt32-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L26" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="x-instance-method">
+    <div class="entry-detail" id="x:Float64-instance-method">
       <div class="signature">
         
-        def <strong>x</strong>
+        def <strong>x</strong> : Float64
 
-        <a class="method-permalink" href="#x-instance-method">#</a>
+        <a class="method-permalink" href="#x%3AFloat64-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="y-instance-method">
+    <div class="entry-detail" id="y:Float64-instance-method">
       <div class="signature">
         
-        def <strong>y</strong>
+        def <strong>y</strong> : Float64
 
-        <a class="method-permalink" href="#y-instance-method">#</a>
+        <a class="method-permalink" href="#y%3AFloat64-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d2edf3f9f6c5985cee459ca64ed3416f681ba81d/src/uing/area/area_mouse_event.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b270f6e0215e3854f71e7c0d33b8b2c4f511098f/src/uing/area/area_mouse_event.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
