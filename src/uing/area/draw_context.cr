@@ -3,10 +3,6 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
     end
 
-    # def initialize
-    #   @ref_ptr = LibUI.new_draw_context
-    # end
-
     def stroke(draw_path : DrawPath, draw_brush : DrawBrush, draw_stroke_params : DrawStrokeParams) : Nil
       LibUI.draw_stroke(@ref_ptr, draw_path.to_unsafe, draw_brush.to_unsafe, draw_stroke_params.to_unsafe)
     end

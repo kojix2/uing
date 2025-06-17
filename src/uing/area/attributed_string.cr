@@ -1,5 +1,3 @@
-require "../control"
-
 module UIng
   class AttributedString
     property? released : Bool = false

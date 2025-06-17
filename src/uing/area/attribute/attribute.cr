@@ -5,10 +5,6 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Attribute))
     end
 
-    # def initialize
-    #   @ref_ptr = LibUI.new_attribute
-    # end
-
     def self.new_family(family : String) : Attribute
       ref_ptr = LibUI.new_family_attribute(family)
       Attribute.new(ref_ptr)
