@@ -62,6 +62,28 @@ UIng.main
 UIng.uninit
 ```
 
+### DSL style
+
+```crystal
+require "uing"
+
+UIng.init do
+  UIng::Window.new("Hello World", 300, 200) { |win|
+    on_closing { UIng.quit; true }
+    set_child {
+      UIng::Button.new("Click me") {
+        on_clicked {
+          UIng.msg_box(win, "Info", "Button clicked!") 
+        }
+      }
+    }
+    show
+  }
+
+  UIng.main
+end
+```
+
 For more examples, see [examples](examples).　
 
 ## API Levels

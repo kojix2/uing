@@ -37,6 +37,12 @@ module UIng
       self.child = control
     end
 
+    # For DSL style
+    def set_child(&block : -> Control)
+      control = block.call
+      self.child = control
+    end
+
     def margined? : Bool
       LibUI.group_margined(@ref_ptr)
     end

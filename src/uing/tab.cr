@@ -29,6 +29,12 @@ module UIng
       set_margined(index, margined) if margined
     end
 
+    # For DSL style
+    def append(name : String, margined : Bool = false, &block : -> Control) : Nil
+      control = block.call
+      append(name, control, margined)
+    end
+
     def insert_at(name : String, index : Int32, control, margined : Bool = false) : Nil
       control.check_can_move
       LibUI.tab_insert_at(@ref_ptr, name, index, UIng.to_control(control))

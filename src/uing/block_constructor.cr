@@ -3,7 +3,7 @@ module UIng
     macro block_constructor
       def self.new(*args, &block)
         instance = new(*args)
-        with instance yield
+        with instance yield(instance)
         instance
       end
 

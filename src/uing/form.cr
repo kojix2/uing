@@ -18,6 +18,12 @@ module UIng
       control.take_ownership(self)
     end
 
+    # For DSL style
+    def append(label : String, stretchy : Bool = false, &block : -> Control) : Nil
+      control = block.call
+      append(label, control, stretchy)
+    end
+
     def num_children : Int32
       LibUI.form_num_children(@ref_ptr)
     end
