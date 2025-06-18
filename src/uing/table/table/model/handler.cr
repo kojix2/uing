@@ -64,14 +64,14 @@ module UIng
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.column_type_box.null?
-                  callback = ::Box(Proc(LibC::Int, UIng::Table::Value::Type)).unbox(extended.value.column_type_box)
+                  callback = ::Box(Proc(LibC::Int, Value::Type)).unbox(extended.value.column_type_box)
                   callback.call(column)
                 else
-                  UIng::Table::Value::Type::String
+                  Value::Type::String
                 end
               rescue e
                 UIng.handle_callback_error(e, "Table::Model::Handler column_type")
-                UIng::Table::Value::Type::String
+                Value::Type::String
               end
             },
             num_rows: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*) {
@@ -93,7 +93,7 @@ module UIng
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.cell_value_box.null?
-                  callback = ::Box(Proc(LibC::Int, LibC::Int, UIng::Table::Value)).unbox(extended.value.cell_value_box)
+                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value)).unbox(extended.value.cell_value_box)
                   result = callback.call(row, column)
                   result.to_unsafe
                 else
@@ -108,8 +108,8 @@ module UIng
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.set_cell_value_box.null?
-                  callback = ::Box(Proc(LibC::Int, LibC::Int, UIng::Table::Value, Nil)).unbox(extended.value.set_cell_value_box)
-                  table_value = UIng::Table::Value.new(value, borrowed: true)
+                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value, Nil)).unbox(extended.value.set_cell_value_box)
+                  table_value = Value.new(value, borrowed: true)
                   callback.call(row, column, table_value)
                 end
               rescue e
@@ -134,7 +134,7 @@ module UIng
           @extended_handler.num_columns_box = @num_columns_box
         end
 
-        def column_type(&block : LibC::Int -> UIng::Table::Value::Type)
+        def column_type(&block : LibC::Int -> Value::Type)
           @column_type_box = ::Box.box(block)
           @extended_handler.column_type_box = @column_type_box
         end
@@ -144,12 +144,12 @@ module UIng
           @extended_handler.num_rows_box = @num_rows_box
         end
 
-        def cell_value(&block : LibC::Int, LibC::Int -> UIng::Table::Value)
+        def cell_value(&block : LibC::Int, LibC::Int -> Value)
           @cell_value_box = ::Box.box(block)
           @extended_handler.cell_value_box = @cell_value_box
         end
 
-        def set_cell_value(&block : LibC::Int, LibC::Int, UIng::Table::Value -> Nil)
+        def set_cell_value(&block : LibC::Int, LibC::Int, Value -> Nil)
           @set_cell_value_box = ::Box.box(block)
           @extended_handler.set_cell_value_box = @set_cell_value_box
         end

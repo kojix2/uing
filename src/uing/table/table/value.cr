@@ -44,7 +44,7 @@ module UIng
         @released = true
       end
 
-      def get_type : Table::Value::Type
+      def get_type : Value::Type
         LibUI.table_value_get_type(@ref_ptr)
       end
 
@@ -72,14 +72,10 @@ module UIng
 
       def value
         case get_type
-        when Table::Value::Type::String
-          string
-        when Table::Value::Type::Image
-          image
-        when Table::Value::Type::Int
-          int
-        when Table::Value::Type::Color
-          color
+        when .string? then string
+        when .image?  then image
+        when .int?    then int
+        when .color?  then color
         else
           raise "Unknown TableValue type: #{get_type}"
         end

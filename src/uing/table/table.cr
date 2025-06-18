@@ -13,7 +13,7 @@ module UIng
     @on_header_clicked_box : Pointer(Void)?
     @on_selection_changed_box : Pointer(Void)?
 
-    # Store Table::Model reference to prevent GC collection
+    # Store Model reference to prevent GC collection
     @table_model_ref : Model?
 
     # IMPORTANT: This method accepts Table::Model instead of Table::Params
