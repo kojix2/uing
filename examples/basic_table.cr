@@ -9,7 +9,7 @@ main_window.child = hbox
 
 alias CInt = LibC::Int
 
-DATA = [
+data = [
   %w[cat meow],
   %w[dog woof],
   %w[chicken cock-a-doodle-doo],
@@ -27,11 +27,11 @@ model_handler = UIng::Table::Model::Handler.new do
   end
 
   num_rows do
-    DATA.size
+    data.size
   end
 
   cell_value do |row, column|
-    UIng::Table::Value.new(DATA[row][column])
+    UIng::Table::Value.new(data[row][column])
   end
 
   set_cell_value do |row, column, value|
@@ -49,8 +49,8 @@ end
 table.on_selection_changed do |selection|
   if selection.num_rows > 0
     selected_row = selection.rows[0]
-    animal = DATA[selected_row][0]
-    sound = DATA[selected_row][1]
+    animal = data[selected_row][0]
+    sound = data[selected_row][1]
     puts "Selected: #{animal} says #{sound}"
   else
     puts "No selection"
@@ -63,8 +63,8 @@ table.on_header_clicked do |idx|
 end
 
 table.on_row_double_clicked do |row|
-  animal = DATA[row][0]
-  sound = DATA[row][1]
+  animal = data[row][0]
+  sound = data[row][1]
   puts "Double-clicked: #{animal} goes #{sound}!"
 end
 
