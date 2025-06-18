@@ -509,6 +509,28 @@ window.show
 
 <span class="t">UIng</span>.main
 <span class="t">UIng</span>.uninit</code></pre>
+<h3><a id="dsl-style" class="anchor" href="#dsl-style">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>DSL style</h3>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;uing&quot;</span>
+
+<span class="t">UIng</span>.init <span class="k">do</span>
+  <span class="t">UIng</span><span class="t">::</span><span class="t">Window</span>.new(<span class="s">&quot;Hello World&quot;</span>, <span class="n">300</span>, <span class="n">200</span>) { <span class="o">|</span>win<span class="o">|</span>
+    on_closing { <span class="t">UIng</span>.quit; <span class="n">true</span> }
+    set_child {
+      <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Click me&quot;</span>) {
+        on_clicked {
+          <span class="t">UIng</span>.msg_box(win, <span class="s">&quot;Info&quot;</span>, <span class="s">&quot;Button clicked!&quot;</span>) 
+        }
+      }
+    }
+    show
+  }
+
+  <span class="t">UIng</span>.main
+<span class="k">end</span></code></pre>
 <p>For more examples, see <a href="examples">examples</a>.</p>
 <h2><a id="api-levels" class="anchor" href="#api-levels">
   <svg class="octicon-link" aria-hidden="true">
