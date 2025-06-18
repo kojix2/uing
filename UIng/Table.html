@@ -317,11 +317,6 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/SortIndicator" data-name="uing::sortindicator">
-      <a href="../UIng/SortIndicator.html">SortIndicator</a>
-      
-    </li>
-  
   <li class=" " data-id="uing/UIng/Spinbox" data-name="uing::spinbox">
       <a href="../UIng/Spinbox.html">Spinbox</a>
       
@@ -332,48 +327,73 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/Table" data-name="uing::table">
+  <li class="parent open current" data-id="uing/UIng/Table" data-name="uing::table">
       <a href="../UIng/Table.html">Table</a>
       
-    </li>
+        <ul>
   
-  <li class=" " data-id="uing/UIng/TableModel" data-name="uing::tablemodel">
-      <a href="../UIng/TableModel.html">TableModel</a>
+  <li class="parent " data-id="uing/UIng/Table/Model" data-name="uing::table::model">
+      <a href="../UIng/Table/Model.html">Model</a>
+      
+        <ul>
+  
+  <li class=" " data-id="uing/UIng/Table/Model/Handler" data-name="uing::table::model::handler">
+      <a href="../UIng/Table/Model/Handler.html">Handler</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableModelHandler" data-name="uing::tablemodelhandler">
-      <a href="../UIng/TableModelHandler.html">TableModelHandler</a>
+</ul>
+
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableParams" data-name="uing::tableparams">
-      <a href="../UIng/TableParams.html">TableParams</a>
+  <li class=" " data-id="uing/UIng/Table/Params" data-name="uing::table::params">
+      <a href="../UIng/Table/Params.html">Params</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableSelection" data-name="uing::tableselection">
-      <a href="../UIng/TableSelection.html">TableSelection</a>
+  <li class="parent " data-id="uing/UIng/Table/Selection" data-name="uing::table::selection">
+      <a href="../UIng/Table/Selection.html">Selection</a>
+      
+        <ul>
+  
+  <li class=" " data-id="uing/UIng/Table/Selection/Mode" data-name="uing::table::selection::mode">
+      <a href="../UIng/Table/Selection/Mode.html">Mode</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableSelectionMode" data-name="uing::tableselectionmode">
-      <a href="../UIng/TableSelectionMode.html">TableSelectionMode</a>
+</ul>
+
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableTextColumnOptionalParams" data-name="uing::tabletextcolumnoptionalparams">
-      <a href="../UIng/TableTextColumnOptionalParams.html">TableTextColumnOptionalParams</a>
+  <li class=" " data-id="uing/UIng/Table/SortIndicator" data-name="uing::table::sortindicator">
+      <a href="../UIng/Table/SortIndicator.html">SortIndicator</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableValue" data-name="uing::tablevalue">
-      <a href="../UIng/TableValue.html">TableValue</a>
+  <li class=" " data-id="uing/UIng/Table/TextColumnOptionalParams" data-name="uing::table::textcolumnoptionalparams">
+      <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>
       
     </li>
   
-  <li class=" " data-id="uing/UIng/TableValueType" data-name="uing::tablevaluetype">
-      <a href="../UIng/TableValueType.html">TableValueType</a>
+  <li class="parent " data-id="uing/UIng/Table/Value" data-name="uing::table::value">
+      <a href="../UIng/Table/Value.html">Value</a>
+      
+        <ul>
+  
+  <li class=" " data-id="uing/UIng/Table/Value/Type" data-name="uing::table::value::type">
+      <a href="../UIng/Table/Value/Type.html">Type</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -443,6 +463,57 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Table::Selection represents selected rows in a Table.</p>
+<p>AUTOMATIC MEMORY MANAGEMENT:
+Table::Selection is automatically managed by the UIng library.
+Users do NOT need to manually free Table::Selection objects.</p>
+<p>Recommended usage patterns:</p>
+<ol>
+<li>Using on_selection_changed callback (RECOMMENDED):
+table.on_selection_changed do |selection|
+if selection.num_rows &gt; 0
+selected_row = selection.rows[0]<h1><a id="...-use-selection-data-..." class="anchor" href="#...-use-selection-data-...">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>... use selection data ...</h1>
+end<h1><a id="tableselection-is-automatically-freed-after-this-block" class="anchor" href="#tableselection-is-automatically-freed-after-this-block">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Table::Selection is automatically freed after this block</h1>
+</li>
+</ol>
+<p>end</p>
+<ol start="2">
+<li>Manual selection access (use with caution):
+selection = table.selection  # Get selection
+rows = selection.num_rows    # Extract data immediately</li>
+</ol>
+<h1><a id="...-use-selection-data-...-1" class="anchor" href="#...-use-selection-data-...-1">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>... use selection data ...</h1>
+<p>selection.free               # MUST free manually when using this pattern</p>
+<ol start="3">
+<li>Setting a custom Table::Selection object via <code>table.selection =</code>:
+You can create a Table::Selection manually using <code><a href="../UIng/Table/Selection.html#new%28ptr%3APointer%28LibUI%3A%3ATableSelection%29%29-class-method">Table::Selection.new(...)</a></code>
+and assign it to a table.
+The data will be immediately copied or consumed by libui-ng,
+so the object does <strong>not</strong> need to be freed manually.
+Memory is automatically managed by Crystal's garbage collector.</li>
+</ol>
+
 
 
 
@@ -468,8 +539,71 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L5" target="_blank">
         uing/table/table.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/model.cr#L19" target="_blank">
+        uing/table/table/model.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/model/handler.cr#L21" target="_blank">
+        uing/table/table/model/handler.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/params.cr#L2" target="_blank">
+        uing/table/table/params.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/selection.cr#L33" target="_blank">
+        uing/table/table/selection.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/selection/mode.cr#L2" target="_blank">
+        uing/table/table/selection/mode.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/sort_indicator.cr#L2" target="_blank">
+        uing/table/table/sort_indicator.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/text_column_optional_params.cr#L2" target="_blank">
+        uing/table/table/text_column_optional_params.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/value.cr#L4" target="_blank">
+        uing/table/table/value.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table/value/type.cr#L2" target="_blank">
+        uing/table/table/value/type.cr
       </a>
     
     <br/>
@@ -501,9 +635,9 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28model%3ATableModel%2Crow_background_color_model_column%3ALibC%3A%3AInt%3D-1%29-class-method" class="signature"><strong>.new</strong>(model : TableModel, row_background_color_model_column : LibC::Int = <span class="n">-1</span>)</a>
+        <a href="#new%28model%3AModel%2Crow_background_color_model_column%3ALibC%3A%3AInt%3D-1%29-class-method" class="signature"><strong>.new</strong>(model : Model, row_background_color_model_column : LibC::Int = <span class="n">-1</span>)</a>
         
-          <div class="summary"><p>IMPORTANT: This method accepts TableModel instead of TableParams</p></div>
+          <div class="summary"><p>IMPORTANT: This method accepts Table::Model instead of Table::Params</p></div>
         
       </li>
     
@@ -641,34 +775,34 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#on_selection_changed%28%26block%3ATableSelection-%3EVoid%29-instance-method" class="signature"><strong>#on_selection_changed</strong>(&block : TableSelection -> Void)</a>
+        <a href="#on_selection_changed%28%26block%3ASelection-%3EVoid%29-instance-method" class="signature"><strong>#on_selection_changed</strong>(&block : Selection -> Void)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#selection%3ATableSelection-instance-method" class="signature"><strong>#selection</strong> : TableSelection</a>
+        <a href="#selection%3ASelection-instance-method" class="signature"><strong>#selection</strong> : Selection</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#selection%28%26block%3ATableSelection-%3ENil%29%3ANil-instance-method" class="signature"><strong>#selection</strong>(&block : TableSelection -> Nil) : Nil</a>
+        <a href="#selection%28%26block%3ASelection-%3ENil%29%3ANil-instance-method" class="signature"><strong>#selection</strong>(&block : Selection -> Nil) : Nil</a>
         
           <div class="summary"><p>Block version that automatically frees the selection after the block This eliminates the need for manual free() calls</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#selection%3D%28selection%3ATableSelection%29%3ANil-instance-method" class="signature"><strong>#selection=</strong>(selection : TableSelection) : Nil</a>
+        <a href="#selection%3D%28selection%3ASelection%29%3ANil-instance-method" class="signature"><strong>#selection=</strong>(selection : Selection) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#selection_mode%3ATableSelectionMode-instance-method" class="signature"><strong>#selection_mode</strong> : TableSelectionMode</a>
+        <a href="#selection_mode%3ASelection%3A%3AMode-instance-method" class="signature"><strong>#selection_mode</strong> : Selection::Mode</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#selection_mode%3D%28mode%3ATableSelectionMode%29%3ANil-instance-method" class="signature"><strong>#selection_mode=</strong>(mode : TableSelectionMode) : Nil</a>
+        <a href="#selection_mode%3D%28mode%3ASelection%3A%3AMode%29%3ANil-instance-method" class="signature"><strong>#selection_mode=</strong>(mode : Selection::Mode) : Nil</a>
         
       </li>
     
@@ -846,7 +980,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -862,28 +996,28 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(model:TableModel,row_background_color_model_column:LibC::Int=-1)-class-method">
+    <div class="entry-detail" id="new(model:Model,row_background_color_model_column:LibC::Int=-1)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(model : <a href="../UIng/TableModel.html">TableModel</a>, row_background_color_model_column : LibC::Int = <span class="n">-1</span>)
+        def self.<strong>new</strong>(model : <a href="../UIng/Table/Model.html">Model</a>, row_background_color_model_column : LibC::Int = <span class="n">-1</span>)
 
-        <a class="method-permalink" href="#new%28model%3ATableModel%2Crow_background_color_model_column%3ALibC%3A%3AInt%3D-1%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28model%3AModel%2Crow_background_color_model_column%3ALibC%3A%3AInt%3D-1%29-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>IMPORTANT: This method accepts TableModel instead of TableParams</p>
+          <p>IMPORTANT: This method accepts Table::Model instead of Table::Params</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -915,7 +1049,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L146" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L147" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -931,7 +1065,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L125" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -947,7 +1081,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -955,7 +1089,7 @@
     <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32,table_text_column_optional_params:TableTextColumnOptionalParams):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : <a href="../UIng/TableTextColumnOptionalParams.html">TableTextColumnOptionalParams</a>) : Nil
+        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TableTextColumnOptionalParams) : Nil
 
         <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATableTextColumnOptionalParams%29%3ANil-instance-method">#</a>
       </div>
@@ -963,7 +1097,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L133" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L134" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -979,7 +1113,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L129" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -995,7 +1129,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L108" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L109" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1011,7 +1145,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L120" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1019,7 +1153,7 @@
     <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32,table_text_column_optional_params:TableTextColumnOptionalParams):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : <a href="../UIng/TableTextColumnOptionalParams.html">TableTextColumnOptionalParams</a>) : Nil
+        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TableTextColumnOptionalParams) : Nil
 
         <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATableTextColumnOptionalParams%29%3ANil-instance-method">#</a>
       </div>
@@ -1027,7 +1161,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L116" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1043,7 +1177,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L113" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1059,7 +1193,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L142" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L143" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1075,7 +1209,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L104" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1083,7 +1217,7 @@
     <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,text_editable_model_column:Int32,table_text_column_optional_params:TableTextColumnOptionalParams):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : <a href="../UIng/TableTextColumnOptionalParams.html">TableTextColumnOptionalParams</a>) : Nil
+        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TableTextColumnOptionalParams) : Nil
 
         <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATableTextColumnOptionalParams%29%3ANil-instance-method">#</a>
       </div>
@@ -1091,7 +1225,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L100" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1107,7 +1241,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L95" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1123,7 +1257,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L166" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L167" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1139,7 +1273,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L162" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L163" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1155,7 +1289,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1163,7 +1297,7 @@
     <div class="entry-detail" id="header_set_sort_indicator(column:Int32,sort_indicator:SortIndicator):Nil-instance-method">
       <div class="signature">
         
-        def <strong>header_set_sort_indicator</strong>(column : Int32, sort_indicator : <a href="../UIng/SortIndicator.html">SortIndicator</a>) : Nil
+        def <strong>header_set_sort_indicator</strong>(column : Int32, sort_indicator : <a href="../UIng/Table/SortIndicator.html">SortIndicator</a>) : Nil
 
         <a class="method-permalink" href="#header_set_sort_indicator%28column%3AInt32%2Csort_indicator%3ASortIndicator%29%3ANil-instance-method">#</a>
       </div>
@@ -1171,7 +1305,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L154" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L155" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1179,7 +1313,7 @@
     <div class="entry-detail" id="header_sort_indicator(column:Int32):SortIndicator-instance-method">
       <div class="signature">
         
-        def <strong>header_sort_indicator</strong>(column : Int32) : <a href="../UIng/SortIndicator.html">SortIndicator</a>
+        def <strong>header_sort_indicator</strong>(column : Int32) : <a href="../UIng/Table/SortIndicator.html">SortIndicator</a>
 
         <a class="method-permalink" href="#header_sort_indicator%28column%3AInt32%29%3ASortIndicator-instance-method">#</a>
       </div>
@@ -1187,7 +1321,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L158" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1203,7 +1337,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1219,7 +1353,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L150" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L151" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1235,7 +1369,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1251,7 +1385,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1267,49 +1401,49 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L47" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_selection_changed(&amp;block:TableSelection-&gt;Void)-instance-method">
+    <div class="entry-detail" id="on_selection_changed(&amp;block:Selection-&gt;Void)-instance-method">
       <div class="signature">
         
-        def <strong>on_selection_changed</strong>(&block : <a href="../UIng/TableSelection.html">TableSelection</a> -> Void)
+        def <strong>on_selection_changed</strong>(&block : <a href="../UIng/Table/Selection.html">Selection</a> -> Void)
 
-        <a class="method-permalink" href="#on_selection_changed%28%26block%3ATableSelection-%3EVoid%29-instance-method">#</a>
+        <a class="method-permalink" href="#on_selection_changed%28%26block%3ASelection-%3EVoid%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L70" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="selection:TableSelection-instance-method">
+    <div class="entry-detail" id="selection:Selection-instance-method">
       <div class="signature">
         
-        def <strong>selection</strong> : <a href="../UIng/TableSelection.html">TableSelection</a>
+        def <strong>selection</strong> : <a href="../UIng/Table/Selection.html">Selection</a>
 
-        <a class="method-permalink" href="#selection%3ATableSelection-instance-method">#</a>
+        <a class="method-permalink" href="#selection%3ASelection-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L178" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L179" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="selection(&amp;block:TableSelection-&gt;Nil):Nil-instance-method">
+    <div class="entry-detail" id="selection(&amp;block:Selection-&gt;Nil):Nil-instance-method">
       <div class="signature">
         
-        def <strong>selection</strong>(&block : <a href="../UIng/TableSelection.html">TableSelection</a> -> Nil) : Nil
+        def <strong>selection</strong>(&block : <a href="../UIng/Table/Selection.html">Selection</a> -> Nil) : Nil
 
-        <a class="method-permalink" href="#selection%28%26block%3ATableSelection-%3ENil%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#selection%28%26block%3ASelection-%3ENil%29%3ANil-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1321,55 +1455,55 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L185" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L186" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="selection=(selection:TableSelection):Nil-instance-method">
+    <div class="entry-detail" id="selection=(selection:Selection):Nil-instance-method">
       <div class="signature">
         
-        def <strong>selection=</strong>(selection : <a href="../UIng/TableSelection.html">TableSelection</a>) : Nil
+        def <strong>selection=</strong>(selection : <a href="../UIng/Table/Selection.html">Selection</a>) : Nil
 
-        <a class="method-permalink" href="#selection%3D%28selection%3ATableSelection%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#selection%3D%28selection%3ASelection%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L194" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L195" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="selection_mode:TableSelectionMode-instance-method">
+    <div class="entry-detail" id="selection_mode:Selection::Mode-instance-method">
       <div class="signature">
         
-        def <strong>selection_mode</strong> : <a href="../UIng/TableSelectionMode.html">TableSelectionMode</a>
+        def <strong>selection_mode</strong> : <a href="../UIng/Table/Selection/Mode.html">Selection::Mode</a>
 
-        <a class="method-permalink" href="#selection_mode%3ATableSelectionMode-instance-method">#</a>
+        <a class="method-permalink" href="#selection_mode%3ASelection%3A%3AMode-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L170" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L171" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="selection_mode=(mode:TableSelectionMode):Nil-instance-method">
+    <div class="entry-detail" id="selection_mode=(mode:Selection::Mode):Nil-instance-method">
       <div class="signature">
         
-        def <strong>selection_mode=</strong>(mode : <a href="../UIng/TableSelectionMode.html">TableSelectionMode</a>) : Nil
+        def <strong>selection_mode=</strong>(mode : <a href="../UIng/Table/Selection/Mode.html">Selection::Mode</a>) : Nil
 
-        <a class="method-permalink" href="#selection_mode%3D%28mode%3ATableSelectionMode%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#selection_mode%3D%28mode%3ASelection%3A%3AMode%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L174" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1385,7 +1519,7 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9773e6150e541f105b94bf2cd085a64ffcf01153/src/uing/table/table.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/b2020049b768ae8141dfcb3c104d28be5fc2001f/src/uing/table/table.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
