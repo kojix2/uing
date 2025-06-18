@@ -9,7 +9,7 @@ class MD5CheckerApp
   @select_button : UIng::Button
   @run_button : UIng::Button
   @table_handler : MD5TableHandler
-  @table_model : UIng::TableModel
+  @table_model : UIng::Table::Model
   @main_vbox : UIng::Box
   @table : UIng::Table
 
@@ -75,7 +75,7 @@ class MD5CheckerApp
       append_text_column("Status", 1, -1)
       append_text_column("Message", 2, -1)
       header_visible = true
-      selection_mode = UIng::TableSelectionMode::ZeroOrMany
+      selection_mode = UIng::Table::Selection::Mode::ZeroOrMany
     end
   end
 

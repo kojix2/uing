@@ -4,13 +4,13 @@ require "./checker"
 # Table model handler for MD5 checker
 class MD5TableHandler
   def initialize
-    @handler = UIng::TableModelHandler.new do
+    @handler = UIng::Table::Model::Handler.new do
       num_columns { 3 }
-      column_type { |i| UIng::TableValueType::String }
+      column_type { |i| UIng::Table::Value::Type::String }
       num_rows { MD5Checker.instance.result_count }
       cell_value { |row, column|
         value = MD5Checker.instance.result_at(row, column)
-        UIng::TableValue.new(value)
+        UIng::Table::Value.new(value)
       }
       set_cell_value { |row, column, value| }
     end
@@ -23,6 +23,6 @@ class MD5TableHandler
 
   # Create a table model
   def create_model
-    UIng::TableModel.new(@handler)
+    UIng::Table::Model.new(@handler)
   end
 end

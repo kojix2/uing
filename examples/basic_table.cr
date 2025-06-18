@@ -17,13 +17,13 @@ DATA = [
   %w[cow moo],
 ]
 
-model_handler = UIng::TableModelHandler.new do
+model_handler = UIng::Table::Model::Handler.new do
   num_columns do
     2
   end
 
   column_type do |column|
-    UIng::TableValueType::String
+    UIng::Table::Value::Type::String
   end
 
   num_rows do
@@ -31,7 +31,7 @@ model_handler = UIng::TableModelHandler.new do
   end
 
   cell_value do |row, column|
-    UIng::TableValue.new(DATA[row][column])
+    UIng::Table::Value.new(DATA[row][column])
   end
 
   set_cell_value do |row, column, value|
@@ -39,7 +39,7 @@ model_handler = UIng::TableModelHandler.new do
   end
 end
 
-table_model = UIng::TableModel.new(model_handler)
+table_model = UIng::Table::Model.new(model_handler)
 
 table = UIng::Table.new(table_model) do
   append_text_column("Animal", 0, -1)
@@ -55,7 +55,7 @@ table.on_selection_changed do |selection|
   else
     puts "No selection"
   end
-  # TableSelection is automatically freed after this block
+  # Table::Selection is automatically freed after this block
 end
 
 table.on_header_clicked do |idx|

@@ -113,7 +113,7 @@ status_label = UIng::Label.new("Ready")
 vbox.append(status_label, false)
 
 # Create table model handler
-model_handler = UIng::TableModelHandler.new do
+model_handler = UIng::Table::Model::Handler.new do
   num_columns do
     COLUMN_NAMES.size
   end
@@ -121,15 +121,15 @@ model_handler = UIng::TableModelHandler.new do
   column_type do |column|
     case Column.new(column)
     when .avatar?
-      UIng::TableValueType::Image
+      UIng::Table::Value::Type::Image
     when .name?, .age?, .department?, .salary?
-      UIng::TableValueType::String
+      UIng::Table::Value::Type::String
     when .progress?
-      UIng::TableValueType::Int
+      UIng::Table::Value::Type::Int
     when .active?
-      UIng::TableValueType::Int
+      UIng::Table::Value::Type::Int
     else
-      UIng::TableValueType::String
+      UIng::Table::Value::Type::String
     end
   end
 
@@ -138,27 +138,27 @@ model_handler = UIng::TableModelHandler.new do
   end
 
   cell_value do |row, column|
-    next UIng::TableValue.new("") if row >= EMPLOYEES.size
+    next UIng::Table::Value.new("") if row >= EMPLOYEES.size
 
     employee = EMPLOYEES[row]
     case Column.new(column)
     when .avatar?
       avatar = employee.avatar || DEFAULT_AVATAR
-      UIng::TableValue.new(avatar)
+      UIng::Table::Value.new(avatar)
     when .name?
-      UIng::TableValue.new(employee.name)
+      UIng::Table::Value.new(employee.name)
     when .age?
-      UIng::TableValue.new(employee.age.to_s)
+      UIng::Table::Value.new(employee.age.to_s)
     when .department?
-      UIng::TableValue.new(employee.department)
+      UIng::Table::Value.new(employee.department)
     when .salary?
-      UIng::TableValue.new(employee.salary.to_s)
+      UIng::Table::Value.new(employee.salary.to_s)
     when .progress?
-      UIng::TableValue.new(employee.progress)
+      UIng::Table::Value.new(employee.progress)
     when .active?
-      UIng::TableValue.new(employee.active ? 1 : 0)
+      UIng::Table::Value.new(employee.active ? 1 : 0)
     else
-      UIng::TableValue.new("")
+      UIng::Table::Value.new("")
     end
   end
 
@@ -191,7 +191,7 @@ model_handler = UIng::TableModelHandler.new do
 end
 
 # Create table model and table
-table_model = UIng::TableModel.new(model_handler)
+table_model = UIng::Table::Model.new(model_handler)
 
 table = UIng::Table.new(table_model) do
   # Add columns with different types
@@ -206,7 +206,7 @@ end
 
 # Configure table
 table.header_visible = true
-table.selection_mode = UIng::TableSelectionMode::ZeroOrMany
+table.selection_mode = UIng::Table::Selection::Mode::ZeroOrMany
 
 vbox.append(table, true)
 
@@ -272,7 +272,7 @@ table.on_header_clicked do |column|
   end
 
   # Update sort indicator
-  new_indicator = ascending ? UIng::SortIndicator::Ascending : UIng::SortIndicator::Descending
+  new_indicator = ascending ? UIng::Table::SortIndicator::Ascending : UIng::Table::SortIndicator::Descending
   table.header_set_sort_indicator(column, new_indicator)
 
   # Refresh the entire table
@@ -338,7 +338,7 @@ end
 
 # Selection mode change handler
 single_radio.on_selected do
-  mode = single_radio.selected == 0 ? UIng::TableSelectionMode::ZeroOrOne : UIng::TableSelectionMode::ZeroOrMany
+  mode = single_radio.selected == 0 ? UIng::Table::Selection::Mode::ZeroOrOne : UIng::Table::Selection::Mode::ZeroOrMany
   table.selection_mode = mode
   mode_name = single_radio.selected == 0 ? "Single" : "Multiple"
   status_label.text = "Selection mode changed to: #{mode_name}"

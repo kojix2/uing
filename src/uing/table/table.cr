@@ -1,4 +1,5 @@
 require "../control"
+require "./table/*"
 
 module UIng
   class Table < Control
@@ -12,12 +13,12 @@ module UIng
     @on_header_clicked_box : Pointer(Void)?
     @on_selection_changed_box : Pointer(Void)?
 
-    # Store TableModel reference to prevent GC collection
-    @table_model_ref : TableModel?
+    # Store Table::Model reference to prevent GC collection
+    @table_model_ref : Model?
 
-    # IMPORTANT: This method accepts TableModel instead of TableParams
-    def initialize(model : TableModel, row_background_color_model_column : LibC::Int = -1)
-      table_params = TableParams.new(model, row_background_color_model_column)
+    # IMPORTANT: This method accepts Table::Model instead of Table::Params
+    def initialize(model : Model, row_background_color_model_column : LibC::Int = -1)
+      table_params = Params.new(model, row_background_color_model_column)
       @ref_ptr = LibUI.new_table(table_params)
       @table_model_ref = model
     end
@@ -67,14 +68,14 @@ module UIng
       end, @on_header_clicked_box.not_nil!)
     end
 
-    def on_selection_changed(&block : TableSelection -> Void)
+    def on_selection_changed(&block : Selection -> Void)
       @on_selection_changed_box = ::Box.box(block)
       LibUI.table_on_selection_changed(@ref_ptr, ->(table, data) do
         begin
           callback = ::Box(typeof(block)).unbox(data)
           # Get current selection and pass it to the callback
           selection_ptr = LibUI.table_get_selection(table)
-          selection = TableSelection.new(selection_ptr)
+          selection = Selection.new(selection_ptr)
           callback.call(selection)
           # Automatically free the selection after callback
           selection.free
@@ -167,22 +168,22 @@ module UIng
       LibUI.table_column_set_width(@ref_ptr, column, width)
     end
 
-    def selection_mode : TableSelectionMode
+    def selection_mode : Selection::Mode
       LibUI.table_get_selection_mode(@ref_ptr)
     end
 
-    def selection_mode=(mode : TableSelectionMode) : Nil
+    def selection_mode=(mode : Selection::Mode) : Nil
       LibUI.table_set_selection_mode(@ref_ptr, mode)
     end
 
-    def selection : TableSelection
+    def selection : Selection
       ref_ptr = LibUI.table_get_selection(@ref_ptr)
-      TableSelection.new(ref_ptr)
+      Selection.new(ref_ptr)
     end
 
     # Block version that automatically frees the selection after the block
     # This eliminates the need for manual free() calls
-    def selection(&block : TableSelection -> Nil) : Nil
+    def selection(&block : Selection -> Nil) : Nil
       selection_obj = selection
       begin
         yield selection_obj
@@ -191,7 +192,7 @@ module UIng
       end
     end
 
-    def selection=(selection : TableSelection) : Nil
+    def selection=(selection : Selection) : Nil
       LibUI.table_set_selection(@ref_ptr, selection.to_unsafe)
     end
   end

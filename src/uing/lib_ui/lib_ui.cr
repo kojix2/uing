@@ -376,7 +376,7 @@ module UIng
 
     alias TableValue = Void
     fun free_table_value = uiFreeTableValue(v : Pointer(TableValue))
-    fun table_value_get_type = uiTableValueGetType(v : Pointer(TableValue)) : TableValueType
+    fun table_value_get_type = uiTableValueGetType(v : Pointer(TableValue)) : UIng::Table::Value::Type
     fun new_table_value_string = uiNewTableValueString(str : Pointer(LibC::Char)) : Pointer(TableValue)
     fun table_value_string = uiTableValueString(v : Pointer(TableValue)) : Pointer(LibC::Char)
     fun new_table_value_image = uiNewTableValueImage(img : Pointer(Image)) : Pointer(TableValue)
@@ -406,14 +406,14 @@ module UIng
     fun new_table = uiNewTable(params : Pointer(TableParams)) : Pointer(Table)
     fun table_on_row_clicked = uiTableOnRowClicked(t : Pointer(Table), f : (Pointer(Table), LibC::Int, Pointer(Void) -> Void), data : Pointer(Void))
     fun table_on_row_double_clicked = uiTableOnRowDoubleClicked(t : Pointer(Table), f : (Pointer(Table), LibC::Int, Pointer(Void) -> Void), data : Pointer(Void))
-    fun table_header_set_sort_indicator = uiTableHeaderSetSortIndicator(t : Pointer(Table), column : LibC::Int, indicator : SortIndicator)
-    fun table_header_sort_indicator = uiTableHeaderSortIndicator(t : Pointer(Table), column : LibC::Int) : SortIndicator
+    fun table_header_set_sort_indicator = uiTableHeaderSetSortIndicator(t : Pointer(Table), column : LibC::Int, indicator : UIng::Table::SortIndicator)
+    fun table_header_sort_indicator = uiTableHeaderSortIndicator(t : Pointer(Table), column : LibC::Int) : UIng::Table::SortIndicator
     fun table_header_on_clicked = uiTableHeaderOnClicked(t : Pointer(Table), f : (Pointer(Table), LibC::Int, Pointer(Void) -> Void), data : Pointer(Void))
     fun table_column_width = uiTableColumnWidth(t : Pointer(Table), column : LibC::Int) : LibC::Int
     fun table_column_set_width = uiTableColumnSetWidth(t : Pointer(Table), column : LibC::Int, width : LibC::Int)
 
     fun table_get_selection_mode = uiTableGetSelectionMode(t : Pointer(Table))
-    fun table_set_selection_mode = uiTableSetSelectionMode(t : Pointer(Table), mode : TableSelectionMode)
+    fun table_set_selection_mode = uiTableSetSelectionMode(t : Pointer(Table), mode : UIng::Table::Selection::Mode)
     fun table_on_selection_changed = uiTableOnSelectionChanged(t : Pointer(Table), f : (Pointer(Table), Pointer(Void) -> Void), data : Pointer(Void))
 
     fun table_get_selection = uiTableGetSelection(t : Pointer(Table)) : Pointer(TableSelection)
