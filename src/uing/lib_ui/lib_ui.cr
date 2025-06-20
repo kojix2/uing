@@ -290,7 +290,7 @@ module UIng
 
     alias Attribute = Void
     fun free_attribute = uiFreeAttribute(a : Pointer(Attribute))
-    fun attribute_get_type = uiAttributeGetType(a : Pointer(Attribute)) : AttributeType
+    fun attribute_get_type = uiAttributeGetType(a : Pointer(Attribute)) : UIng::Area::Attribute::Type
     fun new_family_attribute = uiNewFamilyAttribute(family : Pointer(LibC::Char)) : Pointer(Attribute)
     fun attribute_family = uiAttributeFamily(a : Pointer(Attribute)) : Pointer(LibC::Char)
     fun new_size_attribute = uiNewSizeAttribute(size : LibC::Double) : Pointer(Attribute)
@@ -308,11 +308,11 @@ module UIng
     fun attribute_color = uiAttributeColor(a : Pointer(Attribute), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), alpha : Pointer(LibC::Double))
     fun new_background_attribute = uiNewBackgroundAttribute(r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
 
-    fun new_underline_attribute = uiNewUnderlineAttribute(u : Underline) : Pointer(Attribute)
-    fun attribute_underline = uiAttributeUnderline(a : Pointer(Attribute)) : Underline
+    fun new_underline_attribute = uiNewUnderlineAttribute(u : UIng::Area::Attribute::Underline) : Pointer(Attribute)
+    fun attribute_underline = uiAttributeUnderline(a : Pointer(Attribute)) : UIng::Area::Attribute::Underline
 
-    fun new_underline_color_attribute = uiNewUnderlineColorAttribute(u : UnderlineColor, r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
-    fun attribute_underline_color = uiAttributeUnderlineColor(a : Pointer(Attribute), u : Pointer(UnderlineColor), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), alpha : Pointer(LibC::Double))
+    fun new_underline_color_attribute = uiNewUnderlineColorAttribute(u : UIng::Area::Attribute::UnderlineColor, r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
+    fun attribute_underline_color = uiAttributeUnderlineColor(a : Pointer(Attribute), u : Pointer(UIng::Area::Attribute::UnderlineColor), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), alpha : Pointer(LibC::Double))
     alias OpenTypeFeatures = Void
     fun new_open_type_features = uiNewOpenTypeFeatures : Pointer(OpenTypeFeatures)
     fun free_open_type_features = uiFreeOpenTypeFeatures(otf : Pointer(OpenTypeFeatures))

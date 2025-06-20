@@ -4,7 +4,6 @@ require "./uing/tm"
 
 require "./uing/*"
 require "./uing/area/*"
-require "./uing/area/attribute/*"
 require "./uing/grid/*"
 require "./uing/table/*"
 

@@ -1,5 +1,7 @@
 require "../control"
 require "./area/*"
+require "./area/draw/*"
+require "./area/attribute/*"
 
 module UIng
   class Area < Control

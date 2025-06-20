@@ -34,10 +34,10 @@ str5 = \
  "buzzing of a great swarm of hornets that shaped itself into " \
  "words. "
 
-ATTR_STR = UIng::AttributedString.new("")
+ATTR_STR = UIng::Area::AttributedString.new("")
 
-RED   = UIng::Attribute.new_color(0.0, 0.5, 0.0, 0.7)
-GREEN = UIng::Attribute.new_color(0.5, 0.0, 0.25, 0.7)
+RED   = UIng::Area::Attribute.new_color(0.0, 0.5, 0.0, 0.7)
+GREEN = UIng::Area::Attribute.new_color(0.5, 0.0, 0.25, 0.7)
 
 def append_to_attr_str(attr_str, text, color)
   start = attr_str.len
