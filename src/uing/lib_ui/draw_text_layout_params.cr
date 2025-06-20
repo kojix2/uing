@@ -4,7 +4,7 @@ module UIng
       string : Pointer(AttributedString)
       default_font : Pointer(FontDescriptor)
       width : LibC::Double
-      align : DrawTextAlign
+      align : UIng::Area::Draw::TextAlign
     end
   end
 end

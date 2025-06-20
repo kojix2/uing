@@ -48,10 +48,10 @@ module UIng
               # Cast the handler pointer to our extended structure
               extended = ah.as(LibUI::AreaHandlerExtended*)
               if !extended.value.draw_box.null?
-                callback = ::Box(Proc(Area, Area::DrawParams, Void)).unbox(extended.value.draw_box)
+                callback = ::Box(Proc(Area, Area::Draw::Params, Void)).unbox(extended.value.draw_box)
                 # Create wrapper instances for type-safe access
                 area_wrapper = Area.new(area)
-                params_wrapper = Area::DrawParams.new(params)
+                params_wrapper = Area::Draw::Params.new(params)
                 callback.call(area_wrapper, params_wrapper)
               end
             rescue e
@@ -130,7 +130,7 @@ module UIng
       # Convenience methods for setting individual callbacks
       # Each method boxes the callback individually for type safety and efficiency
 
-      def draw(&block : (Area, Area::DrawParams) -> Void)
+      def draw(&block : (Area, Area::Draw::Params) -> Void)
         @draw_box = ::Box.box(block)
         @extended_handler.draw_box = @draw_box
       end

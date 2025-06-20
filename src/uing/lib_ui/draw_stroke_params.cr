@@ -1,8 +1,8 @@
 module UIng
   lib LibUI
     struct DrawStrokeParams
-      cap : DrawLineCap
-      join : DrawLineJoin
+      cap : UIng::Area::Draw::LineCap
+      join : UIng::Area::Draw::LineJoin
       thickness : LibC::Double
       miter_limit : LibC::Double
       dashes : Pointer(LibC::Double)

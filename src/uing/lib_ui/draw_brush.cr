@@ -1,7 +1,7 @@
 module UIng
   lib LibUI
     struct DrawBrush
-      type : DrawBrushType
+      type : UIng::Area::Draw::Brush::Type
       r : LibC::Double
       g : LibC::Double
       b : LibC::Double

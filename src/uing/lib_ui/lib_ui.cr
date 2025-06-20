@@ -260,7 +260,7 @@ module UIng
     fun new_scrolling_area = uiNewScrollingArea(ah : Pointer(AreaHandler), width : LibC::Int, height : LibC::Int) : Pointer(Area)
     alias DrawPath = Void
 
-    fun draw_new_path = uiDrawNewPath(fill_mode : DrawFillMode) : Pointer(DrawPath)
+    fun draw_new_path = uiDrawNewPath(fill_mode : UIng::Area::Draw::FillMode) : Pointer(DrawPath)
     fun draw_free_path = uiDrawFreePath(p : Pointer(DrawPath))
     fun draw_path_new_figure = uiDrawPathNewFigure(p : Pointer(DrawPath), x : LibC::Double, y : LibC::Double)
     fun draw_path_new_figure_with_arc = uiDrawPathNewFigureWithArc(p : Pointer(DrawPath), x_center : LibC::Double, y_center : LibC::Double, radius : LibC::Double, start_angle : LibC::Double, sweep : LibC::Double, negative : Bool)

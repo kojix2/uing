@@ -190,7 +190,7 @@ handler.draw do |area, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
-  bg_path = UIng::DrawPath.new(UIng::DrawFillMode::Winding)
+  bg_path = UIng::Area::Draw::Path.new(:winding)
   bg_path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
   bg_path.end_
 
@@ -198,8 +198,8 @@ handler.draw do |area, area_draw_params|
   time = RandomLines.animation_time
   bg_intensity = Math.sin(time * 0.1) * 0.02 + 0.05
 
-  bg_brush = UIng::DrawBrush.new
-  bg_brush.type = UIng::DrawBrushType::Solid
+  bg_brush = UIng::Area::Draw::Brush.new
+  bg_brush.type = UIng::Area::Draw::Brush::Type::Solid
   bg_brush.r = bg_intensity
   bg_brush.g = bg_intensity * 0.5
   bg_brush.b = bg_intensity * 2
@@ -211,21 +211,21 @@ handler.draw do |area, area_draw_params|
   # Draw all lines with safe single-line approach
   RandomLines.lines.each do |line|
     # Create and draw single line safely
-    line_path = UIng::DrawPath.new(UIng::DrawFillMode::Winding)
+    line_path = UIng::Area::Draw::Path.new(UIng::Area::Draw::FillMode::Winding)
     line_path.new_figure(line.x1, line.y1)
     line_path.line_to(line.x2, line.y2)
     line_path.end_
 
     # Set up stroke parameters for smooth lines
-    stroke_params = UIng::DrawStrokeParams.new
-    stroke_params.cap = UIng::DrawLineCap::Round
-    stroke_params.join = UIng::DrawLineJoin::Round
+    stroke_params = UIng::Area::Draw::StrokeParams.new
+    stroke_params.cap = UIng::Area::Draw::LineCap::Round
+    stroke_params.join = UIng::Area::Draw::LineJoin::Round
     stroke_params.thickness = line.thickness + 1.0 # Slightly thicker for visibility
     stroke_params.miter_limit = 10.0
 
     # Line color with transparency for blending
-    line_brush = UIng::DrawBrush.new
-    line_brush.type = UIng::DrawBrushType::Solid
+    line_brush = UIng::Area::Draw::Brush.new
+    line_brush.type = UIng::Area::Draw::Brush::Type::Solid
     line_brush.r = line.color[:r]
     line_brush.g = line.color[:g]
     line_brush.b = line.color[:b]

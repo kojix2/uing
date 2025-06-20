@@ -61,13 +61,13 @@ handler.draw do |area, area_draw_params|
     stretch: :normal
   )
 
-  params = UIng::DrawTextLayoutParams.new
+  params = UIng::Area::Draw::TextLayout::Params.new
   params.string = ATTR_STR
   params.default_font = default_font
   params.width = area_draw_params.area_width
-  params.align = UIng::DrawTextAlign::Left
+  params.align = UIng::Area::Draw::TextAlign::Left
 
-  text_layout = UIng::DrawTextLayout.new(params)
+  text_layout = UIng::Area::Draw::TextLayout.new(params)
   ctx = area_draw_params.context
   ctx.text(text_layout, 0, 0)
   text_layout.free
