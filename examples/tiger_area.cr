@@ -9,7 +9,7 @@ def hex_to_rgb(hex : Int32)
   {r, g, b}
 end
 
-def draw_path_from_codes(path : UIng::DrawPath, x : Array(Float64), y : Array(Float64), codes : String, scale_x : Float64, scale_y : Float64)
+def draw_path_from_codes(path : UIng::Area::Draw::Path, x : Array(Float64), y : Array(Float64), codes : String, scale_x : Float64, scale_y : Float64)
   i = 0
   codes.each_char do |code|
     case code
@@ -48,7 +48,7 @@ handler = UIng::Area::Handler.new do
     scale_y = 600.0
 
     TIGER_PATHS.each do |path_data|
-      UIng::DrawPath.new(UIng::DrawFillMode::Winding) do |path|
+      UIng::Area::Draw::Path.new(:winding) do |path|
         # Convert coordinates to Float64 arrays
         x_coords = path_data[:x].map(&.to_f64)
         y_coords = path_data[:y].map { |y| 1.0 - y.to_f64 }
@@ -58,8 +58,8 @@ handler = UIng::Area::Handler.new do
 
         # Handle fill
         if path_data[:fill] != -1
-          brush = UIng::DrawBrush.new
-          brush.type = UIng::DrawBrushType::Solid
+          brush = UIng::Area::Draw::Brush.new
+          brush.type = UIng::Area::Draw::Brush::Type::Solid
           r, g, b = hex_to_rgb(path_data[:fill])
           brush.r = r
           brush.g = g
@@ -71,15 +71,15 @@ handler = UIng::Area::Handler.new do
 
         # Handle stroke
         if path_data[:stroke] != -1 && path_data[:stroke] != 0
-          stroke_brush = UIng::DrawBrush.new
-          stroke_brush.type = UIng::DrawBrushType::Solid
+          stroke_brush = UIng::Area::Draw::Brush.new
+          stroke_brush.type = UIng::Area::Draw::Brush::Type::Solid
           r, g, b = hex_to_rgb(path_data[:stroke])
           stroke_brush.r = r
           stroke_brush.g = g
           stroke_brush.b = b
           stroke_brush.a = 1.0
 
-          stroke_params = UIng::DrawStrokeParams.new
+          stroke_params = UIng::Area::Draw::StrokeParams.new
           stroke_params.thickness = 1.0
 
           ctx.stroke(path, stroke_brush, stroke_params)
