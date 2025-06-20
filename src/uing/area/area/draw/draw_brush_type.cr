@@ -1,8 +1,10 @@
 module UIng
-  enum DrawBrushType
-    Solid
-    LinearGradient
-    RadialGradient
-    Image
+  class Area < Control
+    enum DrawBrushType
+      Solid
+      LinearGradient
+      RadialGradient
+      Image
+    end
   end
 end

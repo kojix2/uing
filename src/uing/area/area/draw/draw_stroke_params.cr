@@ -1,12 +1,14 @@
 module UIng
-  class DrawStrokeParams
-    def initialize(@cstruct : LibUI::DrawStrokeParams = LibUI::DrawStrokeParams.new)
-    end
+  class Area < Control
+    class DrawStrokeParams
+      def initialize(@cstruct : LibUI::DrawStrokeParams = LibUI::DrawStrokeParams.new)
+      end
 
-    forward_missing_to(@cstruct)
+      forward_missing_to(@cstruct)
 
-    def to_unsafe
-      pointerof(@cstruct)
+      def to_unsafe
+        pointerof(@cstruct)
+      end
     end
   end
 end

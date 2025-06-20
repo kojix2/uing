@@ -1,7 +1,9 @@
 module UIng
-  enum DrawLineJoin
-    Miter
-    Round
-    Bevel
+  class Area < Control
+    enum DrawLineJoin
+      Miter
+      Round
+      Bevel
+    end
   end
 end

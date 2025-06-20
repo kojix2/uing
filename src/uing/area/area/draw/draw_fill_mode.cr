@@ -1,6 +1,8 @@
 module UIng
-  enum DrawFillMode
-    Winding
-    Alternate
+  class Area < Control
+    enum DrawFillMode
+      Winding
+      Alternate
+    end
   end
 end

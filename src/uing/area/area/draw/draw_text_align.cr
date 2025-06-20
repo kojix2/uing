@@ -1,7 +1,9 @@
 module UIng
-  enum DrawTextAlign
-    Left
-    Center
-    Right
+  class Area < Control
+    enum DrawTextAlign
+      Left
+      Center
+      Right
+    end
   end
 end
