@@ -255,7 +255,7 @@ module UIng
     fun area_queue_redraw_all = uiAreaQueueRedrawAll(a : Pointer(Area))
     fun area_scroll_to = uiAreaScrollTo(a : Pointer(Area), x : LibC::Double, y : LibC::Double, width : LibC::Double, height : LibC::Double)
     fun area_begin_user_window_move = uiAreaBeginUserWindowMove(a : Pointer(Area))
-    fun area_begin_user_window_resize = uiAreaBeginUserWindowResize(a : Pointer(Area), edge : WindowResizeEdge)
+    fun area_begin_user_window_resize = uiAreaBeginUserWindowResize(a : Pointer(Area), edge : UIng::Area::WindowResizeEdge)
     fun new_area = uiNewArea(ah : Pointer(AreaHandler)) : Pointer(Area)
     fun new_scrolling_area = uiNewScrollingArea(ah : Pointer(AreaHandler), width : LibC::Int, height : LibC::Int) : Pointer(Area)
     alias DrawPath = Void
