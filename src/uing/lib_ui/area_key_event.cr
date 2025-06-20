@@ -3,8 +3,8 @@ module UIng
     struct AreaKeyEvent
       key : LibC::Char
       ext_key : UIng::Area::ExtKey
-      modifier : Modifiers
-      modifiers : Modifiers
+      modifier : UIng::Area::Modifiers
+      modifiers : UIng::Area::Modifiers
       up : LibC::Int
     end
   end
