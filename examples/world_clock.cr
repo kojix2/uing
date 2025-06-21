@@ -147,50 +147,68 @@ def create_window : UIng::Window
   window
 end
 
-# Build the grid layout with cities in two columns
-def build_grid_layout(cities : Array(CityInfo)) : {UIng::Grid, Array(CityTimeLabel)}
+# Build the box layout with cities in two columns
+def build_box_layout(cities : Array(CityInfo)) : {UIng::Box, Array(CityTimeLabel)}
   # Split cities into two columns for better space utilization
   mid = (cities.size / 2.0).ceil.to_i
   left_cities = cities[0...mid]
   right_cities = cities[mid..-1]
 
-  grid = UIng::Grid.new
-  grid.padded = true
+  # Main horizontal container
+  main_box = UIng::Box.new(:horizontal)
+  main_box.padded = true
 
   time_labels = [] of CityTimeLabel
 
-  # Add left column cities
-  left_cities.each_with_index do |city, row|
+  # Left column
+  left_column = UIng::Box.new(:vertical)
+  left_column.padded = true
+
+  left_cities.each do |city|
+    # Container for each city row
+    city_row = UIng::Box.new(:horizontal)
+    city_row.padded = true
+
     name_label = UIng::Label.new("#{city.flag} #{city.name}")
     time_label = UIng::Label.new("00:00:00")
 
-    grid.append(name_label, left: 0, top: row, xspan: 1, yspan: 1,
-      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
-    grid.append(time_label, left: 1, top: row, xspan: 1, yspan: 1,
-      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+    city_row.append(name_label, stretchy: true)
+    city_row.append(time_label, stretchy: false)
 
+    left_column.append(city_row, stretchy: false)
     time_labels << CityTimeLabel.new(city.timezone, time_label)
   end
 
-  # Add vertical separator between columns
+  # Add left column to main container
+  main_box.append(left_column, stretchy: true)
+
+  # Add vertical separator
   separator = UIng::Separator.new(:vertical)
-  grid.append(separator, left: 2, top: 0, xspan: 1, yspan: left_cities.size,
-    hexpand: false, halign: :fill, vexpand: true, valign: :fill)
+  main_box.append(separator, stretchy: false)
 
-  # Add right column cities (offset by separator)
-  right_cities.each_with_index do |city, row|
+  # Right column
+  right_column = UIng::Box.new(:vertical)
+  right_column.padded = true
+
+  right_cities.each do |city|
+    # Container for each city row
+    city_row = UIng::Box.new(:horizontal)
+    city_row.padded = true
+
     name_label = UIng::Label.new("#{city.flag} #{city.name}")
     time_label = UIng::Label.new("00:00:00")
 
-    grid.append(name_label, left: 3, top: row, xspan: 1, yspan: 1,
-      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
-    grid.append(time_label, left: 4, top: row, xspan: 1, yspan: 1,
-      hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+    city_row.append(name_label, stretchy: true)
+    city_row.append(time_label, stretchy: false)
 
+    right_column.append(city_row, stretchy: false)
     time_labels << CityTimeLabel.new(city.timezone, time_label)
   end
 
-  {grid, time_labels}
+  # Add right column to main container
+  main_box.append(right_column, stretchy: true)
+
+  {main_box, time_labels}
 end
 
 # Main application entry point
@@ -202,8 +220,8 @@ def main
   window = create_window
 
   # Build the UI layout
-  grid, time_labels = build_grid_layout(WORLD_CITIES)
-  window.child = grid
+  main_box, time_labels = build_box_layout(WORLD_CITIES)
+  window.child = main_box
 
   # Initial time update
   update_clocks(time_labels)
