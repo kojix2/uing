@@ -36,9 +36,9 @@ jobs:
         run: |
           crystal run download.cr
           ls
-      - name: Build example
+      - name: Build all examples
         run: |
-          crystal build examples/control_gallery.cr
+          ls examples/*.cr | xargs -P 0 -I {} crystal build {}
           ls
 
   build_MinGW64:
@@ -66,8 +66,8 @@ jobs:
         run: |
           crystal run download.cr
           ls -l
-      - name: Build example
+      - name: Build all examples
         shell: msys2 {0}
         run: |
-          crystal build examples/control_gallery.cr
+          ls examples/*.cr | xargs -P 0 -I {} crystal build {}
           ls -l
