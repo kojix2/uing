@@ -2,7 +2,8 @@ module UIng
   class Area < Control
     module Draw
       class Path
-        include BlockConstructor; block_constructor
+        # Do not use block_constructor
+        # include BlockConstructor; block_constructor
 
         @released = false
 
