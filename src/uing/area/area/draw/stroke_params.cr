@@ -13,9 +13,9 @@ module UIng
 
           self.cap = cap if cap
           self.join = join if join
-          self.thickness = thickness if thickness
-          self.miter_limit = miter_limit if miter_limit
-          self.dash_phase = dash_phase if dash_phase
+          self.thickness = thickness.to_f64 if thickness
+          self.miter_limit = miter_limit.to_f64 if miter_limit
+          self.dash_phase = dash_phase.to_f64 if dash_phase
           self.dashes = dashes if dashes
         end
 
@@ -40,24 +40,24 @@ module UIng
           @cstruct.thickness
         end
 
-        def thickness=(value : Number)
-          @cstruct.thickness = value.to_f64
+        def thickness=(value : Float64)
+          @cstruct.thickness = value
         end
 
         def miter_limit : Float64
           @cstruct.miter_limit
         end
 
-        def miter_limit=(value : Number)
-          @cstruct.miter_limit = value.to_f64
+        def miter_limit=(value : Float64)
+          @cstruct.miter_limit = value
         end
 
         def dash_phase : Float64
           @cstruct.dash_phase
         end
 
-        def dash_phase=(value : Number)
-          @cstruct.dash_phase = value.to_f64
+        def dash_phase=(value : Float64)
+          @cstruct.dash_phase = value
         end
 
         # Dashes property using Crystal Array
