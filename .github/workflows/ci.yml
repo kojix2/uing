@@ -36,9 +36,15 @@ jobs:
         run: |
           crystal run download.cr
           ls
-      - name: Build all examples
+      - name: Build all examples (Unix)
+        if: ${{ matrix.os != 'windows' }}
         run: |
           ls examples/*.cr | xargs -P 0 -I {} crystal build {}
+          ls
+      - name: Build all examples (Windows)
+        if: ${{ matrix.os == 'windows' }}
+        run: |
+          Get-ChildItem examples\*.cr | ForEach-Object { Start-Job -ScriptBlock { crystal build $using:_.FullName } } | Wait-Job | Remove-Job
           ls
 
   build_MinGW64:
