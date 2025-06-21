@@ -190,52 +190,50 @@ handler.draw do |area, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
-  bg_path = UIng::Area::Draw::Path.new(:winding)
-  bg_path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
-  bg_path.end_
+  UIng::Area::Draw::Path.new(:winding) do |bg_path|
+    bg_path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
+    bg_path.end_
 
-  # Animated background color
-  time = RandomLines.animation_time
-  bg_intensity = Math.sin(time * 0.1) * 0.02 + 0.05
+    # Animated background color
+    time = RandomLines.animation_time
+    bg_intensity = Math.sin(time * 0.1) * 0.02 + 0.05
 
-  bg_brush = UIng::Area::Draw::Brush.new
-  bg_brush.type = UIng::Area::Draw::Brush::Type::Solid
-  bg_brush.r = bg_intensity
-  bg_brush.g = bg_intensity * 0.5
-  bg_brush.b = bg_intensity * 2
-  bg_brush.a = 1.0
+    bg_brush = UIng::Area::Draw::Brush.new(
+      :solid,
+      bg_intensity * 0.5, # R
+      bg_intensity * 0.5, # G
+      bg_intensity * 2.0, # B
+      1.0,                # A
+    )
 
-  ctx.fill(bg_path, bg_brush)
-  bg_path.free
+    ctx.fill(bg_path, bg_brush)
+  end
 
   # Draw all lines with safe single-line approach
   RandomLines.lines.each do |line|
     # Create and draw single line safely
-    line_path = UIng::Area::Draw::Path.new(UIng::Area::Draw::FillMode::Winding)
-    line_path.new_figure(line.x1, line.y1)
-    line_path.line_to(line.x2, line.y2)
-    line_path.end_
+    UIng::Area::Draw::Path.new(:winding) do |line_path|
+      line_path.new_figure(line.x1, line.y1)
+      line_path.line_to(line.x2, line.y2)
+      line_path.end_
 
-    # Set up stroke parameters for smooth lines
-    stroke_params = UIng::Area::Draw::StrokeParams.new
-    stroke_params.cap = UIng::Area::Draw::LineCap::Round
-    stroke_params.join = UIng::Area::Draw::LineJoin::Round
-    stroke_params.thickness = line.thickness + 1.0 # Slightly thicker for visibility
-    stroke_params.miter_limit = 10.0
+      # Line color with transparency for blending
+      line_brush = UIng::Area::Draw::Brush.new(
+        :solid,
+        line.color[:r],
+        line.color[:g],
+        line.color[:b],
+        line.alpha * 0.7, # Transparent for beautiful color mixing
+      )
 
-    # Line color with transparency for blending
-    line_brush = UIng::Area::Draw::Brush.new
-    line_brush.type = UIng::Area::Draw::Brush::Type::Solid
-    line_brush.r = line.color[:r]
-    line_brush.g = line.color[:g]
-    line_brush.b = line.color[:b]
-    line_brush.a = line.alpha * 0.7 # Transparent for beautiful color mixing
-
-    ctx.stroke(line_path, line_brush, stroke_params)
-    line_path.free
+      ctx.stroke(line_path, line_brush,
+        cap: :round,
+        join: :round,
+        thickness: line.thickness + 1.0,
+        miter_limit: 10.0,
+      )
+    end
   end
-
-  # Clean art - no status indicators needed
 end
 
 area = UIng::Area.new(handler)

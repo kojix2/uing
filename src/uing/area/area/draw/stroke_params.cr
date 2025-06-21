@@ -4,11 +4,11 @@ module UIng
       class StrokeParams
         include BlockConstructor; block_constructor
 
-        def initialize(cap : UIng::Area::Draw::LineCap? = nil,
-                       join : UIng::Area::Draw::LineJoin? = nil,
-                       thickness : Number? = nil,
-                       miter_limit : Number? = nil,
-                       dash_phase : Number? = nil,
+        def initialize(cap : UIng::Area::Draw::LineCap = Flat,
+                       join : UIng::Area::Draw::LineJoin = Miter,
+                       thickness : Number = 0.0,
+                       miter_limit : Number = 0.0,
+                       dash_phase : Number = 0.0,
                        dashes : Enumerable(Float64)? = nil)
           @cstruct = LibUI::DrawStrokeParams.new
           @dashes_array = Array(Float64).new

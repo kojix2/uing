@@ -13,11 +13,11 @@ module UIng
 
         def stroke(draw_path : Path,
                    draw_brush : Brush,
-                   cap : UIng::Area::Draw::LineCap? = nil,
-                   join : UIng::Area::Draw::LineJoin? = nil,
-                   thickness : Number? = nil,
-                   miter_limit : Number? = nil,
-                   dash_phase : Number? = nil,
+                   cap : UIng::Area::Draw::LineCap = LineCap::Flat,
+                   join : UIng::Area::Draw::LineJoin? = LineJoin::Miter,
+                   thickness : Number = 0.0,
+                   miter_limit : Number = 0.0,
+                   dash_phase : Number = 0.0,
                    dashes : Enumerable(Float64)? = nil) : Nil
           stroke_params = StrokeParams.new(
             cap: cap,
