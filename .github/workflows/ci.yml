@@ -75,5 +75,5 @@ jobs:
       - name: Build all examples
         shell: msys2 {0}
         run: |
-          ls examples/*.cr | xargs -P 0 -I {} crystal build {}
+          for f in examples/*.cr; do crystal build "$f"; done
           ls -l
