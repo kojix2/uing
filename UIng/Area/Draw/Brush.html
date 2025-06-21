@@ -513,21 +513,21 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L6" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L6" target="_blank">
         uing/area/area/draw/brush.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush/gradient_stop.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush/gradient_stop.cr#L4" target="_blank">
         uing/area/area/draw/brush/gradient_stop.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush/type.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush/type.cr#L4" target="_blank">
         uing/area/area/draw/brush/type.cr
       </a>
     
@@ -550,14 +550,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28brush_type%3ABrush%3A%3AType%2Cr%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%3D1.0%29-class-method" class="signature"><strong>.new</strong>(brush_type : Brush::Type, r : Float64, g : Float64, b : Float64, a : Float64 = <span class="n">1.0</span>)</a>
-        
-          <div class="summary"><p>Single color brush initialization</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28cstruct%3ALibUI%3A%3ADrawBrush%3DLibUI%3A%3ADrawBrush.new%29-class-method" class="signature"><strong>.new</strong>(cstruct : LibUI::DrawBrush = <span class="t">LibUI</span><span class="t">::</span><span class="t">DrawBrush</span>.new)</a>
+        <a href="#new%28type%3ABrush%3A%3AType%2Cr%3ANumber%3D0.0%2Cg%3ANumber%3D0.0%2Cb%3ANumber%3D0.0%2Ca%3ANumber%3D1.0%2Cx0%3ANumber%3D0.0%2Cy0%3ANumber%3D0.0%2Cx1%3ANumber%3D0.0%2Cy1%3ANumber%3D0.0%2Couter_radius%3ANumber%3D0.0%2Cstops%3AArray%28GradientStop%29%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(type : Brush::Type, r : Number = <span class="n">0.0</span>, g : Number = <span class="n">0.0</span>, b : Number = <span class="n">0.0</span>, a : Number = <span class="n">1.0</span>, x0 : Number = <span class="n">0.0</span>, y0 : Number = <span class="n">0.0</span>, x1 : Number = <span class="n">0.0</span>, y1 : Number = <span class="n">0.0</span>, outer_radius : Number = <span class="n">0.0</span>, stops : Array(GradientStop) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -615,11 +608,6 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#num_stops%3D%28value%3ALibC%3A%3ASizeT%29-instance-method" class="signature"><strong>#num_stops=</strong>(value : LibC::SizeT)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
         <a href="#outer_radius%3AFloat64-instance-method" class="signature"><strong>#outer_radius</strong> : Float64</a>
         
       </li>
@@ -640,12 +628,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#stops%3APointer%28LibUI%3A%3ADrawBrushGradientStop%29-instance-method" class="signature"><strong>#stops</strong> : Pointer(LibUI::DrawBrushGradientStop)</a>
+        <a href="#stops%3AArray%28GradientStop%29-instance-method" class="signature"><strong>#stops</strong> : Array(GradientStop)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stops%3D%28value%3APointer%28LibUI%3A%3ADrawBrushGradientStop%29%29-instance-method" class="signature"><strong>#stops=</strong>(value : Pointer(LibUI::DrawBrushGradientStop))</a>
+        <a href="#stops%3D%28value%3AArray%28GradientStop%29%29-instance-method" class="signature"><strong>#stops=</strong>(value : Array(GradientStop))</a>
         
       </li>
     
@@ -748,39 +736,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(brush_type:Brush::Type,r:Float64,g:Float64,b:Float64,a:Float64=1.0)-class-method">
+    <div class="entry-detail" id="new(type:Brush::Type,r:Number=0.0,g:Number=0.0,b:Number=0.0,a:Number=1.0,x0:Number=0.0,y0:Number=0.0,x1:Number=0.0,y1:Number=0.0,outer_radius:Number=0.0,stops:Array(GradientStop)|Nil=nil)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(brush_type : <a href="../../../UIng/Area/Draw/Brush/Type.html">Brush::Type</a>, r : Float64, g : Float64, b : Float64, a : Float64 = <span class="n">1.0</span>)
+        def self.<strong>new</strong>(type : <a href="../../../UIng/Area/Draw/Brush/Type.html">Brush::Type</a>, r : Number = <span class="n">0.0</span>, g : Number = <span class="n">0.0</span>, b : Number = <span class="n">0.0</span>, a : Number = <span class="n">1.0</span>, x0 : Number = <span class="n">0.0</span>, y0 : Number = <span class="n">0.0</span>, x1 : Number = <span class="n">0.0</span>, y1 : Number = <span class="n">0.0</span>, outer_radius : Number = <span class="n">0.0</span>, stops : Array(<a href="../../../UIng/Area/Draw/Brush/GradientStop.html">GradientStop</a>) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#new%28brush_type%3ABrush%3A%3AType%2Cr%3AFloat64%2Cg%3AFloat64%2Cb%3AFloat64%2Ca%3AFloat64%3D1.0%29-class-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Single color brush initialization</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(cstruct:LibUI::DrawBrush=LibUI::DrawBrush.new)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(cstruct : LibUI::DrawBrush = <span class="t">LibUI</span><span class="t">::</span><span class="t">DrawBrush</span>.new)
-
-        <a class="method-permalink" href="#new%28cstruct%3ALibUI%3A%3ADrawBrush%3DLibUI%3A%3ADrawBrush.new%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28type%3ABrush%3A%3AType%2Cr%3ANumber%3D0.0%2Cg%3ANumber%3D0.0%2Cb%3ANumber%3D0.0%2Ca%3ANumber%3D1.0%2Cx0%3ANumber%3D0.0%2Cy0%3ANumber%3D0.0%2Cx1%3ANumber%3D0.0%2Cy1%3ANumber%3D0.0%2Couter_radius%3ANumber%3D0.0%2Cstops%3AArray%28GradientStop%29%7CNil%3Dnil%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -812,7 +779,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L52" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -828,7 +795,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L86" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -844,7 +811,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L44" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -860,7 +827,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L48" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -876,7 +843,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -892,7 +859,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L70" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -908,23 +875,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L108" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="num_stops=(value:LibC::SizeT)-instance-method">
-      <div class="signature">
-        
-        def <strong>num_stops=</strong>(value : LibC::SizeT)
-
-        <a class="method-permalink" href="#num_stops%3D%28value%3ALibC%3A%3ASizeT%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L149" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -940,7 +891,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L92" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L122" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -956,7 +907,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -972,7 +923,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -988,39 +939,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stops:Pointer(LibUI::DrawBrushGradientStop)-instance-method">
+    <div class="entry-detail" id="stops:Array(GradientStop)-instance-method">
       <div class="signature">
         
-        def <strong>stops</strong> : Pointer(LibUI::DrawBrushGradientStop)
+        def <strong>stops</strong> : Array(<a href="../../../UIng/Area/Draw/Brush/GradientStop.html">GradientStop</a>)
 
-        <a class="method-permalink" href="#stops%3APointer%28LibUI%3A%3ADrawBrushGradientStop%29-instance-method">#</a>
+        <a class="method-permalink" href="#stops%3AArray%28GradientStop%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L100" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stops=(value:Pointer(LibUI::DrawBrushGradientStop))-instance-method">
+    <div class="entry-detail" id="stops=(value:Array(GradientStop))-instance-method">
       <div class="signature">
         
-        def <strong>stops=</strong>(value : Pointer(LibUI::DrawBrushGradientStop))
+        def <strong>stops=</strong>(value : Array(<a href="../../../UIng/Area/Draw/Brush/GradientStop.html">GradientStop</a>))
 
-        <a class="method-permalink" href="#stops%3D%28value%3APointer%28LibUI%3A%3ADrawBrushGradientStop%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#stops%3D%28value%3AArray%28GradientStop%29%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L145" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1036,7 +987,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L116" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L153" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1052,7 +1003,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1068,7 +1019,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1084,7 +1035,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L60" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L90" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1100,7 +1051,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L94" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1116,7 +1067,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L76" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1132,7 +1083,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L110" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1148,7 +1099,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L98" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1164,7 +1115,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L102" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1180,7 +1131,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L114" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1196,7 +1147,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/0b90c0a0cae6fcd1d87734f867988a5546aa0b4b/src/uing/area/area/draw/brush.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/a617b933bdb012af1763c8bd2607dec6c86562bd/src/uing/area/area/draw/brush.cr#L118" target="_blank">View source</a>]
         
       </div>
     </div>
