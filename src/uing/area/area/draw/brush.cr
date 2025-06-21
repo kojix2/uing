@@ -4,17 +4,47 @@ module UIng
   class Area < Control
     module Draw
       class Brush
-        def initialize(@cstruct : LibUI::DrawBrush = LibUI::DrawBrush.new)
+        def initialize(type : Brush::Type,
+                       r : Number = 0.0,
+                       g : Number = 0.0,
+                       b : Number = 0.0,
+                       a : Number = 1.0,
+                       x0 : Number = 0.0,
+                       y0 : Number = 0.0,
+                       x1 : Number = 0.0,
+                       y1 : Number = 0.0,
+                       outer_radius : Number = 0.0,
+                       stops : Array(GradientStop)? = nil)
+          @cstruct = LibUI::DrawBrush.new
+          @cstruct.type = type
+          @cstruct.r = r.to_f64
+          @cstruct.g = g.to_f64
+          @cstruct.b = b.to_f64
+          @cstruct.a = a.to_f64
+          @cstruct.x0 = x0.to_f64
+          @cstruct.y0 = y0.to_f64
+          @cstruct.x1 = x1.to_f64
+          @cstruct.y1 = y1.to_f64
+          @cstruct.outer_radius = outer_radius.to_f64
+
+          if stops
+            set_gradient_stops(stops)
+          else
+            @cstruct.stops = Pointer(LibUI::DrawBrushGradientStop).null
+            @cstruct.num_stops = 0_u64
+          end
         end
 
-        # Single color brush initialization
-        def initialize(brush_type : Brush::Type, r : Float64, g : Float64, b : Float64, a : Float64 = 1.0)
-          @cstruct = LibUI::DrawBrush.new
-          @cstruct.type = brush_type
-          @cstruct.r = r
-          @cstruct.g = g
-          @cstruct.b = b
-          @cstruct.a = a
+        private def set_gradient_stops(stops : Array(GradientStop))
+          if stops.empty?
+            @cstruct.stops = Pointer(LibUI::DrawBrushGradientStop).null
+            @cstruct.num_stops = 0_u64
+          else
+            # Create array of C structs from GradientStop objects
+            c_stops = stops.map(&.to_unsafe.value)
+            @cstruct.stops = c_stops.to_unsafe
+            @cstruct.num_stops = stops.size.to_u64
+          end
         end
 
         def type : Type
@@ -97,20 +127,27 @@ module UIng
           @cstruct.outer_radius = value
         end
 
-        def stops : Pointer(LibUI::DrawBrushGradientStop)
-          @cstruct.stops
+        def stops : Array(GradientStop)
+          return Array(GradientStop).new if @cstruct.num_stops == 0 || @cstruct.stops.null?
+
+          Array(GradientStop).new(@cstruct.num_stops.to_i) do |i|
+            c_stop = (@cstruct.stops + i).value
+            GradientStop.new(
+              pos: c_stop.pos,
+              r: c_stop.r,
+              g: c_stop.g,
+              b: c_stop.b,
+              a: c_stop.a
+            )
+          end
         end
 
-        def stops=(value : Pointer(LibUI::DrawBrushGradientStop))
-          @cstruct.stops = value
+        def stops=(value : Array(GradientStop))
+          set_gradient_stops(value)
         end
 
         def num_stops : LibC::SizeT
           @cstruct.num_stops
-        end
-
-        def num_stops=(value : LibC::SizeT)
-          @cstruct.num_stops = value
         end
 
         def to_unsafe

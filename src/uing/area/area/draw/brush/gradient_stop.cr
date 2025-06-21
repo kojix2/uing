@@ -3,8 +3,17 @@ module UIng
     module Draw
       class Brush
         class GradientStop
-          def initialize
+          def initialize(pos : Number = 0.0,
+                         r : Number = 0.0,
+                         g : Number = 0.0,
+                         b : Number = 0.0,
+                         a : Number = 1.0)
             @cstruct = LibUI::DrawBrushGradientStop.new
+            self.pos = pos
+            self.r = r
+            self.g = g
+            self.b = b
+            self.a = a
           end
 
           def pos : Float64

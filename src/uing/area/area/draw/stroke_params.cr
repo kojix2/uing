@@ -2,11 +2,6 @@ module UIng
   class Area < Control
     module Draw
       class StrokeParams
-        def initialize
-          @cstruct = LibUI::DrawStrokeParams.new
-          @dashes_array = Array(Float64).new
-        end
-
         def initialize(cap : UIng::Area::Draw::LineCap? = nil,
                        join : UIng::Area::Draw::LineJoin? = nil,
                        thickness : Number? = nil,
