@@ -7,6 +7,23 @@ module UIng
           @dashes_array = Array(Float64).new
         end
 
+        def initialize(cap : UIng::Area::Draw::LineCap? = nil,
+                       join : UIng::Area::Draw::LineJoin? = nil,
+                       thickness : Number? = nil,
+                       miter_limit : Number? = nil,
+                       dash_phase : Number? = nil,
+                       dashes : Enumerable(Float64)? = nil)
+          @cstruct = LibUI::DrawStrokeParams.new
+          @dashes_array = Array(Float64).new
+
+          self.cap = cap if cap
+          self.join = join if join
+          self.thickness = thickness if thickness
+          self.miter_limit = miter_limit if miter_limit
+          self.dash_phase = dash_phase if dash_phase
+          self.dashes = dashes if dashes
+        end
+
         # Basic properties with direct delegation
         def cap : UIng::Area::Draw::LineCap
           @cstruct.cap

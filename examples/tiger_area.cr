@@ -72,8 +72,7 @@ handler = UIng::Area::Handler.new do
             :solid, r, g, b, a: 1.0
           )
 
-          stroke_params = UIng::Area::Draw::StrokeParams.new
-          stroke_params.thickness = 1.0
+          stroke_params = UIng::Area::Draw::StrokeParams.new(thickness: 1.0)
 
           ctx.stroke(path, stroke_brush, stroke_params)
         end
