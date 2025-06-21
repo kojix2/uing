@@ -9,6 +9,25 @@ module UIng
           LibUI.draw_stroke(@ref_ptr, draw_path.to_unsafe, draw_brush.to_unsafe, draw_stroke_params.to_unsafe)
         end
 
+        def stroke(draw_path : Path,
+                   draw_brush : Brush,
+                   cap : UIng::Area::Draw::LineCap? = nil,
+                   join : UIng::Area::Draw::LineJoin? = nil,
+                   thickness : Number? = nil,
+                   miter_limit : Number? = nil,
+                   dash_phase : Number? = nil,
+                   dashes : Enumerable(Float64)? = nil) : Nil
+          stroke_params = StrokeParams.new(
+            cap: cap,
+            join: join,
+            thickness: thickness,
+            miter_limit: miter_limit,
+            dash_phase: dash_phase,
+            dashes: dashes
+          )
+          stroke(draw_path, draw_brush, stroke_params)
+        end
+
         def fill(draw_path : Path, draw_brush : Brush) : Nil
           LibUI.draw_fill(@ref_ptr, draw_path.to_unsafe, draw_brush.to_unsafe)
         end
