@@ -13,9 +13,9 @@ module UIng
     # 3. Regular methods - creates standard wrapper methods
     #
     # Examples:
-    #   button.text = "Hello"     # → UIng.button_set_text(@ref_ptr, "Hello")
-    #   button.show               # → UIng.button_show(@ref_ptr)
-    #   button.on_clicked { ... } # → UIng.button_on_clicked(@ref_ptr, &block)
+    #   button.text = "Hello"     # -> UIng.button_set_text(@ref_ptr, "Hello")
+    #   button.show               # -> UIng.button_show(@ref_ptr)
+    #   button.on_clicked { ... } # -> UIng.button_on_clicked(@ref_ptr, &block)
     macro method_missing(call)
       {% if call.name.ends_with?("=") %}
       # Handle setter methods (e.g., text=, enabled=)
