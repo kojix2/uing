@@ -2,6 +2,8 @@ module UIng
   class Area < Control
     module Draw
       class Path
+        include BlockConstructor; block_constructor
+
         @released = false
 
         def initialize(@ref_ptr : Pointer(LibUI::DrawPath))

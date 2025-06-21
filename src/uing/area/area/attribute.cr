@@ -1,6 +1,8 @@
 module UIng
   class Area < Control
     class Attribute
+      include BlockConstructor; block_constructor
+
       property? released : Bool = false
 
       def initialize(@ref_ptr : Pointer(LibUI::Attribute))

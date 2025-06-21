@@ -3,6 +3,8 @@ require "./attribute/*"
 module UIng
   class Area < Control
     class AttributedString
+      include BlockConstructor; block_constructor
+
       property? released : Bool = false
       @for_each_attribute_box : Pointer(Void)?
 

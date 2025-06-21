@@ -2,6 +2,8 @@ module UIng
   class Area < Control
     module Draw
       class Matrix
+        include BlockConstructor; block_constructor
+
         def initialize(@cstruct : LibUI::DrawMatrix = LibUI::DrawMatrix.new)
         end
 

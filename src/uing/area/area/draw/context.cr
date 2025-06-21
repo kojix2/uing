@@ -2,6 +2,8 @@ module UIng
   class Area < Control
     module Draw
       class Context
+        include BlockConstructor; block_constructor
+
         def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
         end
 

@@ -3,6 +3,8 @@ module UIng
     module Draw
       class Brush
         class GradientStop
+          include BlockConstructor; block_constructor
+
           def initialize(pos : Number = 0.0,
                          r : Number = 0.0,
                          g : Number = 0.0,

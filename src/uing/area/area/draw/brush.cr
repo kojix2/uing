@@ -4,6 +4,8 @@ module UIng
   class Area < Control
     module Draw
       class Brush
+        include BlockConstructor; block_constructor
+
         def initialize(type : Brush::Type,
                        r : Number = 0.0,
                        g : Number = 0.0,

@@ -4,6 +4,8 @@ module UIng
   class Area < Control
     module Draw
       class TextLayout
+        include BlockConstructor; block_constructor
+
         @released = false
 
         def initialize(@ref_ptr : Pointer(LibUI::DrawTextLayout))

@@ -3,6 +3,8 @@ module UIng
     module Draw
       # This class provides read-only access to area draw parameters.
       class Params
+        include BlockConstructor; block_constructor
+
         def initialize(ptr_ref : LibUI::AreaDrawParams*)
           @cstruct = ptr_ref.value
         end

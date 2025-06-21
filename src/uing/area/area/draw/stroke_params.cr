@@ -2,6 +2,8 @@ module UIng
   class Area < Control
     module Draw
       class StrokeParams
+        include BlockConstructor; block_constructor
+
         def initialize(cap : UIng::Area::Draw::LineCap? = nil,
                        join : UIng::Area::Draw::LineJoin? = nil,
                        thickness : Number? = nil,
