@@ -58,26 +58,19 @@ handler = UIng::Area::Handler.new do
 
         # Handle fill
         if path_data[:fill] != -1
-          brush = UIng::Area::Draw::Brush.new
-          brush.type = UIng::Area::Draw::Brush::Type::Solid
           r, g, b = hex_to_rgb(path_data[:fill])
-          brush.r = r
-          brush.g = g
-          brush.b = b
-          brush.a = 1.0
-
+          brush = UIng::Area::Draw::Brush.new(
+            :solid, r, g, b, a: 1.0
+          )
           ctx.fill(path, brush)
         end
 
         # Handle stroke
         if path_data[:stroke] != -1 && path_data[:stroke] != 0
-          stroke_brush = UIng::Area::Draw::Brush.new
-          stroke_brush.type = UIng::Area::Draw::Brush::Type::Solid
           r, g, b = hex_to_rgb(path_data[:stroke])
-          stroke_brush.r = r
-          stroke_brush.g = g
-          stroke_brush.b = b
-          stroke_brush.a = 1.0
+          stroke_brush = UIng::Area::Draw::Brush.new(
+            :solid, r, g, b, a: 1.0
+          )
 
           stroke_params = UIng::Area::Draw::StrokeParams.new
           stroke_params.thickness = 1.0

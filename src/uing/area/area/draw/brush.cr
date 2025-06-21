@@ -8,7 +8,7 @@ module UIng
         end
 
         # Single color brush initialization
-        def initialize(brush_type : DrawBrushType, r : Float64, g : Float64, b : Float64, a : Float64 = 1.0)
+        def initialize(brush_type : Brush::Type, r : Float64, g : Float64, b : Float64, a : Float64 = 1.0)
           @cstruct = LibUI::DrawBrush.new
           @cstruct.type = brush_type
           @cstruct.r = r
