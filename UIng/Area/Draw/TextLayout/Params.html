@@ -527,7 +527,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/2ab8d2b2d31367f2f63188dfa6c2d8bc9eaa8847/src/uing/area/area/draw/text_layout/params.cr#L5" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L5" target="_blank">
         uing/area/area/draw/text_layout/params.cr
       </a>
     
@@ -560,7 +560,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28cstruct%3ALibUI%3A%3ADrawTextLayoutParams%3DLibUI%3A%3ADrawTextLayoutParams.new%29-class-method" class="signature"><strong>.new</strong>(cstruct : LibUI::DrawTextLayoutParams = <span class="t">LibUI</span><span class="t">::</span><span class="t">DrawTextLayoutParams</span>.new)</a>
+        <a href="#new%28string%3AAttributedString%2Cdefault_font%3AFontDescriptor%2Cwidth%3AFloat64%2Calign%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%29-class-method" class="signature"><strong>.new</strong>(string : AttributedString, default_font : FontDescriptor, width : Float64, align : UIng::Area::Draw::TextAlign)</a>
         
       </li>
     
@@ -570,23 +570,6 @@
   
 
   
-  <h2>
-    <a id="macro-summary" class="anchor" href="#macro-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#method_missing%28call%29-macro" class="signature"><strong>method_missing</strong>(call)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
   <h2>
@@ -600,7 +583,49 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#align%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign-instance-method" class="signature"><strong>#align</strong> : UIng::Area::Draw::TextAlign</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#align%3D%28value%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%29-instance-method" class="signature"><strong>#align=</strong>(value : UIng::Area::Draw::TextAlign)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#default_font%3AFontDescriptor-instance-method" class="signature"><strong>#default_font</strong> : FontDescriptor</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#default_font%3D%28value%3AFontDescriptor%29-instance-method" class="signature"><strong>#default_font=</strong>(value : FontDescriptor)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#string%3AAttributedString-instance-method" class="signature"><strong>#string</strong> : AttributedString</a>
+        
+          <div class="summary"><p>Explicit property accessors for better type safety and documentation</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#string%3D%28value%3AAttributedString%29-instance-method" class="signature"><strong>#string=</strong>(value : AttributedString)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#width%3AFloat64-instance-method" class="signature"><strong>#width</strong> : Float64</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#width%3D%28value%3AFloat64%29-instance-method" class="signature"><strong>#width=</strong>(value : Float64)</a>
         
       </li>
     
@@ -681,7 +706,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/2ab8d2b2d31367f2f63188dfa6c2d8bc9eaa8847/src/uing/area/area/draw/text_layout/params.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -697,23 +722,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/2ab8d2b2d31367f2f63188dfa6c2d8bc9eaa8847/src/uing/area/area/draw/text_layout/params.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(cstruct:LibUI::DrawTextLayoutParams=LibUI::DrawTextLayoutParams.new)-class-method">
+    <div class="entry-detail" id="new(string:AttributedString,default_font:FontDescriptor,width:Float64,align:UIng::Area::Draw::TextAlign)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(cstruct : LibUI::DrawTextLayoutParams = <span class="t">LibUI</span><span class="t">::</span><span class="t">DrawTextLayoutParams</span>.new)
+        def self.<strong>new</strong>(string : <a href="../../../../UIng/Area/AttributedString.html">AttributedString</a>, default_font : <a href="../../../../UIng/FontDescriptor.html">FontDescriptor</a>, width : Float64, align : <a href="../../../../UIng/Area/Draw/TextAlign.html">UIng::Area::Draw::TextAlign</a>)
 
-        <a class="method-permalink" href="#new%28cstruct%3ALibUI%3A%3ADrawTextLayoutParams%3DLibUI%3A%3ADrawTextLayoutParams.new%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28string%3AAttributedString%2Cdefault_font%3AFontDescriptor%2Cwidth%3AFloat64%2Calign%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/2ab8d2b2d31367f2f63188dfa6c2d8bc9eaa8847/src/uing/area/area/draw/text_layout/params.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -723,32 +748,6 @@
   
 
   
-  <h2>
-    <a id="macro-detail" class="anchor" href="#macro-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Detail
-  </h2>
-  
-    <div class="entry-detail" id="method_missing(call)-macro">
-      <div class="signature">
-        
-        macro <strong>method_missing</strong>(call)
-
-        <a class="method-permalink" href="#method_missing%28call%29-macro">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/2ab8d2b2d31367f2f63188dfa6c2d8bc9eaa8847/src/uing/area/area/draw/text_layout/params.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
   <h2>
@@ -759,6 +758,107 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="align:UIng::Area::Draw::TextAlign-instance-method">
+      <div class="signature">
+        
+        def <strong>align</strong> : <a href="../../../../UIng/Area/Draw/TextAlign.html">UIng::Area::Draw::TextAlign</a>
+
+        <a class="method-permalink" href="#align%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="align=(value:UIng::Area::Draw::TextAlign)-instance-method">
+      <div class="signature">
+        
+        def <strong>align=</strong>(value : <a href="../../../../UIng/Area/Draw/TextAlign.html">UIng::Area::Draw::TextAlign</a>)
+
+        <a class="method-permalink" href="#align%3D%28value%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="default_font:FontDescriptor-instance-method">
+      <div class="signature">
+        
+        def <strong>default_font</strong> : <a href="../../../../UIng/FontDescriptor.html">FontDescriptor</a>
+
+        <a class="method-permalink" href="#default_font%3AFontDescriptor-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L32" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="default_font=(value:FontDescriptor)-instance-method">
+      <div class="signature">
+        
+        def <strong>default_font=</strong>(value : <a href="../../../../UIng/FontDescriptor.html">FontDescriptor</a>)
+
+        <a class="method-permalink" href="#default_font%3D%28value%3AFontDescriptor%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="string:AttributedString-instance-method">
+      <div class="signature">
+        
+        def <strong>string</strong> : <a href="../../../../UIng/Area/AttributedString.html">AttributedString</a>
+
+        <a class="method-permalink" href="#string%3AAttributedString-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Explicit property accessors for better type safety and documentation</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="string=(value:AttributedString)-instance-method">
+      <div class="signature">
+        
+        def <strong>string=</strong>(value : <a href="../../../../UIng/Area/AttributedString.html">AttributedString</a>)
+
+        <a class="method-permalink" href="#string%3D%28value%3AAttributedString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="to_unsafe-instance-method">
       <div class="signature">
@@ -771,7 +871,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/2ab8d2b2d31367f2f63188dfa6c2d8bc9eaa8847/src/uing/area/area/draw/text_layout/params.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L57" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="width:Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>width</strong> : Float64
+
+        <a class="method-permalink" href="#width%3AFloat64-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="width=(value:Float64)-instance-method">
+      <div class="signature">
+        
+        def <strong>width=</strong>(value : Float64)
+
+        <a class="method-permalink" href="#width%3D%28value%3AFloat64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/06549e20b59145462769e3976a83d2dbf9ff20a5/src/uing/area/area/draw/text_layout/params.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
