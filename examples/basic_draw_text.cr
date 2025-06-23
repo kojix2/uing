@@ -39,6 +39,14 @@ ATTR_STR = UIng::Area::AttributedString.new("")
 RED   = UIng::Area::Attribute.new_color(0.0, 0.5, 0.0, 0.7)
 GREEN = UIng::Area::Attribute.new_color(0.5, 0.0, 0.25, 0.7)
 
+DEFAULT_FONT = UIng::FontDescriptor.new(
+  family: "Georgia",
+  size: 13,
+  weight: :normal,
+  italic: :normal,
+  stretch: :normal
+)
+
 def append_to_attr_str(attr_str, text, color)
   start = attr_str.len
   attr_str.append_unattributed(text)
@@ -53,21 +61,12 @@ append_to_attr_str(ATTR_STR, str4, RED)
 append_to_attr_str(ATTR_STR, str5, GREEN)
 
 handler.draw do |area, area_draw_params|
-  default_font = UIng::FontDescriptor.new(
-    family: "Georgia",
-    size: 13,
-    weight: :normal,
-    italic: :normal,
-    stretch: :normal
+  text_layout = UIng::Area::Draw::TextLayout.new(
+    string: ATTR_STR,
+    default_font: DEFAULT_FONT,
+    width: area_draw_params.area_width,
+    align: UIng::Area::Draw::TextAlign::Left
   )
-
-  params = UIng::Area::Draw::TextLayout::Params.new
-  params.string = ATTR_STR
-  params.default_font = default_font
-  params.width = area_draw_params.area_width
-  params.align = UIng::Area::Draw::TextAlign::Left
-
-  text_layout = UIng::Area::Draw::TextLayout.new(params)
   ctx = area_draw_params.context
   ctx.text(text_layout, 0, 0)
   text_layout.free

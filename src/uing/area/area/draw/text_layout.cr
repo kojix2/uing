@@ -15,6 +15,19 @@ module UIng
           @ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
         end
 
+        def initialize(string : AttributedString,
+                       default_font : FontDescriptor,
+                       width : Float64,
+                       align : UIng::Area::Draw::TextAlign = UIng::Area::Draw::TextAlign::Left)
+          draw_text_layout_params = Draw::TextLayout::Params.new(
+            string: string,
+            default_font: default_font,
+            width: width,
+            align: align
+          )
+          @ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
+        end
+
         def free : Nil
           return if @released
           LibUI.draw_free_text_layout(@ref_ptr)
