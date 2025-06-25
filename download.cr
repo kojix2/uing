@@ -1,7 +1,7 @@
 require "compress/zip"
 require "file_utils"
 
-COMMIT_HASH = "43ba1ef"
+COMMIT_HASH = ENV["LIBUI_NG_COMMIT_HASH"]? || "43ba1ef"
 
 def url_for_libui_ng_nightly(file_name)
   "https://github.com/kojix2/libui-ng/releases/download/commit-#{COMMIT_HASH}/#{file_name}"
