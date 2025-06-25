@@ -36,15 +36,20 @@ jobs:
         run: |
           crystal run download.cr
           ls
-      - name: Build all examples (Unix)
-        if: ${{ matrix.os != 'windows' }}
+      - name: Build all examples (Ubuntu)
+        if: ${{ matrix.os == 'ubuntu' }}
         run: |
           ls examples/*.cr | xargs -P 0 -I {} crystal build {}
+          ls
+      - name: Build all examples (macOS)
+        if: ${{ matrix.os == 'macos' }}
+        run: |
+          ls examples/*.cr | xargs -n 1 crystal build
           ls
       - name: Build all examples (Windows)
         if: ${{ matrix.os == 'windows' }}
         run: |
-          Get-ChildItem examples\*.cr | ForEach-Object { Start-Job -ScriptBlock { crystal build $using:_.FullName } } | Wait-Job | Remove-Job
+          Get-ChildItem -Path examples -Filter *.cr | ForEach-Object { crystal build $_.FullName }
           ls
 
   build_MinGW64:
