@@ -16,7 +16,12 @@ def download_from_url(lib_path, file_name, url)
   puts "Downloading #{lib_path} from #{url}"
 
   # Use curl command instead of Crest
-  system("curl -L -o #{file_name} #{url}")
+  puts "Running: curl -L -o #{file_name} #{url}"
+  curl_status = system("curl -L -o #{file_name} #{url}")
+  unless curl_status && File.exists?(file_name)
+    STDERR.puts "Error: Failed to download #{file_name} from #{url}"
+    exit 1
+  end
 
   if file_name.ends_with?(".zip")
     Compress::Zip::File.open(file_name) do |zip_file|
@@ -44,46 +49,24 @@ ensure
   File.delete(file_name) if File.exists?(file_name)
 end
 
+def download_and_place(zip_name : String, src : String, dest : String)
+  download_libui_ng_nightly([src], zip_name)
+  FileUtils.mkdir_p File.dirname(dest)
+  FileUtils.cp src, dest
+end
+
 {% if flag?(:darwin) %}
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "macOS-x64-static-release.zip"
-  )
-  FileUtils.mkdir_p "libui/release"
-  FileUtils.mv "builddir/meson-out/libui.a", "libui/release/libui.a"
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "macOS-x64-static-debug.zip"
-  )
-  FileUtils.mkdir_p "libui/debug"
-  FileUtils.mv "builddir/meson-out/libui.a", "libui/debug/libui.a"
+  download_and_place("macOS-x64-static-release.zip", "builddir/meson-out/libui.a", "libui/release/libui.a")
+  download_and_place("macOS-x64-static-debug.zip", "builddir/meson-out/libui.a", "libui/debug/libui.a")
 {% elsif flag?(:linux) %}
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "Ubuntu-x64-static-release.zip"
-  )
-  FileUtils.mkdir_p "libui/release"
-  FileUtils.mv "builddir/meson-out/libui.a", "libui/release/libui.a"
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "Ubuntu-x64-static-debug.zip"
-  )
-  FileUtils.mkdir_p "libui/debug"
-  FileUtils.mv "builddir/meson-out/libui.a", "libui/debug/libui.a"
+  download_and_place("Ubuntu-x64-static-release.zip", "builddir/meson-out/libui.a", "libui/release/libui.a")
+  download_and_place("Ubuntu-x64-static-debug.zip", "builddir/meson-out/libui.a", "libui/debug/libui.a")
 {% elsif flag?(:msvc) %}
   # Release build
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "Win-x64-static-release.zip"
-  )
-  FileUtils.mkdir_p "libui/release"
-  FileUtils.cp "builddir/meson-out/libui.a", "libui/release/ui.lib"
+  download_and_place("Win-x64-static-release.zip", "builddir/meson-out/libui.a", "libui/release/ui.lib")
 
   # Debug build (including PDB files)
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a", "builddir/meson-out/libui.a.p"],
-    "Win-x64-static-debug.zip"
-  )
+  download_libui_ng_nightly(["builddir/meson-out/libui.a", "builddir/meson-out/libui.a.p"], "Win-x64-static-debug.zip")
   FileUtils.mkdir_p "libui/debug"
   FileUtils.cp "builddir/meson-out/libui.a", "libui/debug/ui.lib"
   # Copy entire libui.a.p/ directory
@@ -95,18 +78,8 @@ end
     end
   end
 {% elsif flag?(:win32) && flag?(:gnu) %}
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "Mingw-x64-static-release.zip"
-  )
-  FileUtils.mkdir_p "libui/release"
-  FileUtils.mv "builddir/meson-out/libui.a", "libui/release/libui.a"
-  download_libui_ng_nightly(
-    ["builddir/meson-out/libui.a"],
-    "Mingw-x64-static-debug.zip"
-  )
-  FileUtils.mkdir_p "libui/debug"
-  FileUtils.mv "builddir/meson-out/libui.a", "libui/debug/libui.a"
+  download_and_place("Mingw-x64-static-release.zip", "builddir/meson-out/libui.a", "libui/release/libui.a")
+  download_and_place("Mingw-x64-static-debug.zip", "builddir/meson-out/libui.a", "libui/debug/libui.a")
   system(p("windres comctl32.rc -O coff -o comctl32.res"))
 {% end %}
 
