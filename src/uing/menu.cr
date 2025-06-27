@@ -11,7 +11,6 @@ module UIng
     @@has_quit_item = false
     @@has_preferences_item = false
     @@has_about_item = false
-    @@menus_finalized = false
 
     # Store references to MenuItems to prevent GC collection
     @menu_items : Array(MenuItem) = [] of MenuItem
