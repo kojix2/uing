@@ -4,8 +4,6 @@ module UIng
   class Checkbox < Control
     block_constructor
 
-    @released : Bool = false
-
     # Store callback box to prevent GC collection
     @on_toggled_box : Pointer(Void)?
 
@@ -14,9 +12,8 @@ module UIng
     end
 
     def destroy
-      return if @released
       @on_toggled_box = nil
-      super.tap { @released = true }
+      super
     end
 
     def text : String?

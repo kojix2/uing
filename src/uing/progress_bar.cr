@@ -8,6 +8,10 @@ module UIng
       @ref_ptr = LibUI.new_progress_bar
     end
 
+    def destroy
+      super
+    end
+
     def value : Int32
       LibUI.progress_bar_value(@ref_ptr)
     end

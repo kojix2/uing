@@ -15,6 +15,10 @@ module UIng
       end
     end
 
+    def destroy
+      super
+    end
+
     def to_unsafe
       @ref_ptr
     end

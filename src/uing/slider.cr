@@ -4,8 +4,6 @@ module UIng
   class Slider < Control
     block_constructor
 
-    @released : Bool = false
-
     # Store callback boxes to prevent GC collection
     @on_changed_box : Pointer(Void)?
     @on_released_box : Pointer(Void)?
@@ -15,10 +13,9 @@ module UIng
     end
 
     def destroy
-      return if @released
       @on_changed_box = nil
       @on_released_box = nil
-      super.tap { @released = true }
+      super
     end
 
     def initialize(min, max, value)

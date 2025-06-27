@@ -5,8 +5,6 @@ module UIng
   class Table < Control
     block_constructor
 
-    @released : Bool = false
-
     # Store callback boxes to prevent GC collection
     @on_row_clicked_box : Pointer(Void)?
     @on_row_double_clicked_box : Pointer(Void)?
@@ -24,12 +22,11 @@ module UIng
     end
 
     def destroy
-      return if @released
       @on_row_clicked_box = nil
       @on_row_double_clicked_box = nil
       @on_header_clicked_box = nil
       @on_selection_changed_box = nil
-      super.tap { @released = true }
+      super
     end
 
     def on_row_clicked(&block : LibC::Int -> Void)

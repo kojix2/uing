@@ -4,6 +4,9 @@ module UIng
   abstract class Control
     include BlockConstructor
 
+    # Flag to track if the control is released (prevents double-free)
+    @released : Bool = false
+
     # Parent reference (for GC protection and tree uniqueness)
     # Use `__parent__` and `__set_parent__` if you need to access native functions for some reason
     protected property parent : Control?
@@ -33,7 +36,9 @@ module UIng
     end
 
     def destroy : Nil
+      return if @released
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
+      @released = true
     end
 
     def handle

@@ -10,7 +10,6 @@ module UIng
     # Store references to Window to prevent GC collection
     @@windows : Array(Window) = [] of Window
 
-    @released : Bool = false # Flag to track if the window is released
     @borrowed : Bool = false # Flag to track if the window is borrowed
 
     # Store callback boxes to prevent GC collection
@@ -33,7 +32,6 @@ module UIng
     end
 
     def destroy
-      return if @released
       return if @borrowed
       @@mutex.synchronize do
         @@windows.delete(self)
@@ -42,7 +40,7 @@ module UIng
       @on_content_size_changed_box = nil
       @on_closing_box = nil
       @on_focus_changed_box = nil
-      super.tap { @released = true }
+      super
     end
 
     def title : String?

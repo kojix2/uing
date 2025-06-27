@@ -2,7 +2,7 @@ require "./control"
 
 module UIng
   class Combobox < Control
-    @released : Bool = false
+    block_constructor
 
     # Store callback box to prevent GC collection
     @on_selected_box : Pointer(Void)?
@@ -12,9 +12,8 @@ module UIng
     end
 
     def destroy
-      return if @released
       @on_selected_box = nil
-      super.tap { @released = true }
+      super
     end
 
     def initialize(items : Array(String))

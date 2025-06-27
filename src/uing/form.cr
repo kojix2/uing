@@ -11,6 +11,11 @@ module UIng
       self.padded = true if padded
     end
 
+    def destroy
+      @children_refs.clear
+      super
+    end
+
     def append(label : String, control, stretchy : Bool = false) : Nil
       control.check_can_move
       LibUI.form_append(@ref_ptr, label, UIng.to_control(control), stretchy)

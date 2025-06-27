@@ -8,6 +8,10 @@ module UIng
       @ref_ptr = LibUI.new_label(text)
     end
 
+    def destroy
+      super
+    end
+
     def text : String?
       str_ptr = LibUI.label_text(@ref_ptr)
       UIng.string_from_pointer(str_ptr)

@@ -11,6 +11,11 @@ module UIng
       self.margined = true if margined
     end
 
+    def destroy
+      @child_ref = nil
+      super
+    end
+
     def title : String?
       str_ptr = LibUI.group_title(@ref_ptr)
       UIng.string_from_pointer(str_ptr)

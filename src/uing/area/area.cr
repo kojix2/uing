@@ -29,6 +29,11 @@ module UIng
       @ref_ptr = LibUI.new_scrolling_area(area_handler.to_unsafe, width, height)
     end
 
+    def destroy
+      @area_handler = nil
+      super
+    end
+
     def set_size(width : Int32, height : Int32) : Nil
       LibUI.area_set_size(@ref_ptr, width, height)
     end

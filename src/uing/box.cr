@@ -26,6 +26,11 @@ module UIng
       self.padded = true if padded
     end
 
+    def destroy
+      @children_refs.clear
+      super
+    end
+
     def append(control, stretchy : Bool = false) : Nil
       control.check_can_move
       LibUI.box_append(@ref_ptr, UIng.to_control(control), stretchy)

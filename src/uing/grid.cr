@@ -11,6 +11,11 @@ module UIng
       self.padded = true if padded
     end
 
+    def destroy
+      @children_refs.clear
+      super
+    end
+
     def append(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil
       control.check_can_move
       LibUI.grid_append(@ref_ptr, UIng.to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
