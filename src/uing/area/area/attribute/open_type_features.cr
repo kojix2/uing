@@ -1,6 +1,6 @@
 module UIng
   class OpenTypeFeatures
-    property? released : Bool = false
+    @released : Bool = false
     @for_each_box : Pointer(Void)?
 
     def initialize

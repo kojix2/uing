@@ -33,7 +33,7 @@ module UIng
   class Table < Control
     class Selection
       rows : Array(Int32)?
-      property? released : Bool = false
+      @released : Bool = false
 
       def initialize(@ptr : Pointer(LibUI::TableSelection))
         @rows = nil

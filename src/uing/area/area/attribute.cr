@@ -3,7 +3,7 @@ module UIng
     class Attribute
       include BlockConstructor; block_constructor
 
-      property? released : Bool = false
+      @released : Bool = false
 
       def initialize(@ref_ptr : Pointer(LibUI::Attribute))
       end

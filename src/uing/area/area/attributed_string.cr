@@ -5,7 +5,7 @@ module UIng
     class AttributedString
       include BlockConstructor; block_constructor
 
-      property? released : Bool = false
+      @released : Bool = false
       @for_each_attribute_box : Pointer(Void)?
 
       def initialize(@ref_ptr : Pointer(LibUI::AttributedString))

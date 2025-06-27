@@ -18,7 +18,7 @@ module UIng
   #   model.free     # Then free model
   class Table < Control
     class Model
-      property? released : Bool = false
+      @released : Bool = false
 
       # Store Table::Model::Handler reference to prevent GC collection
       # IMPORTANT: This prevents GC of handler while model is alive

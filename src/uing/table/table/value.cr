@@ -3,7 +3,7 @@ require "./value/type"
 module UIng
   class Table < Control
     class Value
-      property? released : Bool = false
+      @released : Bool = false
       property? borrowed : Bool = false
 
       # Unified constructor - handles both borrowed and owned TableValue

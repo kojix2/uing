@@ -1,6 +1,6 @@
 module UIng
   class Image
-    property? released : Bool = false
+    @released : Bool = false
 
     def initialize(@ref_ptr : Pointer(LibUI::Image))
     end
