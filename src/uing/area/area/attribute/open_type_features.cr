@@ -7,6 +7,11 @@ module UIng
       @ref_ptr = LibUI.new_open_type_features
     end
 
+    # Used in clone method
+    def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures))
+      @ref_ptr = ref_ptr
+    end
+
     def free : Nil
       return if @released
       LibUI.free_open_type_features(@ref_ptr)
@@ -56,6 +61,7 @@ module UIng
     end
 
     def finalize
+      # Timing of release is not an issue for this class
       free
     end
   end
