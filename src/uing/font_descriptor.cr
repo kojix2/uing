@@ -85,5 +85,9 @@ module UIng
     def to_unsafe
       pointerof(@cstruct)
     end
+
+    def finalize
+      free
+    end
   end
 end
