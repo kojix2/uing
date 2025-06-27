@@ -37,6 +37,8 @@ module UIng
 
     def destroy : Nil
       return if @released
+      # Child controls should generally not be destroyed directly.
+      # When destroying a control, its parent-child relationship should be properly terminated.
       @parent.try(&.delete(self))
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
       @released = true
