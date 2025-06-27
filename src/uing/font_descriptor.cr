@@ -2,6 +2,9 @@ module UIng
   class FontDescriptor
     # Store reference to family string to prevent garbage collection
     @family_string : String?
+    @family_borrowed = false # Getting a FontDescriptor from FontButton.
+
+    @released = false
 
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
     end
@@ -31,6 +34,7 @@ module UIng
 
     def family=(value : String)
       @family_string = value
+      @family_borrowed = false # manage memory on crystal side.
       @cstruct.family = @family_string.not_nil!.to_unsafe
     end
 
@@ -67,11 +71,15 @@ module UIng
     end
 
     def free : Nil
+      return if @released
+      @cstruct.family = Pointer(UInt8).null unless @family_borrowed
       LibUI.free_font_descriptor(to_unsafe)
+      @released = true
     end
 
     def load_control_font : Nil
       LibUI.load_control_font(to_unsafe)
+      @family_borrowed = true # The family string is borrowed from the control font.
     end
 
     def to_unsafe
