@@ -134,7 +134,7 @@ module UIng
       LibUI.window_set_resizeable(@ref_ptr, resizeable)
     end
 
-    def on_position_changed(&block : (Int32, Int32) -> Void)
+    def on_position_changed(&block : (Int32, Int32) -> _)
       wrapper = -> { block.call(*self.position) }
       @on_position_changed_box = ::Box.box(wrapper)
       LibUI.window_on_position_changed(@ref_ptr, ->(sender, data) do
@@ -147,7 +147,7 @@ module UIng
       end, @on_position_changed_box.not_nil!)
     end
 
-    def on_content_size_changed(&block : (Int32, Int32) -> Void)
+    def on_content_size_changed(&block : (Int32, Int32) -> _)
       wrapper = -> { block.call(*self.content_size) }
       @on_content_size_changed_box = ::Box.box(wrapper)
       LibUI.window_on_content_size_changed(@ref_ptr, ->(sender, data) do
@@ -174,7 +174,7 @@ module UIng
       end, @on_closing_box.not_nil!)
     end
 
-    def on_focus_changed(&block : Bool -> Void)
+    def on_focus_changed(&block : Bool -> _)
       wrapper = -> { block.call(self.focused?) }
       @on_focus_changed_box = ::Box.box(wrapper)
       LibUI.window_on_focus_changed(@ref_ptr, ->(sender, data) do

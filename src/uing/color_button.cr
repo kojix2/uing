@@ -25,7 +25,7 @@ module UIng
       LibUI.color_button_set_color(@ref_ptr, r, g, b, a)
     end
 
-    def on_changed(&block : Float64, Float64, Float64, Float64 -> Void)
+    def on_changed(&block : Float64, Float64, Float64, Float64 -> _)
       wrapper = -> {
         r, g, b, a = self.color
         block.call(r, g, b, a)

@@ -76,7 +76,7 @@ module UIng
       LibUI.tab_set_selected(@ref_ptr, index)
     end
 
-    def on_selected(&block : Int32 -> Void)
+    def on_selected(&block : Int32 -> _)
       wrapper = -> {
         idx = self.selected
         block.call(idx)

@@ -42,7 +42,7 @@ module UIng
       {result, value.to_i32}
     end
 
-    def for_each(&callback : (String, Int32) -> Void) : Nil
+    def for_each(&callback : (String, Int32) -> _) : Nil
       @for_each_box = ::Box.box(callback)
       proc = ->(otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
         data_as_callback = ::Box(typeof(callback)).unbox(data)

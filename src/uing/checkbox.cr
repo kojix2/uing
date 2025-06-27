@@ -33,7 +33,7 @@ module UIng
       LibUI.checkbox_set_checked(@ref_ptr, checked)
     end
 
-    def on_toggled(&block : Bool -> Void)
+    def on_toggled(&block : Bool -> _)
       wrapper = -> {
         checked = self.checked?
         block.call(checked)

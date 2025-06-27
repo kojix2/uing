@@ -44,7 +44,7 @@ module UIng
       LibUI.multiline_entry_set_read_only(@ref_ptr, readonly)
     end
 
-    def on_changed(&block : -> Void)
+    def on_changed(&block : -> _)
       @on_changed_box = ::Box.box(block)
       LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
         begin
@@ -59,7 +59,7 @@ module UIng
     # If a large amount of text is entered in the multiline entry,
     # it is heavy to get the text in the callback, so a separate method is provided.
 
-    def on_changed_with_text(&block : String -> Void)
+    def on_changed_with_text(&block : String -> _)
       wrapper = -> {
         current_text = self.text || ""
         block.call(current_text)

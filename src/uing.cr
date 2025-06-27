@@ -107,7 +107,7 @@ module UIng
     LibUI.quit
   end
 
-  def self.queue_main(&callback : -> Void) : Nil
+  def self.queue_main(&callback : -> _) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
     @@callback_mutex.synchronize do

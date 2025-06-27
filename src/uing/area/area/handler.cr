@@ -130,22 +130,22 @@ module UIng
       # Convenience methods for setting individual callbacks
       # Each method boxes the callback individually for type safety and efficiency
 
-      def draw(&block : (Area, Area::Draw::Params) -> Void)
+      def draw(&block : (Area, Area::Draw::Params) -> _)
         @draw_box = ::Box.box(block)
         @extended_handler.draw_box = @draw_box
       end
 
-      def mouse_event(&block : (Area, Area::MouseEvent) -> Void)
+      def mouse_event(&block : (Area, Area::MouseEvent) -> _)
         @mouse_event_box = ::Box.box(block)
         @extended_handler.mouse_event_box = @mouse_event_box
       end
 
-      def mouse_crossed(&block : (Area, Bool) -> Void)
+      def mouse_crossed(&block : (Area, Bool) -> _)
         @mouse_crossed_box = ::Box.box(block)
         @extended_handler.mouse_crossed_box = @mouse_crossed_box
       end
 
-      def drag_broken(&block : (Area) -> Void)
+      def drag_broken(&block : (Area) -> _)
         @drag_broken_box = ::Box.box(block)
         @extended_handler.drag_broken_box = @drag_broken_box
       end

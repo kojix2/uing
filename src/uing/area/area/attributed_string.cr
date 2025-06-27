@@ -51,7 +51,7 @@ module UIng
         end
       end
 
-      def for_each_attribute(&callback : (Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT) -> Void) : Nil
+      def for_each_attribute(&callback : (Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT) -> _) : Nil
         @for_each_attribute_box = ::Box.box(callback)
         LibUI.attributed_string_for_each_attribute(@ref_ptr, ->(sender, attr, start, end_, data) do
           data_as_callback = ::Box(typeof(callback)).unbox(data)

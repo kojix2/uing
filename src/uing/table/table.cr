@@ -29,7 +29,7 @@ module UIng
       super
     end
 
-    def on_row_clicked(&block : LibC::Int -> Void)
+    def on_row_clicked(&block : LibC::Int -> _)
       @on_row_clicked_box = ::Box.box(block)
       LibUI.table_on_row_clicked(@ref_ptr, ->(table, row, data) do
         begin
@@ -41,7 +41,7 @@ module UIng
       end, @on_row_clicked_box.not_nil!)
     end
 
-    def on_row_double_clicked(&block : LibC::Int -> Void)
+    def on_row_double_clicked(&block : LibC::Int -> _)
       @on_row_double_clicked_box = ::Box.box(block)
       LibUI.table_on_row_double_clicked(@ref_ptr, ->(table, row, data) do
         begin
@@ -53,7 +53,7 @@ module UIng
       end, @on_row_double_clicked_box.not_nil!)
     end
 
-    def on_header_clicked(&block : LibC::Int -> Void)
+    def on_header_clicked(&block : LibC::Int -> _)
       @on_header_clicked_box = ::Box.box(block)
       LibUI.table_header_on_clicked(@ref_ptr, ->(table, column, data) do
         begin
@@ -65,7 +65,7 @@ module UIng
       end, @on_header_clicked_box.not_nil!)
     end
 
-    def on_selection_changed(&block : Selection -> Void)
+    def on_selection_changed(&block : Selection -> _)
       @on_selection_changed_box = ::Box.box(block)
       LibUI.table_on_selection_changed(@ref_ptr, ->(table, data) do
         begin

@@ -32,7 +32,7 @@ module UIng
       LibUI.menu_item_set_checked(@ref_ptr, checked)
     end
 
-    def on_clicked(&block : UIng::Window -> Void)
+    def on_clicked(&block : UIng::Window -> _)
       # Convert to the internal callback format that matches LibUI expectation
       callback2 = ->(w : Pointer(LibUI::Window)) {
         block.call(UIng::Window.new(w))
