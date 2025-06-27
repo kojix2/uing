@@ -8,13 +8,6 @@ module UIng
 
         @released = false
 
-        def initialize(@ref_ptr : Pointer(LibUI::DrawTextLayout))
-        end
-
-        def initialize(draw_text_layout_params)
-          @ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
-        end
-
         def initialize(string : AttributedString,
                        default_font : FontDescriptor,
                        width : Float64,
@@ -26,6 +19,19 @@ module UIng
             align: align
           )
           @ref_ptr = LibUI.draw_new_text_layout(draw_text_layout_params)
+        end
+
+        def self.open(string : AttributedString,
+                      default_font : FontDescriptor,
+                      width : Float64,
+                      align : UIng::Area::Draw::TextAlign = UIng::Area::Draw::TextAlign::Left,
+                      &block : TextLayout -> Nil) : Nil
+          text_layout = TextLayout.new(string, default_font, width, align)
+          begin
+            block.call(text_layout)
+          ensure
+            text_layout.free
+          end
         end
 
         def free : Nil
@@ -41,10 +47,6 @@ module UIng
 
         def to_unsafe
           @ref_ptr
-        end
-
-        def finalize
-          free
         end
       end
     end

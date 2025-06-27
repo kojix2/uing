@@ -60,16 +60,15 @@ append_to_attr_str(ATTR_STR, str3, GREEN)
 append_to_attr_str(ATTR_STR, str4, RED)
 append_to_attr_str(ATTR_STR, str5, GREEN)
 
-handler.draw do |area, area_draw_params|
-  text_layout = UIng::Area::Draw::TextLayout.new(
+handler.draw do |area, params|
+  UIng::Area::Draw::TextLayout.open(
     string: ATTR_STR,
     default_font: DEFAULT_FONT,
-    width: area_draw_params.area_width,
+    width: params.area_width,
     align: UIng::Area::Draw::TextAlign::Left
-  )
-  ctx = area_draw_params.context
-  ctx.text(text_layout, 0, 0)
-  text_layout.free
+  ) do |text_layout|
+    params.context.text(text_layout, 0, 0)
+  end
 end
 
 handler.mouse_event { |_, _| }
