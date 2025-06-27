@@ -43,6 +43,11 @@ module UIng
       super
     end
 
+    # Raises: Not supported for this container.
+    def delete(child : Control)
+      raise "Window does not support delete(child : Control)"
+    end
+
     def title : String?
       str_ptr = LibUI.window_title(@ref_ptr)
       UIng.string_from_pointer(str_ptr)

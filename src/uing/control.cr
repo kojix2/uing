@@ -37,6 +37,7 @@ module UIng
 
     def destroy : Nil
       return if @released
+      @parent.try(&.delete(self))
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
       @released = true
     end
@@ -90,6 +91,10 @@ module UIng
 
     def verify_set_parent(parent) : Nil
       LibUI.control_verify_set_parent(UIng.to_control(@ref_ptr), UIng.to_control(parent))
+    end
+
+    def delete(child : Control)
+      raise "delete(child : Control) is not implemented for #{self.class}"
     end
 
     abstract def to_unsafe

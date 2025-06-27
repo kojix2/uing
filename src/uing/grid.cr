@@ -16,6 +16,11 @@ module UIng
       super
     end
 
+    # Raises: Not supported for this container.
+    def delete(child : Control)
+      raise "Grid does not support delete(child : Control)"
+    end
+
     def append(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil
       control.check_can_move
       LibUI.grid_append(@ref_ptr, UIng.to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)

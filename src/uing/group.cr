@@ -16,6 +16,11 @@ module UIng
       super
     end
 
+    # Raises: Not supported for this container.
+    def delete(child : Control)
+      raise "Group does not support delete(child : Control)"
+    end
+
     def title : String?
       str_ptr = LibUI.group_title(@ref_ptr)
       UIng.string_from_pointer(str_ptr)

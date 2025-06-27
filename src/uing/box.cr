@@ -31,6 +31,12 @@ module UIng
       super
     end
 
+    def delete(child : Control)
+      if index = @children_refs.index(child)
+        delete(index)
+      end
+    end
+
     def append(control, stretchy : Bool = false) : Nil
       control.check_can_move
       LibUI.box_append(@ref_ptr, UIng.to_control(control), stretchy)

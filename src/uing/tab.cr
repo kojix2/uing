@@ -47,6 +47,12 @@ module UIng
       child.release_ownership
     end
 
+    def delete(child : Control)
+      if index = @children_refs.index(child)
+        delete(index)
+      end
+    end
+
     def num_pages : Int32
       LibUI.tab_num_pages(@ref_ptr)
     end

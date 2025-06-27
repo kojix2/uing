@@ -16,6 +16,12 @@ module UIng
       super
     end
 
+    def delete(child : Control)
+      if index = @children_refs.index(child)
+        delete(index)
+      end
+    end
+
     def append(label : String, control, stretchy : Bool = false) : Nil
       control.check_can_move
       LibUI.form_append(@ref_ptr, label, UIng.to_control(control), stretchy)
