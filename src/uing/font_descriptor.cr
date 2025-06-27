@@ -6,13 +6,17 @@ module UIng
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
     end
 
-    def initialize(family : String, size : Int32, weight : TextWeight, italic : TextItalic, stretch : TextStretch)
+    def initialize(
+      family : String? = nil, size : Int32? = nil, weight : TextWeight? = nil,
+      italic : TextItalic? = nil, stretch : TextStretch? = nil,
+    )
       @cstruct = LibUI::FontDescriptor.new
-      self.family = family
-      self.size = size
-      self.weight = weight
-      self.italic = italic
-      self.stretch = stretch
+      load_control_font unless (family && size && weight && italic && stretch)
+      self.family = family if family
+      self.size = size if size
+      self.weight = weight if weight
+      self.italic = italic if italic
+      self.stretch = stretch if stretch
     end
 
     # Auto convert to and from String
