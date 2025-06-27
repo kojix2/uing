@@ -527,14 +527,14 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L6" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L6" target="_blank">
         uing/area/area/draw/text_layout.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout/params.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout/params.cr#L4" target="_blank">
         uing/area/area/draw/text_layout/params.cr
       </a>
     
@@ -571,20 +571,27 @@
         
       </li>
     
-      <li class="entry-summary">
-        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ADrawTextLayout%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::DrawTextLayout))</a>
-        
-      </li>
+  </ul>
+
+
+  
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28draw_text_layout_params%29-class-method" class="signature"><strong>.new</strong>(draw_text_layout_params)</a>
+        <a href="#open%28string%3AAttributedString%2Cdefault_font%3AFontDescriptor%2Cwidth%3AFloat64%2Calign%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%3DUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%3A%3ALeft%2C%26block%3ATextLayout-%3ENil%29%3ANil-class-method" class="signature"><strong>.open</strong>(string : AttributedString, default_font : FontDescriptor, width : Float64, align : UIng::Area::Draw::TextAlign = <span class="t">UIng</span><span class="t">::</span><span class="t">Area</span><span class="t">::</span><span class="t">Draw</span><span class="t">::</span><span class="t">TextAlign</span><span class="t">::</span><span class="t">Left</span>, &block : TextLayout -> Nil) : Nil</a>
         
       </li>
     
   </ul>
 
-
-  
 
   
 
@@ -601,11 +608,6 @@
     
       <li class="entry-summary">
         <a href="#extents%3ATuple%28LibC%3A%3ADouble%2CLibC%3A%3ADouble%29-instance-method" class="signature"><strong>#extents</strong> : Tuple(LibC::Double, LibC::Double)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#finalize-instance-method" class="signature"><strong>#finalize</strong></a>
         
       </li>
     
@@ -696,7 +698,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -712,7 +714,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -728,46 +730,40 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::DrawTextLayout))-class-method">
+
+
+  
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="open(string:AttributedString,default_font:FontDescriptor,width:Float64,align:UIng::Area::Draw::TextAlign=UIng::Area::Draw::TextAlign::Left,&amp;block:TextLayout-&gt;Nil):Nil-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::DrawTextLayout))
+        def self.<strong>open</strong>(string : <a href="../../../UIng/Area/AttributedString.html">AttributedString</a>, default_font : <a href="../../../UIng/FontDescriptor.html">FontDescriptor</a>, width : Float64, align : <a href="../../../UIng/Area/Draw/TextAlign.html">UIng::Area::Draw::TextAlign</a> = <span class="t">UIng</span><span class="t">::</span><span class="t">Area</span><span class="t">::</span><span class="t">Draw</span><span class="t">::</span><span class="t">TextAlign</span><span class="t">::</span><span class="t">Left</span>, &block : <a href="../../../UIng/Area/Draw/TextLayout.html">TextLayout</a> -> Nil) : Nil
 
-        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ADrawTextLayout%29%29-class-method">#</a>
+        <a class="method-permalink" href="#open%28string%3AAttributedString%2Cdefault_font%3AFontDescriptor%2Cwidth%3AFloat64%2Calign%3AUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%3DUIng%3A%3AArea%3A%3ADraw%3A%3ATextAlign%3A%3ALeft%2C%26block%3ATextLayout-%3ENil%29%3ANil-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(draw_text_layout_params)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(draw_text_layout_params)
-
-        <a class="method-permalink" href="#new%28draw_text_layout_params%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
-
-  
 
   
 
@@ -792,23 +788,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L37" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="finalize-instance-method">
-      <div class="signature">
-        
-        def <strong>finalize</strong>
-
-        <a class="method-permalink" href="#finalize-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L43" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -824,7 +804,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -840,7 +820,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/3707303bad9fc4e9ce1c3f14f1594c6d0c06d20d/src/uing/area/area/draw/text_layout.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/c9278d2f241aaf9ae3e576f9cb2256ea4ae5a025/src/uing/area/area/draw/text_layout.cr#L48" target="_blank">View source</a>]
         
       </div>
     </div>
