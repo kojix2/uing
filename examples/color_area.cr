@@ -190,9 +190,9 @@ handler.draw do |area, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
-  UIng::Area::Draw::Path.new(:winding) do |bg_path|
+  UIng::Area::Draw::Path.open(:winding) do |bg_path|
     bg_path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
-    bg_path.end_
+    bg_path.end_path
 
     # Animated background color
     time = RandomLines.animation_time
@@ -212,10 +212,10 @@ handler.draw do |area, area_draw_params|
   # Draw all lines with safe single-line approach
   RandomLines.lines.each do |line|
     # Create and draw single line safely
-    UIng::Area::Draw::Path.new(:winding) do |line_path|
+    UIng::Area::Draw::Path.open(:winding) do |line_path|
       line_path.new_figure(line.x1, line.y1)
       line_path.line_to(line.x2, line.y2)
-      line_path.end_
+      line_path.end_path
 
       # Line color with transparency for blending
       line_brush = UIng::Area::Draw::Brush.new(

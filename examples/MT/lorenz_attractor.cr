@@ -181,7 +181,7 @@ class LorenzAttractor
             @projected_points << project_3d_to_2d(point, area_draw_params.area_width, area_draw_params.area_height)
           end
 
-          UIng::DrawPath.new(UIng::DrawFillMode::Winding) do |path|
+          UIng::DrawPath.open(UIng::DrawFillMode::Winding) do |path|
             if @projected_points.size > 0
               path.new_figure(@projected_points[0].x, @projected_points[0].y)
 

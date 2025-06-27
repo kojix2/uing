@@ -48,7 +48,7 @@ handler = UIng::Area::Handler.new do
     scale_y = 600.0
 
     TIGER_PATHS.each do |path_data|
-      UIng::Area::Draw::Path.new(:winding) do |path|
+      UIng::Area::Draw::Path.open(:winding) do |path|
         # Convert coordinates to Float64 arrays
         x_coords = path_data[:x].map(&.to_f64)
         y_coords = path_data[:y].map { |y| 1.0 - y.to_f64 }

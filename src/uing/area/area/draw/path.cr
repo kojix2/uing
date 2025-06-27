@@ -2,8 +2,7 @@ module UIng
   class Area < Control
     module Draw
       class Path
-        # Do not use block_constructor
-        # include BlockConstructor; block_constructor
+        include BlockConstructor; block_constructor
 
         @released = false
 
@@ -15,7 +14,7 @@ module UIng
         end
 
         # RAII pattern: automatically free path when block exits
-        def self.new(mode : FillMode, &block : Path -> Nil)
+        def self.open(mode : FillMode, &block : Path -> Nil)
           path = new(mode)
           begin
             yield path
