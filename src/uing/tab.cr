@@ -13,6 +13,9 @@ module UIng
     end
 
     def destroy
+      @children_refs.each do |child|
+        child.release_ownership
+      end
       @on_selected_box = nil
       super
     end

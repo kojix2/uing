@@ -9,7 +9,7 @@ module UIng
 
     # Parent reference (for GC protection and tree uniqueness)
     # Use `__parent__` and `__set_parent__` if you need to access native functions for some reason
-    protected property parent : Control?
+    protected getter parent : Control?
 
     # Public getter for parent (for testing and debugging)
     def parent : Control?
@@ -37,9 +37,6 @@ module UIng
 
     def destroy : Nil
       return if @released
-      # Child controls should generally not be destroyed directly.
-      # When destroying a control, its parent-child relationship should be properly terminated.
-      @parent.try(&.delete(self))
       LibUI.control_destroy(UIng.to_control(@ref_ptr))
       @released = true
     end

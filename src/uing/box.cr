@@ -27,7 +27,9 @@ module UIng
     end
 
     def destroy
-      @children_refs.clear
+      @children_refs.each do |child|
+        child.release_ownership
+      end
       super
     end
 
