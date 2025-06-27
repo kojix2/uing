@@ -61,7 +61,7 @@ module UIng
     end
 
     def finalize
-      # Timing of release is not an issue for this class
+      # Releasing timing is not critical for this class
       free
     end
   end
