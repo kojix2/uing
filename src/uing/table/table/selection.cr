@@ -32,7 +32,7 @@ module UIng
   #   Memory is automatically managed by Crystal's garbage collector.
   class Table < Control
     class Selection
-      rows : Array(Int32)?
+      @rows : Array(Int32)?
       @released : Bool = false
 
       def initialize(@ptr : Pointer(LibUI::TableSelection))
