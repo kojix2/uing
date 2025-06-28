@@ -44,7 +44,7 @@ module UIng
 
           # Initialize the base handler with static callbacks
           @extended_handler.base_handler = LibUI::TableModelHandler.new(
-            num_columns: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*) {
+            num_columns: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*) {
               begin
                 # Cast the handler pointer to our extended structure
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
@@ -60,7 +60,7 @@ module UIng
                 0_i32
               end
             },
-            column_type: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*, column : LibC::Int) {
+            column_type: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, column : LibC::Int) {
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.column_type_box.null?
@@ -74,7 +74,7 @@ module UIng
                 Value::Type::String
               end
             },
-            num_rows: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*) {
+            num_rows: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*) {
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.num_rows_box.null?
@@ -89,7 +89,7 @@ module UIng
                 0_i32
               end
             },
-            cell_value: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
+            cell_value: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.cell_value_box.null?
@@ -104,7 +104,7 @@ module UIng
                 LibUI.new_table_value_string("")
               end
             },
-            set_cell_value: ->(mh : LibUI::TableModelHandler*, m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int, value : Pointer(UIng::LibUI::TableValue)) {
+            set_cell_value: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int, value : Pointer(UIng::LibUI::TableValue)) {
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.set_cell_value_box.null?

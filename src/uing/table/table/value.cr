@@ -44,7 +44,7 @@ module UIng
         @released = true
       end
 
-      def get_type : Value::Type
+      def type : Value::Type
         LibUI.table_value_get_type(@ref_ptr)
       end
 

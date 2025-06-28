@@ -64,14 +64,14 @@ module UIng
   end
 
   def self.init(&)
-    self.init
+    init
     yield
-    self.uninit
+    uninit
   end
 
   def self.init(init_options : Pointer(LibUI::InitOptions)) : String?
     @@init_options = init_options
-    self.init
+    init
   end
 
   def self.uninit : Nil

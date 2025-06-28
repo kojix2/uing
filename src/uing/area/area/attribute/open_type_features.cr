@@ -42,9 +42,11 @@ module UIng
       {result, value.to_i32}
     end
 
+    # FIXME : Is this appropriate for OpenTypeFeatures?
+
     def for_each(&callback : (String, Int32) -> _) : Nil
       @for_each_box = ::Box.box(callback)
-      proc = ->(otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
+      proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
         data_as_callback.call(tag, value.to_i32)

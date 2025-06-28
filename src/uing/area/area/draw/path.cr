@@ -14,7 +14,7 @@ module UIng
         end
 
         # RAII pattern: automatically free path when block exits
-        def self.open(mode : FillMode, &block : Path -> Nil)
+        def self.open(mode : FillMode, & : Path -> Nil)
           path = new(mode)
           begin
             yield path

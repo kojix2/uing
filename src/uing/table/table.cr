@@ -31,7 +31,7 @@ module UIng
 
     def on_row_clicked(&block : LibC::Int -> _)
       @on_row_clicked_box = ::Box.box(block)
-      LibUI.table_on_row_clicked(@ref_ptr, ->(table, row, data) do
+      LibUI.table_on_row_clicked(@ref_ptr, ->(_table, row, data) do
         begin
           callback = ::Box(typeof(block)).unbox(data)
           callback.call(row)
@@ -43,7 +43,7 @@ module UIng
 
     def on_row_double_clicked(&block : LibC::Int -> _)
       @on_row_double_clicked_box = ::Box.box(block)
-      LibUI.table_on_row_double_clicked(@ref_ptr, ->(table, row, data) do
+      LibUI.table_on_row_double_clicked(@ref_ptr, ->(_table, row, data) do
         begin
           callback = ::Box(typeof(block)).unbox(data)
           callback.call(row)
@@ -55,7 +55,7 @@ module UIng
 
     def on_header_clicked(&block : LibC::Int -> _)
       @on_header_clicked_box = ::Box.box(block)
-      LibUI.table_header_on_clicked(@ref_ptr, ->(table, column, data) do
+      LibUI.table_header_on_clicked(@ref_ptr, ->(_table, column, data) do
         begin
           callback = ::Box(typeof(block)).unbox(data)
           callback.call(column)
@@ -180,7 +180,7 @@ module UIng
 
     # Block version that automatically frees the selection after the block
     # This eliminates the need for manual free() calls
-    def selection(&block : Selection -> Nil) : Nil
+    def selection(& : Selection -> Nil) : Nil
       selection_obj = selection
       begin
         yield selection_obj
