@@ -27,14 +27,20 @@ module UIng
 
     def on_clicked(&block : -> _)
       @on_clicked_box = ::Box.box(block)
-      LibUI.button_on_clicked(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(block)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Button on_clicked")
-        end
-      end, @on_clicked_box.not_nil!)
+      if boxed_data = @on_clicked_box
+        LibUI.button_on_clicked(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(block)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Button on_clicked")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def to_unsafe

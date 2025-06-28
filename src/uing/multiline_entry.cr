@@ -46,14 +46,20 @@ module UIng
 
     def on_changed(&block : -> _)
       @on_changed_box = ::Box.box(block)
-      LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(block)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "MultilineEntry on_changed")
-        end
-      end, @on_changed_box.not_nil!)
+      if boxed_data = @on_changed_box
+        LibUI.multiline_entry_on_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(block)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "MultilineEntry on_changed")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     # If a large amount of text is entered in the multiline entry,
@@ -61,18 +67,24 @@ module UIng
 
     def on_changed_with_text(&block : String -> _)
       wrapper = -> {
-        current_text = self.text || ""
+        current_text = text || ""
         block.call(current_text)
       }
       @on_changed_box = ::Box.box(wrapper)
-      LibUI.multiline_entry_on_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "MultilineEntry on_changed_with_text")
-        end
-      end, @on_changed_box.not_nil!)
+      if boxed_data = @on_changed_box
+        LibUI.multiline_entry_on_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "MultilineEntry on_changed_with_text")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def to_unsafe

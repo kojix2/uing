@@ -34,8 +34,8 @@ module UIng
       control.check_can_move
       # libui-ng automatically replaces existing child, but we need to
       # release ownership on Crystal side to maintain reference consistency
-      if @child_ref
-        @child_ref.not_nil!.release_ownership
+      if child_ref = @child_ref
+        child_ref.release_ownership
       end
       LibUI.group_set_child(@ref_ptr, UIng.to_control(control))
       @child_ref = control

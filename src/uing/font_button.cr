@@ -19,25 +19,30 @@ module UIng
     def on_changed(&block : FontDescriptor -> _)
       wrapper = -> {
         font_descriptor = FontDescriptor.new
-        self.font(font_descriptor)
+        font(font_descriptor)
         block.call(font_descriptor)
         free_font(font_descriptor)
       }
       @on_changed_box = ::Box.box(wrapper)
-      boxed_data = @on_changed_box.not_nil!
-      LibUI.font_button_on_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "FontButton on_changed")
-        end
-      end, boxed_data)
+      if boxed_data = @on_changed_box
+        LibUI.font_button_on_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "FontButton on_changed")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def font(&block : FontDescriptor -> Nil)
       font_descriptor = FontDescriptor.new
-      self.font(font_descriptor)
+      font(font_descriptor)
       block.call(font_descriptor)
       free_font(font_descriptor)
     end

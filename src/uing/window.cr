@@ -99,8 +99,8 @@ module UIng
       control.check_can_move
       # libui-ng automatically replaces existing child, but we need to
       # release ownership on Crystal side to maintain reference consistency
-      if @child_ref
-        @child_ref.not_nil!.release_ownership
+      if child_ref = @child_ref
+        child_ref.release_ownership
       end
       LibUI.window_set_child(@ref_ptr, UIng.to_control(control))
       @child_ref = control
@@ -135,56 +135,82 @@ module UIng
     end
 
     def on_position_changed(&block : (Int32, Int32) -> _)
-      wrapper = -> { block.call(*self.position) }
-      @on_position_changed_box = ::Box.box(wrapper)
-      LibUI.window_on_position_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Window on_position_changed")
-        end
-      end, @on_position_changed_box.not_nil!)
+      wrapper = -> {
+        x, y = position
+        block.call(x, y)
+      }
+      if boxed_data = (@on_position_changed_box = ::Box.box(wrapper))
+        LibUI.window_on_position_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Window on_position_changed")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def on_content_size_changed(&block : (Int32, Int32) -> _)
-      wrapper = -> { block.call(*self.content_size) }
-      @on_content_size_changed_box = ::Box.box(wrapper)
-      LibUI.window_on_content_size_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Window on_content_size_changed")
-        end
-      end, @on_content_size_changed_box.not_nil!)
+      wrapper = -> {
+        x, y = content_size
+        block.call(x, y)
+      }
+      if boxed_data = (@on_content_size_changed_box = ::Box.box(wrapper))
+        LibUI.window_on_content_size_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Window on_content_size_changed")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def on_closing(&block : -> Bool)
       wrapper = -> { block.call }
-      @on_closing_box = ::Box.box(wrapper)
-      LibUI.window_on_closing(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Window on_closing")
-          false
-        end
-      end, @on_closing_box.not_nil!)
+      if boxed_data = (@on_closing_box = ::Box.box(wrapper))
+        LibUI.window_on_closing(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Window on_closing")
+              false # Default to not closing on error
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def on_focus_changed(&block : Bool -> _)
-      wrapper = -> { block.call(self.focused?) }
-      @on_focus_changed_box = ::Box.box(wrapper)
-      LibUI.window_on_focus_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Window on_focus_changed")
-        end
-      end, @on_focus_changed_box.not_nil!)
+      wrapper = -> { block.call(focused?) }
+      if boxed_data = (@on_focus_changed_box = ::Box.box(wrapper))
+        LibUI.window_on_focus_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Window on_focus_changed")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def open_file : String?

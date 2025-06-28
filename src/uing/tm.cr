@@ -41,12 +41,12 @@ module UIng
     # Convert TM to Time
     def to_time : ::Time
       ::Time.local(
-        self.year + 1900, # tm_year is years since 1900
-        self.mon + 1,     # tm_mon is 0-based (0-11)
-        self.mday,
-        self.hour,
-        self.min,
-        self.sec,
+        year + 1900, # tm_year is years since 1900
+        mon + 1,     # tm_mon is 0-based (0-11)
+        mday,
+        hour,
+        min,
+        sec,
         nanosecond: 0
       )
     end

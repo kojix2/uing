@@ -31,18 +31,24 @@ module UIng
 
     def on_changed(&block : Int32 -> _)
       wrapper = -> {
-        v = self.value
+        v = value
         block.call(v)
       }
       @on_changed_box = ::Box.box(wrapper)
-      LibUI.spinbox_on_changed(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Spinbox on_changed")
-        end
-      end, @on_changed_box.not_nil!)
+      if boxed_data = @on_changed_box
+        LibUI.spinbox_on_changed(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Spinbox on_changed")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def to_unsafe

@@ -38,14 +38,20 @@ module UIng
         block.call(UIng::Window.new(w))
       }
       @on_clicked_box = ::Box.box(callback2)
-      LibUI.menu_item_on_clicked(@ref_ptr, ->(sender, window, data) do
-        begin
-          data_as_callback = ::Box(typeof(callback2)).unbox(data)
-          data_as_callback.call(window)
-        rescue e
-          UIng.handle_callback_error(e, "MenuItem on_clicked")
-        end
-      end, @on_clicked_box.not_nil!)
+      if boxed_data = @on_clicked_box
+        LibUI.menu_item_on_clicked(
+          @ref_ptr,
+          ->(_sender, window, data) {
+            begin
+              data_as_callback = ::Box(typeof(callback2)).unbox(data)
+              data_as_callback.call(window)
+            rescue e
+              UIng.handle_callback_error(e, "MenuItem on_clicked")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def to_unsafe

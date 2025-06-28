@@ -78,18 +78,24 @@ module UIng
 
     def on_selected(&block : Int32 -> _)
       wrapper = -> {
-        idx = self.selected
+        idx = selected
         block.call(idx)
       }
       @on_selected_box = ::Box.box(wrapper)
-      LibUI.tab_on_selected(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Tab on_selected")
-        end
-      end, @on_selected_box.not_nil!)
+      if boxed_data = @on_selected_box
+        LibUI.tab_on_selected(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Tab on_selected")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def to_unsafe

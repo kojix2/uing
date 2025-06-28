@@ -35,18 +35,24 @@ module UIng
 
     def on_toggled(&block : Bool -> _)
       wrapper = -> {
-        checked = self.checked?
+        checked = checked?
         block.call(checked)
       }
       @on_toggled_box = ::Box.box(wrapper)
-      LibUI.checkbox_on_toggled(@ref_ptr, ->(sender, data) do
-        begin
-          data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-          data_as_callback.call
-        rescue e
-          UIng.handle_callback_error(e, "Checkbox on_toggled")
-        end
-      end, @on_toggled_box.not_nil!)
+      if boxed_data = @on_toggled_box
+        LibUI.checkbox_on_toggled(
+          @ref_ptr,
+          ->(_sender, data) {
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "Checkbox on_toggled")
+            end
+          },
+          boxed_data
+        )
+      end
     end
 
     def to_unsafe
