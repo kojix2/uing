@@ -13,13 +13,31 @@ module UIng
           @ref_ptr = LibUI.draw_new_path(mode)
         end
 
-        # RAII pattern: automatically free path when block exits
-        def self.open(mode : FillMode, & : Path -> Nil)
-          path = new(mode)
+        # Creates a new Path and yields it to the block.
+        # After the block execution, it automatically ends the path.
+        def self.open(mode : FillMode, &block) : Path
+          instance = new(mode)
+          with instance yield(instance)
+          instance.end_path unless instance.ended?
+          instance
+        end
+
+        # Yields the current Path to the block, after ensuring the path is ended.
+        # And frees the path after the block execution.
+        def with(& : Path -> Nil) : Nil
           begin
-            yield path
+            yield self
           ensure
-            path.free
+            free
+          end
+        end
+
+        def end_with(& : Path -> Nil) : Nil
+          end_path
+          begin
+            yield self
+          ensure
+            free
           end
         end
 
