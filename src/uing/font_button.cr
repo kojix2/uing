@@ -16,7 +16,7 @@ module UIng
       super
     end
 
-    def on_changed(&block : FontDescriptor -> _)
+    def on_changed(&block : FontDescriptor -> _) : Nil
       wrapper = -> {
         font_descriptor = FontDescriptor.new
         font(font_descriptor)

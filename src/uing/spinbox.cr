@@ -29,7 +29,7 @@ module UIng
       LibUI.spinbox_set_value(@ref_ptr, value)
     end
 
-    def on_changed(&block : Int32 -> _)
+    def on_changed(&block : Int32 -> _) : Nil
       wrapper = -> {
         v = value
         block.call(v)

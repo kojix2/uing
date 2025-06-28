@@ -40,7 +40,7 @@ module UIng
       LibUI.date_time_picker_set_time(@ref_ptr, tm)
     end
 
-    def on_changed(&block : Time -> _)
+    def on_changed(&block : Time -> _) : Nil
       wrapper = -> {
         time = self.time
         block.call(time)

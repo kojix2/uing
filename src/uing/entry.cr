@@ -43,7 +43,7 @@ module UIng
       LibUI.entry_set_read_only(@ref_ptr, readonly)
     end
 
-    def on_changed(&block : String -> _)
+    def on_changed(&block : String -> _) : Nil
       wrapper = -> {
         current_text = text || ""
         block.call(current_text)

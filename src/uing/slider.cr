@@ -47,7 +47,7 @@ module UIng
       LibUI.slider_set_range(@ref_ptr, range.min, range.max)
     end
 
-    def on_changed(&block : Int32 -> _)
+    def on_changed(&block : Int32 -> _) : Nil
       wrapper = -> {
         v = value
         block.call(v)
@@ -69,7 +69,7 @@ module UIng
       end
     end
 
-    def on_released(&block : Int32 -> _)
+    def on_released(&block : Int32 -> _) : Nil
       wrapper = -> {
         v = value
         block.call(v)

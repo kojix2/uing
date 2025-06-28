@@ -36,7 +36,7 @@ module UIng
       LibUI.editable_combobox_set_text(@ref_ptr, text)
     end
 
-    def on_changed(&block : String -> _)
+    def on_changed(&block : String -> _) : Nil
       wrapper = -> {
         current_text = text || ""
         block.call(current_text)

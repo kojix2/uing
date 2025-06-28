@@ -25,7 +25,7 @@ module UIng
       LibUI.button_set_text(@ref_ptr, text)
     end
 
-    def on_clicked(&block : -> _)
+    def on_clicked(&block : -> _) : Nil
       @on_clicked_box = ::Box.box(block)
       if boxed_data = @on_clicked_box
         LibUI.button_on_clicked(
