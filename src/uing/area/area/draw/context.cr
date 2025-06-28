@@ -7,12 +7,12 @@ module UIng
         def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
         end
 
-        def stroke(draw_path : Path, draw_brush : Brush, draw_stroke_params : StrokeParams) : Nil
-          LibUI.draw_stroke(@ref_ptr, draw_path.to_unsafe, draw_brush.to_unsafe, draw_stroke_params.to_unsafe)
+        def stroke(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil
+          LibUI.draw_stroke(@ref_ptr, path.to_unsafe, brush.to_unsafe, stroke_params.to_unsafe)
         end
 
-        def stroke(draw_path : Path,
-                   draw_brush : Brush,
+        def stroke(path : Path,
+                   brush : Brush,
                    cap : UIng::Area::Draw::LineCap = LineCap::Flat,
                    join : UIng::Area::Draw::LineJoin? = LineJoin::Miter,
                    thickness : Number = 0.0,
@@ -27,19 +27,62 @@ module UIng
             dash_phase: dash_phase,
             dashes: dashes
           )
-          stroke(draw_path, draw_brush, stroke_params)
+          stroke(path, brush, stroke_params)
         end
 
-        def fill(draw_path : Path, draw_brush : Brush) : Nil
-          LibUI.draw_fill(@ref_ptr, draw_path.to_unsafe, draw_brush.to_unsafe)
+        def stroke(mode : FillMode,
+                   brush : Brush,
+                   stroke_params : StrokeParams,
+                   &block) : Nil
+          path = Path.new(mode)
+          with path yield(path)
+          path.end_path unless path.ended?
+          stroke(path, brush, stroke_params)
+          path.free
+        end
+
+        def stroke(mode : FillMode,
+                   brush : Brush,
+                   cap : UIng::Area::Draw::LineCap = LineCap::Flat,
+                   join : UIng::Area::Draw::LineJoin? = LineJoin::Miter,
+                   thickness : Number = 0.0,
+                   miter_limit : Number = 0.0,
+                   dash_phase : Number = 0.0,
+                   dashes : Enumerable(Float64)? = nil,
+                   &block) : Nil
+          path = Path.new(mode)
+          with path yield(path)
+          path.end_path unless path.ended?
+          stroke(path, brush, cap: cap, join: join, thickness: thickness, miter_limit: miter_limit, dash_phase: dash_phase, dashes: dashes)
+          path.free
+        end
+
+        def fill(path : Path, brush : Brush) : Nil
+          LibUI.draw_fill(@ref_ptr, path.to_unsafe, brush.to_unsafe)
+        end
+
+        def fill(mode : FillMode, brush : Brush, &block) : Nil
+          path = Path.new(mode)
+          with path yield(path)
+          path.end_path unless path.ended?
+          fill(path, brush)
+          path.free
         end
 
         def transform(draw_matrix : DrawMatrix) : Nil
           LibUI.draw_transform(@ref_ptr, draw_matrix.to_unsafe)
         end
 
-        def clip(draw_path : Path) : Nil
-          LibUI.draw_clip(@ref_ptr, draw_path.to_unsafe)
+        def clip(path : Path) : Nil
+          LibUI.draw_clip(@ref_ptr, path.to_unsafe)
+        end
+
+        def clip(mode : FillMode, &block) : Nil
+          path = Path.new(mode)
+          with path yield(path)
+          path.end_path unless path.ended?
+          clip(path)
+          path.free
         end
 
         def save : Nil
@@ -50,8 +93,8 @@ module UIng
           LibUI.draw_restore(@ref_ptr)
         end
 
-        def text(draw_text_layout : TextLayout, x : Float64, y : Float64) : Nil
-          LibUI.draw_text(@ref_ptr, draw_text_layout.to_unsafe, x, y)
+        def text(text_layout : TextLayout, x : Float64, y : Float64) : Nil
+          LibUI.draw_text(@ref_ptr, text_layout.to_unsafe, x, y)
         end
 
         def to_unsafe
