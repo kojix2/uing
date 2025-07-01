@@ -41,37 +41,37 @@ module UIng
           end
         end
 
-        def new_figure(x : Float64, y : Float64) : Path
+        def new_figure(x : Float64, y : Float64) : self
           LibUI.draw_path_new_figure(@ref_ptr, x, y)
           self
         end
 
-        def new_figure_with_arc(x_center : Float64, y_center : Float64, radius : Float64, start_angle : Float64, sweep : Float64, negative : Bool) : Path
+        def new_figure_with_arc(x_center : Float64, y_center : Float64, radius : Float64, start_angle : Float64, sweep : Float64, negative : Bool) : self
           LibUI.draw_path_new_figure_with_arc(@ref_ptr, x_center, y_center, radius, start_angle, sweep, negative)
           self
         end
 
-        def line_to(x : Float64, y : Float64) : Path
+        def line_to(x : Float64, y : Float64) : self
           LibUI.draw_path_line_to(@ref_ptr, x, y)
           self
         end
 
-        def arc_to(x_center : Float64, y_center : Float64, radius : Float64, start_angle : Float64, sweep : Float64, negative : Bool) : Path
+        def arc_to(x_center : Float64, y_center : Float64, radius : Float64, start_angle : Float64, sweep : Float64, negative : Bool) : self
           LibUI.draw_path_arc_to(@ref_ptr, x_center, y_center, radius, start_angle, sweep, negative)
           self
         end
 
-        def bezier_to(c1x : Float64, c1y : Float64, c2x : Float64, c2y : Float64, end_x : Float64, end_y : Float64) : Path
+        def bezier_to(c1x : Float64, c1y : Float64, c2x : Float64, c2y : Float64, end_x : Float64, end_y : Float64) : self
           LibUI.draw_path_bezier_to(@ref_ptr, c1x, c1y, c2x, c2y, end_x, end_y)
           self
         end
 
-        def close_figure : Path
+        def close_figure : self
           LibUI.draw_path_close_figure(@ref_ptr)
           self
         end
 
-        def add_rectangle(x : Float64, y : Float64, width : Float64, height : Float64) : Path
+        def add_rectangle(x : Float64, y : Float64, width : Float64, height : Float64) : self
           LibUI.draw_path_add_rectangle(@ref_ptr, x, y, width, height)
           self
         end
