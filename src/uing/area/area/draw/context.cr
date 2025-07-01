@@ -69,8 +69,8 @@ module UIng
           path.free
         end
 
-        def transform(draw_matrix : DrawMatrix) : Nil
-          LibUI.draw_transform(@ref_ptr, draw_matrix.to_unsafe)
+        def transform(matrix : Matrix) : Nil
+          LibUI.draw_transform(@ref_ptr, matrix.to_unsafe)
         end
 
         def clip(path : Path) : Nil
