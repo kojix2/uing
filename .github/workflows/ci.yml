@@ -15,7 +15,7 @@ jobs:
       matrix:
         os: ["ubuntu", "macos", "windows"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
       - uses: crystal-lang/install-crystal@v1
@@ -56,7 +56,7 @@ jobs:
     name: MinGW64
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
       - uses: msys2/setup-msys2@v2
