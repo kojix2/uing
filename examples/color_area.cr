@@ -190,9 +190,10 @@ handler.draw do |area, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
-  UIng::Area::Draw::Path.open(:winding) do |bg_path|
-    bg_path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
-    bg_path.end_path
+  bg_path = UIng::Area::Draw::Path.new(:winding)
+  bg_path.with do |path|
+    path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
+    path.end_path
 
     # Animated background color
     time = RandomLines.animation_time
@@ -206,16 +207,17 @@ handler.draw do |area, area_draw_params|
       1.0,                # A
     )
 
-    ctx.fill(bg_path, bg_brush)
+    ctx.fill(path, bg_brush)
   end
 
   # Draw all lines with safe single-line approach
   RandomLines.lines.each do |line|
     # Create and draw single line safely
-    UIng::Area::Draw::Path.open(:winding) do |line_path|
-      line_path.new_figure(line.x1, line.y1)
-      line_path.line_to(line.x2, line.y2)
-      line_path.end_path
+    line_path = UIng::Area::Draw::Path.new(:winding)
+    line_path.with do |path|
+      path.new_figure(line.x1, line.y1)
+      path.line_to(line.x2, line.y2)
+      path.end_path
 
       # Line color with transparency for blending
       line_brush = UIng::Area::Draw::Brush.new(
@@ -226,7 +228,7 @@ handler.draw do |area, area_draw_params|
         line.alpha * 0.7, # Transparent for beautiful color mixing
       )
 
-      ctx.stroke(line_path, line_brush,
+      ctx.stroke(path, line_brush,
         cap: :round,
         join: :round,
         thickness: line.thickness + 1.0,
@@ -255,7 +257,7 @@ handler.mouse_event do |area, mouse_event|
 
   # Update animation and queue redraw
   RandomLines.update_lines
-  UIng::LibUI.area_queue_redraw_all(area)
+  area.queue_redraw_all
 end
 
 handler.mouse_crossed { |_, _| }
@@ -269,7 +271,7 @@ handler.key_event do |area, key_event|
     case key_data.key
     when 'c'.ord, 'C'.ord
       RandomLines.clear_lines
-      UIng::LibUI.area_queue_redraw_all(area)
+      area.queue_redraw_all
     end
   end
 
