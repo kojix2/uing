@@ -14,12 +14,17 @@ module UIng
         end
 
         # Creates a new Path and yields it to the block.
-        # After the block execution, it automatically ends the path.
-        def self.open(mode : FillMode, &block) : Path
+        # After the block execution, it automatically ends and frees the path.
+        # Returns the block's return value, not the Path instance.
+        def self.open(mode : FillMode, &block)
           instance = new(mode)
-          with instance yield(instance)
-          instance.end_path unless instance.ended?
-          instance
+          begin
+            result = yield instance
+            instance.end_path unless instance.ended?
+            result
+          ensure
+            instance.free
+          end
         end
 
         # Yields the current Path to the block, after ensuring the path is ended.

@@ -6,7 +6,6 @@ handler = UIng::Area::Handler.new do
   draw { |area, params|
     UIng::Area::Draw::Path.open(:winding) do |path|
       path.add_rectangle(0, 0, 400, 400)
-      path.end_path
 
       brush = UIng::Area::Draw::Brush.new(:solid, 0.4, 0.4, 0.8, 1.0)
       params.context.fill(path, brush)

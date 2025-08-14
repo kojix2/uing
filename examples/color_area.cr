@@ -190,50 +190,41 @@ handler.draw do |area, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
-  bg_path = UIng::Area::Draw::Path.new(:winding)
-  bg_path.with do |path|
+  # Animated background color
+  time = RandomLines.animation_time
+  bg_intensity = Math.sin(time * 0.1) * 0.02 + 0.05
+
+  bg_brush = UIng::Area::Draw::Brush.new(
+    :solid,
+    bg_intensity * 0.5, # R
+    bg_intensity * 0.5, # G
+    bg_intensity * 2.0, # B
+    1.0,                # A
+  )
+
+  ctx.fill(:winding, bg_brush) do |path|
     path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
-    path.end_path
-
-    # Animated background color
-    time = RandomLines.animation_time
-    bg_intensity = Math.sin(time * 0.1) * 0.02 + 0.05
-
-    bg_brush = UIng::Area::Draw::Brush.new(
-      :solid,
-      bg_intensity * 0.5, # R
-      bg_intensity * 0.5, # G
-      bg_intensity * 2.0, # B
-      1.0,                # A
-    )
-
-    ctx.fill(path, bg_brush)
   end
 
   # Draw all lines with safe single-line approach
   RandomLines.lines.each do |line|
-    # Create and draw single line safely
-    line_path = UIng::Area::Draw::Path.new(:winding)
-    line_path.with do |path|
+    # Line color with transparency for blending
+    line_brush = UIng::Area::Draw::Brush.new(
+      :solid,
+      line.color[:r],
+      line.color[:g],
+      line.color[:b],
+      line.alpha * 0.7, # Transparent for beautiful color mixing
+    )
+
+    ctx.stroke(:winding, line_brush,
+      cap: :round,
+      join: :round,
+      thickness: line.thickness + 1.0,
+      miter_limit: 10.0,
+    ) do |path|
       path.new_figure(line.x1, line.y1)
       path.line_to(line.x2, line.y2)
-      path.end_path
-
-      # Line color with transparency for blending
-      line_brush = UIng::Area::Draw::Brush.new(
-        :solid,
-        line.color[:r],
-        line.color[:g],
-        line.color[:b],
-        line.alpha * 0.7, # Transparent for beautiful color mixing
-      )
-
-      ctx.stroke(path, line_brush,
-        cap: :round,
-        join: :round,
-        thickness: line.thickness + 1.0,
-        miter_limit: 10.0,
-      )
     end
   end
 end

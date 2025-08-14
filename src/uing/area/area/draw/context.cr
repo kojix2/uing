@@ -34,11 +34,10 @@ module UIng
                    brush : Brush,
                    stroke_params : StrokeParams,
                    &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          stroke(path, brush, stroke_params)
-          path.free
+          Path.open(mode) do |path|
+            yield path
+            stroke(path, brush, stroke_params)
+          end
         end
 
         def stroke(mode : FillMode,
@@ -50,11 +49,10 @@ module UIng
                    dash_phase : Number = 0.0,
                    dashes : Enumerable(Float64)? = nil,
                    &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          stroke(path, brush, cap: cap, join: join, thickness: thickness, miter_limit: miter_limit, dash_phase: dash_phase, dashes: dashes)
-          path.free
+          Path.open(mode) do |path|
+            yield path
+            stroke(path, brush, cap: cap, join: join, thickness: thickness, miter_limit: miter_limit, dash_phase: dash_phase, dashes: dashes)
+          end
         end
 
         def fill(path : Path, brush : Brush) : Nil
@@ -62,11 +60,10 @@ module UIng
         end
 
         def fill(mode : FillMode, brush : Brush, &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          fill(path, brush)
-          path.free
+          Path.open(mode) do |path|
+            yield path
+            fill(path, brush)
+          end
         end
 
         def transform(matrix : Matrix) : Nil
@@ -78,11 +75,10 @@ module UIng
         end
 
         def clip(mode : FillMode, &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          clip(path)
-          path.free
+          Path.open(mode) do |path|
+            yield path
+            clip(path)
+          end
         end
 
         def save : Nil
