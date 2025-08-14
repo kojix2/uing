@@ -10,7 +10,16 @@ module UIng
 
     # Extended handler structure that contains the base AreaHandler
     # and individual boxes for each callback
-    @[Packed]
+    #
+    # NOTE:
+    # - We intentionally DO NOT use @[Packed] here.
+    # - This struct embeds AreaHandler as the first field so that a pointer to
+    #   AreaHandlerExtended can be safely cast to AreaHandler* for C (libui).
+    # - Crystal lib structs follow the C ABI (alignment/padding). There is no
+    #   padding before the first field, so the base_handler will be correctly
+    #   aligned at offset 0.
+    # - Adding @[Packed] would reduce alignment to 1-byte and may yield an
+    #   unaligned AreaHandler*, which can crash on some architectures (e.g. ARM).
     struct AreaHandlerExtended
       base_handler : AreaHandler
       draw_box : Pointer(Void)
