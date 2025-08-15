@@ -527,7 +527,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L4" target="_blank">
         uing/area/area/draw/path.cr
       </a>
     
@@ -569,8 +569,22 @@
         
       </li>
     
+  </ul>
+
+
+  
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
       <li class="entry-summary">
-        <a href="#open%28mode%3AFillMode%2C%26%29%3APath-class-method" class="signature"><strong>.open</strong>(mode : FillMode, &) : Path</a>
+        <a href="#open%28mode%3AFillMode%2C%26%29-class-method" class="signature"><strong>.open</strong>(mode : FillMode, &)</a>
         
           <div class="summary"><p>Creates a new Path and yields it to the block.</p></div>
         
@@ -578,8 +592,6 @@
     
   </ul>
 
-
-  
 
   
 
@@ -615,17 +627,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#end_%3ANil-instance-method" class="signature"><strong>#end_</strong> : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
         <a href="#end_path%3ANil-instance-method" class="signature"><strong>#end_path</strong> : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#end_with%28%26%3APath-%3ENil%29%3ANil-instance-method" class="signature"><strong>#end_with</strong>(& : Path -> Nil) : Nil</a>
         
       </li>
     
@@ -655,14 +657,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+        <a href="#released%3F%3ABool-instance-method" class="signature"><strong>#released?</strong> : Bool</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#with%28%26%3APath-%3ENil%29%3ANil-instance-method" class="signature"><strong>#with</strong>(& : Path -> Nil) : Nil</a>
-        
-          <div class="summary"><p>Yields the current Path to the block, after ensuring the path is ended.</p></div>
+        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
         
       </li>
     
@@ -743,7 +743,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -759,7 +759,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -775,7 +775,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -791,36 +791,50 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="open(mode:FillMode,&amp;):Path-class-method">
+
+
+  
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="open(mode:FillMode,&amp;)-class-method">
       <div class="signature">
         
-        def self.<strong>open</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, &) : <a href="../../../UIng/Area/Draw/Path.html">Path</a>
+        def self.<strong>open</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, &)
 
-        <a class="method-permalink" href="#open%28mode%3AFillMode%2C%26%29%3APath-class-method">#</a>
+        <a class="method-permalink" href="#open%28mode%3AFillMode%2C%26%29-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Creates a new Path and yields it to the block.
-After the block execution, it automatically ends the path.</p>
+          <p>Creates a new Path and yields it to the block.</p>
+<ul>
+<li>The block must explicitly call end_path before using this path in Context APIs.</li>
+<li>The path is always freed after the block, even if an exception occurs.</li>
+<li>Returns the block's return value (NOT the Path instance).</li>
+</ul>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
-
-  
 
   
 
@@ -845,7 +859,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L77" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -861,7 +875,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -877,7 +891,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -893,23 +907,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L69" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="end_:Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>end_</strong> : Nil
-
-        <a class="method-permalink" href="#end_%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -925,23 +923,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L87" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="end_with(&amp;:Path-&gt;Nil):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>end_with</strong>(& : <a href="../../../UIng/Area/Draw/Path.html">Path</a> -> Nil) : Nil
-
-        <a class="method-permalink" href="#end_with%28%26%3APath-%3ENil%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L91" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -957,7 +939,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L79" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -973,7 +955,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L98" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -989,7 +971,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L53" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1005,7 +987,7 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L44" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L41" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1021,45 +1003,39 @@ After the block execution, it automatically ends the path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L47" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
+    <div class="entry-detail" id="released?:Bool-instance-method">
       <div class="signature">
         
-        def <strong>to_unsafe</strong> : Pointer(Void)
+        def <strong>released?</strong> : Bool
 
-        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
+        <a class="method-permalink" href="#released%3F%3ABool-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L97" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L87" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="with(&amp;:Path-&gt;Nil):Nil-instance-method">
+    <div class="entry-detail" id="to_unsafe-instance-method">
       <div class="signature">
         
-        def <strong>with</strong>(& : <a href="../../../UIng/Area/Draw/Path.html">Path</a> -> Nil) : Nil
+        def <strong>to_unsafe</strong>
 
-        <a class="method-permalink" href="#with%28%26%3APath-%3ENil%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
       </div>
-      
-        <div class="doc">
-          
-          <p>Yields the current Path to the block, after ensuring the path is ended.
-And frees the path after the block execution.</p>
-        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/480cf4a4726d7e8a3659bd2866d23fae983d3133/src/uing/area/area/draw/path.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0daa452a9d45de0522ef1430ee30b111f0ab6629/src/uing/area/area/draw/path.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
