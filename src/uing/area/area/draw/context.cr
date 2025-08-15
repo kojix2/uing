@@ -8,15 +8,16 @@ module UIng
         end
 
         def stroke(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil
+          raise ArgumentError.new("Path must be ended before stroking") unless path.ended?
           LibUI.draw_stroke(@ref_ptr, path.to_unsafe, brush.to_unsafe, stroke_params.to_unsafe)
         end
 
         def stroke(path : Path,
                    brush : Brush,
                    cap : UIng::Area::Draw::LineCap = LineCap::Flat,
-                   join : UIng::Area::Draw::LineJoin? = LineJoin::Miter,
-                   thickness : Number = 0.0,
-                   miter_limit : Number = 0.0,
+                   join : UIng::Area::Draw::LineJoin = LineJoin::Miter,
+                   thickness : Number = 1.0,
+                   miter_limit : Number = 10.0,
                    dash_phase : Number = 0.0,
                    dashes : Enumerable(Float64)? = nil) : Nil
           stroke_params = StrokeParams.new(
@@ -30,43 +31,47 @@ module UIng
           stroke(path, brush, stroke_params)
         end
 
-        def stroke(mode : FillMode,
-                   brush : Brush,
-                   stroke_params : StrokeParams,
-                   &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          stroke(path, brush, stroke_params)
-          path.free
+        # High-level API: Creates path, yields to block, automatically ends and strokes
+        def stroke_path(mode : FillMode, brush : Brush, stroke_params : StrokeParams)
+          Path.open(mode) do |path|
+            yield path
+            path.end_path
+            stroke(path, brush, stroke_params)
+          end
         end
 
-        def stroke(mode : FillMode,
-                   brush : Brush,
-                   cap : UIng::Area::Draw::LineCap = LineCap::Flat,
-                   join : UIng::Area::Draw::LineJoin? = LineJoin::Miter,
-                   thickness : Number = 0.0,
-                   miter_limit : Number = 0.0,
-                   dash_phase : Number = 0.0,
-                   dashes : Enumerable(Float64)? = nil,
-                   &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          stroke(path, brush, cap: cap, join: join, thickness: thickness, miter_limit: miter_limit, dash_phase: dash_phase, dashes: dashes)
-          path.free
+        def stroke_path(mode : FillMode,
+                        brush : Brush,
+                        cap : UIng::Area::Draw::LineCap = LineCap::Flat,
+                        join : UIng::Area::Draw::LineJoin = LineJoin::Miter,
+                        thickness : Number = 1.0,
+                        miter_limit : Number = 10.0,
+                        dash_phase : Number = 0.0,
+                        dashes : Enumerable(Float64)? = nil,
+                        &block : Path -> Nil) : Nil
+          stroke_params = StrokeParams.new(
+            cap: cap,
+            join: join,
+            thickness: thickness,
+            miter_limit: miter_limit,
+            dash_phase: dash_phase,
+            dashes: dashes
+          )
+          stroke_path(mode, brush, stroke_params, &block)
         end
 
         def fill(path : Path, brush : Brush) : Nil
+          raise ArgumentError.new("Path must be ended before filling") unless path.ended?
           LibUI.draw_fill(@ref_ptr, path.to_unsafe, brush.to_unsafe)
         end
 
-        def fill(mode : FillMode, brush : Brush, &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          fill(path, brush)
-          path.free
+        # High-level API: Creates path, yields to block, automatically ends and fills
+        def fill_path(mode : FillMode, brush : Brush)
+          Path.open(mode) do |path|
+            yield path
+            path.end_path
+            fill(path, brush)
+          end
         end
 
         def transform(matrix : Matrix) : Nil
@@ -74,15 +79,39 @@ module UIng
         end
 
         def clip(path : Path) : Nil
+          raise ArgumentError.new("Path must be ended before clipping") unless path.ended?
           LibUI.draw_clip(@ref_ptr, path.to_unsafe)
         end
 
-        def clip(mode : FillMode, &block) : Nil
-          path = Path.new(mode)
-          with path yield(path)
-          path.end_path unless path.ended?
-          clip(path)
-          path.free
+        # High-level API: Creates path, yields to block, automatically ends and clips
+        def clip_path(mode : FillMode)
+          Path.open(mode) do |path|
+            yield path
+            path.end_path
+            clip(path)
+          end
+        end
+
+        # High-level API: Creates path, yields to block, can fill and/or stroke
+        def draw_path(mode : FillMode,
+                      fill : Bool = true,
+                      stroke : Bool = false,
+                      fill_brush : Brush? = nil,
+                      stroke_brush : Brush? = nil,
+                      stroke_params : StrokeParams? = nil)
+          if fill && fill_brush.nil?
+            raise ArgumentError.new("fill=true requires fill_brush")
+          end
+          if stroke && (stroke_brush.nil? || stroke_params.nil?)
+            raise ArgumentError.new("stroke=true requires stroke_brush and stroke_params")
+          end
+
+          Path.open(mode) do |path|
+            yield path
+            path.end_path
+            self.fill(path, fill_brush.not_nil!) if fill
+            self.stroke(path, stroke_brush.not_nil!, stroke_params.not_nil!) if stroke
+          end
         end
 
         def save : Nil

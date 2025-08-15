@@ -54,7 +54,7 @@ handler = UIng::Area::Handler.new do
         y_coords = path_data[:y].map { |y| 1.0 - y.to_f64 }
 
         draw_path_from_codes(path, x_coords, y_coords, path_data[:codes], scale_x, scale_y)
-        path.end_
+        path.end_path
 
         # Handle fill
         if path_data[:fill] != -1
