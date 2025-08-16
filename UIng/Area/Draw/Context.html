@@ -527,7 +527,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L4" target="_blank">
         uing/area/area/draw/context.cr
       </a>
     
@@ -585,31 +585,56 @@
       <li class="entry-summary">
         <a href="#clip%28path%3APath%29%3ANil-instance-method" class="signature"><strong>#clip</strong>(path : Path) : Nil</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#clip_path%28mode%3AFillMode%2C%26%29-instance-method" class="signature"><strong>#clip_path</strong>(mode : FillMode, &)</a>
-        
-          <div class="summary"><p>High-level API: Creates path, yields to block, automatically ends and clips</p></div>
+          <div class="summary"><p>Low-level clipping: apply a finished path as clip</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#draw_path%28mode%3AFillMode%2Cfill%3ABool%3Dtrue%2Cstroke%3ABool%3Dfalse%2Cfill_brush%3ABrush%7CNil%3Dnil%2Cstroke_brush%3ABrush%7CNil%3Dnil%2Cstroke_params%3AStrokeParams%7CNil%3Dnil%2C%26%29-instance-method" class="signature"><strong>#draw_path</strong>(mode : FillMode, fill : Bool = <span class="n">true</span>, stroke : Bool = <span class="n">false</span>, fill_brush : Brush | Nil = <span class="n">nil</span>, stroke_brush : Brush | Nil = <span class="n">nil</span>, stroke_params : StrokeParams | Nil = <span class="n">nil</span>, &)</a>
+        <a href="#clip_path%28mode%3AFillMode%3DFillMode%3A%3AWinding%2C%26%29-instance-method" class="signature"><strong>#clip_path</strong>(mode : FillMode = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &)</a>
         
-          <div class="summary"><p>High-level API: Creates path, yields to block, can fill and/or stroke</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#fill%28path%3APath%2Cbrush%3ABrush%29%3ANil-instance-method" class="signature"><strong>#fill</strong>(path : Path, brush : Brush) : Nil</a>
+          <div class="summary"><p>High-level clipping: build a path in a block, end it, and clip</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#fill_path%28mode%3AFillMode%2Cbrush%3ABrush%2C%26%29-instance-method" class="signature"><strong>#fill_path</strong>(mode : FillMode, brush : Brush, &)</a>
+        <a href="#draw_fill%28path%3APath%2Cbrush%3ABrush%29%3ANil-instance-method" class="signature"><strong>#draw_fill</strong>(path : Path, brush : Brush) : Nil</a>
         
-          <div class="summary"><p>High-level API: Creates path, yields to block, automatically ends and fills</p></div>
+          <div class="summary"><p>Low-level: fill an ended path</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#draw_path%28mode%3AFillMode%3DFillMode%3A%3AWinding%2Cfill%3ABool%3Dtrue%2Cstroke%3ABool%3Dfalse%2Cfill_brush%3ABrush%7CNil%3Dnil%2Cstroke_brush%3ABrush%7CNil%3Dnil%2Cstroke_params%3AStrokeParams%7CNil%3Dnil%2C%26%29-instance-method" class="signature"><strong>#draw_path</strong>(mode : FillMode = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, fill : Bool = <span class="n">true</span>, stroke : Bool = <span class="n">false</span>, fill_brush : Brush | Nil = <span class="n">nil</span>, stroke_brush : Brush | Nil = <span class="n">nil</span>, stroke_params : StrokeParams | Nil = <span class="n">nil</span>, &)</a>
+        
+          <div class="summary"><p>High-level: build once, then optionally fill and/or stroke</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#draw_stroke%28path%3APath%2Cbrush%3ABrush%2Cstroke_params%3AStrokeParams%29%3ANil-instance-method" class="signature"><strong>#draw_stroke</strong>(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil</a>
+        
+          <div class="summary"><p>Low-level: stroke an ended path</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#draw_stroke%28path%3APath%2Cbrush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%29%3ANil-instance-method" class="signature"><strong>#draw_stroke</strong>(path : Path, brush : Brush, cap : UIng::Area::Draw::LineCap = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : UIng::Area::Draw::LineJoin = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>) : Nil</a>
+        
+          <div class="summary"><p>Convenience overload to build StrokeParams inline</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#draw_text_layout%28text_layout%3ATextLayout%2Cx%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#draw_text_layout</strong>(text_layout : TextLayout, x : Float64, y : Float64) : Nil</a>
+        
+          <div class="summary"><p>Text drawing (libui uiDrawText equivalent)</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fill_path%28brush%3ABrush%2Cmode%3AFillMode%3DFillMode%3A%3AWinding%2C%26%29-instance-method" class="signature"><strong>#fill_path</strong>(brush : Brush, mode : FillMode = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &)</a>
+        
+          <div class="summary"><p>High-level: build a path in a block, end it, and fill</p></div>
         
       </li>
     
@@ -621,32 +646,19 @@
       <li class="entry-summary">
         <a href="#save%3ANil-instance-method" class="signature"><strong>#save</strong> : Nil</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#stroke%28path%3APath%2Cbrush%3ABrush%2Cstroke_params%3AStrokeParams%29%3ANil-instance-method" class="signature"><strong>#stroke</strong>(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil</a>
+          <div class="summary"><p>Save/restore helpers</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stroke%28path%3APath%2Cbrush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%29%3ANil-instance-method" class="signature"><strong>#stroke</strong>(path : Path, brush : Brush, cap : UIng::Area::Draw::LineCap = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : UIng::Area::Draw::LineJoin = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>) : Nil</a>
+        <a href="#stroke_path%28brush%3ABrush%2Cstroke_params%3AStrokeParams%2Cmode%3AFillMode%3DFillMode%3A%3AWinding%2C%26%29-instance-method" class="signature"><strong>#stroke_path</strong>(brush : Brush, stroke_params : StrokeParams, mode : FillMode = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &)</a>
+        
+          <div class="summary"><p>High-level: build a path in a block, end it, and stroke</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stroke_path%28mode%3AFillMode%2Cbrush%3ABrush%2Cstroke_params%3AStrokeParams%2C%26%29-instance-method" class="signature"><strong>#stroke_path</strong>(mode : FillMode, brush : Brush, stroke_params : StrokeParams, &)</a>
-        
-          <div class="summary"><p>High-level API: Creates path, yields to block, automatically ends and strokes</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#stroke_path%28mode%3AFillMode%2Cbrush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%2C%26block%3APath-%3ENil%29%3ANil-instance-method" class="signature"><strong>#stroke_path</strong>(mode : FillMode, brush : Brush, cap : UIng::Area::Draw::LineCap = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : UIng::Area::Draw::LineJoin = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>, &block : Path -> Nil) : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#text%28text_layout%3ATextLayout%2Cx%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method" class="signature"><strong>#text</strong>(text_layout : TextLayout, x : Float64, y : Float64) : Nil</a>
+        <a href="#stroke_path%28brush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%2Cmode%3AFillMode%3DFillMode%3A%3AWinding%2C%26block%3APath-%3ENil%29%3ANil-instance-method" class="signature"><strong>#stroke_path</strong>(brush : Brush, cap : UIng::Area::Draw::LineCap = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : UIng::Area::Draw::LineJoin = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>, mode : FillMode = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &block : Path -> Nil) : Nil</a>
         
       </li>
     
@@ -657,6 +669,8 @@
     
       <li class="entry-summary">
         <a href="#transform%28matrix%3AMatrix%29%3ANil-instance-method" class="signature"><strong>#transform</strong>(matrix : Matrix) : Nil</a>
+        
+          <div class="summary"><p>Matrix composition (same semantics as libui's uiDrawTransform)</p></div>
         
       </li>
     
@@ -737,7 +751,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -753,7 +767,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -769,7 +783,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -798,89 +812,162 @@
         <a class="method-permalink" href="#clip%28path%3APath%29%3ANil-instance-method">#</a>
       </div>
       
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L81" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="clip_path(mode:FillMode,&amp;)-instance-method">
-      <div class="signature">
-        
-        def <strong>clip_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, &)
-
-        <a class="method-permalink" href="#clip_path%28mode%3AFillMode%2C%26%29-instance-method">#</a>
-      </div>
-      
         <div class="doc">
           
-          <p>High-level API: Creates path, yields to block, automatically ends and clips</p>
+          <p>Low-level clipping: apply a finished path as clip</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L86" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="draw_path(mode:FillMode,fill:Bool=true,stroke:Bool=false,fill_brush:Brush|Nil=nil,stroke_brush:Brush|Nil=nil,stroke_params:StrokeParams|Nil=nil,&amp;)-instance-method">
+    <div class="entry-detail" id="clip_path(mode:FillMode=FillMode::Winding,&amp;)-instance-method">
       <div class="signature">
         
-        def <strong>draw_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, fill : Bool = <span class="n">true</span>, stroke : Bool = <span class="n">false</span>, fill_brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a> | Nil = <span class="n">nil</span>, stroke_brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a> | Nil = <span class="n">nil</span>, stroke_params : <a href="../../../UIng/Area/Draw/StrokeParams.html">StrokeParams</a> | Nil = <span class="n">nil</span>, &)
+        def <strong>clip_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a> = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &)
 
-        <a class="method-permalink" href="#draw_path%28mode%3AFillMode%2Cfill%3ABool%3Dtrue%2Cstroke%3ABool%3Dfalse%2Cfill_brush%3ABrush%7CNil%3Dnil%2Cstroke_brush%3ABrush%7CNil%3Dnil%2Cstroke_params%3AStrokeParams%7CNil%3Dnil%2C%26%29-instance-method">#</a>
+        <a class="method-permalink" href="#clip_path%28mode%3AFillMode%3DFillMode%3A%3AWinding%2C%26%29-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>High-level API: Creates path, yields to block, can fill and/or stroke</p>
+          <p>High-level clipping: build a path in a block, end it, and clip</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="fill(path:Path,brush:Brush):Nil-instance-method">
+    <div class="entry-detail" id="draw_fill(path:Path,brush:Brush):Nil-instance-method">
       <div class="signature">
         
-        def <strong>fill</strong>(path : <a href="../../../UIng/Area/Draw/Path.html">Path</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>) : Nil
+        def <strong>draw_fill</strong>(path : <a href="../../../UIng/Area/Draw/Path.html">Path</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>) : Nil
 
-        <a class="method-permalink" href="#fill%28path%3APath%2Cbrush%3ABrush%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L63" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="fill_path(mode:FillMode,brush:Brush,&amp;)-instance-method">
-      <div class="signature">
-        
-        def <strong>fill_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, &)
-
-        <a class="method-permalink" href="#fill_path%28mode%3AFillMode%2Cbrush%3ABrush%2C%26%29-instance-method">#</a>
+        <a class="method-permalink" href="#draw_fill%28path%3APath%2Cbrush%3ABrush%29%3ANil-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>High-level API: Creates path, yields to block, automatically ends and fills</p>
+          <p>Low-level: fill an ended path</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L69" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L66" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="draw_path(mode:FillMode=FillMode::Winding,fill:Bool=true,stroke:Bool=false,fill_brush:Brush|Nil=nil,stroke_brush:Brush|Nil=nil,stroke_params:StrokeParams|Nil=nil,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>draw_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a> = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, fill : Bool = <span class="n">true</span>, stroke : Bool = <span class="n">false</span>, fill_brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a> | Nil = <span class="n">nil</span>, stroke_brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a> | Nil = <span class="n">nil</span>, stroke_params : <a href="../../../UIng/Area/Draw/StrokeParams.html">StrokeParams</a> | Nil = <span class="n">nil</span>, &)
+
+        <a class="method-permalink" href="#draw_path%28mode%3AFillMode%3DFillMode%3A%3AWinding%2Cfill%3ABool%3Dtrue%2Cstroke%3ABool%3Dfalse%2Cfill_brush%3ABrush%7CNil%3Dnil%2Cstroke_brush%3ABrush%7CNil%3Dnil%2Cstroke_params%3AStrokeParams%7CNil%3Dnil%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>High-level: build once, then optionally fill and/or stroke</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L101" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="draw_stroke(path:Path,brush:Brush,stroke_params:StrokeParams):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>draw_stroke</strong>(path : <a href="../../../UIng/Area/Draw/Path.html">Path</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, stroke_params : <a href="../../../UIng/Area/Draw/StrokeParams.html">StrokeParams</a>) : Nil
+
+        <a class="method-permalink" href="#draw_stroke%28path%3APath%2Cbrush%3ABrush%2Cstroke_params%3AStrokeParams%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Low-level: stroke an ended path</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L11" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="draw_stroke(path:Path,brush:Brush,cap:UIng::Area::Draw::LineCap=LineCap::Flat,join:UIng::Area::Draw::LineJoin=LineJoin::Miter,thickness:Number=1.0,miter_limit:Number=10.0,dash_phase:Number=0.0,dashes:Enumerable(Float64)|Nil=nil):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>draw_stroke</strong>(path : <a href="../../../UIng/Area/Draw/Path.html">Path</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, cap : <a href="../../../UIng/Area/Draw/LineCap.html">UIng::Area::Draw::LineCap</a> = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : <a href="../../../UIng/Area/Draw/LineJoin.html">UIng::Area::Draw::LineJoin</a> = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>) : Nil
+
+        <a class="method-permalink" href="#draw_stroke%28path%3APath%2Cbrush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Convenience overload to build StrokeParams inline</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L17" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="draw_text_layout(text_layout:TextLayout,x:Float64,y:Float64):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>draw_text_layout</strong>(text_layout : <a href="../../../UIng/Area/Draw/TextLayout.html">TextLayout</a>, x : Float64, y : Float64) : Nil
+
+        <a class="method-permalink" href="#draw_text_layout%28text_layout%3ATextLayout%2Cx%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Text drawing (libui uiDrawText equivalent)</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L132" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fill_path(brush:Brush,mode:FillMode=FillMode::Winding,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>fill_path</strong>(brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a> = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &)
+
+        <a class="method-permalink" href="#fill_path%28brush%3ABrush%2Cmode%3AFillMode%3DFillMode%3A%3AWinding%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>High-level: build a path in a block, end it, and fill</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -896,7 +983,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L121" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L127" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -909,95 +996,52 @@
         <a class="method-permalink" href="#save%3ANil-instance-method">#</a>
       </div>
       
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L117" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="stroke(path:Path,brush:Brush,stroke_params:StrokeParams):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>stroke</strong>(path : <a href="../../../UIng/Area/Draw/Path.html">Path</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, stroke_params : <a href="../../../UIng/Area/Draw/StrokeParams.html">StrokeParams</a>) : Nil
-
-        <a class="method-permalink" href="#stroke%28path%3APath%2Cbrush%3ABrush%2Cstroke_params%3AStrokeParams%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L10" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="stroke(path:Path,brush:Brush,cap:UIng::Area::Draw::LineCap=LineCap::Flat,join:UIng::Area::Draw::LineJoin=LineJoin::Miter,thickness:Number=1.0,miter_limit:Number=10.0,dash_phase:Number=0.0,dashes:Enumerable(Float64)|Nil=nil):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>stroke</strong>(path : <a href="../../../UIng/Area/Draw/Path.html">Path</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, cap : <a href="../../../UIng/Area/Draw/LineCap.html">UIng::Area::Draw::LineCap</a> = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : <a href="../../../UIng/Area/Draw/LineJoin.html">UIng::Area::Draw::LineJoin</a> = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>) : Nil
-
-        <a class="method-permalink" href="#stroke%28path%3APath%2Cbrush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L15" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="stroke_path(mode:FillMode,brush:Brush,stroke_params:StrokeParams,&amp;)-instance-method">
-      <div class="signature">
-        
-        def <strong>stroke_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, stroke_params : <a href="../../../UIng/Area/Draw/StrokeParams.html">StrokeParams</a>, &)
-
-        <a class="method-permalink" href="#stroke_path%28mode%3AFillMode%2Cbrush%3ABrush%2Cstroke_params%3AStrokeParams%2C%26%29-instance-method">#</a>
-      </div>
-      
         <div class="doc">
           
-          <p>High-level API: Creates path, yields to block, automatically ends and strokes</p>
+          <p>Save/restore helpers</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stroke_path(mode:FillMode,brush:Brush,cap:UIng::Area::Draw::LineCap=LineCap::Flat,join:UIng::Area::Draw::LineJoin=LineJoin::Miter,thickness:Number=1.0,miter_limit:Number=10.0,dash_phase:Number=0.0,dashes:Enumerable(Float64)|Nil=nil,&amp;block:Path-&gt;Nil):Nil-instance-method">
+    <div class="entry-detail" id="stroke_path(brush:Brush,stroke_params:StrokeParams,mode:FillMode=FillMode::Winding,&amp;)-instance-method">
       <div class="signature">
         
-        def <strong>stroke_path</strong>(mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a>, brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, cap : <a href="../../../UIng/Area/Draw/LineCap.html">UIng::Area::Draw::LineCap</a> = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : <a href="../../../UIng/Area/Draw/LineJoin.html">UIng::Area::Draw::LineJoin</a> = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>, &block : <a href="../../../UIng/Area/Draw/Path.html">Path</a> -> Nil) : Nil
+        def <strong>stroke_path</strong>(brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, stroke_params : <a href="../../../UIng/Area/Draw/StrokeParams.html">StrokeParams</a>, mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a> = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &)
 
-        <a class="method-permalink" href="#stroke_path%28mode%3AFillMode%2Cbrush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%2C%26block%3APath-%3ENil%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#stroke_path%28brush%3ABrush%2Cstroke_params%3AStrokeParams%2Cmode%3AFillMode%3DFillMode%3A%3AWinding%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>High-level: build a path in a block, end it, and stroke</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L37" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="stroke_path(brush:Brush,cap:UIng::Area::Draw::LineCap=LineCap::Flat,join:UIng::Area::Draw::LineJoin=LineJoin::Miter,thickness:Number=1.0,miter_limit:Number=10.0,dash_phase:Number=0.0,dashes:Enumerable(Float64)|Nil=nil,mode:FillMode=FillMode::Winding,&amp;block:Path-&gt;Nil):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>stroke_path</strong>(brush : <a href="../../../UIng/Area/Draw/Brush.html">Brush</a>, cap : <a href="../../../UIng/Area/Draw/LineCap.html">UIng::Area::Draw::LineCap</a> = <span class="t">LineCap</span><span class="t">::</span><span class="t">Flat</span>, join : <a href="../../../UIng/Area/Draw/LineJoin.html">UIng::Area::Draw::LineJoin</a> = <span class="t">LineJoin</span><span class="t">::</span><span class="t">Miter</span>, thickness : Number = <span class="n">1.0</span>, miter_limit : Number = <span class="n">10.0</span>, dash_phase : Number = <span class="n">0.0</span>, dashes : Enumerable(Float64) | Nil = <span class="n">nil</span>, mode : <a href="../../../UIng/Area/Draw/FillMode.html">FillMode</a> = <span class="t">FillMode</span><span class="t">::</span><span class="t">Winding</span>, &block : <a href="../../../UIng/Area/Draw/Path.html">Path</a> -> Nil) : Nil
+
+        <a class="method-permalink" href="#stroke_path%28brush%3ABrush%2Ccap%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineCap%3DLineCap%3A%3AFlat%2Cjoin%3AUIng%3A%3AArea%3A%3ADraw%3A%3ALineJoin%3DLineJoin%3A%3AMiter%2Cthickness%3ANumber%3D1.0%2Cmiter_limit%3ANumber%3D10.0%2Cdash_phase%3ANumber%3D0.0%2Cdashes%3AEnumerable%28Float64%29%7CNil%3Dnil%2Cmode%3AFillMode%3DFillMode%3A%3AWinding%2C%26block%3APath-%3ENil%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L43" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="text(text_layout:TextLayout,x:Float64,y:Float64):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>text</strong>(text_layout : <a href="../../../UIng/Area/Draw/TextLayout.html">TextLayout</a>, x : Float64, y : Float64) : Nil
-
-        <a class="method-permalink" href="#text%28text_layout%3ATextLayout%2Cx%3AFloat64%2Cy%3AFloat64%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L125" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1013,7 +1057,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L129" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L136" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1026,10 +1070,15 @@
         <a class="method-permalink" href="#transform%28matrix%3AMatrix%29%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Matrix composition (same semantics as libui's uiDrawTransform)</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4774028482b7d89eaddd6423238915eaf8663954/src/uing/area/area/draw/context.cr#L77" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8e9ae28be26535ea29174ae213a4fc8b8ae7e2c7/src/uing/area/area/draw/context.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
