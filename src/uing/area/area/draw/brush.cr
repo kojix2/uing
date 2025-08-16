@@ -6,6 +6,9 @@ module UIng
       class Brush
         include BlockConstructor; block_constructor
 
+        # FIX: Keep gradient stops buffer alive for C-side pointer lifetime management
+        @stops_buffer : Array(LibUI::DrawBrushGradientStop) = [] of LibUI::DrawBrushGradientStop
+
         def initialize(type : Brush::Type,
                        r : Number = 0.0,
                        g : Number = 0.0,
@@ -32,6 +35,7 @@ module UIng
           if stops
             set_gradient_stops(stops)
           else
+            @stops_buffer.clear
             @cstruct.stops = Pointer(LibUI::DrawBrushGradientStop).null
             @cstruct.num_stops = 0_u64
           end
@@ -39,13 +43,18 @@ module UIng
 
         private def set_gradient_stops(stops : Array(GradientStop))
           if stops.empty?
+            @stops_buffer.clear
             @cstruct.stops = Pointer(LibUI::DrawBrushGradientStop).null
             @cstruct.num_stops = 0_u64
           else
-            # Create array of C structs from GradientStop objects
-            c_stops = stops.map(&.to_unsafe.value)
-            @cstruct.stops = c_stops.to_unsafe
-            @cstruct.num_stops = stops.size.to_u64
+            # FIX: Store C structs in instance variable to keep them alive
+            # Crystal's Array.to_unsafe is guaranteed to be C-compatible
+            @stops_buffer = Array(LibUI::DrawBrushGradientStop).new(stops.size)
+            stops.each do |gs|
+              @stops_buffer << gs.to_unsafe.value
+            end
+            @cstruct.stops = @stops_buffer.to_unsafe
+            @cstruct.num_stops = @stops_buffer.size.to_u64
           end
         end
 
