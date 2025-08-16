@@ -11,23 +11,52 @@ PDB_SOURCE_DIR = "#{MESON_OUT_DIR}/libui.a.p"
 DEBUG_DIR      = "libui/debug"
 PDB_DEST_DIR   = "#{DEBUG_DIR}/libui.a.p"
 
-# Platform-specific configuration
+# Platform-specific configuration with architecture support
 PLATFORM_CONFIG = {
-  darwin: [
+  # macOS Intel x86_64
+  darwin_x64: [
     {zip: "macOS-x64-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
     {zip: "macOS-x64-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
   ],
-  linux: [
+  # macOS Apple Silicon ARM64
+  darwin_arm64: [
+    {zip: "macOS-arm64-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
+    {zip: "macOS-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
+  ],
+  # Linux x86_64
+  linux_x64: [
     {zip: "Ubuntu-x64-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
     {zip: "Ubuntu-x64-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
   ],
-  msvc: [
+  # Linux ARM64
+  linux_arm64: [
+    {zip: "Ubuntu-arm64-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
+    {zip: "Ubuntu-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
+  ],
+  # Linux ARM 32-bit
+  linux_arm: [
+    {zip: "Ubuntu-arm-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
+    {zip: "Ubuntu-arm-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
+  ],
+  # Windows MSVC x86_64
+  msvc_x64: [
     {zip: "Win-x64-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/ui.lib"},
     {zip: "Win-x64-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/ui.lib", extra_pdb: true},
   ],
-  mingw: [
+  # Windows MSVC x86 32-bit
+  msvc_x86: [
+    {zip: "Win-x86-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/ui.lib"},
+    {zip: "Win-x86-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/ui.lib", extra_pdb: true},
+  ],
+  # Windows MinGW x86_64
+  mingw_x64: [
     {zip: "Mingw-x64-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
     {zip: "Mingw-x64-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
+  ],
+  # Windows MinGW x86 32-bit
+  mingw_x86: [
+    {zip: "Mingw-x86-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
+    {zip: "Mingw-x86-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
   ],
 }
 
@@ -123,16 +152,44 @@ def process_platform(platform_entries)
   end
 end
 
-# Platform-specific processing
+# Platform-specific processing with architecture detection
 {% if flag?(:darwin) %}
-  process_platform(PLATFORM_CONFIG[:darwin])
+  {% if flag?(:x86_64) %}
+    process_platform(PLATFORM_CONFIG[:darwin_x64])
+  {% elsif flag?(:aarch64) %}
+    process_platform(PLATFORM_CONFIG[:darwin_arm64])
+  {% else %}
+    {% raise "Unsupported Darwin architecture. Supported: x86_64, aarch64" %}
+  {% end %}
 {% elsif flag?(:linux) %}
-  process_platform(PLATFORM_CONFIG[:linux])
+  {% if flag?(:x86_64) %}
+    process_platform(PLATFORM_CONFIG[:linux_x64])
+  {% elsif flag?(:aarch64) %}
+    process_platform(PLATFORM_CONFIG[:linux_arm64])
+  {% elsif flag?(:arm) %}
+    process_platform(PLATFORM_CONFIG[:linux_arm])
+  {% else %}
+    {% raise "Unsupported Linux architecture. Supported: x86_64, aarch64, arm" %}
+  {% end %}
 {% elsif flag?(:msvc) %}
-  process_platform(PLATFORM_CONFIG[:msvc])
+  {% if flag?(:x86_64) %}
+    process_platform(PLATFORM_CONFIG[:msvc_x64])
+  {% elsif flag?(:i386) %}
+    process_platform(PLATFORM_CONFIG[:msvc_x86])
+  {% else %}
+    {% raise "Unsupported MSVC architecture. Supported: x86_64, i386" %}
+  {% end %}
 {% elsif flag?(:win32) && flag?(:gnu) %}
-  process_platform(PLATFORM_CONFIG[:mingw])
+  {% if flag?(:x86_64) %}
+    process_platform(PLATFORM_CONFIG[:mingw_x64])
+  {% elsif flag?(:i386) %}
+    process_platform(PLATFORM_CONFIG[:mingw_x86])
+  {% else %}
+    {% raise "Unsupported MinGW architecture. Supported: x86_64, i386" %}
+  {% end %}
   system(p("windres comctl32.rc -O coff -o comctl32.res"))
+{% else %}
+  {% raise "Unsupported platform. Supported: Darwin, Linux, MSVC, MinGW" %}
 {% end %}
 
 # Clean up temporary directory
