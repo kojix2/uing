@@ -7,19 +7,21 @@ module UIng
         def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
         end
 
-        def stroke(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil
+        # Low-level: stroke an ended path
+        def draw_stroke(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil
           raise ArgumentError.new("Path must be ended before stroking") unless path.ended?
           LibUI.draw_stroke(@ref_ptr, path.to_unsafe, brush.to_unsafe, stroke_params.to_unsafe)
         end
 
-        def stroke(path : Path,
-                   brush : Brush,
-                   cap : UIng::Area::Draw::LineCap = LineCap::Flat,
-                   join : UIng::Area::Draw::LineJoin = LineJoin::Miter,
-                   thickness : Number = 1.0,
-                   miter_limit : Number = 10.0,
-                   dash_phase : Number = 0.0,
-                   dashes : Enumerable(Float64)? = nil) : Nil
+        # Convenience overload to build StrokeParams inline
+        def draw_stroke(path : Path,
+                        brush : Brush,
+                        cap : UIng::Area::Draw::LineCap = LineCap::Flat,
+                        join : UIng::Area::Draw::LineJoin = LineJoin::Miter,
+                        thickness : Number = 1.0,
+                        miter_limit : Number = 10.0,
+                        dash_phase : Number = 0.0,
+                        dashes : Enumerable(Float64)? = nil) : Nil
           stroke_params = StrokeParams.new(
             cap: cap,
             join: join,
@@ -28,26 +30,26 @@ module UIng
             dash_phase: dash_phase,
             dashes: dashes
           )
-          stroke(path, brush, stroke_params)
+          draw_stroke(path, brush, stroke_params)
         end
 
-        # High-level API: Creates path, yields to block, automatically ends and strokes
-        def stroke_path(mode : FillMode, brush : Brush, stroke_params : StrokeParams, &)
+        # High-level: build a path in a block, end it, and stroke
+        def stroke_path(brush : Brush, stroke_params : StrokeParams, mode : FillMode = FillMode::Winding, &)
           Path.open(mode) do |path|
             yield path
             path.end_path
-            stroke(path, brush, stroke_params)
+            draw_stroke(path, brush, stroke_params)
           end
         end
 
-        def stroke_path(mode : FillMode,
-                        brush : Brush,
+        def stroke_path(brush : Brush,
                         cap : UIng::Area::Draw::LineCap = LineCap::Flat,
                         join : UIng::Area::Draw::LineJoin = LineJoin::Miter,
                         thickness : Number = 1.0,
                         miter_limit : Number = 10.0,
                         dash_phase : Number = 0.0,
                         dashes : Enumerable(Float64)? = nil,
+                        mode : FillMode = FillMode::Winding,
                         &block : Path -> Nil) : Nil
           stroke_params = StrokeParams.new(
             cap: cap,
@@ -57,34 +59,37 @@ module UIng
             dash_phase: dash_phase,
             dashes: dashes
           )
-          stroke_path(mode, brush, stroke_params, &block)
+          stroke_path(brush, stroke_params, mode, &block)
         end
 
-        def fill(path : Path, brush : Brush) : Nil
+        # Low-level: fill an ended path
+        def draw_fill(path : Path, brush : Brush) : Nil
           raise ArgumentError.new("Path must be ended before filling") unless path.ended?
           LibUI.draw_fill(@ref_ptr, path.to_unsafe, brush.to_unsafe)
         end
 
-        # High-level API: Creates path, yields to block, automatically ends and fills
-        def fill_path(mode : FillMode, brush : Brush, &)
+        # High-level: build a path in a block, end it, and fill
+        def fill_path(brush : Brush, mode : FillMode = FillMode::Winding, &)
           Path.open(mode) do |path|
             yield path
             path.end_path
-            fill(path, brush)
+            draw_fill(path, brush)
           end
         end
 
+        # Matrix composition (same semantics as libui's uiDrawTransform)
         def transform(matrix : Matrix) : Nil
           LibUI.draw_transform(@ref_ptr, matrix.to_unsafe)
         end
 
+        # Low-level clipping: apply a finished path as clip
         def clip(path : Path) : Nil
           raise ArgumentError.new("Path must be ended before clipping") unless path.ended?
           LibUI.draw_clip(@ref_ptr, path.to_unsafe)
         end
 
-        # High-level API: Creates path, yields to block, automatically ends and clips
-        def clip_path(mode : FillMode, &)
+        # High-level clipping: build a path in a block, end it, and clip
+        def clip_path(mode : FillMode = FillMode::Winding, &)
           Path.open(mode) do |path|
             yield path
             path.end_path
@@ -92,8 +97,8 @@ module UIng
           end
         end
 
-        # High-level API: Creates path, yields to block, can fill and/or stroke
-        def draw_path(mode : FillMode,
+        # High-level: build once, then optionally fill and/or stroke
+        def draw_path(mode : FillMode = FillMode::Winding,
                       fill : Bool = true,
                       stroke : Bool = false,
                       fill_brush : Brush? = nil,
@@ -109,11 +114,12 @@ module UIng
           Path.open(mode) do |path|
             yield path
             path.end_path
-            self.fill(path, fill_brush.not_nil!) if fill
-            self.stroke(path, stroke_brush.not_nil!, stroke_params.not_nil!) if stroke
+            self.draw_fill(path, fill_brush.not_nil!) if fill
+            self.draw_stroke(path, stroke_brush.not_nil!, stroke_params.not_nil!) if stroke
           end
         end
 
+        # Save/restore helpers
         def save : Nil
           LibUI.draw_save(@ref_ptr)
         end
@@ -122,7 +128,8 @@ module UIng
           LibUI.draw_restore(@ref_ptr)
         end
 
-        def text(text_layout : TextLayout, x : Float64, y : Float64) : Nil
+        # Text drawing (libui uiDrawText equivalent)
+        def draw_text_layout(text_layout : TextLayout, x : Float64, y : Float64) : Nil
           LibUI.draw_text(@ref_ptr, text_layout.to_unsafe, x, y)
         end
 

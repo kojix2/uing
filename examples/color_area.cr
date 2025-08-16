@@ -202,7 +202,7 @@ handler.draw do |area, area_draw_params|
     1.0,                # A
   )
 
-  ctx.fill_path(:winding, bg_brush) do |path|
+  ctx.fill_path(bg_brush) do |path|
     path.add_rectangle(0, 0, RandomLines::CANVAS_WIDTH, RandomLines::CANVAS_HEIGHT)
   end
 
@@ -217,7 +217,7 @@ handler.draw do |area, area_draw_params|
       line.alpha * 0.7, # Transparent for beautiful color mixing
     )
 
-    ctx.stroke_path(:winding, line_brush,
+    ctx.stroke_path(line_brush,
       cap: :round,
       join: :round,
       thickness: line.thickness + 1.0,

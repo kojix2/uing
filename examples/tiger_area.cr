@@ -62,7 +62,7 @@ handler = UIng::Area::Handler.new do
           brush = UIng::Area::Draw::Brush.new(
             :solid, r, g, b, a: 1.0
           )
-          ctx.fill(path, brush)
+          ctx.draw_fill(path, brush)
         end
 
         # Handle stroke
@@ -72,7 +72,7 @@ handler = UIng::Area::Handler.new do
             :solid, r, g, b, a: 1.0
           )
 
-          ctx.stroke(path, stroke_brush, thickness: 1.0)
+          ctx.draw_stroke(path, stroke_brush, thickness: 1.0)
         end
       end # Automatically releases the path
     end
