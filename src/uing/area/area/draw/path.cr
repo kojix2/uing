@@ -19,7 +19,7 @@ module UIng
         # - The block must explicitly call end_path before using this path in Context APIs.
         # - The path is always freed after the block, even if an exception occurs.
         # - Returns the block's return value (NOT the Path instance).
-        def self.open(mode : FillMode)
+        def self.open(mode : FillMode, &)
           instance = new(mode)
           begin
             result = yield instance

@@ -32,7 +32,7 @@ module UIng
         end
 
         # High-level API: Creates path, yields to block, automatically ends and strokes
-        def stroke_path(mode : FillMode, brush : Brush, stroke_params : StrokeParams)
+        def stroke_path(mode : FillMode, brush : Brush, stroke_params : StrokeParams, &)
           Path.open(mode) do |path|
             yield path
             path.end_path
@@ -66,7 +66,7 @@ module UIng
         end
 
         # High-level API: Creates path, yields to block, automatically ends and fills
-        def fill_path(mode : FillMode, brush : Brush)
+        def fill_path(mode : FillMode, brush : Brush, &)
           Path.open(mode) do |path|
             yield path
             path.end_path
@@ -84,7 +84,7 @@ module UIng
         end
 
         # High-level API: Creates path, yields to block, automatically ends and clips
-        def clip_path(mode : FillMode)
+        def clip_path(mode : FillMode, &)
           Path.open(mode) do |path|
             yield path
             path.end_path
@@ -98,7 +98,7 @@ module UIng
                       stroke : Bool = false,
                       fill_brush : Brush? = nil,
                       stroke_brush : Brush? = nil,
-                      stroke_params : StrokeParams? = nil)
+                      stroke_params : StrokeParams? = nil, &)
           if fill && fill_brush.nil?
             raise ArgumentError.new("fill=true requires fill_brush")
           end

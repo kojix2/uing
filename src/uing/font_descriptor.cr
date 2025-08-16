@@ -11,7 +11,7 @@ module UIng
 
     def initialize(
       family : String? = nil, size : Int32? = nil, weight : TextWeight? = nil,
-      italic : TextItalic? = nil, stretch : TextStretch? = nil
+      italic : TextItalic? = nil, stretch : TextStretch? = nil,
     )
       @cstruct = LibUI::FontDescriptor.new
       load_control_font unless family && size && weight && italic && stretch
