@@ -47,13 +47,17 @@ module UIng
         end
 
         def transform_point(x : Float64, y : Float64) : {Float64, Float64}
-          LibUI.draw_matrix_transform_point(self.to_unsafe, out x, out y)
-          {x, y}
+          x2 = x
+          y2 = y
+          LibUI.draw_matrix_transform_point(self.to_unsafe, pointerof(x2), pointerof(y2))
+          {x2, y2}
         end
 
         def transform_size(x : Float64, y : Float64) : {Float64, Float64}
-          LibUI.draw_matrix_transform_size(self.to_unsafe, out x, out y)
-          {x, y}
+          x2 = x
+          y2 = y
+          LibUI.draw_matrix_transform_size(self.to_unsafe, pointerof(x2), pointerof(y2))
+          {x2, y2}
         end
 
         def to_unsafe
