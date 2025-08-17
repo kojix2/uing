@@ -4,7 +4,10 @@
 [![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fuing%2Flines)](https://tokei.kojix2.net/github/kojix2/uing)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kojix2/uing)
 
-**UIng** is a Crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng)
+UIng is a Crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng).
+
+libui-ng uses the native APIs of each platform: Win32 API and GDI+ on Windows, Cocoa on macOS, and GTK3 and Cairo on Linux.
+You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets with the look and feel of each OS. The binary size is small.
 
 <table>
   <thead>
@@ -73,7 +76,7 @@ UIng.init do
     set_child {
       UIng::Button.new("Click me") {
         on_clicked {
-          UIng.msg_box(win, "Info", "Button clicked!") 
+          UIng.msg_box(win, "Info", "Button clicked!")
         }
       }
     }
@@ -84,7 +87,7 @@ UIng.init do
 end
 ```
 
-For more examples, see [examples](examples).　
+For more examples, see [examples](examples).
 
 ## API Levels
 
@@ -162,7 +165,7 @@ $env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 
 - `UIng::LibUI` is the module for direct C bindings
 - Initially, [crystal_lib](https://github.com/crystal-lang/crystal_lib) was used to generate low-level bindings
-　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
+  　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
 
