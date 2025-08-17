@@ -7,6 +7,7 @@ module UIng
         include BlockConstructor; block_constructor
 
         @released = false
+
         # NOTE: Strong references to AttributedString/FontDescriptor are NOT needed.
         # libui-ng uses "copy on creation" pattern - TextLayout internally copies
         # all content from source objects, making it safe to free them immediately.
@@ -43,7 +44,7 @@ module UIng
           @released = true
         end
 
-        def extents : {LibC::Double, LibC::Double}
+        def extents : {Float64, Float64}
           LibUI.draw_text_layout_extents(@ref_ptr, out width, out height)
           {width, height}
         end
