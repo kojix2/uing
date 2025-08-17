@@ -500,6 +500,23 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
     </tr>
   </tbody>
 </table>
+<h2><a id="quick-start" class="anchor" href="#quick-start">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Quick Start</h2>
+<p>Clone the repository and try the examples:</p>
+<pre><code class="language-sh">git clone https://github.com/kojix2/uing
+cd uing
+crystal run download.cr
+crystal run examples/control_gallery.cr</code></pre>
+<h3><a id="windows-msvc-setup" class="anchor" href="#windows-msvc-setup">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Windows MSVC Setup</h3>
+<p>For Windows users using MSVC, use Developer Command Prompt or add Windows Kits path:</p>
+<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -509,18 +526,17 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
 <pre><code class="language-yaml">dependencies:
   uing:
     github: kojix2/uing</code></pre>
-<p>The required libui library is automatically downloaded via postinstall.</p>
-<p>To download manually: <code>crystal run download.cr</code></p>
-<pre><code class="language-sh">git clone https://github.com/kojix2/uing
-cd uing
-crystal run download.cr</code></pre>
-<h3><a id="msvc-setup" class="anchor" href="#msvc-setup">
+<p>The required libui-ng binary is automatically downloaded from the <a href="https://github.com/kojix2/libui-ng/releases">kojix2/libui-ng GitHub Releases</a> via postinstall.</p>
+<h2><a id="supported-platforms" class="anchor" href="#supported-platforms">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>MSVC Setup</h3>
-<p>Use Developer Command Prompt or add Windows Kits path:</p>
-<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
+</a>Supported Platforms</h2>
+<ul>
+<li>macOS: x86_64 (64-bit), ARM64 (Apple Silicon)</li>
+<li>Linux: x86_64 (64-bit), ARM64, ARM (32-bit)</li>
+<li>Windows: x86_64 (64-bit, MSVC and MinGW), x86 (32-bit, MSVC only)</li>
+</ul>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -568,6 +584,7 @@ window.show
 
   <span class="t">UIng</span>.main
 <span class="k">end</span></code></pre>
+<p>Note: The DSL style is implemented using Crystal's <code>with ... yield</code> syntax internally.</p>
 <h2><a id="examples" class="anchor" href="#examples">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -671,6 +688,9 @@ You can run it with:</p>
 <li>When adding new UI components, follow the established callback management patterns</li>
 <li>libui libraries are generated using GitHub Actions at <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> in the pre-build branch.</li>
 </ul>
+<p>Note:<br />
+This project was developed with the assistance of generative AI.<br />
+While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.</p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -688,7 +708,6 @@ You can run it with:</p>
   </svg>
 </a>License</h2>
 <p>MIT License</p>
-<p>This project includes code generated using AI.</p>
 </div>
 </body>
 </html>
