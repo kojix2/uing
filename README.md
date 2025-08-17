@@ -26,6 +26,25 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
   </tbody>
 </table>
 
+## Quick Start
+
+Clone the repository and try the examples:
+
+```sh
+git clone https://github.com/kojix2/uing
+cd uing
+crystal run download.cr
+crystal run examples/control_gallery.cr
+```
+
+### Windows MSVC Setup
+
+For Windows users using MSVC, use Developer Command Prompt or add Windows Kits path:
+
+```powershell
+$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
+```
+
 ## Installation
 
 Add the dependency to your `shard.yml`:
@@ -36,23 +55,13 @@ dependencies:
     github: kojix2/uing
 ```
 
-The required libui library is automatically downloaded via postinstall.
+The required libui-ng binary is automatically downloaded from the [kojix2/libui-ng GitHub Releases](https://github.com/kojix2/libui-ng/releases) via postinstall.
 
-To download manually: `crystal run download.cr`
+## Supported Platforms
 
-```sh
-git clone https://github.com/kojix2/uing
-cd uing
-crystal run download.cr
-```
-
-### MSVC Setup
-
-Use Developer Command Prompt or add Windows Kits path:
-
-```powershell
-$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
-```
+- macOS: x86_64 (64-bit), ARM64 (Apple Silicon)
+- Linux: x86_64 (64-bit), ARM64, ARM (32-bit)
+- Windows: x86_64 (64-bit, MSVC and MinGW), x86 (32-bit, MSVC only)
 
 ## Usage
 
@@ -100,6 +109,8 @@ UIng.init do
   UIng.main
 end
 ```
+
+Note: The DSL style is implemented using Crystal's `with ... yield` syntax internally.
 
 ## Examples
 
@@ -184,6 +195,10 @@ crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
 
+Note:  
+This project was developed with the assistance of generative AI.  
+While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.
+
 ## Contributing
 
 - Fork this repository
@@ -194,5 +209,3 @@ crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 ## License
 
 MIT License
-
-This project includes code generated using AI.
