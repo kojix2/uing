@@ -7,6 +7,9 @@ module UIng
         include BlockConstructor; block_constructor
 
         @released = false
+        # NOTE: Strong references to AttributedString/FontDescriptor are NOT needed.
+        # libui-ng uses "copy on creation" pattern - TextLayout internally copies
+        # all content from source objects, making it safe to free them immediately.
 
         def initialize(string : AttributedString,
                        default_font : FontDescriptor,
