@@ -87,7 +87,16 @@ UIng.init do
 end
 ```
 
-For more examples, see [examples](examples).
+## Examples
+
+The `examples/control_gallery.cr` script shows most of the available controls and features in one window.  
+You can run it with:
+
+```
+crystal run examples/control_gallery.cr
+```
+
+For more examples, see the [examples](examples) directory.
 
 ## API Levels
 
