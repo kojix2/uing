@@ -481,7 +481,9 @@
 <p><a href="https://github.com/kojix2/uing/actions/workflows/ci.yml"><img src="https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg" alt="test" /></a>
 <a href="https://tokei.kojix2.net/github/kojix2/uing"><img src="https://img.shields.io/endpoint?url=https://tokei.kojix2.net/badge/github/kojix2/uing/lines" alt="Lines of Code" /></a>
 <a href="https://deepwiki.com/kojix2/uing"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" /></a></p>
-<p><strong>UIng</strong> is a Crystal binding for <a href="https://github.com/libui-ng/libui-ng">libui-ng</a></p>
+<p>UIng is a Crystal binding for <a href="https://github.com/libui-ng/libui-ng">libui-ng</a>.</p>
+<p>libui-ng uses the native APIs of each platform: Win32 API and GDI+ on Windows, Cocoa on macOS, and GTK3 and Cairo on Linux.
+You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets with the look and feel of each OS. The binary size is small.</p>
 <table>
   <thead>
     <tr>
@@ -547,7 +549,7 @@ window.show
     set_child {
       <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Click me&quot;</span>) {
         on_clicked {
-          <span class="t">UIng</span>.msg_box(win, <span class="s">&quot;Info&quot;</span>, <span class="s">&quot;Button clicked!&quot;</span>) 
+          <span class="t">UIng</span>.msg_box(win, <span class="s">&quot;Info&quot;</span>, <span class="s">&quot;Button clicked!&quot;</span>)
         }
       }
     }
