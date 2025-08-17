@@ -332,7 +332,7 @@ module UIng
     fun attributed_string_insert_at_unattributed = uiAttributedStringInsertAtUnattributed(s : Pointer(AttributedString), str : Pointer(LibC::Char), at : LibC::SizeT)
     fun attributed_string_delete = uiAttributedStringDelete(s : Pointer(AttributedString), start : LibC::SizeT, _end : LibC::SizeT)
     fun attributed_string_set_attribute = uiAttributedStringSetAttribute(s : Pointer(AttributedString), a : Pointer(Attribute), start : LibC::SizeT, _end : LibC::SizeT)
-    fun attributed_string_for_each_attribute = uiAttributedStringForEachAttribute(s : Pointer(AttributedString), f : Pointer(Void), data : Pointer(Void)) # FIXME: f is a function pointer
+    fun attributed_string_for_each_attribute = uiAttributedStringForEachAttribute(s : Pointer(AttributedString), f : (Pointer(AttributedString), Pointer(Attribute), LibC::SizeT, LibC::SizeT, Pointer(Void) -> LibC::Int), data : Pointer(Void))
     fun attributed_string_num_graphemes = uiAttributedStringNumGraphemes(s : Pointer(AttributedString)) : LibC::SizeT
     fun attributed_string_byte_index_to_grapheme = uiAttributedStringByteIndexToGrapheme(s : Pointer(AttributedString), pos : LibC::SizeT) : LibC::SizeT
     fun attributed_string_grapheme_to_byte_index = uiAttributedStringGraphemeToByteIndex(s : Pointer(AttributedString), pos : LibC::SizeT) : LibC::SizeT
