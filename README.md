@@ -60,7 +60,7 @@ The required libui-ng binary is automatically downloaded from the [kojix2/libui-
 ## Supported Platforms
 
 - macOS: x86_64 (64-bit), ARM64 (Apple Silicon)
-- Linux: x86_64 (64-bit), ARM64, ARM (32-bit)
+- Linux: x86_64 (64-bit), ARM64
 - Windows: x86_64 (64-bit, MSVC and MinGW), x86 (32-bit, MSVC only)
 
 ## Usage
