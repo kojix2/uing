@@ -6,7 +6,7 @@
 
 UIng is a Crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng).
 
-libui-ng uses the native APIs of each platform: Win32 API and GDI+ on Windows, Cocoa on macOS, and GTK3 and Cairo on Linux.
+libui-ng uses the native APIs of each platform: Win32 API, Direct2D, and DirectWrite on Windows; Cocoa (AppKit) on macOS; and GTK+ 3.10+ and Pango on Linux/Unix.
 You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets with the look and feel of each OS. The binary size is small.
 
 <table>
