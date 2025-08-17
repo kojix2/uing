@@ -40,6 +40,12 @@ The required libui library is automatically downloaded via postinstall.
 
 To download manually: `crystal run download.cr`
 
+```sh
+git clone https://github.com/kojix2/uing
+cd uing
+crystal run download.cr
+```
+
 ## Usage
 
 ```crystal
