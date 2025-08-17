@@ -51,16 +51,22 @@ module UIng
         end
       end
 
-      def for_each_attribute(&callback : (Pointer(LibUI::Attribute), LibC::SizeT, LibC::SizeT) -> _) : Nil
-        @for_each_attribute_box = ::Box.box(callback)
-        LibUI.attributed_string_for_each_attribute(@ref_ptr, ->(sender, attr, start, end_, data) do
-          data_as_callback = ::Box(typeof(callback)).unbox(data)
-          data_as_callback.call(attr, start, end_)
-          # Note: Cannot safely delete box here as LibUI may call multiple times
-          0 # uiForEachContinue
-        end, @for_each_attribute_box.not_nil!)
+      # Return value: 0 = Continue, 1 = Stop (follows LibUI's uiForEach convention)
+      def for_each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> LibC::Int) : Nil
+        @for_each_attribute_box = ::Box.box(block)
 
-        # Clear the box reference after enumeration completes
+        LibUI.attributed_string_for_each_attribute(@ref_ptr,
+          ->(sender, attr, start, end_, data) do
+            callback = ::Box(typeof(block)).unbox(data)
+            # Convert to Attribute wrapper
+            attribute = Area::Attribute.new(attr)
+            # Return block's result directly to LibUI (0 or 1)
+            callback.call(attribute, start, end_)
+          end,
+          @for_each_attribute_box.not_nil!
+        )
+
+        # Clear reference after enumeration
         @for_each_attribute_box = nil
       end
 
