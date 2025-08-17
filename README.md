@@ -46,6 +46,14 @@ cd uing
 crystal run download.cr
 ```
 
+### MSVC Setup
+
+Use Developer Command Prompt or add Windows Kits path:
+
+```powershell
+$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
+```
+
 ## Usage
 
 ```crystal
@@ -158,14 +166,6 @@ MSVC:
 
 ```
 crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
-```
-
-### MSVC Setup
-
-Use Developer Command Prompt or add Windows Kits path:
-
-```powershell
-$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
 ```
 
 ## Closures in Low-Level Contexts
