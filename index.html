@@ -514,6 +514,13 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
 <pre><code class="language-sh">git clone https://github.com/kojix2/uing
 cd uing
 crystal run download.cr</code></pre>
+<h3><a id="msvc-setup" class="anchor" href="#msvc-setup">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>MSVC Setup</h3>
+<p>Use Developer Command Prompt or add Windows Kits path:</p>
+<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -636,13 +643,6 @@ You can run it with:</p>
 <pre><code class="language-crystal">crystal build app.cr --link-flags &quot;-mwindows&quot;</code></pre>
 <p>MSVC:</p>
 <pre><code class="language-crystal">crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
-<h3><a id="msvc-setup" class="anchor" href="#msvc-setup">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>MSVC Setup</h3>
-<p>Use Developer Command Prompt or add Windows Kits path:</p>
-<pre><code class="language-powershell">$env:Path += &quot;;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64&quot;</code></pre>
 <h2><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
