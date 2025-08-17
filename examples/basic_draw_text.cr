@@ -50,7 +50,7 @@ DEFAULT_FONT = UIng::FontDescriptor.new(
 def append_to_attr_str(attr_str, text, color)
   start = attr_str.len
   attr_str.append_unattributed(text)
-  attr_str.set_attribute(color, start, start + text.size)
+  attr_str.set_attribute(color, start, start + text.bytesize)
   attr_str.append_unattributed("\n\n")
 end
 
