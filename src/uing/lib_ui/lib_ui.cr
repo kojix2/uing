@@ -49,8 +49,9 @@ module UIng
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
     {% end %}
   {% elsif flag?(:darwin) %}
-    @[Link(framework: "CoreGraphics")]
     @[Link(framework: "AppKit")]
+    @[Link(framework: "CoreGraphics")]
+    @[Link(framework: "QuartzCore")]
     {% if flag?(:release) || !flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
@@ -413,5 +414,10 @@ module UIng
     fun table_get_selection = uiTableGetSelection(t : Pointer(Table)) : Pointer(TableSelection)
     fun table_set_selection = uiTableSetSelection(t : Pointer(Table), sel : Pointer(TableSelection))
     fun free_table_selection = uiFreeTableSelection(s : Pointer(TableSelection))
+
+    alias ImageView = Void
+    fun new_image_view = uiNewImageView : Pointer(ImageView)
+    fun image_view_set_image = uiImageViewSetImage(iv : Pointer(ImageView), image : Pointer(Image))
+    fun image_view_set_content_mode = uiImageViewSetContentMode(iv : Pointer(ImageView), mode : UIng::ImageView::ContentMode)
   end
 end
