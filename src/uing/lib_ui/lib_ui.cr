@@ -34,33 +34,27 @@ module UIng
     @[Link("Winmm")]
     @[Link("Uxtheme")]
     # @[Link(ldflags: "-mwindows")]
-    {% if flag?(:debug) %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
-    {% elsif flag?(:release) %}
+    {% if flag?(:release) || !flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
     {% end %}
     @[Link(ldflags: "#{__DIR__}/../../../comctl32.res")]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]
-    {% if flag?(:debug) %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
-    {% elsif flag?(:release) %}
+    {% if flag?(:release) || !flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
     {% end %}
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
     @[Link(framework: "AppKit")]
-    {% if flag?(:debug) %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
-    {% elsif flag?(:release) %}
+    {% if flag?(:release) || !flag?(:debug) %}
       @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
     {% else %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
     {% end %}
   {% end %}
   @[Link("ui")]
