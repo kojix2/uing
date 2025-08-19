@@ -1,0 +1,73 @@
+name: Screenshot Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  screenshot:
+    name: ${{ matrix.os }} Screenshot
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu
+            runner: ubuntu-latest
+            app-name: control_gallery
+            setup-display: true
+          - os: windows
+            runner: windows-latest
+            app-name: control_gallery.exe
+            setup-display: false
+          - os: macos
+            runner: macos-latest
+            app-name: control_gallery
+            setup-display: false
+
+    env:
+      DISPLAY: ${{ matrix.setup-display && ':99' || '' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Install Ubuntu dependencies
+        if: matrix.os == 'ubuntu'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libgtk-3-dev xvfb imagemagick xdotool openbox wmctrl
+
+      - name: Setup Windows SDK
+        if: matrix.os == 'windows'
+        run: echo "C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64" >> $env:GITHUB_PATH
+
+      - name: Install Crystal dependencies
+        run: shards install
+
+      - name: Download libui library
+        run: |
+          crystal run download.cr
+          ${{ matrix.os == 'windows' && 'Get-ChildItem libui' || 'ls -la libui/' }}
+
+      - name: Build control_gallery
+        run: crystal build examples/control_gallery.cr -o ${{ matrix.app-name }}
+
+      - name: Take screenshot
+        uses: ./.github/actions/screenshot
+        with:
+          os: ${{ matrix.os }}
+          app-name: ${{ matrix.app-name }}
+          output-file: control_gallery-${{ matrix.os }}.png
+
+      - name: Upload screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-control_gallery-${{ matrix.os }}
+          path: control_gallery-${{ matrix.os }}.png
+          retention-days: 30

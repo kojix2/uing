@@ -1,0 +1,56 @@
+name: "Take Screenshot"
+description: "Take a screenshot of the application on different platforms"
+inputs:
+  os:
+    description: "Operating system (ubuntu or windows)"
+    required: true
+  app-name:
+    description: "Application executable name"
+    required: true
+  output-file:
+    description: "Output screenshot filename"
+    required: true
+outputs:
+  screenshot-path:
+    description: "Path to the generated screenshot"
+    value: ${{ steps.screenshot.outputs.path }}
+runs:
+  using: "composite"
+  steps:
+    - name: Take screenshot on Ubuntu
+      id: screenshot-ubuntu
+      if: inputs.os == 'ubuntu'
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/ubuntu-screenshot.sh
+        ${{ github.action_path }}/ubuntu-screenshot.sh "${{ inputs.app-name }}" "${{ inputs.output-file }}"
+        echo "path=${{ inputs.output-file }}" >> $GITHUB_OUTPUT
+
+    - name: Take screenshot on Windows
+      id: screenshot-windows
+      if: inputs.os == 'windows'
+      shell: pwsh
+      run: |
+        & "${{ github.action_path }}/windows-screenshot.ps1" -AppName "${{ inputs.app-name }}" -OutputFile "${{ inputs.output-file }}"
+        echo "path=${{ inputs.output-file }}" >> $env:GITHUB_OUTPUT
+
+    - name: Take screenshot on macOS
+      id: screenshot-macos
+      if: inputs.os == 'macos'
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/macos-screenshot.sh
+        ${{ github.action_path }}/macos-screenshot.sh "${{ inputs.app-name }}" "${{ inputs.output-file }}"
+        echo "path=${{ inputs.output-file }}" >> $GITHUB_OUTPUT
+
+    - name: Set output
+      id: screenshot
+      shell: bash
+      run: |
+        if [ "${{ inputs.os }}" == "ubuntu" ]; then
+          echo "path=${{ steps.screenshot-ubuntu.outputs.path }}" >> $GITHUB_OUTPUT
+        elif [ "${{ inputs.os }}" == "windows" ]; then
+          echo "path=${{ steps.screenshot-windows.outputs.path }}" >> $GITHUB_OUTPUT
+        elif [ "${{ inputs.os }}" == "macos" ]; then
+          echo "path=${{ steps.screenshot-macos.outputs.path }}" >> $GITHUB_OUTPUT
+        fi
