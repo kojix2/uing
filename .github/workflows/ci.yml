@@ -37,7 +37,7 @@ jobs:
       - name: Run tests
         run: crystal spec
       - name: Build all examples (Ubuntu)
-        if: ${{ matrix.os == 'ubuntu' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           ls examples/*.cr | xargs -P 0 -I {} crystal build {}
           ls
