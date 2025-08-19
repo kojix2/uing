@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest", ”ubuntu-24.04-arm", "macos-13"]
+        os: ["ubuntu-latest", "macos-latest", "windows-latest", "ubuntu-24.04-arm", "macos-13"]
     steps:
       - uses: actions/checkout@v5
         with:
