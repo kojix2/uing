@@ -70,9 +70,6 @@ jobs:
           echo "deb https://packagecloud.io/84codes/crystal/$ID $VERSION_CODENAME main" | sudo tee /etc/apt/sources.list.d/84codes_crystal.list
           sudo apt-get update -y
           sudo apt-get install -y crystal
-      - name: Install dependencies
-        run: |
-          sudo apt-get install -y libgtk-3-dev
       - name: Install system dependencies
         run: |
           sudo apt-get install -y libgtk-3-dev
