@@ -21,7 +21,7 @@ jobs:
       - uses: crystal-lang/install-crystal@v1
         with:
           crystal: latest
-      - if: ${{ matrix.os == 'ubuntu' }}
+      - if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update -y
           sudo apt-get install -y libgtk-3-dev
@@ -42,12 +42,12 @@ jobs:
           ls examples/*.cr | xargs -P 0 -I {} crystal build {}
           ls
       - name: Build all examples (macOS)
-        if: ${{ matrix.os == 'macos' }}
+        if: ${{ matrix.os == 'macos-latest' || matrix.os == 'macos-13' }}
         run: |
           ls examples/*.cr | xargs -n 1 crystal build
           ls
       - name: Build all examples (Windows)
-        if: ${{ matrix.os == 'windows' }}
+        if: ${{ matrix.os == 'windows-latest' }}
         run: |
           Get-ChildItem -Path examples -Filter *.cr | ForEach-Object { crystal build $_.FullName }
           ls
