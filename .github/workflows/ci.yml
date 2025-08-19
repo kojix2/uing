@@ -73,7 +73,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install -y libgtk-3-dev
-      - name: Install dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get install -y libgtk-3-dev
+      - name: Install Crystal dependencies
         run: shards install
       - name: Download libui library
         run: |
