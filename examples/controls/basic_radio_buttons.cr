@@ -8,12 +8,15 @@ window.on_closing do
   true
 end
 
+group = UIng::Group.new("Options")
+
 radio_buttons = UIng::RadioButtons.new(["Option 1", "Option 2", "Option 3"])
 radio_buttons.on_selected do |idx|
   UIng.msg_box(window, "RadioButtons Changed", "Selected index: #{idx}")
 end
 
-window.child = radio_buttons
+group.child = radio_buttons
+window.child = group
 window.show
 
 UIng.main
