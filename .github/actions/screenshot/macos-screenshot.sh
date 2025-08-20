@@ -1,109 +1,98 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-APP_NAME="$1"
-OUTPUT_FILE="$2"
+APP_NAME="${1:?app binary name is required}"
+OUTPUT_FILE="${2:?output filename is required}"
 
-echo "Starting macOS screenshot process for $APP_NAME"
+echo "Starting macOS window screenshot process for $APP_NAME"
 
-# Launch the application in background
-./$APP_NAME &
+# Cleanup function to kill the app process
+cleanup() {
+  echo "Cleaning up processes..."
+  if [ -f app.pid ]; then
+    APP_PID=$(cat app.pid)
+    echo "Killing application process (PID: $APP_PID)..."
+    kill "$APP_PID" 2>/dev/null || true
+    rm -f app.pid
+  fi
+}
+trap cleanup EXIT INT TERM
+
+# Launch the application (assume executable name = process name)
+echo "Launching application: ./$APP_NAME"
+"./$APP_NAME" &
 APP_PID=$!
+echo $APP_PID > app.pid
 echo "Application launched with PID: $APP_PID"
 
-# Wait for application to fully load
-sleep 5
+# Wait for application startup
+sleep 3
 
-# Function to verify process is running
-verify_process() {
-    local app_pid="$1"
-    
-    echo "Verifying process PID: $app_pid"
-    
-    if ps -p "$app_pid" > /dev/null 2>&1; then
-        echo "Process $app_pid is running"
-        
-        # Get process details for debugging
-        ps -p "$app_pid" -o pid,ppid,comm,args || true
-        
-        return 0
-    else
-        echo "Process $app_pid is not running"
-        return 1
+# Wait for the window to appear
+echo "Waiting for window to appear..."
+for i in {1..20}; do
+  EXISTS=$(osascript -e "tell application \"System Events\" to return exists process \"$APP_NAME\"" || true)
+  if [ "$EXISTS" = "true" ]; then
+    HAS_WIN=$(osascript -e "tell application \"System Events\" to tell process \"$APP_NAME\" to return (count of windows) > 0" || true)
+    if [ "$HAS_WIN" = "true" ]; then
+      break
     fi
-}
+  fi
+  sleep 0.5
+done
 
-# Function to wait for GUI initialization
-wait_for_gui() {
-    local app_pid="$1"
-    local max_wait=15
-    local waited=0
-    
-    echo "Waiting for GUI initialization (max ${max_wait}s)..."
-    
-    while [ $waited -lt $max_wait ]; do
-        if verify_process "$app_pid"; then
-            # Additional wait for GUI elements to be ready
-            sleep 2
-            echo "GUI should be ready after ${waited}s + 2s buffer"
-            return 0
-        fi
-        
-        echo "Waiting... (${waited}s/${max_wait}s)"
-        sleep 1
-        waited=$((waited + 1))
-    done
-    
-    echo "Timeout waiting for GUI initialization"
-    return 1
-}
-
-# Verify the process is running and wait for GUI
-if wait_for_gui "$APP_PID"; then
-    echo "Process verified, taking full screen screenshot..."
-    
-    # Simple full screen capture
-    screencapture -x -t png "$OUTPUT_FILE" 2>/dev/null || {
-        echo "Screen capture failed"
-        exit 1
-    }
-    
-    echo "Screenshot captured successfully"
-    
-else
-    echo "Process verification failed, attempting emergency screen capture..."
-    
-    # Emergency fallback
-    screencapture -x -t png "$OUTPUT_FILE" 2>/dev/null || {
-        echo "Emergency screen capture failed"
-        exit 1
-    }
-    
-    echo "Emergency screen capture completed"
+if [ "$EXISTS" != "true" ] || [ "$HAS_WIN" != "true" ]; then
+  echo "ERROR: process or window not found"
+  osascript -e 'tell application "System Events" to get name of every process' | tr "," "\n" | head -50
+  # Fallback: full screen capture
+  screencapture -x "$OUTPUT_FILE"
+  exit 0
 fi
 
-# Verify screenshot was created
-if [ -f "$OUTPUT_FILE" ]; then
-    echo "Screenshot created successfully: $OUTPUT_FILE"
-    file "$OUTPUT_FILE" || true
-    
-    # Get image dimensions for verification
-    if command -v sips > /dev/null; then
-        sips -g pixelWidth -g pixelHeight "$OUTPUT_FILE" || true
-    fi
-else
-    echo "Failed to create screenshot"
-    exit 1
+# Write AppleScript to a temporary file to avoid heredoc issues
+cat > get_rect.applescript <<'OSA'
+tell application "System Events"
+  tell process "APP_NAME_PLACEHOLDER"
+    set frontmost to true
+    delay 0.5
+    if (count of windows) = 0 then return "ERROR: no windows"
+    set win to window 1
+    set {xPos, yPos} to position of win
+    set {wSize, hSize} to size of win
+    set AppleScript's text item delimiters to ","
+    return {xPos, yPos, wSize, hSize} as text
+  end tell
+end tell
+OSA
+
+# Replace placeholder with actual app name
+sed -i '' "s/APP_NAME_PLACEHOLDER/$APP_NAME/g" get_rect.applescript
+
+# Get window rect as x,y,w,h
+RECT=$(osascript get_rect.applescript)
+case "$RECT" in
+  ERROR:*) echo "$RECT"; screencapture -x "$OUTPUT_FILE"; exit 0 ;;
+esac
+
+# Remove whitespace and validate format
+RECT=$(echo "$RECT" | tr -d '[:space:]')
+if ! [[ "$RECT" =~ ^[0-9]+,[0-9]+,[0-9]+,[0-9]+$ ]]; then
+  echo "ERROR: invalid rect: '$RECT'"
+  screencapture -x "$OUTPUT_FILE"
+  exit 0
+fi
+echo "Window rect: $RECT"
+
+# Check screencapture permission (TCC/GUI)
+if ! screencapture -x /tmp/_probe.png 2>/dev/null; then
+  echo "Screen capture likely not permitted on hosted macOS runner (no GUI/TCC)."
+  screencapture -x "$OUTPUT_FILE"
+  exit 0
 fi
 
-# Cleanup: kill the application
-if [ -n "$APP_PID" ]; then
-    echo "Cleaning up application process (PID: $APP_PID)..."
-    kill $APP_PID 2>/dev/null || true
-    
-    # Wait a moment and force kill if necessary
-    sleep 2
-    kill -9 $APP_PID 2>/dev/null || true
-fi
+# Capture the window region
+echo "Capturing with screencapture -R $RECT -> $OUTPUT_FILE"
+screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
+ls -la "$OUTPUT_FILE"
 
-echo "macOS screenshot process completed successfully"
+echo "macOS window screenshot process completed successfully"
