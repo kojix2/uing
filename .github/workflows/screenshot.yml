@@ -52,12 +52,23 @@ jobs:
           crystal run download.cr
           ${{ matrix.os == 'windows' && 'Get-ChildItem libui' || 'ls -la libui/' }}
 
-      - name: Build all controls
+      - name: Build all controls (Linux/macOS)
+        if: matrix.os != 'windows'
+        shell: bash
         run: |
           for f in examples/controls/*.cr; do
             name=$(basename "$f" .cr)
             crystal build "$f" -o "$name"
           done
+
+      - name: Build all controls (Windows)
+        if: matrix.os == 'windows'
+        shell: pwsh
+        run: |
+          Get-ChildItem examples/controls/*.cr | ForEach-Object {
+            $name = $_.BaseName
+            crystal build $_.FullName -o $name
+          }
 
       - name: Take screenshots for all controls
         uses: ./.github/actions/screenshot
@@ -72,3 +83,18 @@ jobs:
           name: screenshots-${{ matrix.os }}
           path: "*.png"
           retention-days: 30
+
+      - name: Push screenshots to orphan branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin screenshots || true
+          git checkout --orphan screenshots || git checkout screenshots
+          git rm -rf . || true
+          cp *.png .
+          if [ -f gallery.md ]; then cp gallery.md .; fi
+          git add *.png || true
+          if [ -f gallery.md ]; then git add gallery.md; fi
+          git commit -m "Update screenshots [skip ci]" || true
+          git push -f origin screenshots
