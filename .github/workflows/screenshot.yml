@@ -12,15 +12,12 @@ jobs:
         include:
           - os: ubuntu
             runner: ubuntu-latest
-            app-name: control_gallery
             setup-display: true
           - os: windows
             runner: windows-latest
-            app-name: control_gallery.exe
             setup-display: false
           - os: macos
             runner: macos-latest
-            app-name: control_gallery
             setup-display: false
 
     env:
@@ -55,19 +52,23 @@ jobs:
           crystal run download.cr
           ${{ matrix.os == 'windows' && 'Get-ChildItem libui' || 'ls -la libui/' }}
 
-      - name: Build control_gallery
-        run: crystal build examples/control_gallery.cr -o ${{ matrix.app-name }}
+      - name: Build all controls
+        run: |
+          for f in examples/controls/*.cr; do
+            name=$(basename "$f" .cr)
+            crystal build "$f" -o "$name"
+          done
 
-      - name: Take screenshot
+      - name: Take screenshots for all controls
         uses: ./.github/actions/screenshot
         with:
           os: ${{ matrix.os }}
-          app-name: ${{ matrix.app-name }}
-          output-file: control_gallery-${{ matrix.os }}.png
+          app-names: "basic_button basic_checkbox basic_color_button basic_combobox basic_date_time_picker basic_editable_combobox basic_entry basic_font_button basic_label basic_progressbar basic_radio_buttons basic_separator basic_slider basic_spinbox basic_tab"
+          output-files: "basic_button-${{ matrix.os }}.png basic_checkbox-${{ matrix.os }}.png basic_color_button-${{ matrix.os }}.png basic_combobox-${{ matrix.os }}.png basic_date_time_picker-${{ matrix.os }}.png basic_editable_combobox-${{ matrix.os }}.png basic_entry-${{ matrix.os }}.png basic_font_button-${{ matrix.os }}.png basic_label-${{ matrix.os }}.png basic_progressbar-${{ matrix.os }}.png basic_radio_buttons-${{ matrix.os }}.png basic_separator-${{ matrix.os }}.png basic_slider-${{ matrix.os }}.png basic_spinbox-${{ matrix.os }}.png basic_tab-${{ matrix.os }}.png"
 
-      - name: Upload screenshot
+      - name: Upload screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: screenshot-control_gallery-${{ matrix.os }}
-          path: control_gallery-${{ matrix.os }}.png
+          name: screenshots-${{ matrix.os }}
+          path: "*.png"
           retention-days: 30
