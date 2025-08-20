@@ -91,10 +91,16 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin screenshots || true
           git checkout --orphan screenshots || git checkout screenshots
-          git rm -rf . || true
+          find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
           cp *.png .
           if [ -f gallery.md ]; then cp gallery.md .; fi
-          git add *.png || true
+          git status
+          git add *.png
           if [ -f gallery.md ]; then git add gallery.md; fi
-          git commit -m "Update screenshots [skip ci]" || true
-          git push -f origin screenshots
+          git status
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update screenshots [skip ci]"
+            git push -f origin screenshots
+          fi
