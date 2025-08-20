@@ -3,7 +3,7 @@ name: Screenshot Tests
 on:
   push:
     paths:
-      - "examples/controls/**"
+      - "examples/gallery/**"
   workflow_dispatch:
 
 jobs:
@@ -55,20 +55,20 @@ jobs:
           crystal run download.cr
           ${{ matrix.os == 'windows' && 'Get-ChildItem libui' || 'ls -la libui/' }}
 
-      - name: Build all controls (Linux/macOS)
+      - name: Build all gallery (Linux/macOS)
         if: matrix.os != 'windows'
         shell: bash
         run: |
-          for f in examples/controls/*.cr; do
+          for f in examples/gallery/*.cr; do
             name=$(basename "$f" .cr)
             crystal build "$f" -o "$name"
           done
 
-      - name: Build all controls (Windows)
+      - name: Build all gallery (Windows)
         if: matrix.os == 'windows'
         shell: pwsh
         run: |
-          Get-ChildItem examples/controls/*.cr | ForEach-Object {
+          Get-ChildItem examples/gallery/*.cr | ForEach-Object {
             $name = $_.BaseName
             crystal build $_.FullName -o $name
           }
@@ -78,8 +78,8 @@ jobs:
         id: gen_names
         shell: bash
         run: |
-          APPS=$(for f in examples/controls/*.cr; do basename "$f" .cr; done | xargs)
-          OUTPUTS=$(for f in examples/controls/*.cr; do basename "$f" .cr; done | xargs -I{} echo -n "{}-${{ matrix.os }}.png ")
+          APPS=$(for f in examples/gallery/*.cr; do basename "$f" .cr; done | xargs)
+          OUTPUTS=$(for f in examples/gallery/*.cr; do basename "$f" .cr; done | xargs -I{} echo -n "{}-${{ matrix.os }}.png ")
           echo "APP_NAMES=$APPS" >> $GITHUB_ENV
           echo "OUTPUT_FILES=$OUTPUTS" >> $GITHUB_ENV
 
@@ -88,12 +88,12 @@ jobs:
         id: gen_names_win
         shell: pwsh
         run: |
-          $apps = (Get-ChildItem examples/controls/*.cr | ForEach-Object { $_.BaseName }) -join ' '
-          $outputs = (Get-ChildItem examples/controls/*.cr | ForEach-Object { "$($_.BaseName)-${{ matrix.os }}.png" }) -join ' '
+          $apps = (Get-ChildItem examples/gallery/*.cr | ForEach-Object { $_.BaseName }) -join ' '
+          $outputs = (Get-ChildItem examples/gallery/*.cr | ForEach-Object { "$($_.BaseName)-${{ matrix.os }}.png" }) -join ' '
           echo "APP_NAMES=$apps" | Out-File -FilePath $env:GITHUB_ENV -Append
           echo "OUTPUT_FILES=$outputs" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Take screenshots for all controls
+      - name: Take screenshots for all gallery
         uses: ./.github/actions/screenshot
         with:
           os: ${{ matrix.os }}
