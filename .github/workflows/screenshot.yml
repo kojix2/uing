@@ -96,9 +96,10 @@ jobs:
           submodules: true
 
       - name: Download all screenshots artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
-          path: screenshots
+          pattern: screenshots-*
+          merge-multiple: true
 
       - name: Prepare orphan branch
         run: |
@@ -107,7 +108,7 @@ jobs:
           git fetch origin screenshots || true
           git checkout --orphan screenshots || git checkout screenshots
           find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
-          find screenshots -name "*.png" -exec cp {} . \;
+          find . -name "*.png" -exec cp {} . \;
           if [ -f gallery.md ]; then cp gallery.md .; fi
           git status
           git add *.png
