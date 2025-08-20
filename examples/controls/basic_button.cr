@@ -2,7 +2,7 @@ require "../../src/uing"
 
 UIng.init
 
-window = UIng::Window.new("hello world", 300, 200)
+window = UIng::Window.new("Button Examples", 300, 200)
 window.on_closing do
   UIng.quit
   true
