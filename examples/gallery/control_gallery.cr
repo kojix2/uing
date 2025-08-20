@@ -1,4 +1,4 @@
-require "../src/uing"
+require "../../src/uing"
 
 UIng.init
 
