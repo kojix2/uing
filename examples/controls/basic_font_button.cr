@@ -2,7 +2,7 @@ require "../../src/uing"
 
 UIng.init
 
-window = UIng::Window.new("FontButton Example", 300, 200, margined: true)
+window = UIng::Window.new("FontButton Example", 300, 100, margined: true)
 window.on_closing do
   UIng.quit
   true
