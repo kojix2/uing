@@ -84,15 +84,30 @@ jobs:
           path: "*.png"
           retention-days: 30
 
-      - name: Push screenshots to orphan branch
-        if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+  push_screenshots:
+    name: Push all screenshots to orphan branch
+    needs: screenshot
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+
+      - name: Download all screenshots artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: screenshots
+
+      - name: Prepare orphan branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin screenshots || true
           git checkout --orphan screenshots || git checkout screenshots
           find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
-          cp *.png .
+          find screenshots -name "*.png" -exec cp {} . \;
           if [ -f gallery.md ]; then cp gallery.md .; fi
           git status
           git add *.png
