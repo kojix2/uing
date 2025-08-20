@@ -73,12 +73,32 @@ jobs:
             crystal build $_.FullName -o $name
           }
 
+      - name: Generate app-names and output-files
+        if: matrix.os != 'windows'
+        id: gen_names
+        shell: bash
+        run: |
+          APPS=$(for f in examples/controls/*.cr; do basename "$f" .cr; done | xargs)
+          OUTPUTS=$(for f in examples/controls/*.cr; do basename "$f" .cr; done | xargs -I{} echo -n "{}-${{ matrix.os }}.png ")
+          echo "APP_NAMES=$APPS" >> $GITHUB_ENV
+          echo "OUTPUT_FILES=$OUTPUTS" >> $GITHUB_ENV
+
+      - name: Generate app-names and output-files (Windows)
+        if: matrix.os == 'windows'
+        id: gen_names_win
+        shell: pwsh
+        run: |
+          $apps = (Get-ChildItem examples/controls/*.cr | ForEach-Object { $_.BaseName }) -join ' '
+          $outputs = (Get-ChildItem examples/controls/*.cr | ForEach-Object { "$($_.BaseName)-${{ matrix.os }}.png" }) -join ' '
+          echo "APP_NAMES=$apps" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "OUTPUT_FILES=$outputs" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: Take screenshots for all controls
         uses: ./.github/actions/screenshot
         with:
           os: ${{ matrix.os }}
-          app-names: "basic_button basic_checkbox basic_color_button basic_combobox basic_date_time_picker basic_editable_combobox basic_entry basic_font_button basic_label basic_progressbar basic_multiline_entry basic_radio_buttons basic_separator basic_slider basic_spinbox basic_tab"
-          output-files: "basic_button-${{ matrix.os }}.png basic_checkbox-${{ matrix.os }}.png basic_color_button-${{ matrix.os }}.png basic_combobox-${{ matrix.os }}.png basic_date_time_picker-${{ matrix.os }}.png basic_editable_combobox-${{ matrix.os }}.png basic_entry-${{ matrix.os }}.png basic_font_button-${{ matrix.os }}.png basic_label-${{ matrix.os }}.png basic_progressbar-${{ matrix.os }}.png basic_multiline_entry-${{ matrix.os }}.png basic_radio_buttons-${{ matrix.os }}.png basic_separator-${{ matrix.os }}.png basic_slider-${{ matrix.os }}.png basic_spinbox-${{ matrix.os }}.png basic_tab-${{ matrix.os }}.png"
+          app-names: ${{ env.APP_NAMES }}
+          output-files: ${{ env.OUTPUT_FILES }}
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
