@@ -9,6 +9,7 @@ window.on_closing do
 end
 
 progressbar = UIng::ProgressBar.new
+progressbar.value = 50
 
 window.child = progressbar
 window.show
