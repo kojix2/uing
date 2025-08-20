@@ -1,6 +1,9 @@
 name: Screenshot Tests
 
 on:
+  push:
+    paths:
+      - "examples/controls/**"
   workflow_dispatch:
 
 jobs:
