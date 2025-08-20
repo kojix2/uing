@@ -95,48 +95,38 @@ jobs:
         with:
           submodules: true
 
+      - name: Prepare orphan branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Prepare orphan branch first
+          git fetch origin screenshots || true
+          git checkout --orphan screenshots || git checkout screenshots
+
+          # Remove all files and directories except .git
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} \;
+
       - name: Download all screenshots artifacts
         uses: actions/download-artifact@v5
         with:
           pattern: screenshots-*
           merge-multiple: true
 
-      - name: Prepare orphan branch
+      - name: Commit screenshots
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Debug: Check downloaded artifacts
-          echo "=== Downloaded artifacts ==="
-          ls -la *.png || echo "No PNG files found"
-
-          # Temporarily save PNG files
-          mkdir -p /tmp/screenshots
-          cp *.png /tmp/screenshots/ 2>/dev/null || echo "No PNG files found"
-
-          # Prepare orphan branch
-          git fetch origin screenshots || true
-          git checkout --orphan screenshots || git checkout screenshots
-
-          # Remove all files and directories except .git
-          find . -mindepth 1 ! -name .git -exec rm -rf {} +
-
-          # Restore only PNG files
-          cp /tmp/screenshots/*.png . 2>/dev/null || echo "No PNG files to restore"
+          # Debug: Check downloaded files
+          echo "=== Downloaded files ==="
+          ls -la
 
           # Add gallery.md if it exists
-          if [ -f /tmp/screenshots/gallery.md ]; then
-            cp /tmp/screenshots/gallery.md .
+          if [ -f gallery.md ]; then
+            git add gallery.md
           fi
-
-          # Debug: Check files in orphan branch
-          echo "=== Files in orphan branch ==="
-          ls -la
 
           # Commit only if PNG files exist
           if ls *.png 1> /dev/null 2>&1; then
             git add *.png
-            if [ -f gallery.md ]; then git add gallery.md; fi
             git status
             if ! git diff --cached --quiet; then
               git commit -m "Update screenshots [skip ci]"
