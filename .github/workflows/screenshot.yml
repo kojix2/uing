@@ -105,18 +105,45 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Debug: Check downloaded artifacts
+          echo "=== Downloaded artifacts ==="
+          ls -la *.png || echo "No PNG files found"
+
+          # Temporarily save PNG files
+          mkdir -p /tmp/screenshots
+          cp *.png /tmp/screenshots/ 2>/dev/null || echo "No PNG files found"
+
+          # Prepare orphan branch
           git fetch origin screenshots || true
           git checkout --orphan screenshots || git checkout screenshots
+
+          # Remove all files except .git directory
           find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
-          find . -name "*.png" -exec cp {} . \;
-          if [ -f gallery.md ]; then cp gallery.md .; fi
-          git status
-          git add *.png
-          if [ -f gallery.md ]; then git add gallery.md; fi
-          git status
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
+
+          # Restore only PNG files
+          cp /tmp/screenshots/*.png . 2>/dev/null || echo "No PNG files to restore"
+
+          # Add gallery.md if it exists
+          if [ -f /tmp/screenshots/gallery.md ]; then
+            cp /tmp/screenshots/gallery.md .
+          fi
+
+          # Debug: Check files in orphan branch
+          echo "=== Files in orphan branch ==="
+          ls -la
+
+          # Commit only if PNG files exist
+          if ls *.png 1> /dev/null 2>&1; then
+            git add *.png
+            if [ -f gallery.md ]; then git add gallery.md; fi
+            git status
+            if ! git diff --cached --quiet; then
+              git commit -m "Update screenshots [skip ci]"
+              git push -f origin screenshots
+            else
+              echo "No changes to commit."
+            fi
           else
-            git commit -m "Update screenshots [skip ci]"
-            git push -f origin screenshots
+            echo "No PNG files found to commit."
           fi
