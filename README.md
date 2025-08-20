@@ -217,35 +217,165 @@ Images are automatically generated and stored in the `screenshots` branch.
 
 ### Control
 
-| Control                                                         | Ubuntu                                                                                                                          | Windows                                                                                                                           | macOS                                                                                                                         |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| [Button](examples/gallery/basic_button.cr)                      | ![basic_button-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-ubuntu.png)                       | ![basic_button-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-windows.png)                       | ![basic_button-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-macos.png)                       |
-| [CheckBox](examples/gallery/basic_checkbox.cr)                  | ![basic_checkbox-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-ubuntu.png)                   | ![basic_checkbox-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-windows.png)                   | ![basic_checkbox-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-macos.png)                   |
-| [ColorButton](examples/gallery/basic_color_button.cr)           | ![basic_color_button-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-ubuntu.png)           | ![basic_color_button-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-windows.png)           | ![basic_color_button-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-macos.png)           |
-| [Combobox](examples/gallery/basic_combobox.cr)                  | ![basic_combobox-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_combobox-ubuntu.png)                   | ![basic_combobox-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_combobox-windows.png)                   | ![basic_combobox-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_combobox-macos.png)                   |
-| [DateTimePicker](examples/gallery/basic_date_time_picker.cr)    | ![basic_date_time_picker-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_date_time_picker-ubuntu.png)   | ![basic_date_time_picker-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_date_time_picker-windows.png)   | ![basic_date_time_picker-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_date_time_picker-macos.png)   |
-| [EditableCombobox](examples/gallery/basic_editable_combobox.cr) | ![basic_editable_combobox-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_editable_combobox-ubuntu.png) | ![basic_editable_combobox-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_editable_combobox-windows.png) | ![basic_editable_combobox-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_editable_combobox-macos.png) |
-| [Entry](examples/gallery/basic_entry.cr)                        | ![basic_entry-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_entry-ubuntu.png)                         | ![basic_entry-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_entry-windows.png)                         | ![basic_entry-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_entry-macos.png)                         |
-| [FontButton](examples/gallery/basic_font_button.cr)             | ![basic_font_button-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_font_button-ubuntu.png)             | ![basic_font_button-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_font_button-windows.png)             | ![basic_font_button-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_font_button-macos.png)             |
-| [Label](examples/gallery/basic_label.cr)                        | ![basic_label-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_label-ubuntu.png)                         | ![basic_label-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_label-windows.png)                         | ![basic_label-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_label-macos.png)                         |
-| [MultilineEntry](examples/gallery/basic_multiline_entry.cr)     | ![basic_multiline_entry-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_multiline_entry-ubuntu.png)     | ![basic_multiline_entry-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_multiline_entry-windows.png)     | ![basic_multiline_entry-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_multiline_entry-macos.png)     |
-| [Progressbar](examples/gallery/basic_progressbar.cr)            | ![basic_progressbar-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_progressbar-ubuntu.png)             | ![basic_progressbar-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_progressbar-windows.png)             | ![basic_progressbar-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_progressbar-macos.png)             |
-| [RadioButtons](examples/gallery/basic_radio_buttons.cr)         | ![basic_radio_buttons-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_radio_buttons-ubuntu.png)         | ![basic_radio_buttons-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_radio_buttons-windows.png)         | ![basic_radio_buttons-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_radio_buttons-macos.png)         |
-| [Separator](examples/gallery/basic_separator.cr)                | ![basic_separator-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_separator-ubuntu.png)                 | ![basic_separator-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_separator-windows.png)                 | ![basic_separator-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_separator-macos.png)                 |
-| [Slider](examples/gallery/basic_slider.cr)                      | ![basic_slider-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_slider-ubuntu.png)                       | ![basic_slider-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_slider-windows.png)                       | ![basic_slider-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_slider-macos.png)                       |
-| [Spinbox](examples/gallery/basic_spinbox.cr)                    | ![basic_spinbox-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-ubuntu.png)                     | ![basic_spinbox-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-windows.png)                     | ![basic_spinbox-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-macos.png)                     |
-| [Tab](examples/gallery/basic_tab.cr)                            | ![basic_tab-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-ubuntu.png)                             | ![basic_tab-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-windows.png)                             | ![basic_tab-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-macos.png)                             |
+<table>
+  <thead>
+    <tr>
+      <th>Control</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_button.cr">Button</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-ubuntu.png" alt="basic_button-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-windows.png" alt="basic_button-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-macos.png" alt="basic_button-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_checkbox.cr">CheckBox</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-ubuntu.png" alt="basic_checkbox-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-windows.png" alt="basic_checkbox-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-macos.png" alt="basic_checkbox-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_color_button.cr">ColorButton</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-ubuntu.png" alt="basic_color_button-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-windows.png" alt="basic_color_button-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-macos.png" alt="basic_color_button-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_combobox.cr">Combobox</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_combobox-ubuntu.png" alt="basic_combobox-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_combobox-windows.png" alt="basic_combobox-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_combobox-macos.png" alt="basic_combobox-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_date_time_picker.cr">DateTimePicker</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_date_time_picker-ubuntu.png" alt="basic_date_time_picker-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_date_time_picker-windows.png" alt="basic_date_time_picker-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_date_time_picker-macos.png" alt="basic_date_time_picker-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_editable_combobox.cr">EditableCombobox</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_editable_combobox-ubuntu.png" alt="basic_editable_combobox-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_editable_combobox-windows.png" alt="basic_editable_combobox-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_editable_combobox-macos.png" alt="basic_editable_combobox-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_entry.cr">Entry</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_entry-ubuntu.png" alt="basic_entry-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_entry-windows.png" alt="basic_entry-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_entry-macos.png" alt="basic_entry-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_font_button.cr">FontButton</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_font_button-ubuntu.png" alt="basic_font_button-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_font_button-windows.png" alt="basic_font_button-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_font_button-macos.png" alt="basic_font_button-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_label.cr">Label</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_label-ubuntu.png" alt="basic_label-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_label-windows.png" alt="basic_label-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_label-macos.png" alt="basic_label-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_multiline_entry.cr">MultilineEntry</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_multiline_entry-ubuntu.png" alt="basic_multiline_entry-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_multiline_entry-windows.png" alt="basic_multiline_entry-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_multiline_entry-macos.png" alt="basic_multiline_entry-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_progressbar.cr">Progressbar</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_progressbar-ubuntu.png" alt="basic_progressbar-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_progressbar-windows.png" alt="basic_progressbar-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_progressbar-macos.png" alt="basic_progressbar-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_radio_buttons.cr">RadioButtons</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_radio_buttons-ubuntu.png" alt="basic_radio_buttons-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_radio_buttons-windows.png" alt="basic_radio_buttons-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_radio_buttons-macos.png" alt="basic_radio_buttons-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_separator.cr">Separator</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_separator-ubuntu.png" alt="basic_separator-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_separator-windows.png" alt="basic_separator-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_separator-macos.png" alt="basic_separator-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_slider.cr">Slider</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_slider-ubuntu.png" alt="basic_slider-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_slider-windows.png" alt="basic_slider-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_slider-macos.png" alt="basic_slider-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_spinbox.cr">Spinbox</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-ubuntu.png" alt="basic_spinbox-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-windows.png" alt="basic_spinbox-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-macos.png" alt="basic_spinbox-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_tab.cr">Tab</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-ubuntu.png" alt="basic_tab-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-windows.png" alt="basic_tab-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-macos.png" alt="basic_tab-macos"></td>
+    </tr>
+  </tbody>
+</table>
 
 ### Table
 
-| Example                                              | Ubuntu                                                                                                        | Windows                                                                                                         | macOS                                                                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [basic_table](examples/gallery/basic_table.cr)       | ![basic_table-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-ubuntu.png)       | ![basic_table-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-windows.png)       | ![basic_table-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-macos.png)       |
-| [advanced_table](examples/gallery/advanced_table.cr) | ![advanced_table-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-ubuntu.png) | ![advanced_table-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-windows.png) | ![advanced_table-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-macos.png) |
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_table.cr">basic_table</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-ubuntu.png" alt="basic_table-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-windows.png" alt="basic_table-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-macos.png" alt="basic_table-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/advanced_table.cr">advanced_table</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-ubuntu.png" alt="advanced_table-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-windows.png" alt="advanced_table-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-macos.png" alt="advanced_table-macos"></td>
+    </tr>
+  </tbody>
+</table>
 
 ### Area
 
-| Example                                      | Ubuntu                                                                                                | Windows                                                                                                 | macOS                                                                                               |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| [basic_area](examples/gallery/basic_area.cr) | ![basic_area-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-ubuntu.png) | ![basic_area-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-windows.png) | ![basic_area-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-macos.png) |
-| [spirograph](examples/gallery/spirograph.cr) | ![spirograph-ubuntu](https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-ubuntu.png) | ![spirograph-windows](https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-windows.png) | ![spirograph-macos](https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-macos.png) |
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_area.cr">basic_area</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-ubuntu.png" alt="basic_area-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-windows.png" alt="basic_area-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-macos.png" alt="basic_area-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/spirograph.cr">spirograph</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-ubuntu.png" alt="spirograph-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-windows.png" alt="spirograph-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-macos.png" alt="spirograph-macos"></td>
+    </tr>
+  </tbody>
+</table>
