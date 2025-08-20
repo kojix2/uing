@@ -1,66 +1,30 @@
 require "../src/uing"
 
 # Spirograph parameters and logic
-module Spirograph
-  # Spirograph parameters (textbook notation)
-  @@R : Float64 = 120.0       # Radius of fixed circle
-  @@r : Float64 = 60.0        # Radius of rolling circle
-  @@a : Float64 = 80.0        # Offset from center of rolling circle
-  @@num_points : Int32 = 2000 # Number of points
+class Spirograph
+  property num_points : Int32 = 2000
+  property center_x : Float64 = 300.0
+  property center_y : Float64 = 250.0
+  property hue : Float64 = 0.0
 
-  # Center of drawing area
-  @@center_x : Float64 = 300.0
-  @@center_y : Float64 = 250.0
+  property radius_fixed : Float64 = 120.0
+  property radius_rolling : Float64 = 60.0
+  property offset : Float64 = 80.0
 
-  # Color phase for animation
-  @@hue : Float64 = 0.0
-
-  def self.radius_fixed
-    @@R
+  def radius_fixed=(v : Float64)
+    @radius_fixed = v.clamp(30.0, 200.0)
   end
 
-  def self.radius_rolling
-    @@r
+  def radius_rolling=(v : Float64)
+    @radius_rolling = v.clamp(10.0, 100.0)
   end
 
-  def self.offset
-    @@a
-  end
-
-  def self.num_points
-    @@num_points
-  end
-
-  def self.center_x
-    @@center_x
-  end
-
-  def self.center_y
-    @@center_y
-  end
-
-  def self.hue
-    @@hue
-  end
-
-  def self.set_radius_fixed(v : Float64)
-    @@R = v.clamp(30.0, 200.0)
-  end
-
-  def self.set_radius_rolling(v : Float64)
-    @@r = v.clamp(10.0, 100.0)
-  end
-
-  def self.set_offset(v : Float64)
-    @@a = v.clamp(5.0, 150.0)
-  end
-
-  def self.set_hue(v : Float64)
-    @@hue = v
+  def offset=(v : Float64)
+    @offset = v.clamp(5.0, 150.0)
   end
 
   # Greatest common divisor (Euclidean algorithm)
-  def self.gcd(u : Float64, v : Float64) : Float64
+  def gcd(u : Float64, v : Float64) : Float64
     u, v = u.abs, v.abs
     while v > 1e-6
       u, v = v, u % v
@@ -69,26 +33,30 @@ module Spirograph
   end
 
   # Least common multiple
-  def self.lcm(u : Float64, v : Float64) : Float64
+  def lcm(u : Float64, v : Float64) : Float64
     (u * v).abs / gcd(u, v)
   end
 
   # Total angle to complete the spirograph
-  def self.total_angle : Float64
-    lcm(@@R, @@r) * 2 * Math::PI / @@r
+  def total_angle : Float64
+    lcm(radius_fixed, radius_rolling) * 2 * Math::PI / radius_rolling
   end
 
   # Parametric equations for spirograph (textbook style)
-  def self.spiro_x(t : Float64)
-    (radius_fixed - radius_rolling) * Math.cos(t) + offset * Math.cos((radius_fixed - radius_rolling) / radius_rolling * t) + center_x
+  def spiro_x(t : Float64)
+    (radius_fixed - radius_rolling) * Math.cos(t) \
+      + offset * Math.cos((radius_fixed - radius_rolling) / radius_rolling * t) \
+        + center_x
   end
 
-  def self.spiro_y(t : Float64)
-    (radius_fixed - radius_rolling) * Math.sin(t) - offset * Math.sin((radius_fixed - radius_rolling) / radius_rolling * t) + center_y
+  def spiro_y(t : Float64)
+    (radius_fixed - radius_rolling) * Math.sin(t) \
+      - offset * Math.sin((radius_fixed - radius_rolling) / radius_rolling * t) \
+        + center_y
   end
 
   # HSV to RGB conversion
-  def self.hsv_to_rgb(h : Float64, s : Float64, v : Float64)
+  def hsv_to_rgb(h : Float64, s : Float64, v : Float64)
     h = h % 1.0
     i = (h * 6).floor
     f = h * 6 - i
@@ -113,13 +81,15 @@ class SpirographApp
   @area : UIng::Area
   @main_window : UIng::Window
   @info_label : UIng::Label
+  getter spirograph : Spirograph
 
   def initialize
-    # Randomize initial parameters
-    Spirograph.set_radius_fixed(50.0 + rand * 150.0)
-    Spirograph.set_radius_rolling(10.0 + rand * 90.0)
-    Spirograph.set_offset(10.0 + rand * 120.0)
-    Spirograph.set_hue(rand)
+    # Create spirograph instance and randomize initial parameters
+    @spirograph = Spirograph.new
+    spirograph.radius_fixed = 50.0 + rand * 150.0
+    spirograph.radius_rolling = 10.0 + rand * 90.0
+    spirograph.offset = 10.0 + rand * 120.0
+    spirograph.hue = rand
 
     # Create handler and area
     @handler = UIng::Area::Handler.new
@@ -129,6 +99,7 @@ class SpirographApp
 
     setup_handlers
     setup_ui
+    update_info_label
   end
 
   # Set up all event handlers (draw, mouse, key)
@@ -143,12 +114,12 @@ class SpirographApp
       end
 
       # Draw spirograph curve
-      total_theta = Spirograph.total_angle
-      n_points = Spirograph.num_points
-      hue = Spirograph.hue
+      total_theta = spirograph.total_angle
+      n_points = spirograph.num_points
+      hue = spirograph.hue
 
       # Color changes slightly on each redraw using hue
-      rgb = Spirograph.hsv_to_rgb(hue, 0.7, 0.95)
+      rgb = spirograph.hsv_to_rgb(hue, 0.7, 0.95)
       r = rgb["r"]? || rgb[:r]
       g = rgb["g"]? || rgb[:g]
       b = rgb["b"]? || rgb[:b]
@@ -160,13 +131,13 @@ class SpirographApp
         thickness: 1.0
       ) do |path|
         t0 = 0.0
-        x0 = Spirograph.spiro_x(t0)
-        y0 = Spirograph.spiro_y(t0)
+        x0 = spirograph.spiro_x(t0)
+        y0 = spirograph.spiro_y(t0)
         path.new_figure(x0, y0)
         (1..n_points).each do |i|
           t = total_theta * i / n_points
-          x = Spirograph.spiro_x(t)
-          y = Spirograph.spiro_y(t)
+          x = spirograph.spiro_x(t)
+          y = spirograph.spiro_y(t)
           path.line_to(x, y)
         end
       end
@@ -174,11 +145,11 @@ class SpirographApp
 
     # Mouse event: randomize parameters and redraw
     @handler.mouse_event do |area, event|
-      Spirograph.set_radius_fixed(50.0 + rand * 150.0)
-      Spirograph.set_radius_rolling(10.0 + rand * 90.0)
-      Spirograph.set_offset(10.0 + rand * 120.0)
+      spirograph.radius_fixed = 50.0 + rand * 150.0
+      spirograph.radius_rolling = 10.0 + rand * 90.0
+      spirograph.offset = 10.0 + rand * 120.0
       # Advance hue slightly on each redraw
-      Spirograph.set_hue((Spirograph.hue + 0.02) % 1.0)
+      spirograph.hue = (spirograph.hue + 0.02) % 1.0
       area.queue_redraw_all
       update_info_label
     end
@@ -188,17 +159,17 @@ class SpirographApp
       if event.up == 0 # Key down
         case event.key
         when 'Q'.ord, 'q'.ord
-          Spirograph.set_radius_fixed(Spirograph.radius_fixed + 5)
+          spirograph.radius_fixed = spirograph.radius_fixed + 5
         when 'A'.ord, 'a'.ord
-          Spirograph.set_radius_fixed(Spirograph.radius_fixed - 5)
+          spirograph.radius_fixed = spirograph.radius_fixed - 5
         when 'W'.ord, 'w'.ord
-          Spirograph.set_radius_rolling(Spirograph.radius_rolling + 2)
+          spirograph.radius_rolling = spirograph.radius_rolling + 2
         when 'S'.ord, 's'.ord
-          Spirograph.set_radius_rolling(Spirograph.radius_rolling - 2)
+          spirograph.radius_rolling = spirograph.radius_rolling - 2
         when 'E'.ord, 'e'.ord
-          Spirograph.set_offset(Spirograph.offset + 5)
+          spirograph.offset = spirograph.offset + 5
         when 'D'.ord, 'd'.ord
-          Spirograph.set_offset(Spirograph.offset - 5)
+          spirograph.offset = spirograph.offset - 5
         end
         area.queue_redraw_all
         update_info_label
@@ -225,7 +196,7 @@ class SpirographApp
 
   # Update the info label to show current parameters
   private def update_info_label
-    @info_label.text = "Q/A: R=#{Spirograph.radius_fixed.to_i} | W/S: r=#{Spirograph.radius_rolling.to_i} | E/D: a=#{Spirograph.offset.to_i}"
+    @info_label.text = "Q/A: R=#{spirograph.radius_fixed.to_i} | W/S: r=#{spirograph.radius_rolling.to_i} | E/D: a=#{spirograph.offset.to_i}"
   end
 
   # Run the application
