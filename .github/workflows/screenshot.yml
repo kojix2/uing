@@ -104,9 +104,6 @@ jobs:
           git fetch origin screenshots || true
           git checkout --orphan screenshots || git checkout screenshots
 
-          # Remove all files and directories except .git
-          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} \;
-
       - name: Download all screenshots artifacts
         uses: actions/download-artifact@v5
         with:
