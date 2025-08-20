@@ -96,7 +96,7 @@ jobs:
           submodules: true
 
       - name: Download all screenshots artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: screenshots
 
