@@ -118,8 +118,8 @@ jobs:
           git fetch origin screenshots || true
           git checkout --orphan screenshots || git checkout screenshots
 
-          # Remove all files except .git directory
-          find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
+          # Remove all files and directories except .git
+          find . -mindepth 1 ! -name .git -exec rm -rf {} +
 
           # Restore only PNG files
           cp /tmp/screenshots/*.png . 2>/dev/null || echo "No PNG files to restore"
