@@ -19,9 +19,9 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
   </thead>
   <tbody>
     <tr>
-      <td><img src="https://user-images.githubusercontent.com/5798442/103118046-900ea780-46b0-11eb-81fc-32626762e4df.png"></td>
-      <td><img src="https://user-images.githubusercontent.com/5798442/103118059-99980f80-46b0-11eb-9d12-324ec4d297c9.png"></td>
-      <td><img src="https://user-images.githubusercontent.com/5798442/103118068-a0bf1d80-46b0-11eb-8c5c-3bdcc3dcfb26.png"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/refs/heads/screenshots/control_gallery-windows.png"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/refs/heads/screenshots/control_gallery-macos.png"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/refs/heads/screenshots/control_gallery-ubuntu.png"></td>
     </tr>
   </tbody>
 </table>
