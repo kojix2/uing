@@ -58,10 +58,6 @@ jobs:
       - name: Build control_gallery
         run: crystal build examples/control_gallery.cr -o ${{ matrix.app-name }}
 
-      - name: Build control_gallery (windows)
-        if: matrix.os == 'windows'
-        run: crystal build examples/control_gallery.cr -o ${{ matrix.app-name }} --link-flags=/SUBSYSTEM:WINDOWS
-
       - name: Take screenshot
         uses: ./.github/actions/screenshot
         with:
