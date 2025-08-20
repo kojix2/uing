@@ -7,8 +7,6 @@ main_window = UIng::Window.new("Animal sounds", 300, 200)
 hbox = UIng::Box.new :horizontal
 main_window.child = hbox
 
-alias CInt = LibC::Int
-
 data = [
   %w[cat meow],
   %w[dog woof],
