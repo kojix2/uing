@@ -215,6 +215,27 @@ MIT License
 This gallery shows screenshots of example on three platforms (Ubuntu, Windows, macOS).  
 Images are automatically generated and stored in the `screenshots` branch.
 
+### Window
+
+<table>
+  <thead>
+    <tr>
+      <th>Control</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_window.cr">Window</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-ubuntu.png" alt="basic_window-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-windows.png" alt="basic_window-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-macos.png" alt="basic_window-macos"></td>
+    </tr>
+  </tbody>
+</table>
+
 ### Control
 
 <table>
