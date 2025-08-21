@@ -54,7 +54,7 @@ cat > get_rect.applescript <<'OSA'
 tell application "System Events"
   tell process "APP_NAME_PLACEHOLDER"
     set frontmost to true
-    delay 0.5
+    delay 1.0
     if (count of windows) = 0 then return "ERROR: no windows"
     set win to window 1
     set {xPos, yPos} to position of win
