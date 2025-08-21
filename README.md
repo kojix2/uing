@@ -372,6 +372,12 @@ Images are automatically generated and stored in the `screenshots` branch.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-windows.png" alt="basic_tab-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-macos.png" alt="basic_tab-macos"></td>
     </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_form.cr">Form</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_form-ubuntu.png" alt="basic_form-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_form-windows.png" alt="basic_form-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_form-macos.png" alt="basic_form-macos"></td>
+    </tr>
   </tbody>
 </table>
 
