@@ -163,6 +163,16 @@ For more examples, see the [examples](examples) directory.
 
 - The use of `finalize` is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.
 
+## Limitations
+
+libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:
+
+1. Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)
+
+2. Grid layout is broken on macOS.
+
+3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
+
 ## Windows Setup
 
 ### Hide Console Window
