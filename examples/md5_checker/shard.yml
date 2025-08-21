@@ -4,6 +4,7 @@ version: 0.1.0
 dependencies:
   uing:
     github: kojix2/uing
+    branch: main
 
 targets:
   md5checker:
