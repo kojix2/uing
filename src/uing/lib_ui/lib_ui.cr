@@ -359,7 +359,7 @@ module UIng
 
     alias Grid = Void
     fun grid_append = uiGridAppend(g : Pointer(Grid), c : Pointer(Control), left : LibC::Int, top : LibC::Int, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
-    fun grid_insert_at = uiGridInsertAt(g : Pointer(Grid), c : Pointer(Control), existing : Pointer(Control), at : At, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
+    fun grid_insert_at = uiGridInsertAt(g : Pointer(Grid), c : Pointer(Control), existing : Pointer(Control), at : UIng::Grid::At, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
     fun grid_padded = uiGridPadded(g : Pointer(Grid)) : Bool
     fun grid_set_padded = uiGridSetPadded(g : Pointer(Grid), padded : Bool)
     fun new_grid = uiNewGrid : Pointer(Grid)
