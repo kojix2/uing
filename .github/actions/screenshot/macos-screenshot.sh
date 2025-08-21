@@ -66,13 +66,13 @@ sleep 1
 cat > "$SWIFT_FILE" <<'SWIFT'
 import Foundation, CoreGraphics
 
-struct Win: Codable {
+struct Win {
   let ownerName: String
-  let windowName: String?
   let windowNumber: Int
+  let ownerPID: Int
   let layer: Int
   let isOnscreen: Bool
-  let bounds: [String: CGFloat]
+  let bounds: CGRect
 }
 
 func listWins() -> [Win] {
@@ -81,56 +81,51 @@ func listWins() -> [Win] {
   return info.compactMap { d in
     guard let owner = d[kCGWindowOwnerName as String] as? String,
           let num   = d[kCGWindowNumber as String] as? Int,
+          let pid   = d[kCGWindowOwnerPID as String] as? Int,
           let layer = d[kCGWindowLayer as String] as? Int,
           let b     = d[kCGWindowBounds as String] as? [String: CGFloat] else { return nil }
-    return Win(ownerName: owner,
-               windowName: d[kCGWindowName as String] as? String,
-               windowNumber: num, layer: layer,
-               isOnscreen: (d[kCGWindowIsOnscreen as String] as? Bool) ?? true,
-               bounds: b)
+    let rect = CGRect(x: b["X"] ?? 0, y: b["Y"] ?? 0, width: b["Width"] ?? 0, height: b["Height"] ?? 0)
+    let on = (d[kCGWindowIsOnscreen as String] as? Bool) ?? true
+    return Win(ownerName: owner, windowNumber: num, ownerPID: pid, layer: layer, isOnscreen: on, bounds: rect)
   }
 }
 
+func area(_ r: CGRect) -> CGFloat { r.width * r.height }
+
 let args = CommandLine.arguments
-guard args.count >= 2 else { exit(2) }
+// usage: swift wait.swift <OwnerName> <TimeoutSec> <PollIntervalSec> [OwnerPID]
+guard args.count >= 4 else { exit(2) }
 let owner = args[1].lowercased()
-let all = listWins()
-if args.count >= 3 {
-  let enc = JSONEncoder(); enc.outputFormatting = [.prettyPrinted,.sortedKeys]
-  if let data = try? enc.encode(all) { try? data.write(to: URL(fileURLWithPath: args[2])) }
-}
+let timeout = Double(args[2]) ?? 5.0
+let interval = max(0.02, Double(args[3]) ?? 0.10)
+let ownerPID: Int? = (args.count >= 5) ? Int(args[4]) : nil
+let deadline = Date().addingTimeInterval(timeout)
 
-func area(_ b: [String:CGFloat]) -> CGFloat {
-  (b["Width"] ?? 0) * (b["Height"] ?? 0)
-}
-
-let exact = all.filter { $0.layer == 0 && $0.isOnscreen && $0.ownerName.lowercased() == owner }
-let soft  = all.filter { $0.layer == 0 && $0.isOnscreen && $0.ownerName.lowercased().contains(owner) }
-
-let pick = (exact.max { area($0.bounds) < area($1.bounds) }) ??
-           (soft.max  { area($0.bounds) < area($1.bounds) })
-
-if let p = pick {
-  // print: id,x,y,w,h  （-l で使うのは先頭の id。後ろは -R フォールバック用）
-  let b = p.bounds
-  print("\(p.windowNumber),\(Int(b["X"] ?? 0)),\(Int(b["Y"] ?? 0)),\(Int(b["Width"] ?? 0)),\(Int(b["Height"] ?? 0))")
-  exit(0)
+while Date() < deadline {
+  let all = listWins().filter { $0.layer == 0 && $0.isOnscreen }
+  let pidFiltered = ownerPID != nil ? all.filter { $0.ownerPID == ownerPID } : all
+  let exact = pidFiltered.filter { $0.ownerName.lowercased() == owner }
+  let soft  = pidFiltered.filter { $0.ownerName.lowercased().contains(owner) }
+  let pick = (exact.max { area($0.bounds) < area($1.bounds) }) ??
+             (soft.max  { area($0.bounds) < area($1.bounds) })
+  if let p = pick {
+    let b = p.bounds
+    print("\(p.windowNumber),\(Int(b.origin.x)),\(Int(b.origin.y)),\(Int(b.size.width)),\(Int(b.size.height))")
+    exit(0)
+  }
+  Thread.sleep(forTimeInterval: interval)
 }
 exit(1)
 SWIFT
 
 # ---- wait window & get id/rect ---------------------------------------------
 echo "Waiting for window (CGWindowList)…"
-WINLINE=""
-for _ in {1..40}; do
-  WINLINE="$(/usr/bin/swift "$SWIFT_FILE" "$APP_NAME" "$WININFO_JSON" 2>/dev/null || true)"
-  [[ "$WINLINE" =~ ^[0-9]+,[-0-9]+,[-0-9]+,[0-9]+,[0-9]+$ ]] && break
-  sleep 0.25
-done
+# 例: タイムアウト 5s / ポーリング 0.10s。必要ならここを短縮可。
+WINLINE="$(/usr/bin/swift "$SWIFT_FILE" "$APP_NAME" 5.0 0.10 "${REAL_PID:-}" 2>/dev/null || true)"
 
 if [[ ! "$WINLINE" =~ ^([0-9]+),([-0-9]+),([-0-9]+),([0-9]+),([0-9]+)$ ]]; then
   echo "Window not found. Dump (top):"
-  head -120 "$WININFO_JSON" 2>/dev/null || true
+  # （JSONダンプは廃止。必要ならここで追加ログを出してください）
   echo "Fallback: full-screen capture"
   screencapture -x "$OUTPUT_FILE" || true
   exit 0
