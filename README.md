@@ -390,6 +390,12 @@ Images are automatically generated and stored in the `screenshots` branch.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_grid-windows.png" alt="basic_grid-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_grid-macos.png" alt="basic_grid-macos"></td>
     </tr>
+    <tr>
+      <td><a href="examples/gallery/calculator.cr">Grid (Calculator)</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/calculator-ubuntu.png" alt="grid_calculator-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/calculator-windows.png" alt="grid_calculator-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/calculator-macos.png" alt="grid_calculator-macos"></td>
+    </tr>
   </tbody>
 </table>
 
