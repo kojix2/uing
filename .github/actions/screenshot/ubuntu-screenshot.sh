@@ -7,7 +7,7 @@ OUTPUT_FILE="$2"
 echo "Starting Ubuntu window screenshot process for $APP_NAME"
 
 # Start Xvfb with proper screen resolution
-Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &
+Xvfb :99 -screen 0 1280x800x24 -ac +extension GLX +render -noreset &
 echo $! > xvfb.pid
 sleep 3
 
@@ -24,8 +24,8 @@ sleep 2
 "./$APP_NAME" &
 echo $! > app.pid
 
-# Wait for application to fully load
-sleep 5
+# Short initial wait; loop below will wait for the window anyway
+sleep 1
 
 # Try to find the application window by PID
 WINDOW_ID=""
@@ -95,8 +95,8 @@ if [ -n "$WINDOW_ID" ]; then
   wmctrl -i -a "$WINDOW_ID" || true
   sleep 1
 
-  # Take screenshot of the specific window
-  import -window "$WINDOW_ID" "$OUTPUT_FILE"
+# Take screenshot incl. window decorations (title bar)
+import -frame -window "$WINDOW_ID" "$OUTPUT_FILE"
 
   echo "Window screenshot captured successfully"
 else
