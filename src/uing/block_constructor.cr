@@ -1,5 +1,5 @@
 module UIng
-  module BlockConstructor
+  private module BlockConstructor
     macro block_constructor
       def self.new(*args, &block)
         instance = new(*args)
