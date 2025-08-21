@@ -338,6 +338,34 @@ Images are automatically generated and stored in the `screenshots` branch.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-windows.png" alt="basic_spinbox-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_spinbox-macos.png" alt="basic_spinbox-macos"></td>
     </tr>
+    </tr>
+  </tbody>
+</table>
+
+### Container Control
+
+<table>
+  <thead>
+    <tr>
+      <th>Container</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_box_horizontal.cr">Box (Horizontal)</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_box_horizontal-ubuntu.png" alt="basic_box_horizontal-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_box_horizontal-windows.png" alt="basic_box_horizontal-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_box_horizontal-macos.png" alt="basic_box_horizontal-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_box_vertical.cr">Box (Vertical)</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_box_vertical-ubuntu.png" alt="basic_box_vertical-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_box_vertical-windows.png" alt="basic_box_vertical-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_box_vertical-macos.png" alt="basic_box_vertical-macos"></td>
+    </tr>
     <tr>
       <td><a href="examples/gallery/basic_tab.cr">Tab</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_tab-ubuntu.png" alt="basic_tab-ubuntu"></td>
@@ -346,15 +374,6 @@ Images are automatically generated and stored in the `screenshots` branch.
     </tr>
   </tbody>
 </table>
-
-### Container
-
-- Box
-- Grid
-  - The Mac version of Grid has many bugs. When creating tools for use with MacOS, it is safer not to use Grid.
-- Group
-- Form
-- Tab
 
 ### Table
 
