@@ -43,12 +43,14 @@ echo "$APP_PID" > "$TMPDIR/app.pid"
 echo "Application launched with PID: $APP_PID"
 
 # ---- wait for process & bring to front -------------------------------------
-for _ in {1..40}; do
-  pgrep -ax -f "$APP_NAME" >/dev/null && break
+for i in {1..40}; do
+  if pgrep -ax -f -- "$APP_NAME" >/dev/null 2>&1; then
+    break
+  fi
   sleep 0.25
 done
 # If launched via 'open -a', resolve the real app PID for cleanup
-REAL_PID="$(pgrep -ax -f "$APP_NAME" | awk 'NR==1{print $1}')"
+REAL_PID="$(pgrep -ax -f -- "$APP_NAME" 2>/dev/null | awk 'NR==1{print $1}')"
 if [[ -n "${REAL_PID:-}" ]]; then
   echo "$REAL_PID" > "$TMPDIR/app.pid"
 fi
