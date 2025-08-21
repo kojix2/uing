@@ -409,6 +409,8 @@ Images are automatically generated and stored in the `screenshots` branch.
   </tbody>
 </table>
 
+Note: Grid Layout does not work as expected on macOS.
+
 ### Table
 
 <table>
