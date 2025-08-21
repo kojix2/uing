@@ -21,7 +21,7 @@ UIng::Menu.new("File") do
       MAIN_WINDOW.destroy # You have to destroy the window manually.
       true                # UIng.quit is automatically called in the C function onQuitClicked().
     else
-      UIng.msg_box(MAIN_WINDOW, "Warning", "Please check \"Should Quit\"")
+      MAIN_WINDOW.msg_box("Warning", "Please check \"Should Quit\"")
       false # Don"t quit
     end
   end
@@ -43,7 +43,7 @@ end
 UIng::Menu.new("Help") do
   append_item("Help")
   append_about_item.on_clicked do |w|
-    UIng.msg_box(w, "About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
+    w.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
   end
 end
 
@@ -63,7 +63,7 @@ group.child = inner
 # Button
 button = UIng::Button.new("Button") do
   on_clicked do
-    UIng.msg_box(MAIN_WINDOW, "Information", "You clicked the button")
+    MAIN_WINDOW.msg_box("Information", "You clicked the button")
   end
 end
 inner.append(button, false)

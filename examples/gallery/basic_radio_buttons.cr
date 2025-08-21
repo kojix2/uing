@@ -12,7 +12,7 @@ group = UIng::Group.new("Options")
 
 radio_buttons = UIng::RadioButtons.new(["Option 1", "Option 2", "Option 3"])
 radio_buttons.on_selected do |idx|
-  UIng.msg_box(window, "RadioButtons Changed", "Selected index: #{idx}")
+  window.msg_box("RadioButtons Changed", "Selected index: #{idx}")
 end
 
 group.child = radio_buttons

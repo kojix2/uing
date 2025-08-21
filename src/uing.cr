@@ -52,7 +52,8 @@ module UIng
       backtrace.each { |frame| Crystal::System.print_error "  from %s\n", frame }
     end
     # Show error message in a message box
-    UIng.msg_box_error(nil, "Error in #{ctx}", ex.message.to_s)
+    # Note: It is not correct for the first argument to be nil.
+    LibUI.msg_box_error(nil, "Error in #{ctx}", ex.message.to_s)
   end
 
   def self.init : Nil
@@ -158,13 +159,5 @@ module UIng
 
   def self.free_text(text) : Nil
     LibUI.free_text(text)
-  end
-
-  def self.msg_box(parent, title, description) : Nil
-    LibUI.msg_box(parent, title, description)
-  end
-
-  def self.msg_box_error(parent, title, description) : Nil
-    LibUI.msg_box_error(parent, title, description)
   end
 end

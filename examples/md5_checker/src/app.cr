@@ -93,7 +93,7 @@ class MD5CheckerApp
     if path && !path.empty?
       process_md5_file(path)
     else
-      UIng.msg_box_error(@main_window, "Error", "No file path specified")
+      @main_window.msg_box_error("Error", "No file path specified")
     end
   end
 
@@ -109,7 +109,7 @@ class MD5CheckerApp
     update_table(old_row_count, MD5Checker.instance.result_count)
 
     # Show completion dialog
-    UIng.msg_box(@main_window, "Process Complete", "MD5 check completed")
+    @main_window.msg_box("Process Complete", "MD5 check completed")
   end
 
   # Update table with new data

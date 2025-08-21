@@ -10,7 +10,7 @@ end
 
 combobox = UIng::Combobox.new(["Item 1", "Item 2", "Item 3"])
 combobox.on_selected do |idx|
-  UIng.msg_box(window, "Combobox Changed", "Selected index: #{idx}")
+  window.msg_box("Combobox Changed", "Selected index: #{idx}")
 end
 
 window.child = combobox

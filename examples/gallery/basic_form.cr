@@ -31,7 +31,7 @@ submit_button.on_clicked do
   age = age_spinbox.value
   volume = volume_slider.value
   message = "Username: #{username}\nAge: #{age}\nVolume: #{volume}"
-  UIng.msg_box(window, "Form Submitted", message)
+  window.msg_box("Form Submitted", message)
 end
 form.append("", submit_button)
 

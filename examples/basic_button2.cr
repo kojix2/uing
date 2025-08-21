@@ -6,7 +6,7 @@ UIng.init do
     set_child {
       UIng::Button.new("Click me") {
         on_clicked {
-          UIng.msg_box(win, "Information", "You clicked the button")
+          win.msg_box("Information", "You clicked the button")
         }
       }
     }

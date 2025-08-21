@@ -11,7 +11,7 @@ end
 slider = UIng::Slider.new(0, 100)
 slider.value = 42
 slider.on_changed do |v|
-  UIng.msg_box(window, "Slider Changed", "Value: #{v}")
+  window.msg_box("Slider Changed", "Value: #{v}")
 end
 
 window.child = slider

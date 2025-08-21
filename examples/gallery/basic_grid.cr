@@ -28,14 +28,14 @@ end
 # Add a button that spans 2 columns at the bottom
 button = UIng::Button.new("Span Button")
 button.on_clicked do
-  UIng.msg_box(window, "Grid Demo", "This button spans 2 columns!")
+  window.msg_box("Grid Demo", "This button spans 2 columns!")
 end
 grid.append(button, 0, 3, 2, 1, true, :fill, false, :fill)
 
 # Add another button in the remaining space
 another_button = UIng::Button.new("Single")
 another_button.on_clicked do
-  UIng.msg_box(window, "Grid Demo", "Single column button!")
+  window.msg_box("Grid Demo", "Single column button!")
 end
 grid.append(another_button, 2, 3, 1, 1, true, :fill, false, :fill)
 

@@ -11,7 +11,7 @@ end
 entry = UIng::Entry.new
 entry.text = "Type here"
 entry.on_changed do
-  UIng.msg_box(window, "Entry Changed", "Text: #{entry.text}")
+  window.msg_box("Entry Changed", "Text: #{entry.text}")
 end
 
 window.child = entry

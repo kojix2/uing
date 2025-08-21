@@ -8,7 +8,7 @@ UIng::Menu.new("File") do
   end
   append_separator
   append_preferences_item.on_clicked do |w|
-    UIng.msg_box(w, "Preferences", "Preferences clicked")
+    w.msg_box("Preferences", "Preferences clicked")
   end
   append_separator
   append_quit_item
@@ -20,13 +20,13 @@ UIng::Menu.new("Edit") do
   end
   append_separator
   append_item("Click").on_clicked do |w|
-    UIng.msg_box(w, "Click", "Click menu clicked")
+    w.msg_box("Click", "Click menu clicked")
   end
 end
 
 UIng::Menu.new("Help") do
   append_about_item.on_clicked do |w|
-    UIng.msg_box(w, "About", "Menu example")
+    w.msg_box("About", "Menu example")
   end
 end
 
