@@ -52,6 +52,19 @@ runs:
         }
         echo "paths=$paths" >> $env:GITHUB_OUTPUT
 
+    - name: Maximize macOS resolution (non-Retina)
+      if: inputs.os == 'macos'
+      shell: bash
+      run: |
+        brew install displayplacer
+        DISPLAY_ID=$(displayplacer list | awk -F': ' '/Persistent screen id/{print $2; exit}')
+        BEST_RES=$(displayplacer list | awk '/Resolution:/ {print $2}' \
+          | awk -Fx '{print $1*$2, $1"x"$2}' \
+          | sort -nr | head -1 | awk '{print $2}')
+        echo "Selected best resolution: $BEST_RES"
+        displayplacer "id:${DISPLAY_ID} res:${BEST_RES} hz:60 color_depth:8 scaling:off origin:(0,0) degree:0" || true
+        sleep 2
+
     - name: Take screenshots on macOS
       id: screenshot-macos
       if: inputs.os == 'macos'
