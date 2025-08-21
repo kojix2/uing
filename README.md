@@ -255,7 +255,7 @@ Images are automatically generated and stored in the `screenshots` branch.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_button-macos.png" alt="basic_button-macos"></td>
     </tr>
     <tr>
-      <td><a href="examples/gallery/basic_checkbox.cr">CheckBox</a></td>
+      <td><a href="examples/gallery/basic_checkbox.cr">Checkbox</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-ubuntu.png" alt="basic_checkbox-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-windows.png" alt="basic_checkbox-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-macos.png" alt="basic_checkbox-macos"></td>
@@ -377,6 +377,12 @@ Images are automatically generated and stored in the `screenshots` branch.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_form-ubuntu.png" alt="basic_form-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_form-windows.png" alt="basic_form-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_form-macos.png" alt="basic_form-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_group.cr">Group</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_group-ubuntu.png" alt="basic_group-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_group-windows.png" alt="basic_group-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_group-macos.png" alt="basic_group-macos"></td>
     </tr>
   </tbody>
 </table>
