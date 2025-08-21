@@ -473,6 +473,23 @@ Note: Grid Layout does not work as expected on macOS.
 
 ### Menu
 
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_menu.cr">basic_menu</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_menu-ubuntu.png" alt="basic_menu-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_menu-windows.png" alt="basic_menu-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_menu-macos.png" alt="basic_menu-macos"></td>
+    </tr>
+  </tbody>
 ### Dialog
 
 - MsgBox
