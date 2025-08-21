@@ -462,6 +462,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-windows.png" alt="spirograph-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-macos.png" alt="spirograph-macos"></td>
     </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_draw_text.cr">basic_draw_text</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-ubuntu.png" alt="basic_draw_text-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-windows.png" alt="basic_draw_text-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-macos.png" alt="basic_draw_text-macos"></td>
+    </tr>
   </tbody>
 </table>
 
