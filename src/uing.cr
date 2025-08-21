@@ -51,8 +51,8 @@ module UIng
     if backtrace = ex.backtrace?
       backtrace.each { |frame| Crystal::System.print_error "  from %s\n", frame }
     end
-    # Show error message in a message box
-    UIng.msg_box_error(nil, "Error in #{ctx}", ex.message.to_s)
+    # Show error message in a message box (system-level errors)
+    UIng.msg_box_error("Error in #{ctx}", ex.message.to_s)
   end
 
   def self.init : Nil
@@ -160,11 +160,25 @@ module UIng
     LibUI.free_text(text)
   end
 
+  @[Deprecated("Use `msg_box` on Window instead")]
   def self.msg_box(parent, title, description) : Nil
     LibUI.msg_box(parent, title, description)
   end
 
+  @[Deprecated("Use `msg_box_error` on Window instead")]
   def self.msg_box_error(parent, title, description) : Nil
     LibUI.msg_box_error(parent, title, description)
+  end
+
+  # Passing NULL is technically valid and handled by all platforms,
+  # but it's considered better practice to provide a parent window
+  def self.msg_box(title : String, description : String) : Nil
+    LibUI.msg_box(nil, title, description)
+  end
+
+  # Passing NULL is technically valid and handled by all platforms,
+  # but it's considered better practice to provide a parent window
+  def self.msg_box_error(title : String, description : String) : Nil
+    LibUI.msg_box_error(nil, title, description)
   end
 end

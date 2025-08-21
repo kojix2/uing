@@ -10,7 +10,7 @@ end
 
 button = UIng::Button.new("Button") do
   on_clicked do
-    UIng.msg_box(window, "Information", "You clicked the button")
+    window.msg_box("Information", "You clicked the button")
   end
 end
 

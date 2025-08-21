@@ -10,7 +10,7 @@ end
 
 date_picker = UIng::DateTimePicker.new(:date) do
   on_changed do |tm|
-    UIng.msg_box(window, "Date Changed", tm.to_s)
+    window.msg_box("Date Changed", tm.to_s)
   end
 end
 

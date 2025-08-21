@@ -78,7 +78,7 @@ end
 
 button = UIng::Button.new("Click me")
 button.on_clicked do
-  UIng.msg_box(window, "Info", "Button clicked!")
+  window.msg_box("Info", "Button clicked!")
 end
 
 window.set_child(button)
@@ -99,7 +99,7 @@ UIng.init do
     set_child {
       UIng::Button.new("Click me") {
         on_clicked {
-          UIng.msg_box(win, "Info", "Button clicked!")
+          win.msg_box("Info", "Button clicked!")
         }
       }
     }

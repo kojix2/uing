@@ -10,7 +10,7 @@ end
 
 spinbox = UIng::Spinbox.new(0, 100, value: 42) do
   on_changed do |v|
-    UIng.msg_box(window, "Spinbox Changed", "Value: #{v}")
+    window.msg_box("Spinbox Changed", "Value: #{v}")
   end
 end
 

@@ -10,7 +10,7 @@ end
 
 checkbox = UIng::Checkbox.new("Check me")
 checkbox.on_toggled do |checked|
-  UIng.msg_box(window, "Checkbox", "Checked: #{checked}")
+  window.msg_box("Checkbox", "Checked: #{checked}")
 end
 
 window.child = checkbox

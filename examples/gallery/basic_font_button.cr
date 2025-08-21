@@ -10,7 +10,7 @@ end
 
 font_button = UIng::FontButton.new do
   on_changed do |font_descriptor|
-    UIng.msg_box(window, "Font Changed", "Family: #{font_descriptor.family}\nSize: #{font_descriptor.size}")
+    window.msg_box("Font Changed", "Family: #{font_descriptor.family}\nSize: #{font_descriptor.size}")
   end
 end
 

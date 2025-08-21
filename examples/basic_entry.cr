@@ -19,7 +19,7 @@ box = UIng::Box.new(:horizontal) do
 
   button = UIng::Button.new("Button") do
     on_clicked do
-      UIng.msg_box(window, "You entered", entry.text || "")
+      window.msg_box("You entered", entry.text || "")
     end
   end
   append(button)

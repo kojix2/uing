@@ -31,7 +31,7 @@ save_button.on_clicked do
   notifications = notifications_checkbox.checked? ? "enabled" : "disabled"
   theme_options = ["Light", "Dark", "Auto"]
   theme = theme_options[theme_radio.selected]
-  UIng.msg_box(window, "Settings Saved", "Notifications: #{notifications}\nTheme: #{theme}")
+  window.msg_box("Settings Saved", "Notifications: #{notifications}\nTheme: #{theme}")
 end
 box.append(save_button)
 

@@ -12,19 +12,19 @@ box = UIng::Box.new(:vertical, padded: true)
 
 button1 = UIng::Button.new("Button1") do
   on_clicked do
-    UIng.msg_box(window, "Information", "You clicked Button1")
+    window.msg_box("Information", "You clicked Button1")
   end
 end
 
 button2 = UIng::Button.new("Button2") do
   on_clicked do
-    UIng.msg_box(window, "Information", "You clicked Button2")
+    window.msg_box("Information", "You clicked Button2")
   end
 end
 
 button3 = UIng::Button.new("Button3") do
   on_clicked do
-    UIng.msg_box(window, "Information", "You clicked Button3")
+    window.msg_box("Information", "You clicked Button3")
   end
 end
 

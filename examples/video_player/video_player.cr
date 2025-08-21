@@ -185,7 +185,7 @@ class VideoPlayerApp
       puts "Loading video: #{@video_file}"
     rescue ex
       puts "Error initializing video player: #{ex.message}"
-      UIng.msg_box_error(@main_window.not_nil!.to_unsafe, "Error", "Failed to initialize video player: #{ex.message}")
+      @main_window.not_nil!.msg_box_error("Error", "Failed to initialize video player: #{ex.message}")
       UIng.quit
     end
   end

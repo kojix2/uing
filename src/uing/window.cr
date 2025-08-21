@@ -228,6 +228,14 @@ module UIng
       UIng.string_from_pointer(str_ptr)
     end
 
+    def msg_box(title : String, description : String) : Nil
+      LibUI.msg_box(@ref_ptr, title, description)
+    end
+
+    def msg_box_error(title : String, description : String) : Nil
+      LibUI.msg_box_error(@ref_ptr, title, description)
+    end
+
     def to_unsafe
       @ref_ptr
     end
