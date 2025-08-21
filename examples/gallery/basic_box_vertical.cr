@@ -2,7 +2,7 @@ require "../../src/uing"
 
 UIng.init
 
-window = UIng::Window.new("Box Vertical Example", 200, 200, margined: true)
+window = UIng::Window.new("Box Vertical Example", 200, 150, margined: true)
 window.on_closing do
   UIng.quit
   true
