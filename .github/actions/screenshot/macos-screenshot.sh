@@ -28,12 +28,14 @@ launch_app() {
   if [[ -x "./$APP_NAME" ]]; then
     echo "Launching local binary: ./$APP_NAME"
     "./$APP_NAME" &
+    sleep 0.2
   elif [[ "$APP_NAME" == *.app ]] || osascript -e "id of app \"$APP_NAME\"" >/dev/null 2>&1; then
     echo "Launching via: open -a $APP_NAME"
     open -a "$APP_NAME" --fresh || open -a "$APP_NAME"
   else
     echo "Launching as path (fallback): ./$APP_NAME"
     "./$APP_NAME" &
+    sleep 0.2
   fi
 }
 launch_app
