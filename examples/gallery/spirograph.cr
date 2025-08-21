@@ -37,9 +37,13 @@ class Spirograph
     (u * v).abs / gcd(u, v)
   end
 
-  # Total angle to complete the spirograph
+  # Total angle to complete the spirograph (hypotrochoid formula)
   def total_angle : Float64
-    lcm(radius_fixed, radius_rolling) * 2 * Math::PI / radius_rolling
+    scale = 1000.0
+    r_int = (radius_rolling * scale).round.to_i
+    big_r_int = (radius_fixed * scale).round.to_i
+    g = (big_r_int - r_int).abs.gcd(r_int)
+    2.0 * Math::PI * (r_int.to_f / g.to_f)
   end
 
   # Parametric equations for spirograph (textbook style)
@@ -120,9 +124,9 @@ class SpirographApp
 
       # Color changes slightly on each redraw using hue
       rgb = spirograph.hsv_to_rgb(hue, 0.7, 0.95)
-      r = rgb["r"]? || rgb[:r]
-      g = rgb["g"]? || rgb[:g]
-      b = rgb["b"]? || rgb[:b]
+      r = rgb[:r]
+      g = rgb[:g]
+      b = rgb[:b]
 
       ctx.stroke_path(
         UIng::Area::Draw::Brush.new(:solid, r, g, b, 1.0),
@@ -134,7 +138,7 @@ class SpirographApp
         x0 = spirograph.spiro_x(t0)
         y0 = spirograph.spiro_y(t0)
         path.new_figure(x0, y0)
-        (1..n_points).each do |i|
+        (1...n_points).each do |i|
           t = total_theta * i / n_points
           x = spirograph.spiro_x(t)
           y = spirograph.spiro_y(t)
@@ -143,15 +147,18 @@ class SpirographApp
       end
     end
 
-    # Mouse event: randomize parameters and redraw
+    # Mouse event: randomize parameters and redraw (only on click down)
     @handler.mouse_event do |area, event|
-      spirograph.radius_fixed = 50.0 + rand * 150.0
-      spirograph.radius_rolling = 10.0 + rand * 90.0
-      spirograph.offset = 10.0 + rand * 120.0
-      # Advance hue slightly on each redraw
-      spirograph.hue = (spirograph.hue + 0.02) % 1.0
-      area.queue_redraw_all
-      update_info_label
+      # Only randomize on mouse button press (down event)
+      if event.down > 0
+        spirograph.radius_fixed = 50.0 + rand * 150.0
+        spirograph.radius_rolling = 10.0 + rand * 90.0
+        spirograph.offset = 10.0 + rand * 120.0
+        # Advance hue slightly on each click
+        spirograph.hue = (spirograph.hue + 0.02) % 1.0
+        area.queue_redraw_all
+        update_info_label
+      end
     end
 
     # Key event: adjust parameters
@@ -159,17 +166,17 @@ class SpirographApp
       if event.up == 0 # Key down
         case event.key
         when 'Q'.ord, 'q'.ord
-          spirograph.radius_fixed = spirograph.radius_fixed + 5
+          spirograph.radius_fixed = spirograph.radius_fixed + 5.0
         when 'A'.ord, 'a'.ord
-          spirograph.radius_fixed = spirograph.radius_fixed - 5
+          spirograph.radius_fixed = spirograph.radius_fixed - 5.0
         when 'W'.ord, 'w'.ord
-          spirograph.radius_rolling = spirograph.radius_rolling + 2
+          spirograph.radius_rolling = spirograph.radius_rolling + 2.0
         when 'S'.ord, 's'.ord
-          spirograph.radius_rolling = spirograph.radius_rolling - 2
+          spirograph.radius_rolling = spirograph.radius_rolling - 2.0
         when 'E'.ord, 'e'.ord
-          spirograph.offset = spirograph.offset + 5
+          spirograph.offset = spirograph.offset + 5.0
         when 'D'.ord, 'd'.ord
-          spirograph.offset = spirograph.offset - 5
+          spirograph.offset = spirograph.offset - 5.0
         end
         area.queue_redraw_all
         update_info_label
