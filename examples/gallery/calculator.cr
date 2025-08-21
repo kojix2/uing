@@ -21,7 +21,7 @@ enum Operation
     when "-" then Subtract
     when "×" then Multiply
     when "÷" then Divide
-    else nil
+    else          nil
     end
   end
 end
@@ -66,7 +66,7 @@ class Calculator
              when .multiply? then left * right
              when .divide?   then right.zero? ? nil : left / right
              end
-    
+
     result.try(&.finite?) ? result : nil
   end
 
@@ -99,7 +99,7 @@ class Calculator
 
     if (op = @state.operation) && !@state.waiting_for_operand
       result = safe_operation(op, @state.stored_value, input_value)
-      
+
       if result.nil?
         enter_error_state
         return
@@ -126,7 +126,7 @@ class Calculator
       rhs = @state.waiting_for_operand ? @state.stored_value : lhs
 
       result = safe_operation(op, @state.stored_value, rhs)
-      
+
       if result.nil?
         enter_error_state
         return
@@ -141,7 +141,7 @@ class Calculator
     elsif (last_op = @state.last_operation) && @state.waiting_for_operand
       # Repeat previous = operation (apply last_operand to lhs)
       result = safe_operation(last_op, lhs, @state.last_operand)
-      
+
       if result.nil?
         enter_error_state
         return
@@ -173,7 +173,7 @@ class Calculator
   def square_root
     value = get_display_value
     result = safe_sqrt(value)
-    
+
     if result.nil?
       enter_error_state
     else
@@ -234,9 +234,9 @@ class Calculator
 
     if nearly_integer?(value)
       if in_int64_range?(value)
-        value.trunc.to_i64.to_s  # trunc avoids rounding up near MAX
+        value.trunc.to_i64.to_s # trunc avoids rounding up near MAX
       else
-        "%.10g" % value          # Use exponential notation for out-of-range values
+        "%.10g" % value # Use exponential notation for out-of-range values
       end
     else
       "%.10g" % value
@@ -251,7 +251,7 @@ BUTTON_LAYOUT = {
   row3:       %w[4 5 6 × ÷],
   row4:       %w[1 2 3],
   row5:       %w[0 . +/- =],
-  operations: %w[+ -]
+  operations: %w[+ -],
 }
 
 # Explicit type definition for button actions
@@ -260,13 +260,13 @@ alias ButtonAction = Calculator ->
 BUTTON_ACTIONS = Hash(String, ButtonAction).new.tap do |actions|
   # Digit buttons
   (0..9).each { |n| actions[n.to_s] = ->(calc : Calculator) { calc.input_digit(n.to_s) } }
-  
+
   # Operation buttons
   actions["+"] = ->(calc : Calculator) { calc.perform_operation("+") }
   actions["-"] = ->(calc : Calculator) { calc.perform_operation("-") }
   actions["×"] = ->(calc : Calculator) { calc.perform_operation("×") }
   actions["÷"] = ->(calc : Calculator) { calc.perform_operation("÷") }
-  
+
   # Other buttons
   actions["."] = ->(calc : Calculator) { calc.input_dot }
   actions["="] = ->(calc : Calculator) { calc.calculate }
@@ -311,11 +311,11 @@ calc = Calculator.new(display)
 # Create buttons using layout definition
 BUTTON_LAYOUT.each_with_index do |row_name, labels, index|
   next if row_name == :operations # Special handling for operations
-  
+
   row = index + 1
   labels.each_with_index do |label, col|
     next if row_name == :row5 && col == 3 # Skip position 3 (occupied by + button)
-    
+
     button = create_button(label, calc)
     grid.append(button, col, row, 1, 1, true, :fill, true, :fill)
   end
