@@ -40,6 +40,11 @@ Window = UIng::Window.new("Menu Example", 300, 50, menubar: true) do
   show
 end
 
+{% if flag?(:darwin) %}
+  label = UIng::Label.new("The Mac menu bar is at the top of the screen.")
+  Window.set_child(label)
+{% end %}
+
 UIng.main
 
 UIng.uninit
