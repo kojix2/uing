@@ -490,6 +490,8 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_menu-macos.png" alt="basic_menu-macos"></td>
     </tr>
   </tbody>
+</table>
+
 ### Dialog
 
 - MsgBox
