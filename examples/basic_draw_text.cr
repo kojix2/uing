@@ -80,7 +80,7 @@ box = UIng::Box.new(:vertical)
 box.padded = true
 box.append area, true
 
-main_window = UIng::Window.new(title, 600, 400)
+main_window = UIng::Window.new(title, 765, 430)
 main_window.margined = true
 main_window.child = box
 
