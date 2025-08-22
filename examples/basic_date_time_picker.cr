@@ -6,8 +6,6 @@ vbox = UIng::Box.new(:vertical)
 
 date_time_picker = UIng::DateTimePicker.new
 
-time = UIng::TM.new
-
 date_time_picker.on_changed do |tm|
   p tm
 end
