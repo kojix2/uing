@@ -60,29 +60,18 @@ module UIng
     end
 
     def on_changed(&block : Time -> _) : Nil
-      wrapper = -> {
-        return unless @ref_ptr
-
-        begin
-          # Use persistent @tm instance to avoid allocation in callback
-          LibUI.date_time_picker_time(@ref_ptr, @tm)
-          current_time = @tm.to_time
-          block.call(current_time)
-        rescue e
-          UIng.handle_callback_error(e, "DateTimePicker on_changed")
-        end
+      wrapper = -> : Nil {
+        LibUI.date_time_picker_time(@ref_ptr, @tm)
+        current_time = @tm.to_time
+        block.call(current_time)
       }
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.date_time_picker_on_changed(
           @ref_ptr,
-          ->(_sender, data) {
-            begin
-              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-              data_as_callback.call
-            rescue e
-              UIng.handle_callback_error(e, "DateTimePicker callback wrapper")
-            end
+          ->(_sender, data) : Nil {
+            data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+            data_as_callback.call
           },
           boxed_data
         )
