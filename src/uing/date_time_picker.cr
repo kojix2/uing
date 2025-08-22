@@ -6,6 +6,8 @@ module UIng
 
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
+    # Keep TM instance to avoid repeated allocation and ensure memory safety
+    @tm : UIng::TM
 
     def initialize(type : Symbol)
       case type
@@ -18,10 +20,12 @@ module UIng
       else
         raise "Invalid type: #{type}"
       end
+      @tm = UIng::TM.new
     end
 
     def initialize
       @ref_ptr = LibUI.new_date_time_picker
+      @tm = UIng::TM.new
     end
 
     def destroy
@@ -33,9 +37,8 @@ module UIng
       return Time.local unless @ref_ptr
 
       begin
-        tm = UIng::TM.new
-        LibUI.date_time_picker_time(@ref_ptr, tm)
-        tm.to_time
+        LibUI.date_time_picker_time(@ref_ptr, @tm)
+        @tm.to_time
       rescue e
         UIng.handle_callback_error(e, "DateTimePicker time retrieval")
         Time.local
@@ -46,8 +49,11 @@ module UIng
       return unless @ref_ptr
 
       begin
-        tm = UIng::TM.new(time)
-        LibUI.date_time_picker_set_time(@ref_ptr, tm)
+        # Update our persistent @tm instance with new time
+        temp_tm = UIng::TM.new(time)
+        LibUI.date_time_picker_set_time(@ref_ptr, temp_tm)
+        # Sync @tm with the actual widget state
+        LibUI.date_time_picker_time(@ref_ptr, @tm)
       rescue e
         UIng.handle_callback_error(e, "DateTimePicker time setting")
       end
@@ -58,10 +64,9 @@ module UIng
         return unless @ref_ptr
 
         begin
-          # Create TM instance and get time safely
-          tm = UIng::TM.new
-          LibUI.date_time_picker_time(@ref_ptr, tm)
-          current_time = tm.to_time
+          # Use persistent @tm instance to avoid allocation in callback
+          LibUI.date_time_picker_time(@ref_ptr, @tm)
+          current_time = @tm.to_time
           block.call(current_time)
         rescue e
           UIng.handle_callback_error(e, "DateTimePicker on_changed")
