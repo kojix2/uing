@@ -208,7 +208,7 @@ module UIng
     fun new_radio_buttons = uiNewRadioButtons : Pointer(Void)
     alias DateTimePicker = Void
     fun date_time_picker_time = uiDateTimePickerTime(d : Pointer(DateTimePicker), time : Pointer(Tm))
-    alias Tm = Void
+    alias Tm = TM
     fun date_time_picker_set_time = uiDateTimePickerSetTime(d : Pointer(DateTimePicker), time : Pointer(Tm))
     fun date_time_picker_on_changed = uiDateTimePickerOnChanged(d : Pointer(DateTimePicker), f : (Pointer(DateTimePicker), Pointer(Void) -> Void), data : Pointer(Void))
     fun new_date_time_picker = uiNewDateTimePicker : Pointer(DateTimePicker)
