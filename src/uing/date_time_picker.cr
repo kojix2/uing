@@ -30,20 +30,42 @@ module UIng
     end
 
     def time : Time
-      tm = UIng::TM.new
-      LibUI.date_time_picker_time(@ref_ptr, tm)
-      tm.to_time
+      return Time.local unless @ref_ptr
+
+      begin
+        tm = UIng::TM.new
+        LibUI.date_time_picker_time(@ref_ptr, tm)
+        tm.to_time
+      rescue e
+        UIng.handle_callback_error(e, "DateTimePicker time retrieval")
+        Time.local
+      end
     end
 
     def time=(time : Time) : Nil
-      tm = UIng::TM.new(time)
-      LibUI.date_time_picker_set_time(@ref_ptr, tm)
+      return unless @ref_ptr
+
+      begin
+        tm = UIng::TM.new(time)
+        LibUI.date_time_picker_set_time(@ref_ptr, tm)
+      rescue e
+        UIng.handle_callback_error(e, "DateTimePicker time setting")
+      end
     end
 
     def on_changed(&block : Time -> _) : Nil
       wrapper = -> {
-        time = self.time
-        block.call(time)
+        return unless @ref_ptr
+
+        begin
+          # Create TM instance and get time safely
+          tm = UIng::TM.new
+          LibUI.date_time_picker_time(@ref_ptr, tm)
+          current_time = tm.to_time
+          block.call(current_time)
+        rescue e
+          UIng.handle_callback_error(e, "DateTimePicker on_changed")
+        end
       }
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
@@ -54,7 +76,7 @@ module UIng
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call
             rescue e
-              UIng.handle_callback_error(e, "DateTimePicker on_changed")
+              UIng.handle_callback_error(e, "DateTimePicker callback wrapper")
             end
           },
           boxed_data
