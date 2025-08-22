@@ -340,6 +340,7 @@ module UIng
     fun draw_free_text_layout = uiDrawFreeTextLayout(tl : Pointer(DrawTextLayout))
     fun draw_text = uiDrawText(c : Pointer(DrawContext), tl : Pointer(DrawTextLayout), x : LibC::Double, y : LibC::Double)
     fun draw_text_layout_extents = uiDrawTextLayoutExtents(tl : Pointer(DrawTextLayout), width : Pointer(LibC::Double), height : Pointer(LibC::Double))
+    fun draw_image = uiDrawImage(c : Pointer(DrawContext), img : Pointer(Image), x : LibC::Double, y : LibC::Double, width : LibC::Double, height : LibC::Double)
     alias FontButton = Void
     fun font_button_font = uiFontButtonFont(b : Pointer(FontButton), desc : Pointer(FontDescriptor))
     fun font_button_on_changed = uiFontButtonOnChanged(b : Pointer(FontButton), f : (Pointer(FontButton), Pointer(Void) -> Void), data : Pointer(Void))
