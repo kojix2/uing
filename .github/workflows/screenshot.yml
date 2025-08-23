@@ -25,6 +25,7 @@ jobs:
 
     env:
       DISPLAY: ${{ matrix.setup-display && ':99' || '' }}
+      LIBUI_NG_COMMIT_HASH: "5abbd6f-experimental"
 
     steps:
       - name: Checkout repository
