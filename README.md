@@ -468,6 +468,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-windows.png" alt="basic_draw_text-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-macos.png" alt="basic_draw_text-macos"></td>
     </tr>
+    <tr>
+      <td><a href="examples/gallery/boid3d.cr">boid3d</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/boid3d-ubuntu.png" alt="boid3d-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/boid3d-windows.png" alt="boid3d-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/boid3d-macos.png" alt="boid3d-macos"></td>
+    </tr>
   </tbody>
 </table>
 
