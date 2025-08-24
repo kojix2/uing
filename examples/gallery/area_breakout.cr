@@ -238,7 +238,6 @@ class BreakoutGame
       @lives -= 1
       if @lives <= 0
         @game_state = GameState::GameOver
-        UIng.msg_box_error("Game Over", "You lost all your lives!\nFinal Score: #{@score}\n\nPress SPACE or Click to restart.")
       else
         ball_x = @screen_width / 2
         ball_y = @paddle.y - 20.0
@@ -249,7 +248,6 @@ class BreakoutGame
 
     if @blocks.none?(&.active)
       @game_state = GameState::Won
-      UIng.msg_box("Congratulations!", "You cleared all blocks!\nFinal Score: #{@score}\n\nPress SPACE or Click to play again.")
     end
   end
 
@@ -396,6 +394,30 @@ end
 
 UIng.init
 
+# Text display setup
+DEFAULT_FONT = UIng::FontDescriptor.new(
+  family: "Arial",
+  size: 16,
+  weight: :bold,
+  italic: :normal,
+  stretch: :normal
+)
+
+# Create AttributedStrings with white color
+WHITE_COLOR = UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0)
+
+WAITING_TEXT = UIng::Area::AttributedString.new("PRESS SPACE or CLICK to start")
+WAITING_TEXT.set_attribute(WHITE_COLOR, 0, WAITING_TEXT.len)
+
+GAME_OVER_TEXT = UIng::Area::AttributedString.new("GAME OVER - PRESS SPACE or CLICK to restart")
+GAME_OVER_TEXT.set_attribute(WHITE_COLOR, 0, GAME_OVER_TEXT.len)
+
+WON_TEXT = UIng::Area::AttributedString.new("CONGRATULATIONS! - PRESS SPACE or CLICK to play again")
+WON_TEXT.set_attribute(WHITE_COLOR, 0, WON_TEXT.len)
+
+CONTROLS_TEXT = UIng::Area::AttributedString.new("Mouse: move paddle, A/D or ←/→: nudge paddle")
+CONTROLS_TEXT.set_attribute(WHITE_COLOR, 0, CONTROLS_TEXT.len)
+
 GAME    = BreakoutGame.new
 HANDLER = UIng::Area::Handler.new
 
@@ -416,6 +438,46 @@ HANDLER.draw do |area, params|
 
   bb = UIng::Area::Draw::Brush.new(:solid, 1.0, 1.0, 1.0, 1.0)
   ctx.fill_path(bb) { |p| p.new_figure_with_arc(GAME.ball.x, GAME.ball.y, GAME.ball.radius, 0, Math::PI * 2, false) }
+
+  # Draw text based on game state
+  case GAME.game_state
+  when GameState::Waiting
+    UIng::Area::Draw::TextLayout.open(
+      string: WAITING_TEXT,
+      default_font: DEFAULT_FONT,
+      width: GAME.screen_width,
+      align: UIng::Area::Draw::TextAlign::Center
+    ) do |text_layout|
+      ctx.draw_text_layout(text_layout, 0, GAME.screen_height / 2 - 50)
+    end
+
+    UIng::Area::Draw::TextLayout.open(
+      string: CONTROLS_TEXT,
+      default_font: DEFAULT_FONT,
+      width: GAME.screen_width,
+      align: UIng::Area::Draw::TextAlign::Center
+    ) do |text_layout|
+      ctx.draw_text_layout(text_layout, 0, GAME.screen_height / 2 + 20)
+    end
+  when GameState::GameOver
+    UIng::Area::Draw::TextLayout.open(
+      string: GAME_OVER_TEXT,
+      default_font: DEFAULT_FONT,
+      width: GAME.screen_width,
+      align: UIng::Area::Draw::TextAlign::Center
+    ) do |text_layout|
+      ctx.draw_text_layout(text_layout, 0, GAME.screen_height / 2 - 10)
+    end
+  when GameState::Won
+    UIng::Area::Draw::TextLayout.open(
+      string: WON_TEXT,
+      default_font: DEFAULT_FONT,
+      width: GAME.screen_width,
+      align: UIng::Area::Draw::TextAlign::Center
+    ) do |text_layout|
+      ctx.draw_text_layout(text_layout, 0, GAME.screen_height / 2 - 10)
+    end
+  end
 end
 
 HANDLER.mouse_event do |area, event|
@@ -450,15 +512,14 @@ vbox.append(AREA, true)
 
 WINDOW = UIng::Window.new("Breakout Game", GAME.screen_width.to_i, GAME.screen_height.to_i) do
   on_closing do
+    # Free AttributedString objects to prevent memory leaks
+    WAITING_TEXT.free
+    GAME_OVER_TEXT.free
+    WON_TEXT.free
+    CONTROLS_TEXT.free
     UIng.quit
     true
   end
-  msg_box("Breakout Game", <<-CONTROLS)
-    Controls:
-    - Mouse: move paddle
-    - SPACE or Click: start / restart
-    - A/D or ←/→: nudge paddle
-    CONTROLS
   show
 end
 
