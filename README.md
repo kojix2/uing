@@ -480,6 +480,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-macos.png" alt="basic_draw_text-macos"></td>
     </tr>
     <tr>
+      <td><a href="examples/gallery/area_breakout.cr">area_breakout</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_breakout-ubuntu.png" alt="area_breakout-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_breakout-windows.png" alt="area_breakout-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_breakout-macos.png" alt="area_breakout-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/boid3d.cr">boid3d</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/boid3d-ubuntu.png" alt="boid3d-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/boid3d-windows.png" alt="boid3d-windows"></td>
