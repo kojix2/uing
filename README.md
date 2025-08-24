@@ -457,6 +457,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-macos.png" alt="basic_area-macos"></td>
     </tr>
     <tr>
+      <td><a href="examples/gallery/area_basic_shapes.cr">area_basic_shapes</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_basic_shapes-ubuntu.png" alt="area_basic_shapes-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_basic_shapes-windows.png" alt="area_basic_shapes-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_basic_shapes-macos.png" alt="area_basic_shapes-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/spirograph.cr">spirograph</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-ubuntu.png" alt="spirograph-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-windows.png" alt="spirograph-windows"></td>
