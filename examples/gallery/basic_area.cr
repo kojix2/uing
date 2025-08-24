@@ -14,10 +14,6 @@ handler.draw do |area, params|
   params.context.fill_path(brush) do |path|
     path.add_rectangle(0, 0, 100, 100)
   end
-  brush = UIng::Area::Draw::Brush.new(:solid, 0.8, 0.2, 0.2, 1.0)
-  params.context.fill_path(brush) do |path|
-    path.add_rectangle(25, 25, 50, 50)
-  end
 end
 
 area = UIng::Area.new(handler)
