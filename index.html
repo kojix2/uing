@@ -585,151 +585,11 @@ window.show
   <span class="t">UIng</span>.main
 <span class="k">end</span></code></pre>
 <p>Note: The DSL style is implemented using Crystal's <code>with ... yield</code> syntax internally.</p>
-<h2><a id="examples" class="anchor" href="#examples">
+<h2><a id="examples-gallery" class="anchor" href="#examples-gallery">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Examples</h2>
-<p>The <code>examples/control_gallery.cr</code> script shows most of the available controls and features in one window.<br />
-You can run it with:</p>
-<pre><code class="language-crystal">crystal run examples<span class="o">/</span>control_gallery.cr</code></pre>
-<p>For more examples, see the <a href="examples">examples</a> directory.</p>
-<h2><a id="api-levels" class="anchor" href="#api-levels">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>API Levels</h2>
-<table>
-  <thead>
-    <tr>
-      <th><strong>Level</strong></th>
-      <th><strong>Defined in</strong></th>
-      <th><strong>Example</strong></th>
-      <th><strong>Description</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>High-Level</strong></td>
-      <td><code>src/uing/*.cr</code></td>
-      <td><code>button.on_clicked { }</code>, etc.</td>
-      <td>Object-oriented API</td>
-    </tr>
-    <tr>
-      <td><strong>Low-Level</strong></td>
-      <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
-      <td><code>UIng::LibUI.new_button</code>, etc.</td>
-      <td>Direct bindings to libui</td>
-    </tr>
-  </tbody>
-</table>
-<ul>
-<li>Almost all basic control functions such as <code>Window</code>, <code>Label</code>, and <code>Button</code> are covered.</li>
-<li>APIs for advanced controls such as <code>Table</code> and <code>Area</code> are also provided. However, these are still under development and there may still be memory management issues.</li>
-</ul>
-<h2><a id="memory-safety" class="anchor" href="#memory-safety">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Memory Safety</h2>
-<ul>
-<li>
-<p>Most callbacks are stored as instance variables of their respective controls, which protects them from garbage collection (GC). Some callbacks are stored as UIng class variables, which serves the same purpose.</p>
-</li>
-<li>
-<p>Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window -&gt; Box -&gt; Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.</p>
-</li>
-<li>
-<p>Some root components, such as Window and Menu, are stored as class variables to ensure protection from GC. This may cause memory leaks, but is acceptable for now.</p>
-</li>
-<li>
-<p>The use of <code>finalize</code> is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.</p>
-</li>
-</ul>
-<h2><a id="limitations" class="anchor" href="#limitations">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Limitations</h2>
-<p>libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:</p>
-<ol>
-<li>
-<p>Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)</p>
-</li>
-<li>
-<p>Grid layout is broken on macOS.</p>
-</li>
-<li>
-<p>Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.</p>
-</li>
-</ol>
-<h2><a id="windows-setup" class="anchor" href="#windows-setup">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Windows Setup</h2>
-<h3><a id="hide-console-window" class="anchor" href="#hide-console-window">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Hide Console Window</h3>
-<p>MinGW:</p>
-<pre><code class="language-crystal">crystal build app.cr --link-flags &quot;-mwindows&quot;</code></pre>
-<p>MSVC:</p>
-<pre><code class="language-crystal">crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
-<h2><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Closures in Low-Level Contexts</h2>
-<ul>
-<li>
-<p>Many methods support Crystal closures because the underlying libui-ng functions accept a <code>data</code> parameter.</p>
-</li>
-<li>
-<p>In some low-level APIs, such as function pointers assigned to struct members, no <code>data</code> can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.</p>
-</li>
-<li>
-<p>This approach is used in controls like <code>Table</code> and <code>Area</code>.</p>
-</li>
-</ul>
-<h2><a id="development" class="anchor" href="#development">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Development</h2>
-<ul>
-<li><code>UIng::LibUI</code> is the module for direct C bindings</li>
-<li>Initially, <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> was used to generate low-level bindings
-　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.</li>
-<li>When adding new UI components, follow the established callback management patterns</li>
-<li>libui libraries are generated using GitHub Actions at <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> in the pre-build branch.</li>
-</ul>
-<p>Note:<br />
-This project was developed with the assistance of generative AI.<br />
-While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.</p>
-<h2><a id="contributing" class="anchor" href="#contributing">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Contributing</h2>
-<ul>
-<li>Fork this repository</li>
-<li>Report bugs and submit pull requests</li>
-<li>Improve documentation</li>
-<li>Test memory safety improvements</li>
-</ul>
-<h2><a id="license" class="anchor" href="#license">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>License</h2>
-<p>MIT License</p>
-<h2><a id="gallery" class="anchor" href="#gallery">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Gallery</h2>
+</a>Examples Gallery</h2>
 <p>This gallery shows screenshots of example on three platforms (Ubuntu, Windows, macOS).<br />
 Images are automatically generated and stored in the <code>screenshots</code> branch.</p>
 <h3><a id="window" class="anchor" href="#window">
@@ -1073,6 +933,137 @@ Images are automatically generated and stored in the <code>screenshots</code> br
     <use href="#octicon-link"/>
   </svg>
 </a>Timer</h3>
+<h2><a id="api-levels" class="anchor" href="#api-levels">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>API Levels</h2>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Level</strong></th>
+      <th><strong>Defined in</strong></th>
+      <th><strong>Example</strong></th>
+      <th><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>High-Level</strong></td>
+      <td><code>src/uing/*.cr</code></td>
+      <td><code>button.on_clicked { }</code>, etc.</td>
+      <td>Object-oriented API</td>
+    </tr>
+    <tr>
+      <td><strong>Low-Level</strong></td>
+      <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
+      <td><code>UIng::LibUI.new_button</code>, etc.</td>
+      <td>Direct bindings to libui</td>
+    </tr>
+  </tbody>
+</table>
+<ul>
+<li>Almost all basic control functions such as <code>Window</code>, <code>Label</code>, and <code>Button</code> are covered.</li>
+<li>APIs for advanced controls such as <code>Table</code> and <code>Area</code> are also provided. However, these are still under development and there may still be memory management issues.</li>
+</ul>
+<h2><a id="memory-safety" class="anchor" href="#memory-safety">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Memory Safety</h2>
+<ul>
+<li>
+<p>Most callbacks are stored as instance variables of their respective controls, which protects them from garbage collection (GC). Some callbacks are stored as UIng class variables, which serves the same purpose.</p>
+</li>
+<li>
+<p>Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window -&gt; Box -&gt; Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.</p>
+</li>
+<li>
+<p>Some root components, such as Window and Menu, are stored as class variables to ensure protection from GC. This may cause memory leaks, but is acceptable for now.</p>
+</li>
+<li>
+<p>The use of <code>finalize</code> is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.</p>
+</li>
+</ul>
+<h2><a id="limitations" class="anchor" href="#limitations">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Limitations</h2>
+<p>libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:</p>
+<ol>
+<li>
+<p>Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)</p>
+</li>
+<li>
+<p>Grid layout is broken on macOS.</p>
+</li>
+<li>
+<p>Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.</p>
+</li>
+</ol>
+<h2><a id="windows-setup" class="anchor" href="#windows-setup">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Windows Setup</h2>
+<h3><a id="hide-console-window" class="anchor" href="#hide-console-window">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Hide Console Window</h3>
+<p>MinGW:</p>
+<pre><code class="language-crystal">crystal build app.cr --link-flags &quot;-mwindows&quot;</code></pre>
+<p>MSVC:</p>
+<pre><code class="language-crystal">crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
+<h2><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Closures in Low-Level Contexts</h2>
+<ul>
+<li>
+<p>Many methods support Crystal closures because the underlying libui-ng functions accept a <code>data</code> parameter.</p>
+</li>
+<li>
+<p>In some low-level APIs, such as function pointers assigned to struct members, no <code>data</code> can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.</p>
+</li>
+<li>
+<p>This approach is used in controls like <code>Table</code> and <code>Area</code>.</p>
+</li>
+</ul>
+<h2><a id="development" class="anchor" href="#development">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Development</h2>
+<ul>
+<li><code>UIng::LibUI</code> is the module for direct C bindings</li>
+<li>Initially, <a href="https://github.com/crystal-lang/crystal_lib">crystal_lib</a> was used to generate low-level bindings
+　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.</li>
+<li>When adding new UI components, follow the established callback management patterns</li>
+<li>libui libraries are generated using GitHub Actions at <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> in the pre-build branch.</li>
+</ul>
+<p>Note:<br />
+This project was developed with the assistance of generative AI.<br />
+While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.</p>
+<h2><a id="contributing" class="anchor" href="#contributing">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributing</h2>
+<ul>
+<li>Fork this repository</li>
+<li>Report bugs and submit pull requests</li>
+<li>Improve documentation</li>
+<li>Test memory safety improvements</li>
+</ul>
+<h2><a id="license" class="anchor" href="#license">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>License</h2>
+<p>MIT License</p>
 </div>
 </body>
 </html>
