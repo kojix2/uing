@@ -112,115 +112,7 @@ end
 
 Note: The DSL style is implemented using Crystal's `with ... yield` syntax internally.
 
-## Examples
-
-The `examples/control_gallery.cr` script shows most of the available controls and features in one window.  
-You can run it with:
-
-```
-crystal run examples/control_gallery.cr
-```
-
-For more examples, see the [examples](examples) directory.
-
-## API Levels
-
-<table>
-  <thead>
-    <tr>
-      <th><strong>Level</strong></th>
-      <th><strong>Defined in</strong></th>
-      <th><strong>Example</strong></th>
-      <th><strong>Description</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>High-Level</strong></td>
-      <td><code>src/uing/*.cr</code></td>
-      <td><code>button.on_clicked { }</code>, etc.</td>
-      <td>Object-oriented API</td>
-    </tr>
-    <tr>
-      <td><strong>Low-Level</strong></td>
-      <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
-      <td><code>UIng::LibUI.new_button</code>, etc.</td>
-      <td>Direct bindings to libui</td>
-    </tr>
-  </tbody>
-</table>
-
-- Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
-- APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
-
-## Memory Safety
-
-- Most callbacks are stored as instance variables of their respective controls, which protects them from garbage collection (GC). Some callbacks are stored as UIng class variables, which serves the same purpose.
-
-- Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window -> Box -> Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.
-
-- Some root components, such as Window and Menu, are stored as class variables to ensure protection from GC. This may cause memory leaks, but is acceptable for now.
-
-- The use of `finalize` is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.
-
-## Limitations
-
-libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:
-
-1. Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)
-
-2. Grid layout is broken on macOS.
-
-3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
-
-## Windows Setup
-
-### Hide Console Window
-
-MinGW:
-
-```
-crystal build app.cr --link-flags "-mwindows"
-```
-
-MSVC:
-
-```
-crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
-```
-
-## Closures in Low-Level Contexts
-
-- Many methods support Crystal closures because the underlying libui-ng functions accept a `data` parameter.
-
-- In some low-level APIs, such as function pointers assigned to struct members, no `data` can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.
-
-- This approach is used in controls like `Table` and `Area`.
-
-## Development
-
-- `UIng::LibUI` is the module for direct C bindings
-- Initially, [crystal_lib](https://github.com/crystal-lang/crystal_lib) was used to generate low-level bindings
-  　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
-- When adding new UI components, follow the established callback management patterns
-- libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
-
-Note:  
-This project was developed with the assistance of generative AI.  
-While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.
-
-## Contributing
-
-- Fork this repository
-- Report bugs and submit pull requests
-- Improve documentation
-- Test memory safety improvements
-
-## License
-
-MIT License
-
-## Gallery
+## Examples Gallery
 
 This gallery shows screenshots of example on three platforms (Ubuntu, Windows, macOS).  
 Images are automatically generated and stored in the `screenshots` branch.
@@ -549,3 +441,100 @@ Note: Grid Layout does not work as expected on macOS.
 </table>
 
 ### Timer
+
+## API Levels
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Level</strong></th>
+      <th><strong>Defined in</strong></th>
+      <th><strong>Example</strong></th>
+      <th><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>High-Level</strong></td>
+      <td><code>src/uing/*.cr</code></td>
+      <td><code>button.on_clicked { }</code>, etc.</td>
+      <td>Object-oriented API</td>
+    </tr>
+    <tr>
+      <td><strong>Low-Level</strong></td>
+      <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
+      <td><code>UIng::LibUI.new_button</code>, etc.</td>
+      <td>Direct bindings to libui</td>
+    </tr>
+  </tbody>
+</table>
+
+- Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
+- APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
+
+## Memory Safety
+
+- Most callbacks are stored as instance variables of their respective controls, which protects them from garbage collection (GC). Some callbacks are stored as UIng class variables, which serves the same purpose.
+
+- Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window -> Box -> Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.
+
+- Some root components, such as Window and Menu, are stored as class variables to ensure protection from GC. This may cause memory leaks, but is acceptable for now.
+
+- The use of `finalize` is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.
+
+## Limitations
+
+libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:
+
+1. Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)
+
+2. Grid layout is broken on macOS.
+
+3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
+
+## Windows Setup
+
+### Hide Console Window
+
+MinGW:
+
+```
+crystal build app.cr --link-flags "-mwindows"
+```
+
+MSVC:
+
+```
+crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
+```
+
+## Closures in Low-Level Contexts
+
+- Many methods support Crystal closures because the underlying libui-ng functions accept a `data` parameter.
+
+- In some low-level APIs, such as function pointers assigned to struct members, no `data` can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.
+
+- This approach is used in controls like `Table` and `Area`.
+
+## Development
+
+- `UIng::LibUI` is the module for direct C bindings
+- Initially, [crystal_lib](https://github.com/crystal-lang/crystal_lib) was used to generate low-level bindings
+  　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
+- When adding new UI components, follow the established callback management patterns
+- libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
+
+Note:  
+This project was developed with the assistance of generative AI.  
+While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.
+
+## Contributing
+
+- Fork this repository
+- Report bugs and submit pull requests
+- Improve documentation
+- Test memory safety improvements
+
+## License
+
+MIT License
