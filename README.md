@@ -525,8 +525,11 @@ crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
 
 Note:  
-This project was developed with the assistance of generative AI.  
-While kojix2 prefers Vibe Coding, this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.
+This project was developed with the assistance of generative AI.
+
+In particular, AI is used entirely to create GitHub Actions for taking screenshots and generating complex Examples.
+
+While kojix2 prefers Vibe Coding, I think this library is not a product of Vibe Coding. it has been created with a good amount of manual work and human review.
 
 ## Contributing
 
