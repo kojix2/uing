@@ -7,4 +7,10 @@ authors:
 scripts:
   postinstall: crystal run download.cr
 
+
+development_dependencies:
+  stumpy_png:
+    github: stumpycr/stumpy_png
+    version: "~> 5.0"
+
 license: MIT
