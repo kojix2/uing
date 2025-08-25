@@ -468,6 +468,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_colors_and_brushes-windows.png" alt="area_colors_and_brushes-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_colors_and_brushes-macos.png" alt="area_colors_and_brushes-macos"></td>
     <tr>
+      <td><a href="examples/gallery/area_analog_clock.cr">area_analog_clock</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_analog_clock-ubuntu.png" alt="area_analog_clock-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_analog_clock-windows.png" alt="area_analog_clock-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_analog_clock-macos.png" alt="area_analog_clock-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/spirograph.cr">spirograph</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-ubuntu.png" alt="spirograph-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-windows.png" alt="spirograph-windows"></td>
