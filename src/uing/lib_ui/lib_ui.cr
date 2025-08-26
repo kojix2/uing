@@ -339,6 +339,7 @@ module UIng
     fun draw_free_text_layout = uiDrawFreeTextLayout(tl : Pointer(DrawTextLayout))
     fun draw_text = uiDrawText(c : Pointer(DrawContext), tl : Pointer(DrawTextLayout), x : LibC::Double, y : LibC::Double)
     fun draw_text_layout_extents = uiDrawTextLayoutExtents(tl : Pointer(DrawTextLayout), width : Pointer(LibC::Double), height : Pointer(LibC::Double))
+    fun draw_image = uiDrawImage(c : Pointer(DrawContext), img : Pointer(Image), x : LibC::Double, y : LibC::Double, width : LibC::Double, height : LibC::Double)
     alias FontButton = Void
     fun font_button_font = uiFontButtonFont(b : Pointer(FontButton), desc : Pointer(FontDescriptor))
     fun font_button_on_changed = uiFontButtonOnChanged(b : Pointer(FontButton), f : (Pointer(FontButton), Pointer(Void) -> Void), data : Pointer(Void))
@@ -413,5 +414,10 @@ module UIng
     fun table_get_selection = uiTableGetSelection(t : Pointer(Table)) : Pointer(TableSelection)
     fun table_set_selection = uiTableSetSelection(t : Pointer(Table), sel : Pointer(TableSelection))
     fun free_table_selection = uiFreeTableSelection(s : Pointer(TableSelection))
+
+    alias ImageView = Void
+    fun new_image_view = uiNewImageView : Pointer(ImageView)
+    fun image_view_set_image = uiImageViewSetImage(iv : Pointer(ImageView), image : Pointer(Image))
+    fun image_view_set_content_mode = uiImageViewSetContentMode(iv : Pointer(ImageView), mode : UIng::ImageView::ContentMode)
   end
 end
