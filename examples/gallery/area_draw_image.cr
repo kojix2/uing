@@ -6,15 +6,28 @@ canvas = StumpyPNG.read(fname)
 width = canvas.width.to_i32
 height = canvas.height.to_i32
 
+# Create pixel buffer for premultiplied RGBA
 pixels = Bytes.new(width * height * 4)
 (0...height).each do |y|
   (0...width).each do |x|
     offset = (y * width + x) * 4
     r, g, b, a = canvas[x, y].to_rgba
+
+    # Handle alpha properly - default to 255 if nil
+    alpha = a || 255_u8
+
+    # For premultiplied alpha, multiply RGB by alpha/255
+    if alpha < 255
+      alpha_factor = alpha.to_f / 255.0
+      r = (r.to_f * alpha_factor).to_u8
+      g = (g.to_f * alpha_factor).to_u8
+      b = (b.to_f * alpha_factor).to_u8
+    end
+
     pixels[offset] = r
     pixels[offset + 1] = g
     pixels[offset + 2] = b
-    pixels[offset + 3] = a || 255_u8
+    pixels[offset + 3] = alpha
   end
 end
 

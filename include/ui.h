@@ -2043,6 +2043,7 @@ typedef struct uiAreaMouseEvent uiAreaMouseEvent;
 typedef struct uiAreaKeyEvent uiAreaKeyEvent;
 
 typedef struct uiDrawContext uiDrawContext;
+typedef struct uiImage uiImage;
 
 struct uiAreaHandler {
 	void (*Draw)(uiAreaHandler *, uiArea *, uiAreaDrawParams *);
@@ -2726,6 +2727,22 @@ _UI_EXTERN void uiDrawFreeTextLayout(uiDrawTextLayout *tl);
 // uiDrawText() draws tl in c with the top-left point of tl at (x, y).
 _UI_EXTERN void uiDrawText(uiDrawContext *c, uiDrawTextLayout *tl, double x, double y);
 
+/**
+ * Draws an image on the drawing context.
+ *
+ * The image will be scaled to fit the specified width and height.
+ * The function automatically selects the most appropriate image representation
+ * based on the current display's pixel density and scaling factor.
+ *
+ * @param c Drawing context.
+ * @param img Image to draw. Must not be NULL.
+ * @param x X coordinate of the top-left corner.
+ * @param y Y coordinate of the top-left corner.
+ * @param width Width to draw the image. Must be positive.
+ * @param height Height to draw the image. Must be positive.
+ */
+_UI_EXTERN void uiDrawImage(uiDrawContext *c, uiImage *img, double x, double y, double width, double height);
+
 // uiDrawTextLayoutExtents() returns the width and height of tl
 // in width and height. The returned width may be smaller than
 // the width passed into uiDrawNewTextLayout() depending on
@@ -3171,7 +3188,6 @@ _UI_EXTERN uiGrid *uiNewGrid(void);
  * @struct uiImage
  * @ingroup static
  */
-typedef struct uiImage uiImage;
 
 /**
  * Creates a new image container.
@@ -3211,6 +3227,60 @@ _UI_EXTERN void uiFreeImage(uiImage *i);
  * @memberof uiImage
  */
 _UI_EXTERN void uiImageAppend(uiImage *i, void *pixels, int pixelWidth, int pixelHeight, int byteStride);
+
+
+/**
+ * A control to display an image.
+ *
+ * Copy-owned semantics: SetImage() copies or retains an internal native image.
+ * Caller may free the source uiImage right after calling SetImage().
+ *
+ * @struct uiImageView
+ * @extends uiControl
+ * @ingroup static
+ */
+typedef struct uiImageView uiImageView;
+#define uiImageView(this) ((uiImageView *)(this))
+
+/**
+ * Content modes for image display.
+ *
+ * @enum uiImageViewContentMode
+ */
+_UI_ENUM(uiImageViewContentMode) {
+	uiImageViewContentCenter = 0, //!< 1:1 center, may clip or leave margins
+	uiImageViewContentFit,        //!< aspect-fit (letterbox)
+};
+
+/**
+ * Creates a new image view control.
+ *
+ * @returns A new uiImageView instance.
+ * @memberof uiImageView @static
+ */
+_UI_EXTERN uiImageView* uiNewImageView(void);
+
+/**
+ * Sets the image to display.
+ *
+ * Internally keeps its own native image for display.
+ * The caller may destroy the source uiImage after this call.
+ * Replacing the image frees the previous internal copy automatically.
+ *
+ * @param iv uiImageView instance.
+ * @param image Image to display, `NULL` to clear.
+ * @memberof uiImageView
+ */
+_UI_EXTERN void uiImageViewSetImage(uiImageView* iv, const uiImage* image);
+
+/**
+ * Sets the scaling/content mode.
+ *
+ * @param iv uiImageView instance.
+ * @param mode Content mode to set. [Default: `uiImageViewContentFit`]
+ * @memberof uiImageView
+ */
+_UI_EXTERN void uiImageViewSetContentMode(uiImageView* iv, uiImageViewContentMode mode);
 
 /**
  * @addtogroup table
