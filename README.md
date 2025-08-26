@@ -459,10 +459,10 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-macos.png" alt="area_draw_image-macos"></td>
     </tr>
     <tr>
-      <td><a href="examples/gallery/image_viewer.cr">image_viewer</a></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/image_viewer-ubuntu.png" alt="image_viewer-ubuntu"></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/image_viewer-windows.png" alt="image_viewer-windows"></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/image_viewer-macos.png" alt="image_viewer-macos"></td>
+      <td><a href="examples/gallery/basic_image_view.cr">basic_image_view</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_image_view-ubuntu.png" alt="basic_image_view-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_image_view-windows.png" alt="basic_image_view-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_image_view-macos.png" alt="basic_image_view-macos"></td>
     </tr>
   </tbody>
 </table>
