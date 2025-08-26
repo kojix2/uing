@@ -440,7 +440,32 @@ Note: Grid Layout does not work as expected on macOS.
   </tbody>
 </table>
 
-### Timer
+### Image (experimental)
+
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/area_draw_image.cr">area_draw_image</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-ubuntu.png" alt="area_draw_image-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-windows.png" alt="area_draw_image-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-macos.png" alt="area_draw_image-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/image_viewer.cr">image_viewer</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/image_viewer-ubuntu.png" alt="image_viewer-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/image_viewer-windows.png" alt="image_viewer-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/image_viewer-macos.png" alt="image_viewer-macos"></td>
+    </tr>
+  </tbody>
+</table>
 
 ## API Levels
 

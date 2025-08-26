@@ -133,6 +133,13 @@ module UIng
           LibUI.draw_text(@ref_ptr, text_layout.to_unsafe, x, y)
         end
 
+        def draw_image(img : UIng::Image, x : Number, y : Number, width : Number, height : Number) : Nil
+          raise ArgumentError.new("Width must be positive") if width <= 0
+          raise ArgumentError.new("Height must be positive") if height <= 0
+
+          LibUI.draw_image(@ref_ptr, img.to_unsafe, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
+        end
+
         def to_unsafe
           @ref_ptr
         end
