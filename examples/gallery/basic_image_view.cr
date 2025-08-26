@@ -2,7 +2,7 @@ require "../../src/uing"
 require "http/client"
 require "stumpy_png"
 
-fname = "#{__DIR__}/crys.png"
+fname = File.join(__DIR__, "crys.png")
 canvas = StumpyPNG.read(fname)
 width = canvas.width.to_i32
 height = canvas.height.to_i32
