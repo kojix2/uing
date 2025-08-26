@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::TextItalic - uing main</title>
+  <title>UIng::ImageView - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -312,7 +312,7 @@
       
     </li>
   
-  <li class="parent " data-id="uing/UIng/ImageView" data-name="uing::imageview">
+  <li class="parent open current" data-id="uing/UIng/ImageView" data-name="uing::imageview">
       <a href="../UIng/ImageView.html">ImageView</a>
       
         <ul>
@@ -452,7 +452,7 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/TextItalic" data-name="uing::textitalic">
+  <li class=" " data-id="uing/UIng/TextItalic" data-name="uing::textitalic">
       <a href="../UIng/TextItalic.html">TextItalic</a>
       
     </li>
@@ -492,11 +492,13 @@
 <h1 class="type-name">
 
   <span class="kind">
-    enum
-  </span> UIng::<wbr>TextItalic
+    class
+  </span> UIng::<wbr>ImageView
 
 </h1>
 
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/ImageView.html">UIng::ImageView</a></li><li class="superclass"><a href="../UIng/Control.html">UIng::Control</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -526,8 +528,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/text_italic.cr#L2" target="_blank">
-        uing/text_italic.cr
+      <a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L4" target="_blank">
+        uing/image_view.cr
       </a>
     
     <br/>
@@ -535,38 +537,41 @@
 
 
 
+
+
   
-    <h2>
-      <a id="enum-members" class="anchor" href="#enum-members">
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-      Enum Members
-    </h2>
-  
-  <dl>
+    Constructors
+  </h2>
+  <ul class="list-summary">
     
-      <dt class="entry-const" id="Normal">
-        <strong>Normal</strong> = <code><span class="n">0</span></code>
-      </dt>
-      
+      <li class="entry-summary">
+        <a href="#new%28%2Aargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, &)</a>
+        
+      </li>
     
-      <dt class="entry-const" id="Oblique">
-        <strong>Oblique</strong> = <code><span class="n">1</span></code>
-      </dt>
-      
+      <li class="entry-summary">
+        <a href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, **kwargs, &)</a>
+        
+      </li>
     
-      <dt class="entry-const" id="Italic">
-        <strong>Italic</strong> = <code><span class="n">2</span></code>
-      </dt>
-      
+      <li class="entry-summary">
+        <a href="#new%28image%3AImage%2Cmode%3AContentMode%3DContentMode%3A%3ACenter%29-class-method" class="signature"><strong>.new</strong>(image : Image, mode : ContentMode = <span class="t">ContentMode</span><span class="t">::</span><span class="t">Center</span>)</a>
+        
+      </li>
     
-  </dl>
+      <li class="entry-summary">
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
+        
+      </li>
+    
+  </ul>
 
-
-
-  
 
   
 
@@ -584,23 +589,17 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#italic%3F-instance-method" class="signature"><strong>#italic?</strong></a>
-        
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../UIng/TextItalic.html#Italic">Italic</a></code></p></div>
+        <a href="#content_mode%3D%28mode%3AContentMode%29-instance-method" class="signature"><strong>#content_mode=</strong>(mode : ContentMode)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#normal%3F-instance-method" class="signature"><strong>#normal?</strong></a>
-        
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../UIng/TextItalic.html#Normal">Normal</a></code></p></div>
+        <a href="#image%3D%28image%3AImage%29-instance-method" class="signature"><strong>#image=</strong>(image : Image)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#oblique%3F-instance-method" class="signature"><strong>#oblique?</strong></a>
-        
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../UIng/TextItalic.html#Oblique">Oblique</a></code></p></div>
+        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
         
       </li>
     
@@ -612,6 +611,90 @@
     
       
 
+  <h3>Instance methods inherited from class <code><a href="../UIng/Control.html">UIng::Control</a></code></h3>
+  
+  
+    <a href="../UIng/Control.html#__parent__-instance-method" class="tooltip">
+      <span>__parent__</span>
+    __parent__</a>, 
+    
+  
+    <a href="../UIng/Control.html#__set_parent__%28parent%29%3ANil-instance-method" class="tooltip">
+      <span>__set_parent__(parent) : Nil</span>
+    __set_parent__</a>, 
+    
+  
+    <a href="../UIng/Control.html#delete%28child%3AControl%29-instance-method" class="tooltip">
+      <span>delete(child : Control)</span>
+    delete</a>, 
+    
+  
+    <a href="../UIng/Control.html#destroy%3ANil-instance-method" class="tooltip">
+      <span>destroy : Nil</span>
+    destroy</a>, 
+    
+  
+    <a href="../UIng/Control.html#disable%3ANil-instance-method" class="tooltip">
+      <span>disable : Nil</span>
+    disable</a>, 
+    
+  
+    <a href="../UIng/Control.html#enable%3ANil-instance-method" class="tooltip">
+      <span>enable : Nil</span>
+    enable</a>, 
+    
+  
+    <a href="../UIng/Control.html#enabled%3F%3ABool-instance-method" class="tooltip">
+      <span>enabled? : Bool</span>
+    enabled?</a>, 
+    
+  
+    <a href="../UIng/Control.html#enabled_to_user%3F%3ABool-instance-method" class="tooltip">
+      <span>enabled_to_user? : Bool</span>
+    enabled_to_user?</a>, 
+    
+  
+    <a href="../UIng/Control.html#handle-instance-method" class="tooltip">
+      <span>handle</span>
+    handle</a>, 
+    
+  
+    <a href="../UIng/Control.html#hide%3ANil-instance-method" class="tooltip">
+      <span>hide : Nil</span>
+    hide</a>, 
+    
+  
+    <a href="../UIng/Control.html#parent%3AControl%7CNil-instance-method" class="tooltip">
+      <span>parent : Control | Nil</span>
+    parent</a>, 
+    
+  
+    <a href="../UIng/Control.html#show%3ANil-instance-method" class="tooltip">
+      <span>show : Nil</span>
+    show</a>, 
+    
+  
+    <a href="../UIng/Control.html#to_unsafe-instance-method" class="tooltip">
+      <span>to_unsafe</span>
+    to_unsafe</a>, 
+    
+  
+    <a href="../UIng/Control.html#toplevel%3F%3ABool-instance-method" class="tooltip">
+      <span>toplevel? : Bool</span>
+    toplevel?</a>, 
+    
+  
+    <a href="../UIng/Control.html#verify_set_parent%28parent%29%3ANil-instance-method" class="tooltip">
+      <span>verify_set_parent(parent) : Nil</span>
+    verify_set_parent</a>, 
+    
+  
+    <a href="../UIng/Control.html#visible%3F%3ABool-instance-method" class="tooltip">
+      <span>visible? : Bool</span>
+    visible?</a>
+    
+  
+
 
       
 
@@ -633,6 +716,15 @@
 
 
       
+
+  <h3>Macros inherited from module <code>UIng::BlockConstructor</code></h3>
+  
+  
+    <a href="../UIng/BlockConstructor.html#block_constructor-macro" class="tooltip">
+      <span>block_constructor</span>
+    block_constructor</a>
+    
+  
 
 
     
@@ -665,6 +757,80 @@
   </div>
 
   
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(*args,&amp;)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(*args, &)
+
+        <a class="method-permalink" href="#new%28%2Aargs%2C%26%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(*args,**kwargs,&amp;)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(*args, **kwargs, &)
+
+        <a class="method-permalink" href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(image:Image,mode:ContentMode=ContentMode::Center)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(image : <a href="../UIng/Image.html">Image</a>, mode : <a href="../UIng/ImageView/ContentMode.html">ContentMode</a> = <span class="t">ContentMode</span><span class="t">::</span><span class="t">Center</span>)
+
+        <a class="method-permalink" href="#new%28image%3AImage%2Cmode%3AContentMode%3DContentMode%3A%3ACenter%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L16" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
 
   
 
@@ -680,65 +846,50 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="italic?-instance-method">
+    <div class="entry-detail" id="content_mode=(mode:ContentMode)-instance-method">
       <div class="signature">
         
-        def <strong>italic?</strong>
+        def <strong>content_mode=</strong>(mode : <a href="../UIng/ImageView/ContentMode.html">ContentMode</a>)
 
-        <a class="method-permalink" href="#italic%3F-instance-method">#</a>
+        <a class="method-permalink" href="#content_mode%3D%28mode%3AContentMode%29-instance-method">#</a>
       </div>
-      
-        <div class="doc">
-          
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../UIng/TextItalic.html#Italic">Italic</a></code></p>
-        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/text_italic.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="normal?-instance-method">
+    <div class="entry-detail" id="image=(image:Image)-instance-method">
       <div class="signature">
         
-        def <strong>normal?</strong>
+        def <strong>image=</strong>(image : <a href="../UIng/Image.html">Image</a>)
 
-        <a class="method-permalink" href="#normal%3F-instance-method">#</a>
+        <a class="method-permalink" href="#image%3D%28image%3AImage%29-instance-method">#</a>
       </div>
-      
-        <div class="doc">
-          
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../UIng/TextItalic.html#Normal">Normal</a></code></p>
-        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/text_italic.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="oblique?-instance-method">
+    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
       <div class="signature">
         
-        def <strong>oblique?</strong>
+        def <strong>to_unsafe</strong> : Pointer(Void)
 
-        <a class="method-permalink" href="#oblique%3F-instance-method">#</a>
+        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
       </div>
-      
-        <div class="doc">
-          
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../UIng/TextItalic.html#Oblique">Oblique</a></code></p>
-        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/text_italic.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/4b5b0da395cade80ddeb16a9570b15c9e647347e/src/uing/image_view.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
