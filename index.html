@@ -1010,18 +1010,23 @@ Images are automatically generated and stored in the <code>screenshots</code> br
     <use href="#octicon-link"/>
   </svg>
 </a>Memory Safety</h2>
+<p>UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:</p>
 <ul>
 <li>
-<p>Most callbacks are stored as instance variables of their respective controls, which protects them from garbage collection (GC). Some callbacks are stored as UIng class variables, which serves the same purpose.</p>
+<p><strong>Callback Protection</strong>
+Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using <code>::Box.box()</code>, allowing Crystal blocks that capture external variables to be safely used as C callbacks.</p>
 </li>
 <li>
-<p>Instances of a control are passed as arguments to a parent control's append or set_child method. This establishes a reference from the parent to the child, creating a reference chain such as Window -&gt; Box -&gt; Button. This chain prevents the Garbage Collector (GC) from collecting the Button object (and its callbacks), thus avoiding a segmentation fault as long as the Window is present.</p>
+<p><strong>Reference Chains</strong>
+Controls are passed to parent containers (e.g., <code>Window -&gt; Box -&gt; Button</code>), ensuring that children remain referenced as long as the parent exists. Root components such as <code>Window</code> and <code>Menu</code> are stored as class variables to avoid premature collection.</p>
 </li>
 <li>
-<p>Some root components, such as Window and Menu, are stored as class variables to ensure protection from GC. This may cause memory leaks, but is acceptable for now.</p>
+<p><strong>Extended Handler Structures</strong>
+For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
 </li>
 <li>
-<p>The use of <code>finalize</code> is intentionally avoided in certain cases because the non-deterministic timing of memory deallocation by the GC is often incompatible with libui. Instead, RAII-style API is provided that automatically calls the free method upon exiting a block, relieving users of the need to call free manually.</p>
+<p><strong>Resource Management</strong>
+<code>finalize</code> is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call <code>free</code> manually.</p>
 </li>
 </ul>
 <h2><a id="limitations" class="anchor" href="#limitations">
