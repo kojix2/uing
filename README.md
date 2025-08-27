@@ -531,6 +531,7 @@ crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
   　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
+  - Enhancement patches such as image display functionality are provided on the dev branch.
 
 ### Memory Safety
 
