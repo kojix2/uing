@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "examples/gallery/**"
+      - "download.cr"
   workflow_dispatch:
 
 jobs:
