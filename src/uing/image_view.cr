@@ -4,7 +4,7 @@ module UIng
   class ImageView < Control
     enum ContentMode
       Center = 0
-      Fit = 1
+      Fit    = 1
     end
 
     block_constructor

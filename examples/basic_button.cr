@@ -8,10 +8,9 @@ window.on_closing do
   true
 end
 
-button = UIng::Button.new("Button") do
-  on_clicked do
-    window.msg_box("Information", "You clicked the button")
-  end
+button = UIng::Button.new("Button")
+button.on_clicked do
+  window.msg_box("Information", "You clicked the button")
 end
 
 window.child = button
