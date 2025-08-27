@@ -1005,42 +1005,18 @@ Images are automatically generated and stored in the <code>screenshots</code> br
 <li>Almost all basic control functions such as <code>Window</code>, <code>Label</code>, and <code>Button</code> are covered.</li>
 <li>APIs for advanced controls such as <code>Table</code> and <code>Area</code> are also provided. However, these are still under development and there may still be memory management issues.</li>
 </ul>
-<h2><a id="memory-safety" class="anchor" href="#memory-safety">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Memory Safety</h2>
-<p>UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:</p>
-<ul>
-<li>
-<p><strong>Callback Protection</strong>
-Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using <code>::Box.box()</code>, allowing Crystal blocks that capture external variables to be safely used as C callbacks.</p>
-</li>
-<li>
-<p><strong>Reference Chains</strong>
-Controls are passed to parent containers (e.g., <code>Window -&gt; Box -&gt; Button</code>), ensuring that children remain referenced as long as the parent exists. Root components such as <code>Window</code> and <code>Menu</code> are stored as class variables to avoid premature collection.</p>
-</li>
-<li>
-<p><strong>Extended Handler Structures</strong>
-For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
-</li>
-<li>
-<p><strong>Resource Management</strong>
-<code>finalize</code> is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call <code>free</code> manually.</p>
-</li>
-</ul>
 <h2><a id="limitations" class="anchor" href="#limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Limitations</h2>
-<p>libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:</p>
+<p>libui-ng is cross-platform, but comes with some limitations:</p>
 <ol>
 <li>
-<p>Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)</p>
+<p>The original libui-ng does not provide image display functionality. A patch has been applied in this project to add experimental support, which is available in the main branch.</p>
 </li>
 <li>
-<p>Grid layout is broken on macOS.</p>
+<p>The grid layout system is known to be broken on macOS. A patch has been applied to improve the behavior, though it still does not fully match the expected design.</p>
 </li>
 <li>
 <p>Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.</p>
@@ -1060,22 +1036,6 @@ For complex controls like <code>Area</code> and <code>Table</code>, extended C s
 <pre><code class="language-crystal">crystal build app.cr --link-flags &quot;-mwindows&quot;</code></pre>
 <p>MSVC:</p>
 <pre><code class="language-crystal">crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS</code></pre>
-<h2><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Closures in Low-Level Contexts</h2>
-<ul>
-<li>
-<p>Many methods support Crystal closures because the underlying libui-ng functions accept a <code>data</code> parameter.</p>
-</li>
-<li>
-<p>In some low-level APIs, such as function pointers assigned to struct members, no <code>data</code> can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.</p>
-</li>
-<li>
-<p>This approach is used in controls like <code>Table</code> and <code>Area</code>.</p>
-</li>
-</ul>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -1088,8 +1048,48 @@ For complex controls like <code>Area</code> and <code>Table</code>, extended C s
 <li>When adding new UI components, follow the established callback management patterns</li>
 <li>libui libraries are generated using GitHub Actions at <a href="https://github.com/kojix2/libui-ng">kojix2/libui-ng</a> in the pre-build branch.</li>
 </ul>
-<p>Note:<br />
-This project was developed with the assistance of generative AI.</p>
+<h3><a id="memory-safety" class="anchor" href="#memory-safety">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Memory Safety</h3>
+<p>UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:</p>
+<ul>
+<li>
+<p>Callback Protection:  Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using <code>::Box.box()</code>, allowing Crystal blocks that capture external variables to be safely used as C callbacks.</p>
+</li>
+<li>
+<p>Reference Chains:  Controls are passed to parent containers (e.g., <code>Window -&gt; Box -&gt; Button</code>), ensuring that children remain referenced as long as the parent exists. Root components such as <code>Window</code> and <code>Menu</code> are stored as class variables to avoid premature collection.</p>
+</li>
+<li>
+<p>Extended Handler Structures: For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
+</li>
+<li>
+<p>Resource Management: <code>finalize</code> is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call <code>free</code> manually.</p>
+</li>
+</ul>
+<h3><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Closures in Low-Level Contexts</h3>
+<ul>
+<li>
+<p>Many methods support Crystal closures because the underlying libui-ng functions accept a <code>data</code> parameter.</p>
+</li>
+<li>
+<p>In some low-level APIs, such as function pointers assigned to struct members, no <code>data</code> can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.</p>
+</li>
+<li>
+<p>This approach is used in controls like <code>Table</code> and <code>Area</code>.</p>
+</li>
+</ul>
+<h3><a id="use-of-ai-coding" class="anchor" href="#use-of-ai-coding">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Use of AI Coding</h3>
+<p>This project was developed with the assistance of generative AI.</p>
 <p>In particular, AI was used to create the GitHub Actions workflows for screenshot automation and to generate several complex example programs.</p>
 <p>kojix2 loves code generation and &quot;Vibe Coding,&quot; but this library was not created by fully adopting that approach.
 In reality, it was built through a lot of manual work, design trial and error, and human review of AI-generated code.</p>
