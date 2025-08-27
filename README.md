@@ -497,31 +497,16 @@ Note: Grid Layout does not work as expected on macOS.
 - Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
 - APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
 
-## Memory Safety
-
-UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:
-
-* **Callback Protection**
-  Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using `::Box.box()`, allowing Crystal blocks that capture external variables to be safely used as C callbacks.
-
-* **Reference Chains**
-  Controls are passed to parent containers (e.g., `Window -> Box -> Button`), ensuring that children remain referenced as long as the parent exists. Root components such as `Window` and `Menu` are stored as class variables to avoid premature collection.
-
-* **Extended Handler Structures**
-  For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
-
-* **Resource Management**
-  `finalize` is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call `free` manually.
-
 ## Limitations
 
-libui-ng is an excellent library, but supporting three platforms comes with some notable limitations:
+libui-ng is cross-platform, but comes with some limitations:
 
-1. Image display is not supported. While tables can display images, the image sizes vary across platforms. (It is possible to display videos in areas using libmpv though.)
+1. The original libui-ng does not provide image display functionality. A patch has been applied in this project to add experimental support, which is available in the main branch.
 
-2. Grid layout is broken on macOS.
+2. The grid layout system is known to be broken on macOS. A patch has been applied to improve the behavior, though it still does not fully match the expected design.
 
 3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
+
 
 ## Windows Setup
 
@@ -539,14 +524,6 @@ MSVC:
 crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 ```
 
-## Closures in Low-Level Contexts
-
-- Many methods support Crystal closures because the underlying libui-ng functions accept a `data` parameter.
-
-- In some low-level APIs, such as function pointers assigned to struct members, no `data` can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.
-
-- This approach is used in controls like `Table` and `Area`.
-
 ## Development
 
 - `UIng::LibUI` is the module for direct C bindings
@@ -555,7 +532,28 @@ crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
 
-Note:  
+### Memory Safety
+
+UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:
+
+- Callback Protection:  Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using `::Box.box()`, allowing Crystal blocks that capture external variables to be safely used as C callbacks.
+
+- Reference Chains:  Controls are passed to parent containers (e.g., `Window -> Box -> Button`), ensuring that children remain referenced as long as the parent exists. Root components such as `Window` and `Menu` are stored as class variables to avoid premature collection.
+
+- Extended Handler Structures: For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
+
+- Resource Management: `finalize` is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call `free` manually.
+
+### Closures in Low-Level Contexts
+
+- Many methods support Crystal closures because the underlying libui-ng functions accept a `data` parameter.
+
+- In some low-level APIs, such as function pointers assigned to struct members, no `data` can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.
+
+- This approach is used in controls like `Table` and `Area`.
+
+### Use of AI Coding
+  
 This project was developed with the assistance of generative AI.
 
 In particular, AI was used to create the GitHub Actions workflows for screenshot automation and to generate several complex example programs.
