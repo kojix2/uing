@@ -372,6 +372,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-macos.png" alt="spirograph-macos"></td>
     </tr>
     <tr>
+      <td><a href="examples/gallery/area_matrix.cr">area_matrix</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_matrix-ubuntu.png" alt="area_matrix-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_matrix-windows.png" alt="area_matrix-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_matrix-macos.png" alt="area_matrix-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/basic_draw_text.cr">basic_draw_text</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-ubuntu.png" alt="basic_draw_text-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-windows.png" alt="basic_draw_text-windows"></td>
