@@ -33,8 +33,8 @@ module UIng
       LibUI.checkbox_set_checked(@ref_ptr, checked)
     end
 
-    def on_toggled(&block : Bool -> _) : Nil
-      wrapper = -> {
+    def on_toggled(&block : Bool -> Nil) : Nil
+      wrapper = -> : Nil {
         checked = checked?
         block.call(checked)
       }
@@ -42,7 +42,7 @@ module UIng
       if boxed_data = @on_toggled_box
         LibUI.checkbox_on_toggled(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call

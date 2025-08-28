@@ -25,12 +25,12 @@ module UIng
       LibUI.button_set_text(@ref_ptr, text)
     end
 
-    def on_clicked(&block : -> _) : Nil
+    def on_clicked(&block : -> Nil) : Nil
       @on_clicked_box = ::Box.box(block)
       if boxed_data = @on_clicked_box
         LibUI.button_on_clicked(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(block)).unbox(data)
               data_as_callback.call

@@ -29,12 +29,12 @@ module UIng
       super
     end
 
-    def on_row_clicked(&block : LibC::Int -> _) : Nil
+    def on_row_clicked(&block : LibC::Int -> Nil) : Nil
       @on_row_clicked_box = ::Box.box(block)
       if boxed_data = @on_row_clicked_box
         LibUI.table_on_row_clicked(
           @ref_ptr,
-          ->(_table, row, data) {
+          ->(_table, row, data) : Nil {
             begin
               callback = ::Box(typeof(block)).unbox(data)
               callback.call(row)
@@ -47,12 +47,12 @@ module UIng
       end
     end
 
-    def on_row_double_clicked(&block : LibC::Int -> _) : Nil
+    def on_row_double_clicked(&block : LibC::Int -> Nil) : Nil
       @on_row_double_clicked_box = ::Box.box(block)
       if boxed_data = @on_row_double_clicked_box
         LibUI.table_on_row_double_clicked(
           @ref_ptr,
-          ->(_table, row, data) {
+          ->(_table, row, data) : Nil {
             begin
               callback = ::Box(typeof(block)).unbox(data)
               callback.call(row)
@@ -65,12 +65,12 @@ module UIng
       end
     end
 
-    def on_header_clicked(&block : LibC::Int -> _) : Nil
+    def on_header_clicked(&block : LibC::Int -> Nil) : Nil
       @on_header_clicked_box = ::Box.box(block)
       if boxed_data = @on_header_clicked_box
         LibUI.table_header_on_clicked(
           @ref_ptr,
-          ->(_table, column, data) {
+          ->(_table, column, data) : Nil {
             begin
               callback = ::Box(typeof(block)).unbox(data)
               callback.call(column)
@@ -83,12 +83,12 @@ module UIng
       end
     end
 
-    def on_selection_changed(&block : Selection -> _) : Nil
+    def on_selection_changed(&block : Selection -> Nil) : Nil
       @on_selection_changed_box = ::Box.box(block)
       if boxed_data = @on_selection_changed_box
         LibUI.table_on_selection_changed(
           @ref_ptr,
-          ->(table, data) {
+          ->(table, data) : Nil {
             begin
               callback = ::Box(typeof(block)).unbox(data)
               # Get current selection and pass it to the callback

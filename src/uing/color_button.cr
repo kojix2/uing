@@ -25,8 +25,8 @@ module UIng
       LibUI.color_button_set_color(@ref_ptr, r, g, b, a)
     end
 
-    def on_changed(&block : Float64, Float64, Float64, Float64 -> _) : Nil
-      wrapper = -> {
+    def on_changed(&block : Float64, Float64, Float64, Float64 -> Nil) : Nil
+      wrapper = -> : Nil {
         r, g, b, a = color
         block.call(r, g, b, a)
       }
@@ -34,7 +34,7 @@ module UIng
       if boxed_data = @on_changed_box
         LibUI.color_button_on_changed(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call

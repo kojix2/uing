@@ -16,8 +16,8 @@ module UIng
       super
     end
 
-    def on_changed(&block : FontDescriptor -> _) : Nil
-      wrapper = -> {
+    def on_changed(&block : FontDescriptor -> Nil) : Nil
+      wrapper = -> : Nil {
         font_descriptor = FontDescriptor.new
         font(font_descriptor)
         block.call(font_descriptor)
@@ -27,7 +27,7 @@ module UIng
       if boxed_data = @on_changed_box
         LibUI.font_button_on_changed(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call

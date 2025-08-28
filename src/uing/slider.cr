@@ -48,7 +48,7 @@ module UIng
     end
 
     def on_changed(&block : Int32 -> _) : Nil
-      wrapper = -> {
+      wrapper = -> : Nil {
         v = value
         block.call(v)
       }
@@ -56,7 +56,7 @@ module UIng
       if boxed_data = @on_changed_box
         LibUI.slider_on_changed(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call
@@ -69,8 +69,8 @@ module UIng
       end
     end
 
-    def on_released(&block : Int32 -> _) : Nil
-      wrapper = -> {
+    def on_released(&block : Int32 -> Nil) : Nil
+      wrapper = -> : Nil {
         v = value
         block.call(v)
       }
@@ -78,7 +78,7 @@ module UIng
       if boxed_data = @on_released_box
         LibUI.slider_on_released(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call

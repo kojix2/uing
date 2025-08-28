@@ -134,15 +134,15 @@ module UIng
       LibUI.window_set_resizeable(@ref_ptr, resizeable)
     end
 
-    def on_position_changed(&block : (Int32, Int32) -> _)
-      wrapper = -> {
+    def on_position_changed(&block : (Int32, Int32) -> Nil)
+      wrapper = -> : Nil {
         x, y = position
         block.call(x, y)
       }
       if boxed_data = (@on_position_changed_box = ::Box.box(wrapper))
         LibUI.window_on_position_changed(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call
@@ -155,15 +155,15 @@ module UIng
       end
     end
 
-    def on_content_size_changed(&block : (Int32, Int32) -> _)
-      wrapper = -> {
+    def on_content_size_changed(&block : (Int32, Int32) -> Nil)
+      wrapper = -> : Nil {
         x, y = content_size
         block.call(x, y)
       }
       if boxed_data = (@on_content_size_changed_box = ::Box.box(wrapper))
         LibUI.window_on_content_size_changed(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call
@@ -177,11 +177,11 @@ module UIng
     end
 
     def on_closing(&block : -> Bool)
-      wrapper = -> { block.call }
+      wrapper = -> : Bool { block.call }
       if boxed_data = (@on_closing_box = ::Box.box(wrapper))
         LibUI.window_on_closing(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Bool {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call
@@ -195,12 +195,12 @@ module UIng
       end
     end
 
-    def on_focus_changed(&block : Bool -> _)
-      wrapper = -> { block.call(focused?) }
+    def on_focus_changed(&block : Bool -> Nil)
+      wrapper = -> : Nil { block.call(focused?) }
       if boxed_data = (@on_focus_changed_box = ::Box.box(wrapper))
         LibUI.window_on_focus_changed(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call

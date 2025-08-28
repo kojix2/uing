@@ -107,13 +107,13 @@ module UIng
     LibUI.quit
   end
 
-  def self.queue_main(&callback : -> _) : Nil
+  def self.queue_main(&callback : -> Nil) : Nil
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
     @@callback_mutex.synchronize do
       @@queue_callback_boxes << boxed_data
     end
-    LibUI.queue_main(->(data) do
+    LibUI.queue_main(->(data) : Nil do
       begin
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         data_as_callback.call
@@ -134,7 +134,7 @@ module UIng
     @@callback_mutex.synchronize do
       @@timer_callback_boxes << boxed_data
     end
-    LibUI.timer(sender, ->(data) do
+    LibUI.timer(sender, ->(data) : LibC::Int do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       result = data_as_callback.call
       if result == 0
@@ -150,7 +150,7 @@ module UIng
     boxed_data = ::Box.box(callback)
     # Store in dedicated variable (libui-ng supports only one callback, overwrites previous)
     @@should_quit_callback_box = boxed_data
-    LibUI.on_should_quit(->(data) do
+    LibUI.on_should_quit(->(data) : Bool do
       data_as_callback = ::Box(typeof(callback)).unbox(data)
       data_as_callback.call
     end, boxed_data)

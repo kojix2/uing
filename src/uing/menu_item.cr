@@ -32,16 +32,16 @@ module UIng
       LibUI.menu_item_set_checked(@ref_ptr, checked)
     end
 
-    def on_clicked(&block : UIng::Window -> _) : Nil
+    def on_clicked(&block : UIng::Window -> Nil) : Nil
       # Convert to the internal callback format that matches LibUI expectation
-      callback2 = ->(w : Pointer(LibUI::Window)) {
+      callback2 = ->(w : Pointer(LibUI::Window)) : Nil {
         block.call(UIng::Window.new(w))
       }
       @on_clicked_box = ::Box.box(callback2)
       if boxed_data = @on_clicked_box
         LibUI.menu_item_on_clicked(
           @ref_ptr,
-          ->(_sender, window, data) {
+          ->(_sender, window, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(callback2)).unbox(data)
               data_as_callback.call(window)

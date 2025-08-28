@@ -51,8 +51,8 @@ module UIng
       LibUI.combobox_set_selected(@ref_ptr, index)
     end
 
-    def on_selected(&block : Int32 -> _) : Nil
-      wrapper = -> {
+    def on_selected(&block : Int32 -> Nil) : Nil
+      wrapper = -> : Nil {
         idx = selected
         block.call(idx)
       }
@@ -60,7 +60,7 @@ module UIng
       if boxed_data = @on_selected_box
         LibUI.combobox_on_selected(
           @ref_ptr,
-          ->(_sender, data) {
+          ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
               data_as_callback.call

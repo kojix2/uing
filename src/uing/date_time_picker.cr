@@ -59,7 +59,7 @@ module UIng
       end
     end
 
-    def on_changed(&block : Time -> _) : Nil
+    def on_changed(&block : Time -> Nil) : Nil
       wrapper = -> : Nil {
         LibUI.date_time_picker_time(@ref_ptr, @tm)
         current_time = @tm.to_time

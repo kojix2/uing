@@ -211,8 +211,7 @@ class StarMatrixDemo
     container = UIng::Box.new(:horizontal, padded: true)
     label = UIng::Label.new(spec.fmt.call(spec.init))
     @labels[key] = label
-    container.append(label, stretchy: false)
-
+    container.append(label, stretchy: true)
     slider = UIng::Slider.new(0, 1000)
     slider.value = SliderMap.to_slider(spec.min, spec.max, spec.init)
     slider.on_changed do
