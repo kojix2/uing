@@ -15,6 +15,7 @@ username_entry.text = "user123"
 form.append("Username:", username_entry)
 
 password_entry = UIng::Entry.new(:password)
+password_entry.text = "password123" # For demonstration
 form.append("Password:", password_entry)
 
 age_spinbox = UIng::Spinbox.new(0, 120)
