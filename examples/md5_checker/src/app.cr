@@ -19,6 +19,7 @@ class MD5CheckerApp
     @main_window = UIng::Window.new("MD5 Checker", 600, 400)
     @main_window.margined = true
     @main_window.on_closing do
+      cleanup
       UIng.quit
       true
     end
@@ -65,7 +66,7 @@ class MD5CheckerApp
   def run
     @main_window.show
     UIng.main
-    cleanup
+    UIng.uninit
   end
 
   # Create and configure table
@@ -131,6 +132,5 @@ class MD5CheckerApp
     @main_vbox.delete(1)
     @table.destroy
     @table_model.free
-    UIng.uninit
   end
 end
