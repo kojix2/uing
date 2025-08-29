@@ -384,6 +384,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_draw_text-macos.png" alt="basic_draw_text-macos"></td>
     </tr>
     <tr>
+      <td><a href="examples/gallery/reversi.cr">reversi</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/reversi-ubuntu.png" alt="reversi-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/reversi-windows.png" alt="reversi-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/reversi-macos.png" alt="reversi-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/area_breakout.cr">area_breakout</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_breakout-ubuntu.png" alt="area_breakout-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_breakout-windows.png" alt="area_breakout-windows"></td>
