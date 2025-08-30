@@ -520,11 +520,13 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
     <use href="#octicon-link"/>
   </svg>
 </a>Quick Start</h2>
-<p>Clone the repository and try the examples:</p>
+<p>Clone the repository:</p>
 <pre><code class="language-sh">git clone https://github.com/kojix2/uing
-cd uing
-crystal run download.cr
-crystal run examples/control_gallery.cr</code></pre>
+cd uing</code></pre>
+<p>Create the <code>libui</code> directory and download the static library for your platform:</p>
+<pre><code class="language-sh">crystal run download.cr</code></pre>
+<p>To run the <code>control_gallery</code> example, use the following command:</p>
+<pre><code class="language-sh">crystal run examples/control_gallery.cr</code></pre>
 <h3><a id="windows-msvc-setup" class="anchor" href="#windows-msvc-setup">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -1072,10 +1074,10 @@ Images are automatically generated and stored in the <code>screenshots</code> br
 <p>UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:</p>
 <ul>
 <li>
-<p>Callback Protection:  Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using <code>::Box.box()</code>, allowing Crystal blocks that capture external variables to be safely used as C callbacks.</p>
+<p>Callback Protection: Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using <code>::Box.box()</code>, allowing Crystal blocks that capture external variables to be safely used as C callbacks.</p>
 </li>
 <li>
-<p>Reference Chains:  Controls are passed to parent containers (e.g., <code>Window -&gt; Box -&gt; Button</code>), ensuring that children remain referenced as long as the parent exists. Root components such as <code>Window</code> and <code>Menu</code> are stored as class variables to avoid premature collection.</p>
+<p>Reference Chains: Controls are passed to parent containers (e.g., <code>Window -&gt; Box -&gt; Button</code>), ensuring that children remain referenced as long as the parent exists. Root components such as <code>Window</code> and <code>Menu</code> are stored as class variables to avoid premature collection.</p>
 </li>
 <li>
 <p>Extended Handler Structures: For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
