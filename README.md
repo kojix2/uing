@@ -4,7 +4,7 @@
 [![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fuing%2Flines)](https://tokei.kojix2.net/github/kojix2/uing)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kojix2/uing)
 
-UIng is a Crystal binding for [libui-ng](https://github.com/libui-ng/libui-ng).
+UIng is a [Crystal](https://crystal-lang.org/) binding for [libui-ng](https://github.com/libui-ng/libui-ng).
 
 libui-ng uses the native APIs of each platform: Win32 API, [Direct2D](https://learn.microsoft.com/windows/win32/Direct2D/), and [DirectWrite](https://learn.microsoft.com/windows/win32/directwrite/) on Windows; [Cocoa](https://en.wikipedia.org/wiki/Cocoa_(API)) (AppKit) on macOS; and [GTK+ 3.10+](https://docs.gtk.org/gtk3/) and [Pango](https://docs.gtk.org/Pango/) on Linux/Unix.
 You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets.
