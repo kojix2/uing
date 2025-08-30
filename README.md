@@ -545,6 +545,11 @@ MSVC:
 crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 ```
 
+## Packaging Your Application
+
+To learn how to package your UIng-based application for distribution, refer to the [md5_checker](examples/md5_checker) example.  
+This example demonstrates a simple way to bundle your Crystal app with the required native libraries, making it easy to share with others.
+
 ## Development
 
 - `UIng::LibUI` is the module for direct C bindings
