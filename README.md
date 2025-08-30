@@ -519,7 +519,6 @@ libui-ng is cross-platform, but comes with some limitations:
 
 3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
 
-
 ## Windows Setup
 
 ### Hide Console Window
@@ -549,9 +548,9 @@ crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
 
 UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:
 
-- Callback Protection:  Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using `::Box.box()`, allowing Crystal blocks that capture external variables to be safely used as C callbacks.
+- Callback Protection: Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using `::Box.box()`, allowing Crystal blocks that capture external variables to be safely used as C callbacks.
 
-- Reference Chains:  Controls are passed to parent containers (e.g., `Window -> Box -> Button`), ensuring that children remain referenced as long as the parent exists. Root components such as `Window` and `Menu` are stored as class variables to avoid premature collection.
+- Reference Chains: Controls are passed to parent containers (e.g., `Window -> Box -> Button`), ensuring that children remain referenced as long as the parent exists. Root components such as `Window` and `Menu` are stored as class variables to avoid premature collection.
 
 - Extended Handler Structures: For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
 
@@ -566,12 +565,12 @@ UIng applies several strategies to ensure safe interoperation between Crystal’
 - This approach is used in controls like `Table` and `Area`.
 
 ### Use of AI Coding
-  
+
 This project was developed with the assistance of generative AI.
 
 In particular, AI was used to create the GitHub Actions workflows for screenshot automation and to generate several complex example programs.
 
-kojix2 loves code generation and "Vibe Coding," but this library was not created by fully adopting that approach. 
+kojix2 loves code generation and "Vibe Coding," but this library was not created by fully adopting that approach.
 In reality, it was built through a lot of manual work, design trial and error, and human review of AI-generated code.
 
 ## Contributing
