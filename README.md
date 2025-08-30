@@ -28,12 +28,22 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
 
 ## Quick Start
 
-Clone the repository and try the examples:
+Clone the repository:
 
 ```sh
 git clone https://github.com/kojix2/uing
 cd uing
+```
+
+Create the `libui` directory and download the static library for your platform:
+
+```sh
 crystal run download.cr
+```
+
+To run the `control_gallery` example, use the following command:
+
+```sh
 crystal run examples/control_gallery.cr
 ```
 
