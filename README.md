@@ -559,6 +559,11 @@ This example demonstrates a simple way to bundle your Crystal app with the requi
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
   - Enhancement patches such as image display functionality are provided on the dev branch.
 
+### Sustainability
+
+From experience, maintaining a GUI library is harder than it looks, often requiring two to three times more effort than expected.
+Rather than chasing new features, we should prioritize **sustainability**.
+
 ### Memory Safety
 
 UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:
