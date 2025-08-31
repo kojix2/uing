@@ -346,6 +346,8 @@ Note: Grid Layout does not work as expected on macOS.
   </tbody>
 </table>
 
+Note: The Table API has quirks. For example, you must manually free memory as [instructed](https://github.com/kojix2/uing/issues/6) when the program terminates.
+
 ### Area
 
 <table>
