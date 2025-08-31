@@ -332,6 +332,12 @@ Note: Grid Layout does not work as expected on macOS.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_table-macos.png" alt="basic_table-macos"></td>
     </tr>
     <tr>
+      <td><a href="examples/gallery/csv_viewer.cr">csv_viewer</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/csv_viewer-ubuntu.png" alt="csv_viewer-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/csv_viewer-windows.png" alt="csv_viewer-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/csv_viewer-macos.png" alt="csv_viewer-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/advanced_table.cr">advanced_table</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-ubuntu.png" alt="advanced_table-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/advanced_table-windows.png" alt="advanced_table-windows"></td>

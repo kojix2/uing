@@ -3,8 +3,8 @@ require "csv"
 
 class CSVViewer
   # Constants
-  WINDOW_WIDTH         = 600
-  WINDOW_HEIGHT        = 400
+  WINDOW_WIDTH         = 400
+  WINDOW_HEIGHT        = 300
   SUPPORTED_EXTENSIONS = %w[.csv .tsv]
 
   # Instance variables
