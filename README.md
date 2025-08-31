@@ -529,6 +529,8 @@ libui-ng is cross-platform, but comes with some limitations:
 
 3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
 
+4. There is no function to delete columns from the table.
+
 ## Windows Setup
 
 ### Hide Console Window
