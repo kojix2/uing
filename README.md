@@ -497,6 +497,8 @@ Note: The Table API has quirks. For example, you must manually free memory as [i
   </tbody>
 </table>
 
+Note: Image display is a feature introduced experimentally in a fork of libui-ng. Please be aware that this feature is not present in the original libui-ng.
+
 ## API Levels
 
 <table>
