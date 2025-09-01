@@ -91,7 +91,13 @@ otool -L "$MACOS_DIR/$APP_NAME" \
 | while read -r lib; do
     base=$(basename "$lib")
     cp "$lib" "$FRAMEWORKS_DIR/$base"
+  echo "Before install_name_tool:"
+  otool -L "$MACOS_DIR/$APP_NAME"
+    
     install_name_tool -change "$lib" "@executable_path/../Frameworks/$base" "$MACOS_DIR/$APP_NAME"
+    
+  echo "After install_name_tool:"
+  otool -L "$MACOS_DIR/$APP_NAME"
 done
 
 # Create DMG
