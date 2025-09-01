@@ -51,7 +51,10 @@ jobs:
 
   build-macos:
     name: Build macOS Packages
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-13]
     steps:
       - uses: actions/checkout@v5
         with:
@@ -81,7 +84,7 @@ jobs:
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: md5checker-macos
+          name: md5checker-${{ matrix.os }}
           path: examples/md5_checker/dist/*
 
   build-windows:
