@@ -2,7 +2,7 @@ require "uing"
 require "chipmunk"
 
 PX_PER_M = 32.0
-WIN_W    = 600
+WIN_W    =  600
 WIN_H    =  400
 DT       = 1.0/120.0
 
