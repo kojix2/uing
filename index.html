@@ -1027,6 +1027,29 @@ Images are automatically generated and stored in the <code>screenshots</code> br
 <li>Almost all basic control functions such as <code>Window</code>, <code>Label</code>, and <code>Button</code> are covered.</li>
 <li>APIs for advanced controls such as <code>Table</code> and <code>Area</code> are also provided. However, these are still under development and there may still be memory management issues.</li>
 </ul>
+<h2><a id="control-destruction-and-memory-management" class="anchor" href="#control-destruction-and-memory-management">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Control Destruction and Memory Management</h2>
+<p>The ownership tree mechanism works well for most simple controls, allowing automatic memory deallocation through garbage collection.
+However, due to the unpredictable timing of GC execution, it is advisable to explicitly destroy the main window before <code>UIng.uninit</code> performs its memory leak check when in doubt.</p>
+<p>Some controls require specific destruction order for proper memory cleanup</p>
+<ul>
+<li><a href="https://github.com/kojix2/uing/issues/6">#6</a>
+<ul>
+<li>Table</li>
+</ul>
+</li>
+<li><a href="https://github.com/kojix2/uing/issues/19">#19</a>
+<ul>
+<li>MultilineEntry</li>
+<li>Tab</li>
+<li>Grid</li>
+<li>Area</li>
+</ul>
+</li>
+</ul>
 <h2><a id="limitations" class="anchor" href="#limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
