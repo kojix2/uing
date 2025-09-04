@@ -529,6 +529,20 @@ Note: Image display is a feature introduced experimentally in a fork of libui-ng
 - Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
 - APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
 
+## Control Destruction and Memory Management
+
+The ownership tree mechanism works well for most simple controls, allowing automatic memory deallocation through garbage collection. 
+However, due to the unpredictable timing of GC execution, it is advisable to explicitly destroy the main window before `UIng.uninit` performs its memory leak check when in doubt.
+
+Some controls require specific destruction order for proper memory cleanup
+- [#6](https://github.com/kojix2/uing/issues/6)
+  - Table
+- [#19](https://github.com/kojix2/uing/issues/19)
+  - MultilineEntry
+  - Tab
+  - Grid
+  - Area
+
 ## Limitations
 
 libui-ng is cross-platform, but comes with some limitations:
