@@ -370,8 +370,12 @@ class ReversiUI
   end
 
   private def create_window : UIng::Window
-    window = UIng::Window.new("Reversi Example", 700, 600, margined: true)
-    window.on_closing { UIng.quit; true }
+    # menubar: true to display the application menus (must be created before window)
+    window = UIng::Window.new("Reversi", 700, 600, margined: true, menubar: true)
+    window.on_closing do
+      UIng.quit
+      true
+    end
     window
   end
 
@@ -434,15 +438,7 @@ class ReversiUI
     control_box.append(@color_selector, stretchy: false)
     control_box.append(UIng::Separator.new(:horizontal), stretchy: false)
 
-    @new_game_button.on_clicked do
-      @game.reset
-      # Always reset to Black at the start of a new game so user explicitly re-chooses White.
-      @color_selector.selected = 0
-      @game.human_color = Reversi::Cell::Black
-      unlock_color_selection
-      update_status
-      @area.try(&.queue_redraw_all)
-    end
+    @new_game_button.on_clicked { handle_new_game }
     control_box.append(@new_game_button, stretchy: false)
 
     @pass_button.on_clicked do
@@ -626,6 +622,40 @@ class ReversiUI
     UIng.main
   end
 
+  # Reset game state to a fresh start (always human=Black, unlocked selector)
+  private def handle_new_game
+    @game.reset
+    @color_selector.selected = 0
+    @game.human_color = Reversi::Cell::Black
+    unlock_color_selection
+    update_status
+    @area.try(&.queue_redraw_all)
+  end
+
+  # Attach menu item handlers (called after menus are created and instance constructed)
+  def attach_menu_handlers(new_item, about_item)
+    new_item.on_clicked do |_window|
+      handle_new_game
+    end
+
+    about_item.on_clicked do |window|
+      window.msg_box("About Reversi", <<-ABOUT
+        Reversi demo built with UIng
+        AI: negamax search with positional weights
+
+        Source: #{UIng::SOURCE}
+        Version: #{UIng::VERSION}
+        ABOUT
+      )
+    end
+
+    # Handle global quit request
+    UIng.on_should_quit do
+      @window.destroy
+      true
+    end
+  end
+
   private def lock_color_selection
     @color_locked = true
     @color_selector.disable
@@ -639,6 +669,19 @@ end
 
 # Initialize and run the game
 UIng.init
+
+# Create menus BEFORE any windows
+file_menu = UIng::Menu.new("File")
+new_item = file_menu.append_item("New")
+file_menu.append_separator
+quit_item = file_menu.append_quit_item
+
+help_menu = UIng::Menu.new("Help")
+about_item = help_menu.append_about_item
+
 game = ReversiUI.new
+game.attach_menu_handlers(new_item, about_item)
+
+# Quit item: no on_clicked handler (libui requires using uiOnShouldQuit for Quit)
 game.run
 UIng.uninit
