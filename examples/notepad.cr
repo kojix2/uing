@@ -25,7 +25,7 @@ class NotepadApp
     about_item = help_menu.append_about_item
 
     # Now create UI components
-    @main_window = UIng::Window.new("Notepad", 500, 300)
+    @main_window = UIng::Window.new("Notepad", 500, 300, menubar: true)
     @vbox = UIng::Box.new(:vertical)
     @entry = UIng::MultilineEntry.new(wrapping: true)
 
@@ -109,7 +109,7 @@ class NotepadApp
         # In a real application, you might want to show a confirmation dialog
         # For now, we'll just quit
       end
-      puts "Bye Bye"
+      cleanup
       true
     end
 
@@ -122,9 +122,7 @@ class NotepadApp
     @main_window.on_closing do
       if @is_modified
         # In a real application, you might want to show a save confirmation dialog
-        puts "Bye Bye"
       else
-        puts "Bye Bye"
       end
       UIng.quit
       true
@@ -153,6 +151,8 @@ class NotepadApp
     # See https://github.com/kojix2/uing/issues/19
     @vbox.delete(0)
     @entry.destroy
+    @main_window.destroy
+    puts "Bye Bye"
   end
 end
 
