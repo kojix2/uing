@@ -97,5 +97,9 @@ module UIng
     end
 
     abstract def to_unsafe
+
+    def finalize
+      @released = true
+    end
   end
 end
