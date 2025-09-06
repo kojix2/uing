@@ -614,10 +614,15 @@ UIng applies several strategies to ensure safe interoperation between Crystal’
 
 This project was developed with the assistance of generative AI.
 
-In particular, AI was used to create the GitHub Actions workflows for screenshot automation and to generate several complex example programs.
+In particular, AI was extensively used for:
 
-kojix2 loves code generation and "Vibe Coding," but this library was not created by fully adopting that approach.
-In reality, it was built through a lot of manual work, design trial and error, and human review of AI-generated code.
+- Creating GitHub Actions workflows for screenshot automation
+- Generating complex example programs
+- Producing patches for libui-ng
+
+While kojix2 enjoys code generation and “Vibe Coding,” UIng is not a library created purely with that approach. In reality, it was built through substantial manual work, iterative design, and human review of AI-generated code.
+
+I also maintain several projects that are based purely on the Vibe Coding style, but I do not consider this library to be one of them.
 
 ## Contributing
 
