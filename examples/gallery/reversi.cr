@@ -349,6 +349,9 @@ class ReversiUI
   @new_game_button : UIng::Button
   @pass_button : UIng::Button
   @difficulty_slider : UIng::Slider
+  @color_selector : UIng::RadioButtons
+  # True once the first move (human or AI) has started; prevents color switching mid-game
+  @color_locked : Bool
 
   def initialize
     @game = ReversiGame.new
@@ -357,6 +360,8 @@ class ReversiUI
     @new_game_button = UIng::Button.new("New Game")
     @pass_button = UIng::Button.new("Pass")
     @difficulty_slider = UIng::Slider.new(1, 6)
+    @color_selector = UIng::RadioButtons.new(["Play Black (first)", "Play White (second)"])
+    @color_locked = false
     @area = create_area
     @window = create_window
 
@@ -414,8 +419,27 @@ class ReversiUI
     control_box.append(@difficulty_slider, stretchy: false)
     control_box.append(UIng::Separator.new(:horizontal), stretchy: false)
 
+    control_box.append(UIng::Label.new("Your Color:"), stretchy: false)
+    @color_selector.on_selected do |idx|
+      # Ignore changes after color is locked (first move started)
+      next if @color_locked
+      @game.human_color = (idx == 0) ? Reversi::Cell::Black : Reversi::Cell::White
+      update_status
+      # If human chooses White before any move, AI should start immediately and color locks
+      if @game.human_color == Reversi::Cell::White && @game.last_move.nil?
+        lock_color_selection
+        check_ai_turn(nil)
+      end
+    end
+    control_box.append(@color_selector, stretchy: false)
+    control_box.append(UIng::Separator.new(:horizontal), stretchy: false)
+
     @new_game_button.on_clicked do
       @game.reset
+      # Always reset to Black at the start of a new game so user explicitly re-chooses White.
+      @color_selector.selected = 0
+      @game.human_color = Reversi::Cell::Black
+      unlock_color_selection
       update_status
       @area.try(&.queue_redraw_all)
     end
@@ -523,6 +547,8 @@ class ReversiUI
     return unless (0..7).includes?(row) && (0..7).includes?(col)
 
     if @game.make_move(row, col)
+      # First human move locks color selection
+      lock_color_selection unless @color_locked
       update_status
       check_ai_turn(area)
     end
@@ -530,6 +556,11 @@ class ReversiUI
 
   private def check_ai_turn(area : UIng::Area? = nil)
     return unless @game.is_ai_turn?
+    if @game.pos.terminal?
+      @game.game_over = true
+      update_status
+      return
+    end
 
     if @game.pos.legal_moves.empty?
       @game.pass_turn
@@ -538,6 +569,8 @@ class ReversiUI
     end
 
     @game.ai_thinking = true
+    # Once AI thinking begins for the first move, lock color to prevent switching
+    lock_color_selection unless @color_locked
     update_status
 
     # Store area reference for timer callback
@@ -560,7 +593,13 @@ class ReversiUI
   end
 
   private def update_status
+    if !@game.game_over && @game.pos.terminal?
+      @game.game_over = true
+    end
+
     if @game.game_over
+      # Game finished: allow choosing color for the next game
+      unlock_color_selection if @color_locked
       @status_label.text = @game.get_winner
       @pass_button.disable
     elsif @game.ai_thinking
@@ -585,6 +624,16 @@ class ReversiUI
     @window.show
     check_ai_turn(nil) # Check if AI should move first
     UIng.main
+  end
+
+  private def lock_color_selection
+    @color_locked = true
+    @color_selector.disable
+  end
+
+  private def unlock_color_selection
+    @color_locked = false
+    @color_selector.enable
   end
 end
 
