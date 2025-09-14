@@ -531,8 +531,22 @@ Note: Image display is a feature introduced experimentally in a fork of libui-ng
 
 ## Control Destruction and Memory Management
 
-The ownership tree mechanism works well for most simple controls, allowing automatic memory deallocation through garbage collection. 
-However, due to the unpredictable timing of GC execution, it is advisable to explicitly destroy the main window before `UIng.uninit` performs its memory leak check when in doubt.
+libui-ng is a C library, so normally the user is expected to manage memory manually.
+However, it also provides some automatic memory management. The basic rule is: when a parent control is destroyed, all of its child controls are automatically destroyed as well.
+
+For example, when destroy is called on controls such as Window, Box, Grid, Group, or Tab, it first destroys all child controls and then destroys itself.
+
+In the case of a Window, there are two common situations:
+
+When the user clicks the close (×) button on the title bar
+In this case, on_closing is triggered, and Window#destroy is called automatically.
+
+When on_should_quit is triggered
+This means the entire program is about to quit. But here, Window#destroy is not called automatically, so the user needs to call it explicitly.
+
+Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. But since the timing of GC is unpredictable, combining it with libui-ng’s own automatic destruction can easily lead to issues. That’s why this project does not use finalize hooks.
+
+It may seem a bit tricky, but understanding how libui-ng handles memory will help you avoid problems when building applications.
 
 Some controls require specific destruction order for proper memory cleanup
 - [#6](https://github.com/kojix2/uing/issues/6)
