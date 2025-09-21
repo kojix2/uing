@@ -9,6 +9,8 @@ module UIng
     @[Link("Dwrite")]
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
+    @[Link("Uuid")]
+    @[Link("Winmm")]
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "/DEBUG")]
