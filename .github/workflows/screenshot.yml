@@ -44,9 +44,11 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y libgtk-3-dev xvfb imagemagick xdotool openbox wmctrl
 
-      - name: Setup Windows SDK
+      - name: Setup Windows Developer Command Prompt
         if: matrix.os == 'windows'
-        run: echo "C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64" >> $env:GITHUB_PATH
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
 
       - name: Install Crystal dependencies
         run: shards install
