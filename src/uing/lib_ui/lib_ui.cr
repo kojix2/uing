@@ -11,6 +11,8 @@ module UIng
     @[Link("Windowscodecs")]
     @[Link("Uuid")]
     @[Link("Winmm")]
+    # Exclude LIBCMT to avoid conflicts with Crystal's MSVC runtime (/MD).
+    @[Link(ldflags: "/NODEFAULTLIB:LIBCMT")]
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
     {% if flag?(:debug) %}
       @[Link(ldflags: "/DEBUG")]
