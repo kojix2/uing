@@ -15,7 +15,7 @@ module UIng
   # See https://github.com/libui-ng/libui-ng/issues/208
   @@init_options = Pointer(LibUI::InitOptions).malloc
   # Set Size field for future libui-ng compatibility (currently unused)
-  @@init_options.value.size = LibUI::InitOptions.sizeof
+  @@init_options.value.size = LibC::SizeT.new(sizeof(LibUI::InitOptions))
 
   # Global storage for timer callback boxes to prevent GC collection
   # timer callbacks accumulate due to LibUI specification limitations
