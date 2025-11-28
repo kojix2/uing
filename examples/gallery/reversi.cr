@@ -230,7 +230,7 @@ module Reversi
 
     alpha = INITIAL_ALPHA
     beta = INITIAL_BETA
-    best_score = INITIAL_ALPHA
+    best_score = Int32::MIN
     best_move = moves.first
 
     moves.each do |(r, c)|
