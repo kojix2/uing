@@ -44,7 +44,7 @@ jobs:
           dpkg -c dist/*.deb
 
       - name: Upload DEB artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: md5checker-deb
           path: examples/md5_checker/dist/*.deb
@@ -82,7 +82,7 @@ jobs:
           file dist/*
 
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: md5checker-${{ matrix.os }}
           path: examples/md5_checker/dist/*
@@ -123,7 +123,7 @@ jobs:
           if (Test-Path "dist\*.exe") { Write-Host "Installer created successfully" } else { Write-Host "Installer not found"; exit 1 }
 
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: md5checker-windows
           path: examples/md5_checker/dist/*.exe
@@ -164,7 +164,7 @@ jobs:
           shards build --release --no-debug --static --link-flags "-lcrypto -lssl -mwindows"
 
       - name: Upload MinGW64 artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: md5checker-mingw64
           path: examples/md5_checker/bin/md5checker.exe
@@ -175,7 +175,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download DEB package
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: md5checker-deb
           path: ./
