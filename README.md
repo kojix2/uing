@@ -68,7 +68,7 @@ dependencies:
     github: kojix2/uing
 ```
 
-The required libui-ng binary is automatically downloaded from the [kojix2/libui-ng GitHub Releases](https://github.com/kojix2/libui-ng/releases) via postinstall.
+The required libui-ng binary is automatically downloaded from the [kojix2/libui-ng GitHub Releases](https://github.com/kojix2/libui-ng/releases) via [postinstall](https://github.com/kojix2/uing/blob/main/shard.yml).
 
 ## Supported Platforms
 
