@@ -1,6 +1,11 @@
 # UIng
 
-[![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)
+[![CI • Linux (x64)](https://github.com/kojix2/uing/actions/workflows/ci-linux-x64.yml/badge.svg?branch=main)](https://github.com/kojix2/uing/actions/workflows/ci-linux-x64.yml)
+[![CI • Linux (ARM64)](https://github.com/kojix2/uing/actions/workflows/ci-linux-arm64.yml/badge.svg?branch=main)](https://github.com/kojix2/uing/actions/workflows/ci-linux-arm64.yml)
+[![CI • macOS (ARM64)](https://github.com/kojix2/uing/actions/workflows/ci-macos-arm64.yml/badge.svg?branch=main)](https://github.com/kojix2/uing/actions/workflows/ci-macos-arm64.yml)
+[![CI • macOS (Intel)](https://github.com/kojix2/uing/actions/workflows/ci-macos-intel.yml/badge.svg?branch=main)](https://github.com/kojix2/uing/actions/workflows/ci-macos-intel.yml)
+[![CI • Windows (x64, MSVC)](https://github.com/kojix2/uing/actions/workflows/ci-windows-msvc.yml/badge.svg?branch=main)](https://github.com/kojix2/uing/actions/workflows/ci-windows-msvc.yml)
+[![CI • Windows (x64, MinGW64)](https://github.com/kojix2/uing/actions/workflows/ci-windows-mingw64.yml/badge.svg?branch=main)](https://github.com/kojix2/uing/actions/workflows/ci-windows-mingw64.yml)
 [![Screenshot Tests](https://github.com/kojix2/uing/actions/workflows/screenshot.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/screenshot.yml)
 [![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fuing%2Flines)](https://tokei.kojix2.net/github/kojix2/uing)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kojix2/uing)
