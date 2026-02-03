@@ -1,6 +1,7 @@
 # UIng
 
 [![test](https://github.com/kojix2/uing/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci.yml)
+[![Screenshot Tests](https://github.com/kojix2/uing/actions/workflows/screenshot.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/screenshot.yml)
 [![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fuing%2Flines)](https://tokei.kojix2.net/github/kojix2/uing)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kojix2/uing)
 
