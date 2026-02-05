@@ -1146,7 +1146,7 @@ Rather than chasing new features, we should prioritize <strong>sustainability</s
 <p>Extended Handler Structures: For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
 </li>
 <li>
-<p>Resource Management: <code>finalize</code> is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call <code>free</code> manually.</p>
+<p>Resource Management: <code>finalize</code> is generally avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided where possible (e.g., <code>TextLayout.open</code>, <code>AttributedString.open</code>). Some classes use <code>finalize</code> as a safety net, but explicit <code>free</code> calls or RAII blocks are preferred.</p>
 </li>
 </ul>
 <h3><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">

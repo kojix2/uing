@@ -503,6 +503,23 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Attribute represents text styling properties for AttributedString.</p>
+<p>IMPORTANT: Ownership rules</p>
+<ul>
+<li>When passed to <code><a href="../../UIng/Area/AttributedString.html#set_attribute%28attribute%3AAttribute%2Cstart%3ALibC%3A%3ASizeT%2Cend_%3ALibC%3A%3ASizeT%29%3ANil-instance-method">AttributedString#set_attribute</a></code>, ownership transfers to libui.</li>
+<li>After ownership transfer, the Attribute MUST NOT be reused or freed manually.</li>
+<li>Each <code>set_attribute</code> call requires a NEW Attribute instance.</li>
+</ul>
+
 
 
 
@@ -542,28 +559,28 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L3" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L9" target="_blank">
         uing/area/area/attribute.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute/type.cr#L3" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute/type.cr#L3" target="_blank">
         uing/area/area/attribute/type.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute/underline.cr#L3" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute/underline.cr#L3" target="_blank">
         uing/area/area/attribute/underline.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute/underline_color.cr#L3" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute/underline_color.cr#L3" target="_blank">
         uing/area/area/attribute/underline_color.cr
       </a>
     
@@ -820,7 +837,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -836,7 +853,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -852,7 +869,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -868,7 +885,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -884,7 +901,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -900,7 +917,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -916,7 +933,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L70" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -932,7 +949,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L26" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -948,7 +965,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -964,7 +981,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -980,7 +997,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -996,7 +1013,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L51" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1012,7 +1029,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L21" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1044,7 +1061,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L94" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L108" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1060,7 +1077,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1076,7 +1093,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L109" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1092,7 +1109,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L132" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1108,7 +1125,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L61" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L75" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1124,7 +1141,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L100" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1140,7 +1157,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1156,7 +1173,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1172,7 +1189,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1188,7 +1205,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L90" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L104" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1204,7 +1221,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L128" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1220,7 +1237,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L67" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1236,7 +1253,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L113" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1252,7 +1269,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1268,7 +1285,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d55023fce3a36951b25700ccb1d214ad4beae7dc/src/uing/area/area/attribute.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/3a4316bfb3973600df18af478594cfbf3441a0e0/src/uing/area/area/attribute.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
