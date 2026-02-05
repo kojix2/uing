@@ -1,0 +1,9 @@
+# Build artifacts
+/bin/
+/lib/
+/.shards/
+*.dwarf
+*.lock
+
+# macOS system files
+.DS_Store

@@ -1,0 +1,162 @@
+name: Screenshot Tests
+
+on:
+  push:
+    paths:
+      - "examples/gallery/**"
+      - "download.cr"
+  workflow_dispatch:
+
+jobs:
+  screenshot:
+    name: ${{ matrix.os }} Screenshot
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu
+            runner: ubuntu-latest
+            setup-display: true
+          - os: windows
+            runner: windows-latest
+            setup-display: false
+          - os: macos
+            runner: macos-latest
+            setup-display: false
+
+    env:
+      DISPLAY: ${{ matrix.setup-display && ':99' || '' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Install Ubuntu dependencies
+        if: matrix.os == 'ubuntu'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libgtk-3-dev xvfb imagemagick xdotool openbox wmctrl
+
+      - name: Setup Windows Developer Command Prompt
+        if: matrix.os == 'windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Crystal dependencies
+        run: shards install
+
+      - name: Download libui library
+        run: |
+          crystal run download.cr
+          ${{ matrix.os == 'windows' && 'Get-ChildItem libui' || 'ls -la libui/' }}
+
+      - name: Build all gallery (Linux/macOS)
+        if: matrix.os != 'windows'
+        shell: bash
+        run: |
+          for f in examples/gallery/*.cr; do
+            name=$(basename "$f" .cr)
+            crystal build "$f" -o "$name"
+          done
+
+      - name: Build all gallery (Windows)
+        if: matrix.os == 'windows'
+        shell: pwsh
+        run: |
+          Get-ChildItem examples/gallery/*.cr | ForEach-Object {
+            $name = $_.BaseName
+            crystal build $_.FullName -o $name
+          }
+
+      - name: Generate app-names and output-files
+        if: matrix.os != 'windows'
+        id: gen_names
+        shell: bash
+        run: |
+          APPS=$(for f in examples/gallery/*.cr; do basename "$f" .cr; done | xargs)
+          OUTPUTS=$(for f in examples/gallery/*.cr; do basename "$f" .cr; done | xargs -I{} echo -n "{}-${{ matrix.os }}.png ")
+          echo "APP_NAMES=$APPS" >> $GITHUB_ENV
+          echo "OUTPUT_FILES=$OUTPUTS" >> $GITHUB_ENV
+
+      - name: Generate app-names and output-files (Windows)
+        if: matrix.os == 'windows'
+        id: gen_names_win
+        shell: pwsh
+        run: |
+          $apps = (Get-ChildItem examples/gallery/*.cr | ForEach-Object { $_.BaseName }) -join ' '
+          $outputs = (Get-ChildItem examples/gallery/*.cr | ForEach-Object { "$($_.BaseName)-${{ matrix.os }}.png" }) -join ' '
+          echo "APP_NAMES=$apps" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "OUTPUT_FILES=$outputs" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Take screenshots for all gallery
+        uses: ./.github/actions/screenshot
+        with:
+          os: ${{ matrix.os }}
+          app-names: ${{ env.APP_NAMES }}
+          output-files: ${{ env.OUTPUT_FILES }}
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v6
+        with:
+          name: screenshots-${{ matrix.os }}
+          path: "*.png"
+          retention-days: 30
+
+  push_screenshots:
+    name: Push all screenshots to orphan branch
+    needs: screenshot
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Prepare orphan branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Prepare orphan branch first
+          git fetch origin screenshots || true
+          git checkout --orphan screenshots || git checkout screenshots
+
+      - name: Download all screenshots artifacts
+        uses: actions/download-artifact@v7
+        with:
+          pattern: screenshots-*
+          merge-multiple: true
+
+      - name: Commit screenshots
+        run: |
+          # Debug: Check downloaded files
+          echo "=== Downloaded files ==="
+          ls -la
+
+          # Add gallery.md if it exists
+          if [ -f gallery.md ]; then
+            git add gallery.md
+          fi
+
+          # Commit only if PNG files exist
+          if ls *.png 1> /dev/null 2>&1; then
+            git add *.png
+            git status
+            if ! git diff --cached --quiet; then
+              git commit -m "Update screenshots [skip ci]"
+              git push -f origin screenshots
+            else
+              echo "No changes to commit."
+            fi
+          else
+            echo "No PNG files found to commit."
+          fi

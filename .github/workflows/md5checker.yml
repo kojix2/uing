@@ -1,0 +1,188 @@
+name: MD5 Checker Package Build
+
+on:
+  push:
+    paths:
+      - "examples/md5_checker/**"
+      - ".github/workflows/md5checker.yml"
+  pull_request:
+    paths:
+      - "examples/md5_checker/**"
+      - ".github/workflows/md5checker.yml"
+  workflow_dispatch:
+
+jobs:
+  build-deb:
+    name: Build DEB Package (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev ruby-dev build-essential
+          sudo gem install fpm
+
+      - name: Build DEB package
+        working-directory: examples/md5_checker
+        run: |
+          chmod +x build-deb.sh
+          ./build-deb.sh
+
+      - name: Verify DEB package
+        working-directory: examples/md5_checker
+        run: |
+          ls -la dist/
+          dpkg -I dist/*.deb
+          dpkg -c dist/*.deb
+
+      - name: Upload DEB artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: md5checker-deb
+          path: examples/md5_checker/dist/*.deb
+
+  build-macos:
+    name: Build macOS Packages
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Install system dependencies
+        run: |
+          brew install gtk+3 openssl@1.1
+          sudo gem install fpm
+
+      - name: Build DMG package
+        working-directory: examples/md5_checker
+        run: |
+          chmod +x build-mac.sh
+          ./build-mac.sh
+
+      - name: Verify macOS packages
+        working-directory: examples/md5_checker
+        run: |
+          ls -la dist/
+          file dist/*
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: md5checker-${{ matrix.os }}
+          path: examples/md5_checker/dist/*
+
+  build-windows:
+    name: Build Windows Installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Setup Windows Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Inno Setup
+        run: |
+          choco install innosetup -y
+          echo "C:\Program Files (x86)\Inno Setup 6" >> $env:GITHUB_PATH
+
+      - name: Build Windows installer
+        working-directory: examples/md5_checker
+        env:
+          INNO_SETUP_PATH: 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+        run: |
+          .\build-win.ps1
+
+      - name: Verify Windows installer
+        working-directory: examples/md5_checker
+        run: |
+          dir dist\
+          if (Test-Path "dist\*.exe") { Write-Host "Installer created successfully" } else { Write-Host "Installer not found"; exit 1 }
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: md5checker-windows
+          path: examples/md5_checker/dist/*.exe
+
+  build-mingw64:
+    name: Build MinGW64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-tools-git
+            mingw-w64-x86_64-crystal
+            mingw-w64-x86_64-shards
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-pcre2
+
+      - name: Install dependencies
+        shell: msys2 {0}
+        run: |
+          pacman -S --noconfirm git
+          shards install
+
+      - name: Build MinGW64 package
+        working-directory: examples/md5_checker
+        shell: msys2 {0}
+        run: |
+          export LIBRARY_PATH=/mingw64/lib:$LIBRARY_PATH
+          export C_INCLUDE_PATH=/mingw64/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=/mingw64/include:$CPLUS_INCLUDE_PATH
+          shards build --release --no-debug --static --link-flags "-lcrypto -lssl -mwindows"
+
+      - name: Upload MinGW64 artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: md5checker-mingw64
+          path: examples/md5_checker/bin/md5checker.exe
+
+  test-packages:
+    name: Test Package Installation
+    needs: [build-deb]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download DEB package
+        uses: actions/download-artifact@v7
+        with:
+          name: md5checker-deb
+          path: ./
+
+      - name: Install and test DEB package
+        run: |
+          sudo dpkg -i *.deb || sudo apt-get install -f -y
+          which md5checker
+          ls -la /usr/share/applications/md5checker.desktop
+          ls -la /usr/share/icons/hicolor/256x256/apps/md5checker.png
