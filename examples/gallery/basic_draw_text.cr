@@ -36,8 +36,8 @@ str5 = \
 
 ATTR_STR = UIng::Area::AttributedString.new("")
 
-RED   = UIng::Area::Attribute.new_color(0.0, 0.5, 0.0, 0.7)
-GREEN = UIng::Area::Attribute.new_color(0.5, 0.0, 0.25, 0.7)
+RED_COLOR   = {0.0, 0.5, 0.0, 0.7}
+GREEN_COLOR = {0.5, 0.0, 0.25, 0.7}
 
 DEFAULT_FONT = UIng::FontDescriptor.new(
   family: "Georgia",
@@ -50,15 +50,16 @@ DEFAULT_FONT = UIng::FontDescriptor.new(
 def append_to_attr_str(attr_str, text, color)
   start = attr_str.len
   attr_str.append_unattributed(text)
-  attr_str.set_attribute(color, start, start + text.bytesize)
+  attribute = UIng::Area::Attribute.new_color(*color)
+  attr_str.set_attribute(attribute, start, start + text.bytesize)
   attr_str.append_unattributed("\n\n")
 end
 
-append_to_attr_str(ATTR_STR, str1, GREEN)
-append_to_attr_str(ATTR_STR, str2, RED)
-append_to_attr_str(ATTR_STR, str3, GREEN)
-append_to_attr_str(ATTR_STR, str4, RED)
-append_to_attr_str(ATTR_STR, str5, GREEN)
+append_to_attr_str(ATTR_STR, str1, GREEN_COLOR)
+append_to_attr_str(ATTR_STR, str2, RED_COLOR)
+append_to_attr_str(ATTR_STR, str3, GREEN_COLOR)
+append_to_attr_str(ATTR_STR, str4, RED_COLOR)
+append_to_attr_str(ATTR_STR, str5, GREEN_COLOR)
 
 handler.draw do |area, params|
   UIng::Area::Draw::TextLayout.open(

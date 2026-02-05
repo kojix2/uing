@@ -403,20 +403,17 @@ DEFAULT_FONT = UIng::FontDescriptor.new(
   stretch: :normal
 )
 
-# Create AttributedStrings with white color
-WHITE_COLOR = UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0)
-
 WAITING_TEXT = UIng::Area::AttributedString.new("PRESS SPACE or CLICK to start")
-WAITING_TEXT.set_attribute(WHITE_COLOR, 0, WAITING_TEXT.len)
+WAITING_TEXT.set_attribute(UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0), 0, WAITING_TEXT.len)
 
 GAME_OVER_TEXT = UIng::Area::AttributedString.new("GAME OVER - PRESS SPACE or CLICK to restart")
-GAME_OVER_TEXT.set_attribute(WHITE_COLOR, 0, GAME_OVER_TEXT.len)
+GAME_OVER_TEXT.set_attribute(UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0), 0, GAME_OVER_TEXT.len)
 
 WON_TEXT = UIng::Area::AttributedString.new("CONGRATULATIONS! - PRESS SPACE or CLICK to play again")
-WON_TEXT.set_attribute(WHITE_COLOR, 0, WON_TEXT.len)
+WON_TEXT.set_attribute(UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0), 0, WON_TEXT.len)
 
 CONTROLS_TEXT = UIng::Area::AttributedString.new("Mouse: move paddle, A/D or ←/→: nudge paddle")
-CONTROLS_TEXT.set_attribute(WHITE_COLOR, 0, CONTROLS_TEXT.len)
+CONTROLS_TEXT.set_attribute(UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0), 0, CONTROLS_TEXT.len)
 
 GAME    = BreakoutGame.new
 HANDLER = UIng::Area::Handler.new
