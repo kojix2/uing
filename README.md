@@ -623,7 +623,7 @@ UIng applies several strategies to ensure safe interoperation between Crystal’
 
 - Extended Handler Structures: For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
 
-- Resource Management: `finalize` is avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided: resources are freed automatically when leaving a block, so users rarely need to call `free` manually.
+- Resource Management: `finalize` is generally avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided where possible (e.g., `TextLayout.open`, `AttributedString.open`). Some classes use `finalize` as a safety net, but explicit `free` calls or RAII blocks are preferred.
 
 ### Closures in Low-Level Contexts
 

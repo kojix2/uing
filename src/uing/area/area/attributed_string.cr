@@ -52,6 +52,15 @@ module UIng
         LibUI.attributed_string_delete(@ref_ptr, start, end_)
       end
 
+      # Applies an attribute to a range of text.
+      #
+      # IMPORTANT: Ownership transfer
+      # - libui takes ownership of the attribute after this call.
+      # - The attribute MUST NOT be reused or freed manually.
+      # - Each call requires a NEW Attribute instance.
+      #
+      # Example:
+      #   attr_str.set_attribute(Attribute.new_color(1.0, 0.0, 0.0, 1.0), 0, 5)
       def set_attribute(attribute : Attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
         LibUI.attributed_string_set_attribute(@ref_ptr, attribute, start, end_)
         # AttributedString takes ownership of the attribute
@@ -65,10 +74,8 @@ module UIng
         LibUI.attributed_string_for_each_attribute(@ref_ptr,
           ->(sender, attr, start, end_, data) do
             callback = ::Box(typeof(block)).unbox(data)
-            # Convert to Attribute wrapper
-            attribute = Area::Attribute.new(attr)
-            # Attribute is owned by libui; prevent Crystal from freeing it
-            attribute.released = true
+            # Wrap as borrowed - libui owns this attribute, we must not free it
+            attribute = Area::Attribute.borrowed(attr)
             # Return block's result directly to LibUI (0 or 1)
             callback.call(attribute, start, end_)
           end,

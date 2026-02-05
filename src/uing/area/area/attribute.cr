@@ -1,11 +1,25 @@
 module UIng
   class Area < Control
+    # Attribute represents text styling properties for AttributedString.
+    #
+    # IMPORTANT: Ownership rules
+    # - When passed to `AttributedString#set_attribute`, ownership transfers to libui.
+    # - After ownership transfer, the Attribute MUST NOT be reused or freed manually.
+    # - Each `set_attribute` call requires a NEW Attribute instance.
     class Attribute
       include BlockConstructor; block_constructor
 
       property released : Bool = false
 
       def initialize(@ref_ptr : Pointer(LibUI::Attribute))
+      end
+
+      # Internal: Create a borrowed Attribute wrapper for libui-owned pointers.
+      # Used by for_each_attribute where libui retains ownership.
+      protected def self.borrowed(ref_ptr : Pointer(LibUI::Attribute)) : Attribute
+        attr = Attribute.new(ref_ptr)
+        attr.released = true # Prevent finalize from freeing libui-owned memory
+        attr
       end
 
       def self.new_family(family : String) : Attribute
