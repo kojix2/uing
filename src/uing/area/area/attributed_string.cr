@@ -15,6 +15,15 @@ module UIng
         @ref_ptr = LibUI.new_attributed_string(string)
       end
 
+      def self.open(string : String, &block : AttributedString -> Nil) : Nil
+        attr_str = new(string)
+        begin
+          block.call(attr_str)
+        ensure
+          attr_str.free
+        end
+      end
+
       def free : Nil
         return if @released
         LibUI.free_attributed_string(@ref_ptr)
@@ -43,12 +52,10 @@ module UIng
         LibUI.attributed_string_delete(@ref_ptr, start, end_)
       end
 
-      def set_attribute(attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+      def set_attribute(attribute : Attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
         LibUI.attributed_string_set_attribute(@ref_ptr, attribute, start, end_)
         # AttributedString takes ownership of the attribute
-        if attribute.responds_to?(:released=)
-          attribute.released = true
-        end
+        attribute.released = true
       end
 
       # Return value: 0 = Continue, 1 = Stop (follows LibUI's uiForEach convention)
