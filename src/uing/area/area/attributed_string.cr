@@ -67,6 +67,8 @@ module UIng
             callback = ::Box(typeof(block)).unbox(data)
             # Convert to Attribute wrapper
             attribute = Area::Attribute.new(attr)
+            # Attribute is owned by libui; prevent Crystal from freeing it
+            attribute.released = true
             # Return block's result directly to LibUI (0 or 1)
             callback.call(attribute, start, end_)
           end,
