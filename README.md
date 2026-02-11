@@ -10,6 +10,7 @@
 [![CI • macOS (Intel)](https://github.com/kojix2/uing/actions/workflows/ci-macos-intel.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci-macos-intel.yml)
 [![CI • Windows (x64, MSVC)](https://github.com/kojix2/uing/actions/workflows/ci-windows-msvc.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci-windows-msvc.yml)
 [![CI • Windows (x64, MinGW64)](https://github.com/kojix2/uing/actions/workflows/ci-windows-mingw64.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci-windows-mingw64.yml)
+[![CI • Windows (x64, UCRT64)](https://github.com/kojix2/uing/actions/workflows/ci-windows-ucrt64.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci-windows-ucrt64.yml)
 
 UIng is a [Crystal](https://crystal-lang.org/) binding for [libui-ng](https://github.com/libui-ng/libui-ng).
 
@@ -39,7 +40,7 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
 
 - macOS: x86_64 (64-bit), ARM64 (Apple Silicon)
 - Linux: x86_64 (64-bit), ARM64
-- Windows: x86_64 (64-bit, MSVC and MinGW), x86 (32-bit, MSVC only)
+- Windows: x86_64 (64-bit, MSVC, MinGW, and UCRT), x86 (32-bit, MSVC only)
 
 ## Installation
 
