@@ -1,0 +1,15 @@
+name: md5checker
+version: 0.1.0
+
+dependencies:
+  uing:
+    github: kojix2/uing
+    branch: main
+
+targets:
+  md5checker:
+    main: src/md5_checker.cr
+
+crystal: ">= 1.0.0"
+
+license: MIT

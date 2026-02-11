@@ -1,0 +1,39 @@
+name: CI • Linux (x64)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libgtk-3-dev
+
+      - name: Install dependencies
+        run: shards install
+
+      - name: Download libui library
+        run: |
+          crystal run download.cr
+          ls libui
+
+      - name: Run tests
+        run: crystal spec
+
+      - name: Build all examples
+        run: |
+          ls examples/*.cr | xargs -P 0 -I {} crystal build {}
+          ls
