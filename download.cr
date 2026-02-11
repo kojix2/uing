@@ -62,8 +62,8 @@ PLATFORM_CONFIG = {
   ],
   # Windows UCRT x86_64
   ucrt_x64: [
-    {zip: "Windows-x64-ucrt-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/ui.lib"},
-    {zip: "Windows-x64-ucrt-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/ui.lib", extra_pdb: true},
+    {zip: "Windows-x64-ucrt-static-release.zip", src: LIBUI_SOURCE, dest: "libui/release/libui.a"},
+    {zip: "Windows-x64-ucrt-static-debug.zip", src: LIBUI_SOURCE, dest: "libui/debug/libui.a"},
   ],
   # Windows MinGW x86_64
   mingw_x64: [
@@ -184,25 +184,10 @@ end
     {% raise "Unsupported Linux architecture. Supported: x86_64, aarch64, arm" %}
   {% end %}
 {% elsif flag?(:msvc) %}
-  windows_flavor = windows_flavor_from_msystem
   {% if flag?(:x86_64) %}
-    case windows_flavor
-    when "ucrt"
-      process_platform(PLATFORM_CONFIG[:ucrt_x64])
-    when "mingw64"
-      raise "Invalid Windows flavor for MSVC build. Use MSYSTEM=UCRT64 or unset"
-    else
-      process_platform(PLATFORM_CONFIG[:msvc_x64])
-    end
+    process_platform(PLATFORM_CONFIG[:msvc_x64])
   {% elsif flag?(:i386) %}
-    case windows_flavor
-    when "ucrt"
-      raise "UCRT assets are not available for x86"
-    when "mingw64"
-      raise "Invalid Windows flavor for MSVC build. Use MSYSTEM=UCRT64 or unset"
-    else
-      process_platform(PLATFORM_CONFIG[:msvc_x86])
-    end
+    process_platform(PLATFORM_CONFIG[:msvc_x86])
   {% else %}
     {% raise "Unsupported MSVC architecture. Supported: x86_64, i386" %}
   {% end %}
@@ -211,7 +196,7 @@ end
   {% if flag?(:x86_64) %}
     case windows_flavor
     when "ucrt"
-      raise "Invalid Windows flavor for MinGW build. Use MSYSTEM=MINGW64 or unset"
+      process_platform(PLATFORM_CONFIG[:ucrt_x64])
     else
       process_platform(PLATFORM_CONFIG[:mingw_x64])
     end
