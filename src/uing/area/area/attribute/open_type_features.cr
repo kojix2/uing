@@ -46,13 +46,15 @@ module UIng
 
     def for_each(&callback : (String, Int32) -> _) : Nil
       @for_each_box = ::Box.box(callback)
+      boxed_callback = @for_each_box || raise "failed to box callback"
+
       proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
         data_as_callback.call(tag, value.to_i32)
         0 # uiForEachContinue
       end
-      LibUI.open_type_features_for_each(@ref_ptr, proc, @for_each_box.not_nil!)
+      LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_callback)
 
       # Clear the box reference after enumeration completes
       @for_each_box = nil
