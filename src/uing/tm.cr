@@ -79,20 +79,18 @@ module UIng
 
     # Convert TM to Time with error handling
     def to_time : ::Time
-      begin
-        ::Time.local(
-          year + 1900, # tm_year is years since 1900
-          mon + 1,     # tm_mon is 0-based (0-11)
-          mday,
-          hour,
-          min,
-          sec,
-          nanosecond: 0
-        )
-      rescue e
-        # Fallback to current time if conversion fails
-        ::Time.local
-      end
+      ::Time.local(
+        year + 1900, # tm_year is years since 1900
+        mon + 1,     # tm_mon is 0-based (0-11)
+        mday,
+        hour,
+        min,
+        sec,
+        nanosecond: 0
+      )
+    rescue
+      # Fallback to current time if conversion fails
+      ::Time.local
     end
 
     # Delegate to_s to Time for convenient formatting
