@@ -104,18 +104,20 @@ module UIng
                       fill_brush : Brush? = nil,
                       stroke_brush : Brush? = nil,
                       stroke_params : StrokeParams? = nil, &)
-          if fill && fill_brush.nil?
-            raise ArgumentError.new("fill=true requires fill_brush")
-          end
-          if stroke && (stroke_brush.nil? || stroke_params.nil?)
-            raise ArgumentError.new("stroke=true requires stroke_brush and stroke_params")
-          end
-
           Path.open(mode) do |path|
             yield path
             path.end_path
-            self.draw_fill(path, fill_brush.not_nil!) if fill
-            self.draw_stroke(path, stroke_brush.not_nil!, stroke_params.not_nil!) if stroke
+
+            if fill
+              brush = fill_brush || raise ArgumentError.new("fill=true requires fill_brush")
+              draw_fill(path, brush)
+            end
+
+            if stroke
+              brush = stroke_brush || raise ArgumentError.new("stroke=true requires stroke_brush and stroke_params")
+              params = stroke_params || raise ArgumentError.new("stroke=true requires stroke_brush and stroke_params")
+              draw_stroke(path, brush, params)
+            end
           end
         end
 
