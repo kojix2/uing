@@ -539,7 +539,7 @@ Note: Image display is a feature introduced experimentally in a fork of libui-ng
 - Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
 - APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
 
-## Control Destruction and Memory Management
+## Memory Management Policy
 
 libui-ng is a C library, so normally the user is expected to manage memory manually.
 However, it also provides some automatic memory management. The basic rule is: when a parent control is destroyed, all of its child controls are automatically destroyed as well.
@@ -554,7 +554,15 @@ In this case, on_closing is triggered, and Window#destroy is called automaticall
 When on_should_quit is triggered
 This means the entire program is about to quit. But here, Window#destroy is not called automatically, so the user needs to call it explicitly.
 
-Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. But since the timing of GC is unpredictable, combining it with libui-ng’s own automatic destruction can easily lead to issues. That’s why this project does not use finalize hooks.
+Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. However, GC timing is non-deterministic, and libui-ng controls often require deterministic destruction order.
+
+Therefore, UIng's primary policy is:
+
+- Control objects (`Window`, `Box`, `Grid`, `Tab`, etc.) are managed with explicit `destroy`.
+- C resources that require strict ordering (for example `Table::Model`) are managed with explicit `free`.
+- `finalize` is never treated as a primary cleanup mechanism for order-sensitive resources.
+
+Some lightweight wrappers include idempotent cleanup in `finalize` as a fallback, but this is best-effort only and not a correctness guarantee.
 
 It may seem a bit tricky, but understanding how libui-ng handles memory will help you avoid problems when building applications.
 
@@ -624,7 +632,7 @@ UIng applies several strategies to ensure safe interoperation between Crystal’
 
 - Extended Handler Structures: For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
 
-- Resource Management: `finalize` is generally avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided where possible (e.g., `TextLayout.open`, `AttributedString.open`). Some classes use `finalize` as a safety net, but explicit `free` calls or RAII blocks are preferred.
+- Resource Management rules are defined in [Memory Management Policy](#memory-management-policy). In short, UIng prioritizes explicit ownership and explicit release (`destroy` / `free`), while RAII-style APIs are provided where possible.
 
 ### Closures in Low-Level Contexts
 
