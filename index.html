@@ -1035,11 +1035,11 @@ Images are automatically generated and stored in the <code>screenshots</code> br
 <li>Almost all basic control functions such as <code>Window</code>, <code>Label</code>, and <code>Button</code> are covered.</li>
 <li>APIs for advanced controls such as <code>Table</code> and <code>Area</code> are also provided. However, these are still under development and there may still be memory management issues.</li>
 </ul>
-<h2><a id="control-destruction-and-memory-management" class="anchor" href="#control-destruction-and-memory-management">
+<h2><a id="memory-management-policy" class="anchor" href="#memory-management-policy">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Control Destruction and Memory Management</h2>
+</a>Memory Management Policy</h2>
 <p>libui-ng is a C library, so normally the user is expected to manage memory manually.
 However, it also provides some automatic memory management. The basic rule is: when a parent control is destroyed, all of its child controls are automatically destroyed as well.</p>
 <p>For example, when destroy is called on controls such as Window, Box, Grid, Group, or Tab, it first destroys all child controls and then destroys itself.</p>
@@ -1048,7 +1048,14 @@ However, it also provides some automatic memory management. The basic rule is: w
 In this case, on_closing is triggered, and Window#destroy is called automatically.</p>
 <p>When on_should_quit is triggered
 This means the entire program is about to quit. But here, Window#destroy is not called automatically, so the user needs to call it explicitly.</p>
-<p>Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. But since the timing of GC is unpredictable, combining it with libui-ng’s own automatic destruction can easily lead to issues. That’s why this project does not use finalize hooks.</p>
+<p>Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. However, GC timing is non-deterministic, and libui-ng controls often require deterministic destruction order.</p>
+<p>Therefore, UIng's primary policy is:</p>
+<ul>
+<li>Control objects (<code>Window</code>, <code>Box</code>, <code>Grid</code>, <code>Tab</code>, etc.) are managed with explicit <code>destroy</code>.</li>
+<li>C resources that require strict ordering (for example <code>Table::Model</code>) are managed with explicit <code>free</code>.</li>
+<li><code>finalize</code> is never treated as a primary cleanup mechanism for order-sensitive resources.</li>
+</ul>
+<p>Some lightweight wrappers include idempotent cleanup in <code>finalize</code> as a fallback, but this is best-effort only and not a correctness guarantee.</p>
 <p>It may seem a bit tricky, but understanding how libui-ng handles memory will help you avoid problems when building applications.</p>
 <p>Some controls require specific destruction order for proper memory cleanup</p>
 <ul>
@@ -1147,7 +1154,7 @@ Rather than chasing new features, we should prioritize <strong>sustainability</s
 <p>Extended Handler Structures: For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
 </li>
 <li>
-<p>Resource Management: <code>finalize</code> is generally avoided due to the non-deterministic timing of GC. Instead, RAII-style APIs are provided where possible (e.g., <code>TextLayout.open</code>, <code>AttributedString.open</code>). Some classes use <code>finalize</code> as a safety net, but explicit <code>free</code> calls or RAII blocks are preferred.</p>
+<p>Resource Management rules are defined in <a href="#memory-management-policy">Memory Management Policy</a>. In short, UIng prioritizes explicit ownership and explicit release (<code>destroy</code> / <code>free</code>), while RAII-style APIs are provided where possible.</p>
 </li>
 </ul>
 <h3><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
