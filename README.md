@@ -14,7 +14,7 @@
 
 UIng is a [Crystal](https://crystal-lang.org/) binding for [libui-ng](https://github.com/libui-ng/libui-ng).
 
-libui-ng uses the native APIs of each platform: Win32 API, [Direct2D](https://learn.microsoft.com/windows/win32/Direct2D/), and [DirectWrite](https://learn.microsoft.com/windows/win32/directwrite/) on Windows; [Cocoa](https://en.wikipedia.org/wiki/Cocoa_(API)) (AppKit) on macOS; and [GTK+ 3.10+](https://docs.gtk.org/gtk3/) and [Pango](https://docs.gtk.org/Pango/) on Linux/Unix.
+libui-ng uses the native APIs of each platform: Win32 API, [Direct2D](https://learn.microsoft.com/windows/win32/Direct2D/), and [DirectWrite](https://learn.microsoft.com/windows/win32/directwrite/) on Windows; [Cocoa](<https://en.wikipedia.org/wiki/Cocoa_(API)>) (AppKit) on macOS; and [GTK+ 3.10+](https://docs.gtk.org/gtk3/) and [Pango](https://docs.gtk.org/Pango/) on Linux/Unix.
 You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets.
 
 <table>
@@ -568,6 +568,7 @@ Some lightweight wrappers include idempotent cleanup in `finalize` as a fallback
 It may seem a bit tricky, but understanding how libui-ng handles memory will help you avoid problems when building applications.
 
 Some controls require specific destruction order for proper memory cleanup
+
 - [#6](https://github.com/kojix2/uing/issues/6)
   - Table
 - [#19](https://github.com/kojix2/uing/issues/19)
