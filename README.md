@@ -53,7 +53,7 @@ dependencies:
 ```
 
 - The required libui-ng binary is automatically downloaded from [kojix2/libui-ng GitHub Releases](https://github.com/kojix2/libui-ng/releases) via [postinstall](https://github.com/kojix2/uing/blob/main/shard.yml).
-- The UIng project is not just a binding; it provides unofficial patched builds of libui-ng for platforms. For more details, see the [README.md](https://github.com/kojix2/libui-ng/blob/dev/README.md) and commits on the [`dev` branch](https://github.com/kojix2/libui-ng/commits/dev).
+- The UIng project is not just a binding; it provides unofficial patched builds of libui-ng for platforms. For more details, see the [README.md](https://github.com/kojix2/libui-ng/blob/main/README.md) and commits on the [`dev` branch](https://github.com/kojix2/libui-ng/commits/dev).
 
 ## Quick Start
 
