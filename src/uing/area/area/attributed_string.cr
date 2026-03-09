@@ -69,17 +69,18 @@ module UIng
 
       # Return value: 0 = Continue, 1 = Stop (follows LibUI's uiForEach convention)
       def for_each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> LibC::Int) : Nil
-        @for_each_attribute_box = ::Box.box(block)
+        for_each_attribute_box = ::Box.box(block)
+        @for_each_attribute_box = for_each_attribute_box
 
         LibUI.attributed_string_for_each_attribute(@ref_ptr,
-          ->(sender, attr, start, end_, data) do
+          ->(_sender, attr, start, end_, data) do
             callback = ::Box(typeof(block)).unbox(data)
             # Wrap as borrowed - libui owns this attribute, we must not free it
             attribute = Area::Attribute.borrowed(attr)
             # Return block's result directly to LibUI (0 or 1)
             callback.call(attribute, start, end_)
           end,
-          @for_each_attribute_box.not_nil!
+          for_each_attribute_box
         )
 
         # Clear reference after enumeration

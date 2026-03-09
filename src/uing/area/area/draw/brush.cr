@@ -50,8 +50,8 @@ module UIng
             # FIX: Store C structs in instance variable to keep them alive
             # Crystal's Array.to_unsafe is guaranteed to be C-compatible
             @stops_buffer = Array(LibUI::DrawBrushGradientStop).new(stops.size)
-            stops.each do |gs|
-              @stops_buffer << gs.to_unsafe.value
+            stops.each do |gradient_stop|
+              @stops_buffer << gradient_stop.to_unsafe.value
             end
             @cstruct.stops = @stops_buffer.to_unsafe
             @cstruct.num_stops = @stops_buffer.size.to_u64
