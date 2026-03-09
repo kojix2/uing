@@ -50,7 +50,7 @@ module UIng
 
       def string : String?
         str_ptr = LibUI.table_value_string(@ref_ptr)
-        return nil if str_ptr.null?
+        return if str_ptr.null?
         # DO NOT free the string pointer - it's borrowed from libui-ng
         String.new(str_ptr)
       end

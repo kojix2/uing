@@ -39,7 +39,7 @@ module UIng
   # Convert string pointer to Crystal string
   # and free the pointer
   def self.string_from_pointer(str_ptr) : String?
-    return nil if str_ptr.null?
+    return if str_ptr.null?
     str = String.new(str_ptr)
     LibUI.free_text(str_ptr)
     str
