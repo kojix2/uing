@@ -48,7 +48,7 @@ module UIng
               # Cast the handler pointer to our extended structure
               extended = ah.as(LibUI::AreaHandlerExtended*)
               if !extended.value.draw_box.null?
-                callback = ::Box(Proc(Area, Area::Draw::Params, Void)).unbox(extended.value.draw_box)
+                callback = ::Box(Proc(Area, Area::Draw::Params, Nil)).unbox(extended.value.draw_box)
                 # Create wrapper instances for type-safe access
                 area_wrapper = Area.new(area)
                 params_wrapper = Area::Draw::Params.new(params)
@@ -62,7 +62,7 @@ module UIng
             begin
               extended = ah.as(LibUI::AreaHandlerExtended*)
               if !extended.value.mouse_event_box.null?
-                callback = ::Box(Proc(Area, Area::MouseEvent, Void)).unbox(extended.value.mouse_event_box)
+                callback = ::Box(Proc(Area, Area::MouseEvent, Nil)).unbox(extended.value.mouse_event_box)
                 # Create wrapper instances for type-safe access
                 area_wrapper = Area.new(area)
                 event_wrapper = Area::MouseEvent.new(event)
@@ -76,7 +76,7 @@ module UIng
             begin
               extended = ah.as(LibUI::AreaHandlerExtended*)
               if !extended.value.mouse_crossed_box.null?
-                callback = ::Box(Proc(Area, Bool, Void)).unbox(extended.value.mouse_crossed_box)
+                callback = ::Box(Proc(Area, Bool, Nil)).unbox(extended.value.mouse_crossed_box)
                 # Create wrapper instances for type-safe access
                 area_wrapper = Area.new(area)
                 left_bool = left != 0
@@ -90,7 +90,7 @@ module UIng
             begin
               extended = ah.as(LibUI::AreaHandlerExtended*)
               if !extended.value.drag_broken_box.null?
-                callback = ::Box(Proc(Area, Void)).unbox(extended.value.drag_broken_box)
+                callback = ::Box(Proc(Area, Nil)).unbox(extended.value.drag_broken_box)
                 # Create wrapper instances for type-safe access
                 area_wrapper = Area.new(area)
                 callback.call(area_wrapper)
