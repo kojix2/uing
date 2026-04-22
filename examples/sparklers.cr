@@ -70,8 +70,8 @@ module RandomLines
 
   @@lines = [] of Line
   @@animation_time = 0.0
-  @@mouse_x = CANVAS_WIDTH / 2
-  @@mouse_y = CANVAS_HEIGHT / 2
+  @@mouse_x : Float64 = CANVAS_WIDTH / 2
+  @@mouse_y : Float64 = CANVAS_HEIGHT / 2
 
   def self.set_mouse_position(x : Float64, y : Float64)
     @@mouse_x = x
@@ -82,10 +82,6 @@ module RandomLines
     # Use mouse position as center (with fallback to canvas center)
     center_x = @@mouse_x
     center_y = @@mouse_y
-
-    # Ensure valid coordinates
-    center_x = CANVAS_WIDTH / 2 if center_x.nil?
-    center_y = CANVAS_HEIGHT / 2 if center_y.nil?
 
     # Random angle (0 to 2π)
     angle = rand * Math::PI * 2
@@ -256,16 +252,18 @@ handler.drag_broken { |_| }
 # Simplified key event handler
 handler.key_event do |sender_area, key_event|
   key_data = key_event
+  handled = false
 
   if key_data.up == 0 # Key pressed (not released)
     case key_data.key
     when 'c'.ord, 'C'.ord
       RandomLines.clear_lines
       sender_area.queue_redraw_all
+      handled = true
     end
   end
 
-  true # Return 1 to indicate the key event was handled
+  handled
 end
 
 main_window = UIng::Window.new("Random Lines Animation", 600, 500)
