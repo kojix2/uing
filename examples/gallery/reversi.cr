@@ -61,14 +61,14 @@ module Reversi
 
       opp = side.opponent
 
-      DIRECTIONS.any? do |dr, dc|
-        rr = r + dr
-        cc = c + dc
+      DIRECTIONS.any? do |delta_row, delta_col|
+        rr = r + delta_row
+        cc = c + delta_col
         seen_opp = false
 
         while in_bounds?(rr, cc) && @board[rr][cc] == opp
           seen_opp = true
-          rr += dr; cc += dc
+          rr += delta_row; cc += delta_col
         end
 
         seen_opp && in_bounds?(rr, cc) && @board[rr][cc] == side
@@ -76,9 +76,9 @@ module Reversi
     end
 
     def legal_moves_for(side : Cell) : Array({Int32, Int32})
-      (0...BOARD_SIZE).flat_map do |r|
-        (0...BOARD_SIZE).compact_map do |c|
-          {r, c} if legal_at?(r, c, side)
+      (0...BOARD_SIZE).flat_map do |row_index|
+        (0...BOARD_SIZE).compact_map do |column_index|
+          {row_index, column_index} if legal_at?(row_index, column_index, side)
         end
       end
     end
@@ -96,14 +96,14 @@ module Reversi
 
       newb[r][c] = side
 
-      DIRECTIONS.each do |dr, dc|
-        rr = r + dr
-        cc = c + dc
+      DIRECTIONS.each do |delta_row, delta_col|
+        rr = r + delta_row
+        cc = c + delta_col
         path = [] of {Int32, Int32}
 
         while in_bounds?(rr, cc) && newb[rr][cc] == opp
           path << {rr, cc}
-          rr += dr; cc += dc
+          rr += delta_row; cc += delta_col
         end
 
         if path.size > 0 && in_bounds?(rr, cc) && newb[rr][cc] == side
@@ -143,9 +143,9 @@ module Reversi
       opp = side.opponent
       material = positional = 0
 
-      @board.each_with_index do |row, r|
-        row.each_with_index do |cell, c|
-          weight = WEIGHTS[r][c]
+      @board.each_with_index do |row, row_index|
+        row.each_with_index do |cell, column_index|
+          weight = WEIGHTS[row_index][column_index]
           case cell
           when side
             material += 10
@@ -168,11 +168,11 @@ module Reversi
     def pretty : String
       String.build do |io|
         # Display rank 8 at top (flip row order for standard chess notation)
-        8.times do |rr|
-          r = 7 - rr
-          io << (r + 1).to_s << ' '
-          8.times do |c|
-            ch = case @board[r][c]
+        8.times do |display_row|
+          row_index = 7 - display_row
+          io << (row_index + 1).to_s << ' '
+          8.times do |column_index|
+            ch = case @board[row_index][column_index]
                  when .black? then 'B'
                  when .white? then 'W'
                  else              '.'
@@ -226,7 +226,7 @@ module Reversi
 
   def self.search_best_move(pos : Pos, depth : Int32) : {Int32, Int32}?
     moves = pos.legal_moves
-    return nil if moves.empty?
+    return if moves.empty?
 
     alpha = INITIAL_ALPHA
     beta = INITIAL_BETA
@@ -266,9 +266,9 @@ class ReversiGame
   property pos : Reversi::Pos
   property ai_depth : Int32
   property human_color : Reversi::Cell
-  property game_over : Bool
+  property? game_over : Bool
   property last_move : {Int32, Int32}?
-  property ai_thinking : Bool
+  property? ai_thinking : Bool
 
   def initialize
     @pos = Reversi::Pos.initial
@@ -286,11 +286,11 @@ class ReversiGame
     @ai_thinking = false
   end
 
-  def is_human_turn? : Bool
+  def human_turn? : Bool
     @pos.to_move == @human_color && !@game_over
   end
 
-  def is_ai_turn? : Bool
+  def ai_turn? : Bool
     @pos.to_move != @human_color && !@game_over
   end
 
@@ -382,7 +382,7 @@ class ReversiUI
   private def create_area : UIng::Area
     handler = UIng::Area::Handler.new
 
-    handler.draw do |area, params|
+    handler.draw do |_, params|
       draw_board(params.context)
     end
 
@@ -442,7 +442,7 @@ class ReversiUI
     control_box.append(@new_game_button, stretchy: false)
 
     @pass_button.on_clicked do
-      if @game.is_human_turn? && @game.pos.legal_moves.empty?
+      if @game.human_turn? && @game.pos.legal_moves.empty?
         @game.pass_turn
         update_status
         @area.try(&.queue_redraw_all)
@@ -498,7 +498,7 @@ class ReversiUI
           draw_stone(ctx, cell_x, cell_y, WHITE_COLOR)
         when .empty?
           # Draw hint for legal moves
-          if @game.is_human_turn? && @game.pos.legal_at?(row, col, @game.pos.to_move)
+          if @game.human_turn? && @game.pos.legal_at?(row, col, @game.pos.to_move)
             draw_hint(ctx, cell_x, cell_y)
           end
         end
@@ -534,7 +534,7 @@ class ReversiUI
   end
 
   private def handle_click(x : Float64, y : Float64, area : UIng::Area)
-    return unless @game.is_human_turn?
+    return unless @game.human_turn?
 
     col = (x / CELL_SIZE).to_i
     row_view = (y / CELL_SIZE).to_i
@@ -551,7 +551,7 @@ class ReversiUI
   end
 
   private def check_ai_turn(area : UIng::Area? = nil)
-    return unless @game.is_ai_turn?
+    return unless @game.ai_turn?
     if @game.pos.terminal?
       @game.game_over = true
       update_status
@@ -589,22 +589,22 @@ class ReversiUI
   end
 
   private def update_status
-    if !@game.game_over && @game.pos.terminal?
+    if !@game.game_over? && @game.pos.terminal?
       @game.game_over = true
     end
 
-    if @game.game_over
+    if @game.game_over?
       # Game finished: allow choosing color for the next game
       unlock_color_selection if @color_locked
       @status_label.text = @game.get_winner
       @pass_button.disable
-    elsif @game.ai_thinking
+    elsif @game.ai_thinking?
       @status_label.text = "AI thinking..."
       @pass_button.disable
     else
       current_player = @game.pos.to_move == Reversi::Cell::Black ? "Black" : "White"
       @status_label.text = "#{current_player} to move"
-      if @game.is_human_turn? && @game.pos.legal_moves.empty?
+      if @game.human_turn? && @game.pos.legal_moves.empty?
         @pass_button.enable
       else
         @pass_button.disable
@@ -674,7 +674,7 @@ UIng.init
 file_menu = UIng::Menu.new("File")
 new_item = file_menu.append_item("New")
 file_menu.append_separator
-quit_item = file_menu.append_quit_item
+file_menu.append_quit_item
 
 help_menu = UIng::Menu.new("Help")
 about_item = help_menu.append_about_item
