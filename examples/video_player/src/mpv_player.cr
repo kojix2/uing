@@ -107,6 +107,58 @@ class MPVPlayer
     end
   end
 
+  def toggle_mute
+    ensure_initialized
+
+    result = LibMPV.mpv_command_async(@mpv, 0_u64, ["cycle".to_unsafe, "mute".to_unsafe, Pointer(UInt8).null].to_unsafe)
+    if result < 0
+      raise "Failed to toggle mute: #{error_string(result)}"
+    end
+  end
+
+  def seek_to(seconds : Int32)
+    ensure_initialized
+
+    target = seconds.to_s
+    result = LibMPV.mpv_command_async(@mpv, 0_u64, ["seek".to_unsafe, target.to_unsafe, "absolute".to_unsafe, Pointer(UInt8).null].to_unsafe)
+    if result < 0
+      raise "Failed to seek: #{error_string(result)}"
+    end
+  end
+
+  def set_volume(volume : Int32)
+    ensure_initialized
+
+    clamped_volume = volume.clamp(0, 100)
+    result = LibMPV.mpv_set_property_string(@mpv, "volume", clamped_volume.to_s)
+    if result < 0
+      raise "Failed to set volume: #{error_string(result)}"
+    end
+  end
+
+  def paused? : Bool
+    property_flag("pause")
+  end
+
+  def muted? : Bool
+    property_flag("mute")
+  end
+
+  def playback_position_seconds : Int32?
+    numeric_property_seconds("time-pos")
+  end
+
+  def duration_seconds : Int32?
+    numeric_property_seconds("duration")
+  end
+
+  def volume : Int32?
+    property = get_property_string("volume")
+    return unless property
+
+    property.to_f?.try(&.round.to_i)
+  end
+
   # ============================================================================
   # PROPERTY MANAGEMENT
   # ============================================================================
@@ -124,7 +176,7 @@ class MPVPlayer
     ensure_initialized
 
     str_ptr = LibMPV.mpv_get_property_string(@mpv, name)
-    return nil if str_ptr.null?
+    return if str_ptr.null?
 
     str = String.new(str_ptr)
     LibMPV.mpv_free(str_ptr.as(Void*))
@@ -148,19 +200,16 @@ class MPVPlayer
     ensure_initialized
 
     event_ptr = LibMPV.mpv_wait_event(@mpv, timeout)
-    return nil if event_ptr.null?
+    return if event_ptr.null?
 
     event = event_ptr.value
-    return nil if event.event_id == LibMPV::MPVEventID::None
+    return if event.event_id == LibMPV::MPVEventID::None
 
     event
   end
 
-  def process_events(&block : LibMPV::MPVEvent -> Void)
-    while true
-      event = wait_event(0.0)
-      break unless event
-
+  def process_events(& : LibMPV::MPVEvent -> Nil)
+    while event = wait_event(0.0)
       yield event
     end
   end
@@ -216,6 +265,21 @@ class MPVPlayer
 
   private def set_property(name : String, value : String)
     LibMPV.mpv_set_property_string(@mpv, name, value)
+  end
+
+  private def property_flag(name : String) : Bool
+    property = get_property_string(name)
+    return false unless property
+
+    normalized = property.strip.downcase
+    normalized == "yes" || normalized == "true"
+  end
+
+  private def numeric_property_seconds(name : String) : Int32?
+    property = get_property_string(name)
+    return unless property
+
+    property.to_f?.try(&.round.to_i)
   end
 
   # ============================================================================
