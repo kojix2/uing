@@ -14,9 +14,11 @@ class CSVViewer
   @table_model : UIng::Table::Model
   @hbox : UIng::Box
   @window : UIng::Window
+  @cleaned_up : Bool
 
   def initialize
     UIng.init
+    @cleaned_up = false
 
     # Initialize UI components directly
     @hbox = UIng::Box.new :horizontal
@@ -24,7 +26,7 @@ class CSVViewer
     # Create initial table model and table directly in initialize
     model_handler = UIng::Table::Model::Handler.new do
       num_columns { @column_count > 0 ? @column_count : 1 }
-      column_type { |column| UIng::Table::Value::Type::String }
+      column_type { |_| UIng::Table::Value::Type::String }
       num_rows { @csv_data.size }
       cell_value do |row, column|
         if row < @csv_data.size && column < @csv_data[row].size
@@ -33,7 +35,7 @@ class CSVViewer
           UIng::Table::Value.new("")
         end
       end
-      set_cell_value { |row, column, value| }
+      set_cell_value { |_, _, _| }
     end
 
     @table_model = UIng::Table::Model.new(model_handler)
@@ -89,7 +91,7 @@ class CSVViewer
   private def create_table_with_columns(column_count : Int32)
     model_handler = UIng::Table::Model::Handler.new do
       num_columns { column_count }
-      column_type { |column| UIng::Table::Value::Type::String }
+      column_type { |_| UIng::Table::Value::Type::String }
       num_rows { @csv_data.size }
       cell_value do |row, column|
         if row < @csv_data.size && column < @csv_data[row].size
@@ -98,7 +100,7 @@ class CSVViewer
           UIng::Table::Value.new("")
         end
       end
-      set_cell_value { |row, column, value| }
+      set_cell_value { |_, _, _| }
     end
 
     @table_model = UIng::Table::Model.new(model_handler)
@@ -163,13 +165,18 @@ class CSVViewer
 
   private def setup_menu
     UIng::Menu.new("File") do
-      append_item("Open").on_clicked do |w|
-        if filename = w.open_file
+      append_item("Open").on_clicked do |window|
+        if filename = window.open_file
           update_table_with_file(filename)
         end
       end
       append_separator
       append_quit_item
+    end
+
+    UIng.on_should_quit do
+      cleanup
+      true
     end
   end
 
@@ -189,10 +196,12 @@ class CSVViewer
 
   # Clean up resources
   private def cleanup
+    return if @cleaned_up
+
+    @cleaned_up = true
     @hbox.delete(0)
     @table.destroy
     @table_model.free
-    UIng.quit
   end
 
   # Main application loop
@@ -201,6 +210,7 @@ class CSVViewer
 
     @window.on_closing do
       cleanup
+      UIng.quit
       true
     end
 
