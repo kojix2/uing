@@ -3,8 +3,7 @@ version: 0.1.0
 
 dependencies:
   uing:
-    github: kojix2/uing
-    branch: main
+    path: ../../  # Reference to parent uing library
 
 targets:
   md5checker:
