@@ -1,8 +1,14 @@
+{% unless flag?(:windows) %}
+  lib LibC
+    fun strdup(str : Pointer(LibC::Char)) : Pointer(LibC::Char)
+  end
+{% end %}
+
 module UIng
   class TM
     {% unless flag?(:windows) %}
       # C-side memory managed zone string pointer
-      @zone_cstr : Pointer(UInt8)? = nil
+      @zone_cstr : Pointer(LibC::Char)? = nil
       # Crystal-side reference for convenience methods
       @zone : String? = nil
     {% end %}
@@ -10,7 +16,7 @@ module UIng
     def initialize(@cstruct : LibUI::TM = LibUI::TM.new)
       {% unless flag?(:windows) %}
         # Explicitly initialize zone to NULL for safety
-        @cstruct.zone = Pointer(UInt8).null
+        @cstruct.zone = Pointer(LibC::Char).null
       {% end %}
     end
 
@@ -18,7 +24,7 @@ module UIng
     def initialize(time : ::Time)
       @cstruct = LibUI::TM.new
       {% unless flag?(:windows) %}
-        @cstruct.zone = Pointer(UInt8).null
+        @cstruct.zone = Pointer(LibC::Char).null
       {% end %}
 
       self.year = time.year - 1900 # tm_year is years since 1900
