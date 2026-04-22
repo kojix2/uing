@@ -9,16 +9,16 @@ module App
   @@area : UIng::Area? = nil
   @@main_window : UIng::Window? = nil
 
-  def self.handler
-    @@handler.not_nil!
+  def self.handler : UIng::Area::Handler
+    @@handler || raise "Area handler has not been initialized"
   end
 
-  def self.area
-    @@area.not_nil!
+  def self.area : UIng::Area
+    @@area || raise "Area has not been initialized"
   end
 
-  def self.main_window
-    @@main_window.not_nil!
+  def self.main_window : UIng::Window
+    @@main_window || raise "Main window has not been initialized"
   end
 
   def self.set_handler(handler : UIng::Area::Handler)
@@ -169,7 +169,7 @@ module RandomLines
     @@lines.clear
   end
 
-  def self.lines
+  def self.active_lines
     @@lines
   end
 
@@ -186,7 +186,7 @@ end
 handler = UIng::Area::Handler.new
 App.set_handler(handler)
 
-handler.draw do |area, area_draw_params|
+handler.draw do |_, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
@@ -207,7 +207,7 @@ handler.draw do |area, area_draw_params|
   end
 
   # Draw all lines with safe single-line approach
-  RandomLines.lines.each do |line|
+  RandomLines.active_lines.each do |line|
     # Line color with transparency for blending
     line_brush = UIng::Area::Draw::Brush.new(
       :solid,
@@ -232,7 +232,7 @@ area = UIng::Area.new(handler)
 App.set_area(area)
 
 # Mouse event handler (with GC protection)
-handler.mouse_event do |area, mouse_event|
+handler.mouse_event do |sender_area, mouse_event|
   mouse_data = mouse_event
 
   # Update mouse position for line generation
@@ -247,21 +247,21 @@ handler.mouse_event do |area, mouse_event|
 
   # Update animation and queue redraw
   RandomLines.update_lines
-  area.queue_redraw_all
+  sender_area.queue_redraw_all
 end
 
 handler.mouse_crossed { |_, _| }
 handler.drag_broken { |_| }
 
 # Simplified key event handler
-handler.key_event do |area, key_event|
+handler.key_event do |sender_area, key_event|
   key_data = key_event
 
   if key_data.up == 0 # Key pressed (not released)
     case key_data.key
     when 'c'.ord, 'C'.ord
       RandomLines.clear_lines
-      area.queue_redraw_all
+      sender_area.queue_redraw_all
     end
   end
 
