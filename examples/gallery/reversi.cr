@@ -352,6 +352,8 @@ class ReversiUI
   @color_selector : UIng::RadioButtons
   # True once the first move (human or AI) has started; prevents color switching mid-game
   @color_locked : Bool
+  # Incremented whenever pending AI actions should be invalidated
+  @ai_turn_generation : Int32
 
   def initialize
     @game = ReversiGame.new
@@ -362,6 +364,7 @@ class ReversiUI
     @difficulty_slider = UIng::Slider.new(1, 6)
     @color_selector = UIng::RadioButtons.new(["Play Black (first)", "Play White (second)"])
     @color_locked = false
+    @ai_turn_generation = 0
     @area = create_area
     @window = create_window
 
@@ -552,15 +555,20 @@ class ReversiUI
 
   private def check_ai_turn(area : UIng::Area? = nil)
     return unless @game.ai_turn?
+
+    area_ref = area || @area
+
     if @game.pos.terminal?
       @game.game_over = true
       update_status
+      area_ref.try(&.queue_redraw_all)
       return
     end
 
     if @game.pos.legal_moves.empty?
       @game.pass_turn
       update_status
+      area_ref.try(&.queue_redraw_all)
       return
     end
 
@@ -569,11 +577,12 @@ class ReversiUI
     lock_color_selection unless @color_locked
     update_status
 
-    # Store area reference for timer callback
-    area_ref = area || @area
+    generation = @ai_turn_generation
 
     # Use timer to make AI move after a short delay
     UIng.timer(500) do
+      next 0 unless generation == @ai_turn_generation
+
       if move = Reversi.search_best_move(@game.pos, @game.ai_depth)
         row, col = move
         @game.make_move(row, col)
@@ -624,6 +633,7 @@ class ReversiUI
 
   # Reset game state to a fresh start (always human=Black, unlocked selector)
   private def handle_new_game
+    @ai_turn_generation += 1
     @game.reset
     @color_selector.selected = 0
     @game.human_color = Reversi::Cell::Black
