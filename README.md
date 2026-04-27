@@ -612,17 +612,21 @@ This example demonstrates a simple way to bundle your Crystal app with the requi
 
 ## Development
 
+### Purpose
+
+This project aims to provide a small, sustainable foundation for building simple native GUIs.
+
+Our priority is not to keep adding new features, but to keep the library working, stable, and maintainable over the long term.
+Providing a full-featured GUI library is not the main scope of this project.
+
+### UIng::LibUI
+
 - `UIng::LibUI` is the module for direct C bindings
 - Initially, [crystal_lib](https://github.com/crystal-lang/crystal_lib) was used to generate low-level bindings
   　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
   - Enhancement patches such as image display functionality are provided on the dev branch.
-
-### Sustainability
-
-From experience, maintaining a GUI library is harder than it looks, often requiring two to three times more effort than expected.
-Rather than chasing new features, we should prioritize **sustainability**.
 
 ### Memory Safety
 
