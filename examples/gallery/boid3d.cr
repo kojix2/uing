@@ -1,5 +1,7 @@
 require "../../src/uing"
 
+DEFAULT_BOID_COUNT = 400
+
 # 3D Vector utility class
 struct Vec3
   property x : Float64
@@ -17,12 +19,12 @@ struct Vec3
     Vec3.new(@x - other.x, @y - other.y, @z - other.z)
   end
 
-  def *(scalar : Float64)
-    Vec3.new(@x * scalar, @y * scalar, @z * scalar)
+  def *(other : Float64)
+    Vec3.new(@x * other, @y * other, @z * other)
   end
 
-  def /(scalar : Float64)
-    Vec3.new(@x / scalar, @y / scalar, @z / scalar)
+  def /(other : Float64)
+    Vec3.new(@x / other, @y / other, @z / other)
   end
 
   def magnitude
@@ -231,11 +233,13 @@ class Boid3D
 end
 
 class SpatialHashGrid3D
+  alias CellKey = Tuple(Int32, Int32, Int32)
+
   property cell_size : Float64
-  property grid : Hash(String, Array(Boid3D))
+  property grid : Hash(CellKey, Array(Boid3D))
 
   def initialize(@cell_size : Float64)
-    @grid = Hash(String, Array(Boid3D)).new
+    @grid = Hash(CellKey, Array(Boid3D)).new
   end
 
   def clear
@@ -253,16 +257,12 @@ class SpatialHashGrid3D
     center_x = (position.x / @cell_size).floor.to_i
     center_y = (position.y / @cell_size).floor.to_i
     center_z = (position.z / @cell_size).floor.to_i
-    (-cell_radius..cell_radius).each do |dx|
-      (-cell_radius..cell_radius).each do |dy|
-        (-cell_radius..cell_radius).each do |dz|
-          key = hash_position(
-            (center_x + dx) * @cell_size,
-            (center_y + dy) * @cell_size,
-            (center_z + dz) * @cell_size
-          )
-          if @grid.has_key?(key)
-            neighbors.concat(@grid[key])
+    (-cell_radius..cell_radius).each do |delta_x|
+      (-cell_radius..cell_radius).each do |delta_y|
+        (-cell_radius..cell_radius).each do |delta_z|
+          key = {center_x + delta_x, center_y + delta_y, center_z + delta_z}
+          if cell = @grid[key]?
+            neighbors.concat(cell)
           end
         end
       end
@@ -270,11 +270,11 @@ class SpatialHashGrid3D
     neighbors
   end
 
-  private def hash_position(x : Float64, y : Float64, z : Float64) : String
+  private def hash_position(x : Float64, y : Float64, z : Float64) : CellKey
     cx = (x / @cell_size).floor.to_i
     cy = (y / @cell_size).floor.to_i
     cz = (z / @cell_size).floor.to_i
-    "#{cx},#{cy},#{cz}"
+    {cx, cy, cz}
   end
 end
 
@@ -283,7 +283,7 @@ class BoidSimulation3D
   property width : Float64
   property height : Float64
   property depth : Float64
-  property animation_running : Bool
+  property? animation_running : Bool
   property camera_distance : Float64
 
   property grid : SpatialHashGrid3D
@@ -303,7 +303,7 @@ class BoidSimulation3D
     @animation_running = false
     @camera_distance = 100.0
 
-    @boid_count = 400
+    @boid_count = DEFAULT_BOID_COUNT
     @separation_weight = 2.0
     @alignment_weight = 1.0
     @cohesion_weight = 1.0
@@ -371,7 +371,7 @@ class BoidSimulation3D
   end
 
   def reset_to_defaults
-    @boid_count = 200 # 4 times the original default (50 -> 200)
+    @boid_count = DEFAULT_BOID_COUNT
     @separation_weight = 2.0
     @alignment_weight = 1.0
     @cohesion_weight = 1.0
@@ -406,52 +406,250 @@ class BoidSimulation3D
   end
 end
 
+class BoidRenderer3D
+  def initialize(@simulation : BoidSimulation3D)
+  end
+
+  def draw(params)
+    ctx = params.context
+    @simulation.width = params.area_width
+    @simulation.height = params.area_height
+
+    draw_background(ctx, params.area_width, params.area_height)
+    @simulation.boids_sorted_by_depth.each do |boid|
+      draw_boid(ctx, boid)
+    end
+    draw_depth_indicator(ctx)
+  end
+
+  private def draw_background(ctx, width : Float64, height : Float64)
+    brush = UIng::Area::Draw::Brush.new(:solid, 0.0, 0.05, 0.15, 1.0)
+    ctx.fill_path(brush) do |path|
+      path.add_rectangle(0, 0, width, height)
+    end
+  end
+
+  private def draw_boid(ctx, boid : Boid3D)
+    projection = boid.project_to_2d(@simulation.camera_distance, @simulation.width, @simulation.height)
+    return if outside_view?(projection[:x], projection[:y])
+
+    depth_factor = (boid.position.z / @simulation.depth).clamp(0.0, 1.0)
+    rgb = boid_color(boid, depth_factor)
+    base_alpha = 0.3 + 0.5 * (1.0 - depth_factor)
+    layer_alpha = base_alpha * 0.7
+    size = boid.size * projection[:scale]
+
+    draw_head(ctx, projection[:x], projection[:y], size, rgb, layer_alpha)
+    draw_tail(ctx, boid, projection[:x], projection[:y], size, rgb, base_alpha)
+  end
+
+  private def outside_view?(x : Float64, y : Float64) : Bool
+    x < -50 || x > @simulation.width + 50 ||
+      y < -50 || y > @simulation.height + 50
+  end
+
+  private def boid_color(boid : Boid3D, depth_factor : Float64)
+    base_hue = (boid.id * 0.1) % 1.0
+    underwater_hue = 0.5
+    underwater_influence = depth_factor * 0.7
+    hue = base_hue * (1.0 - underwater_influence) + underwater_hue * underwater_influence
+    saturation = 0.7 * (1.0 - depth_factor * 0.7)
+    brightness = 0.5 + 0.5 * (1.0 - depth_factor)
+
+    @simulation.hsv_to_rgb(hue, saturation, brightness)
+  end
+
+  private def draw_head(ctx, x : Float64, y : Float64, size : Float64, rgb, alpha : Float64)
+    outer_brush = UIng::Area::Draw::Brush.new(:solid, rgb[:r], rgb[:g], rgb[:b], alpha)
+    draw_circle(ctx, outer_brush, x, y, size / 2)
+
+    inner_brush = UIng::Area::Draw::Brush.new(
+      :solid,
+      rgb[:r] * 0.8 + 0.2,
+      rgb[:g] * 0.8 + 0.2,
+      rgb[:b] * 0.8 + 0.2,
+      alpha
+    )
+    draw_circle(ctx, inner_brush, x, y, size * 0.3)
+  end
+
+  private def draw_circle(ctx, brush, x : Float64, y : Float64, radius : Float64)
+    ctx.fill_path(brush) do |path|
+      path.new_figure_with_arc(x, y, radius, 0, Math::PI * 2, false)
+    end
+  end
+
+  private def draw_tail(ctx, boid : Boid3D, x : Float64, y : Float64, size : Float64, rgb, base_alpha : Float64)
+    return unless size > 2
+
+    velocity = boid.velocity
+    speed_2d = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y)
+    speed_3d = velocity.magnitude
+    return if speed_2d <= 0 || speed_3d <= 0
+
+    tail_ratio = speed_2d / speed_3d
+    tail_length = size * 3.0 * tail_ratio
+    tail_width = size * 0.9 * tail_ratio
+    return unless tail_length > size * 0.2
+
+    tail_dir_x = -(velocity.x / speed_2d)
+    tail_dir_y = -(velocity.y / speed_2d)
+    perp_x = -tail_dir_y
+    perp_y = tail_dir_x
+    start_offset = size * 0.2
+    start_x = x + tail_dir_x * start_offset
+    start_y = y + tail_dir_y * start_offset
+    tail_alpha = base_alpha * 0.6 * tail_ratio
+
+    draw_tail_triangle(ctx, start_x, start_y, tail_dir_x, tail_dir_y, perp_x, perp_y, tail_length, tail_width, rgb, tail_alpha)
+    draw_tail_spine(ctx, start_x, start_y, tail_dir_x, tail_dir_y, perp_x, perp_y, tail_length, tail_width, rgb, tail_alpha)
+  end
+
+  private def draw_tail_triangle(ctx, start_x, start_y, dir_x, dir_y, perp_x, perp_y, length, width, rgb, alpha)
+    brush = UIng::Area::Draw::Brush.new(:solid, rgb[:r], rgb[:g], rgb[:b], alpha)
+    fill_tail_triangle(ctx, brush, start_x, start_y, dir_x, dir_y, perp_x, perp_y, length, width)
+  end
+
+  private def draw_tail_spine(ctx, start_x, start_y, dir_x, dir_y, perp_x, perp_y, length, width, rgb, alpha)
+    brush = UIng::Area::Draw::Brush.new(
+      :solid,
+      rgb[:r] * 0.7 + 0.3,
+      rgb[:g] * 0.7 + 0.3,
+      rgb[:b] * 0.7 + 0.3,
+      alpha * 0.8
+    )
+    fill_tail_triangle(ctx, brush, start_x, start_y, dir_x, dir_y, perp_x, perp_y, length * 0.6, width * 0.6)
+  end
+
+  private def fill_tail_triangle(ctx, brush, start_x, start_y, dir_x, dir_y, perp_x, perp_y, length, width)
+    tip_x = start_x + dir_x * length
+    tip_y = start_y + dir_y * length
+    left_x = start_x + perp_x * width / 2
+    left_y = start_y + perp_y * width / 2
+    right_x = start_x - perp_x * width / 2
+    right_y = start_y - perp_y * width / 2
+
+    ctx.fill_path(brush) do |path|
+      path.new_figure(left_x, left_y)
+      path.line_to(tip_x, tip_y)
+      path.line_to(right_x, right_y)
+      path.close_figure
+    end
+  end
+
+  private def draw_depth_indicator(ctx)
+    brush = UIng::Area::Draw::Brush.new(:solid, 0.5, 0.5, 0.5, 0.7)
+    ctx.stroke_path(brush, thickness: 1.0) do |path|
+      scale_x = @simulation.width - 30
+      scale_top = 50.0
+      scale_bottom = @simulation.height - 50
+      path.new_figure(scale_x, scale_top)
+      path.line_to(scale_x, scale_bottom)
+
+      (0..4).each do |index|
+        tick_y = scale_top + (scale_bottom - scale_top) * index / 4
+        path.new_figure(scale_x - 5, tick_y)
+        path.line_to(scale_x + 5, tick_y)
+      end
+    end
+  end
+end
+
 UIng.init
 
 # Global 3D simulation instance
-SIMULATION3D = BoidSimulation3D.new
+SIMULATION3D   = BoidSimulation3D.new
+RENDERER3D     = BoidRenderer3D.new(SIMULATION3D)
+STATUS_LABEL3D = UIng::Label.new("Running")
+
+record BoidPreferenceControls,
+  boid_count : UIng::Spinbox,
+  separation_weight : UIng::Entry,
+  alignment_weight : UIng::Entry,
+  cohesion_weight : UIng::Entry,
+  desired_separation : UIng::Entry,
+  neighbor_distance : UIng::Entry,
+  max_speed : UIng::Entry,
+  max_force : UIng::Entry,
+  camera_distance : UIng::Entry
+
+def float_entry_3d(value : Float64) : UIng::Entry
+  entry = UIng::Entry.new
+  entry.text = value.to_s
+  entry
+end
+
+def float_entry_value_3d(entry : UIng::Entry, fallback : Float64) : Float64
+  (entry.text || "").to_f? || fallback
+end
+
+def new_preference_controls_3d : BoidPreferenceControls
+  BoidPreferenceControls.new(
+    UIng::Spinbox.new(10, 1000, value: SIMULATION3D.boid_count),
+    float_entry_3d(SIMULATION3D.separation_weight),
+    float_entry_3d(SIMULATION3D.alignment_weight),
+    float_entry_3d(SIMULATION3D.cohesion_weight),
+    float_entry_3d(SIMULATION3D.desired_separation),
+    float_entry_3d(SIMULATION3D.neighbor_distance),
+    float_entry_3d(SIMULATION3D.max_speed),
+    float_entry_3d(SIMULATION3D.max_force),
+    float_entry_3d(SIMULATION3D.camera_distance)
+  )
+end
+
+def apply_preferences_3d(controls : BoidPreferenceControls)
+  SIMULATION3D.boid_count = controls.boid_count.value
+  SIMULATION3D.separation_weight = float_entry_value_3d(controls.separation_weight, SIMULATION3D.separation_weight)
+  SIMULATION3D.alignment_weight = float_entry_value_3d(controls.alignment_weight, SIMULATION3D.alignment_weight)
+  SIMULATION3D.cohesion_weight = float_entry_value_3d(controls.cohesion_weight, SIMULATION3D.cohesion_weight)
+  SIMULATION3D.desired_separation = float_entry_value_3d(controls.desired_separation, SIMULATION3D.desired_separation)
+  SIMULATION3D.neighbor_distance = float_entry_value_3d(controls.neighbor_distance, SIMULATION3D.neighbor_distance)
+  SIMULATION3D.max_speed = float_entry_value_3d(controls.max_speed, SIMULATION3D.max_speed)
+  SIMULATION3D.max_force = float_entry_value_3d(controls.max_force, SIMULATION3D.max_force)
+  SIMULATION3D.camera_distance = float_entry_value_3d(controls.camera_distance, SIMULATION3D.camera_distance)
+
+  SIMULATION3D.update_existing_boids_parameters
+  SIMULATION3D.recreate_boids_if_count_changed
+  STATUS_LABEL3D.text = "Applied #{SIMULATION3D.boid_count} boids"
+  AREA3D.queue_redraw_all
+end
+
+def sync_preferences_controls_3d(controls : BoidPreferenceControls)
+  controls.boid_count.value = SIMULATION3D.boid_count
+  controls.separation_weight.text = SIMULATION3D.separation_weight.to_s
+  controls.alignment_weight.text = SIMULATION3D.alignment_weight.to_s
+  controls.cohesion_weight.text = SIMULATION3D.cohesion_weight.to_s
+  controls.desired_separation.text = SIMULATION3D.desired_separation.to_s
+  controls.neighbor_distance.text = SIMULATION3D.neighbor_distance.to_s
+  controls.max_speed.text = SIMULATION3D.max_speed.to_s
+  controls.max_force.text = SIMULATION3D.max_force.to_s
+  controls.camera_distance.text = SIMULATION3D.camera_distance.to_s
+end
 
 # Create preferences window for 3D
 def create_preferences_window_3d
   UIng::Window.new("Preferences", 400, 600, margined: true) do
     on_closing do
-      puts "Preferences window closed"
+      STATUS_LABEL3D.text = "Preferences closed"
       true # Allow closing
     end
 
-    # Create form controls
-    boid_count_spinbox = UIng::Spinbox.new(10, 200, value: SIMULATION3D.boid_count)
-    separation_weight_entry = UIng::Entry.new
-    separation_weight_entry.text = SIMULATION3D.separation_weight.to_s
-    alignment_weight_entry = UIng::Entry.new
-    alignment_weight_entry.text = SIMULATION3D.alignment_weight.to_s
-    cohesion_weight_entry = UIng::Entry.new
-    cohesion_weight_entry.text = SIMULATION3D.cohesion_weight.to_s
-    desired_separation_entry = UIng::Entry.new
-    desired_separation_entry.text = SIMULATION3D.desired_separation.to_s
-    neighbor_distance_entry = UIng::Entry.new
-    neighbor_distance_entry.text = SIMULATION3D.neighbor_distance.to_s
-    max_speed_entry = UIng::Entry.new
-    max_speed_entry.text = SIMULATION3D.max_speed.to_s
-    max_force_entry = UIng::Entry.new
-    max_force_entry.text = SIMULATION3D.max_force.to_s
-    camera_distance_entry = UIng::Entry.new
-    camera_distance_entry.text = SIMULATION3D.camera_distance.to_s
+    controls = new_preference_controls_3d
 
     set_child(
       UIng::Box.new(:vertical, padded: true) do
         append(UIng::Label.new("3D Boid Simulation Parameters"), stretchy: false)
         append(
           UIng::Form.new(padded: true) do
-            append("Boid Count:", boid_count_spinbox)
-            append("Separation Weight:", separation_weight_entry)
-            append("Alignment Weight:", alignment_weight_entry)
-            append("Cohesion Weight:", cohesion_weight_entry)
-            append("Separation Distance:", desired_separation_entry)
-            append("Neighbor Distance:", neighbor_distance_entry)
-            append("Max Speed:", max_speed_entry)
-            append("Max Force:", max_force_entry)
-            append("Camera Distance:", camera_distance_entry)
+            append("Boid Count:", controls.boid_count)
+            append("Separation Weight:", controls.separation_weight)
+            append("Alignment Weight:", controls.alignment_weight)
+            append("Cohesion Weight:", controls.cohesion_weight)
+            append("Separation Distance:", controls.desired_separation)
+            append("Neighbor Distance:", controls.neighbor_distance)
+            append("Max Speed:", controls.max_speed)
+            append("Max Force:", controls.max_force)
+            append("Camera Distance:", controls.camera_distance)
           end
         )
         append(
@@ -459,22 +657,7 @@ def create_preferences_window_3d
             append(
               UIng::Button.new("Apply") do
                 on_clicked do
-                  # Update parameters
-                  SIMULATION3D.boid_count = boid_count_spinbox.value
-                  SIMULATION3D.separation_weight = (separation_weight_entry.text || "").to_f? || SIMULATION3D.separation_weight
-                  SIMULATION3D.alignment_weight = (alignment_weight_entry.text || "").to_f? || SIMULATION3D.alignment_weight
-                  SIMULATION3D.cohesion_weight = (cohesion_weight_entry.text || "").to_f? || SIMULATION3D.cohesion_weight
-                  SIMULATION3D.desired_separation = (desired_separation_entry.text || "").to_f? || SIMULATION3D.desired_separation
-                  SIMULATION3D.neighbor_distance = (neighbor_distance_entry.text || "").to_f? || SIMULATION3D.neighbor_distance
-                  SIMULATION3D.max_speed = (max_speed_entry.text || "").to_f? || SIMULATION3D.max_speed
-                  SIMULATION3D.max_force = (max_force_entry.text || "").to_f? || SIMULATION3D.max_force
-                  SIMULATION3D.camera_distance = (camera_distance_entry.text || "").to_f? || SIMULATION3D.camera_distance
-
-                  # Update existing boids and recreate if needed
-                  SIMULATION3D.update_existing_boids_parameters
-                  SIMULATION3D.recreate_boids_if_count_changed
-
-                  AREA3D.queue_redraw_all
+                  apply_preferences_3d(controls)
                 end
               end,
               stretchy: true
@@ -483,19 +666,9 @@ def create_preferences_window_3d
               UIng::Button.new("Reset to Defaults") do
                 on_clicked do
                   SIMULATION3D.reset_to_defaults
-
-                  # Update form controls
-                  boid_count_spinbox.value = SIMULATION3D.boid_count
-                  separation_weight_entry.text = SIMULATION3D.separation_weight.to_s
-                  alignment_weight_entry.text = SIMULATION3D.alignment_weight.to_s
-                  cohesion_weight_entry.text = SIMULATION3D.cohesion_weight.to_s
-                  desired_separation_entry.text = SIMULATION3D.desired_separation.to_s
-                  neighbor_distance_entry.text = SIMULATION3D.neighbor_distance.to_s
-                  max_speed_entry.text = SIMULATION3D.max_speed.to_s
-                  max_force_entry.text = SIMULATION3D.max_force.to_s
-                  camera_distance_entry.text = SIMULATION3D.camera_distance.to_s
-
+                  sync_preferences_controls_3d(controls)
                   SIMULATION3D.create_initial_boids
+                  STATUS_LABEL3D.text = "Reset to #{SIMULATION3D.boid_count} boids"
                   AREA3D.queue_redraw_all
                 end
               end,
@@ -515,25 +688,25 @@ def create_preferences_window_3d
   end
 end
 
-# File menu
-UIng::Menu.new("File") do
-  append_preferences_item.on_clicked do
-    create_preferences_window_3d
+def setup_menus_3d
+  UIng::Menu.new("File") do
+    append_preferences_item.on_clicked do
+      create_preferences_window_3d
+    end
+    append_separator
+    append_quit_item
   end
-  append_separator
-  append_quit_item
-end
 
-UIng.on_should_quit do
-  SIMULATION3D.animation_running = false
-  MAIN_WINDOW3D.destroy
-  true
-end
+  UIng.on_should_quit do
+    SIMULATION3D.animation_running = false
+    MAIN_WINDOW3D.destroy
+    true
+  end
 
-# Help menu
-UIng::Menu.new("Help") do
-  append_about_item.on_clicked do |w|
-    w.msg_box("About", "Boid 3D Simulation\nA 3D flocking behavior demonstration with perspective projection\n\nPress [Space] to reset")
+  UIng::Menu.new("Help") do
+    append_about_item.on_clicked do |window|
+      window.msg_box("About", "Boid 3D Simulation\nA 3D flocking behavior demonstration with perspective projection\n\nPress [Space] to reset")
+    end
   end
 end
 
@@ -542,219 +715,57 @@ HANDLER3D = UIng::Area::Handler.new
 AREA3D    = UIng::Area.new(HANDLER3D)
 
 # Setup handlers
-HANDLER3D.draw do |area, params|
-  ctx = params.context
-
-  # Draw background with gradient to suggest underwater depth
-  bg_brush = UIng::Area::Draw::Brush.new(:solid, 0.0, 0.05, 0.15, 1.0) # Deep blue-green underwater color
-  ctx.fill_path(bg_brush) do |path|
-    path.add_rectangle(0, 0, SIMULATION3D.width, SIMULATION3D.height)
+def setup_handlers_3d
+  HANDLER3D.draw do |_area, params|
+    RENDERER3D.draw(params)
   end
 
-  # Draw boids sorted by depth (back to front)
-  SIMULATION3D.boids_sorted_by_depth.each_with_index do |boid, i|
-    # Project 3D position to 2D screen coordinates
-    projection = boid.project_to_2d(SIMULATION3D.camera_distance, SIMULATION3D.width, SIMULATION3D.height)
-
-    # Skip if projected outside screen bounds
-    next if projection[:x] < -50 || projection[:x] > SIMULATION3D.width + 50 ||
-            projection[:y] < -50 || projection[:y] > SIMULATION3D.height + 50
-
-    # Color based on depth and boid ID for consistent variety
-    depth_factor = (boid.position.z / SIMULATION3D.depth).clamp(0.0, 1.0)
-    base_hue = (boid.id * 0.1) % 1.0
-
-    # Add blue-green tint for distant objects (underwater perspective)
-    underwater_hue = 0.5                      # Blue-green hue value (around 180 degrees - cyan/teal)
-    underwater_influence = depth_factor * 0.7 # Strong underwater color influence
-    hue = base_hue * (1.0 - underwater_influence) + underwater_hue * underwater_influence
-
-    # Reduce saturation for distant objects (more gray/blue)
-    saturation = 0.7 * (1.0 - depth_factor * 0.7) # Increased from 0.5 to 0.7 for more desaturation
-    brightness = 0.5 + 0.5 * (1.0 - depth_factor) # Brighter when closer
-    rgb = SIMULATION3D.hsv_to_rgb(hue, saturation, brightness)
-
-    # Alpha based on depth (more transparent when far) - adjusted for double layer
-    base_alpha = 0.3 + 0.5 * (1.0 - depth_factor)
-    # Each layer should be more transparent so that when combined they equal the original alpha
-    layer_alpha = base_alpha * 0.7 # Each layer is 70% of target, so 0.7 + 0.7*0.3 ≈ original
-
-    # Size based on perspective with natural scaling
-    base_scale = projection[:scale]
-    # Use natural perspective scaling - objects get smaller with distance
-    size = boid.size * base_scale
-
-    # Draw outer head (body) as a proper circle
-    outer_brush = UIng::Area::Draw::Brush.new(:solid, rgb[:r], rgb[:g], rgb[:b], layer_alpha)
-    ctx.fill_path(outer_brush) do |path|
-      radius = size / 2
-      # Create a circle using arc
-      path.new_figure_with_arc(
-        projection[:x], projection[:y],
-        radius,
-        0, Math::PI * 2,
-        false
-      )
-    end
-
-    # Draw inner head (brain) as a smaller circle
-    inner_head_scale = 0.6 # Inner head is 60% of outer size
-    inner_size = size * inner_head_scale
-    inner_radius = inner_size / 2
-
-    # Inner head (brain) with whitish color
-    brain_r = rgb[:r] * 0.8 + 0.2 # Add white tint
-    brain_g = rgb[:g] * 0.8 + 0.2
-    brain_b = rgb[:b] * 0.8 + 0.2
-    inner_brush = UIng::Area::Draw::Brush.new(:solid, brain_r, brain_g, brain_b, layer_alpha)
-    ctx.fill_path(inner_brush) do |path|
-      # Create a circle using arc
-      path.new_figure_with_arc(
-        projection[:x], projection[:y],
-        inner_radius,
-        0, Math::PI * 2,
-        false
-      )
-    end
-
-    # Draw a triangular tail (like a tadpole) opposite to movement direction
-    # Tail length varies based on 3D movement direction to show depth movement
-    if size > 2
-      vel_2d = boid.velocity
-      vel_3d = boid.velocity # Get full 3D velocity
-      vel_magnitude_2d = Math.sqrt(vel_2d.x * vel_2d.x + vel_2d.y * vel_2d.y)
-      vel_magnitude_3d = Math.sqrt(vel_3d.x * vel_3d.x + vel_3d.y * vel_3d.y + vel_3d.z * vel_3d.z)
-
-      if vel_magnitude_2d > 0 && vel_magnitude_3d > 0
-        # Calculate tail length based on 2D vs 3D velocity ratio
-        # When moving purely in X/Y plane, ratio = 1.0 (full tail length)
-        # When moving purely in Z direction, ratio approaches 0 (short tail)
-        tail_length_ratio = vel_magnitude_2d / vel_magnitude_3d
-        tail_length = size * 3.0 * tail_length_ratio # Doubled from 1.5 to 3.0
-        tail_width = size * 0.9 * tail_length_ratio  # Increased from 0.6 to 0.9 (closer to original 1.2)
-
-        # Only draw tail if it's visible (not too short)
-        if tail_length > size * 0.2
-          # Calculate tail direction (opposite to 2D velocity)
-          tail_dir_x = -(vel_2d.x / vel_magnitude_2d)
-          tail_dir_y = -(vel_2d.y / vel_magnitude_2d)
-
-          # Calculate perpendicular direction for tail width
-          perp_x = -tail_dir_y
-          perp_y = tail_dir_x
-
-          # Start tail closer to head center (more like original)
-          head_radius = size / 2
-          tail_start_offset = head_radius * 0.4 # Reduced from 0.7 to 0.4 (closer to center)
-          tail_start_x = projection[:x] + tail_dir_x * tail_start_offset
-          tail_start_y = projection[:y] + tail_dir_y * tail_start_offset
-
-          # Calculate tail tip position
-          tail_tip_x = tail_start_x + tail_dir_x * tail_length
-          tail_tip_y = tail_start_y + tail_dir_y * tail_length
-
-          # Calculate tail base corners (narrower attachment)
-          base_left_x = tail_start_x + perp_x * tail_width / 2
-          base_left_y = tail_start_y + perp_y * tail_width / 2
-          base_right_x = tail_start_x - perp_x * tail_width / 2
-          base_right_y = tail_start_y - perp_y * tail_width / 2
-
-          # Draw triangular tail with alpha based on tail length ratio
-          tail_alpha = base_alpha * 0.6 * tail_length_ratio
-          tail_brush = UIng::Area::Draw::Brush.new(:solid, rgb[:r], rgb[:g], rgb[:b], tail_alpha)
-          ctx.fill_path(tail_brush) do |path|
-            path.new_figure(base_left_x, base_left_y)
-            path.line_to(tail_tip_x, tail_tip_y)
-            path.line_to(base_right_x, base_right_y)
-            path.close_figure
-          end
-
-          # Draw smaller inner triangle to represent spine/backbone
-          inner_scale = 0.6 # Make inner triangle 60% of outer size
-          inner_tail_width = tail_width * inner_scale
-          inner_tail_length = tail_length * inner_scale
-
-          # Calculate inner triangle positions (also starting from tail start position)
-          inner_tip_x = tail_start_x + tail_dir_x * inner_tail_length
-          inner_tip_y = tail_start_y + tail_dir_y * inner_tail_length
-          inner_left_x = tail_start_x + perp_x * inner_tail_width / 2
-          inner_left_y = tail_start_y + perp_y * inner_tail_width / 2
-          inner_right_x = tail_start_x - perp_x * inner_tail_width / 2
-          inner_right_y = tail_start_y - perp_y * inner_tail_width / 2
-
-          # Draw inner triangle (spine/backbone) with whitish color
-          inner_alpha = tail_alpha * 0.8
-          spine_r = rgb[:r] * 0.7 + 0.3 # Add more white tint for spine
-          spine_g = rgb[:g] * 0.7 + 0.3
-          spine_b = rgb[:b] * 0.7 + 0.3
-          inner_brush = UIng::Area::Draw::Brush.new(:solid, spine_r, spine_g, spine_b, inner_alpha)
-          ctx.fill_path(inner_brush) do |path|
-            path.new_figure(inner_left_x, inner_left_y)
-            path.line_to(inner_tip_x, inner_tip_y)
-            path.line_to(inner_right_x, inner_right_y)
-            path.close_figure
-          end
-        end
+  HANDLER3D.key_event do |area, event|
+    if event.up == 0 # Key down
+      case event.key
+      when ' '.ord # Space key - reset
+        SIMULATION3D.reset_boids
+        STATUS_LABEL3D.text = "Reset #{SIMULATION3D.boids.size} boids"
+        area.queue_redraw_all
       end
     end
-  end
-
-  # Draw depth indicator
-  depth_brush = UIng::Area::Draw::Brush.new(:solid, 0.5, 0.5, 0.5, 0.7)
-  ctx.stroke_path(depth_brush, thickness: 1.0) do |path|
-    # Draw a simple depth scale on the right side
-    scale_x = SIMULATION3D.width - 30
-    scale_top = 50.0
-    scale_bottom = SIMULATION3D.height - 50
-    path.new_figure(scale_x, scale_top)
-    path.line_to(scale_x, scale_bottom)
-
-    # Add tick marks
-    (0..4).each do |i|
-      tick_y = scale_top + (scale_bottom - scale_top) * i / 4
-      path.new_figure(scale_x - 5, tick_y)
-      path.line_to(scale_x + 5, tick_y)
-    end
-  end
-end
-
-HANDLER3D.key_event do |area, event|
-  if event.up == 0 # Key down
-    case event.key
-    when ' '.ord # Space key - reset
-      SIMULATION3D.reset_boids
-      area.queue_redraw_all
-    end
-  end
-  true
-end
-
-# Create main window
-vbox3d = UIng::Box.new(:vertical, padded: true)
-vbox3d.append(AREA3D, true)
-
-MAIN_WINDOW3D = UIng::Window.new("Boid 3D Simulation", SIMULATION3D.width.to_i, (SIMULATION3D.height + 50).to_i, menubar: true) do
-  on_closing do
-    SIMULATION3D.animation_running = false
-    UIng.quit
     true
   end
-  show
 end
 
-MAIN_WINDOW3D.child = vbox3d
+def create_main_window_3d : UIng::Window
+  vbox = UIng::Box.new(:vertical, padded: true)
+  vbox.append(AREA3D, true)
+  vbox.append(STATUS_LABEL3D, false)
 
-# Start animation
-SIMULATION3D.animation_running = true
-UIng.timer(16) do
-  if SIMULATION3D.animation_running
-    SIMULATION3D.update_simulation
-    AREA3D.queue_redraw_all
-    1 # Continue timer
-  else
-    0 # Stop timer
+  UIng::Window.new("Boid 3D Simulation", SIMULATION3D.width.to_i, (SIMULATION3D.height + 50).to_i, menubar: true) do
+    on_closing do
+      SIMULATION3D.animation_running = false
+      UIng.quit
+      true
+    end
+    set_child(vbox)
+    show
   end
 end
+
+def start_animation_3d
+  SIMULATION3D.animation_running = true
+  UIng.timer(16) do
+    if SIMULATION3D.animation_running?
+      SIMULATION3D.update_simulation
+      AREA3D.queue_redraw_all
+      1 # Continue timer
+    else
+      0 # Stop timer
+    end
+  end
+end
+
+setup_menus_3d
+setup_handlers_3d
+MAIN_WINDOW3D = create_main_window_3d
+start_animation_3d
 
 UIng.main
 UIng.uninit
