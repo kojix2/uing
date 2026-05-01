@@ -395,10 +395,6 @@ class MandelbrotRenderer
   end
 end
 
-gui_context = Fiber::ExecutionContext::Isolated.new("GUI") do
-  UIng.init
-  MandelbrotRenderer.new.run
-  UIng.uninit
-end
-
-gui_context.wait
+UIng.init
+MandelbrotRenderer.new.run
+UIng.uninit
