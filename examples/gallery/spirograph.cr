@@ -1,0 +1,219 @@
+require "../../src/uing"
+
+# Spirograph parameters and logic
+class Spirograph
+  property num_points : Int32 = 2000
+  property center_x : Float64 = 300.0
+  property center_y : Float64 = 250.0
+  property hue : Float64 = 0.0
+
+  property radius_fixed : Float64 = 120.0
+  property radius_rolling : Float64 = 60.0
+  property offset : Float64 = 80.0
+
+  def radius_fixed=(v : Float64)
+    @radius_fixed = v.clamp(30.0, 200.0)
+  end
+
+  def radius_rolling=(v : Float64)
+    @radius_rolling = v.clamp(10.0, 100.0)
+  end
+
+  def offset=(v : Float64)
+    @offset = v.clamp(5.0, 150.0)
+  end
+
+  # Greatest common divisor (Euclidean algorithm)
+  def gcd(u : Float64, v : Float64) : Float64
+    u, v = u.abs, v.abs
+    while v > 1e-6
+      u, v = v, u % v
+    end
+    u
+  end
+
+  # Least common multiple
+  def lcm(u : Float64, v : Float64) : Float64
+    (u * v).abs / gcd(u, v)
+  end
+
+  # Total angle to complete the spirograph (hypotrochoid formula)
+  def total_angle : Float64
+    scale = 1000.0
+    r_int = (radius_rolling * scale).round.to_i
+    big_r_int = (radius_fixed * scale).round.to_i
+    g = (big_r_int - r_int).abs.gcd(r_int)
+    2.0 * Math::PI * (r_int.to_f / g.to_f)
+  end
+
+  # Parametric equations for spirograph (textbook style)
+  def spiro_x(t : Float64)
+    (radius_fixed - radius_rolling) * Math.cos(t) \
+      + offset * Math.cos((radius_fixed - radius_rolling) / radius_rolling * t) \
+        + center_x
+  end
+
+  def spiro_y(t : Float64)
+    (radius_fixed - radius_rolling) * Math.sin(t) \
+      - offset * Math.sin((radius_fixed - radius_rolling) / radius_rolling * t) \
+        + center_y
+  end
+
+  # HSV to RGB conversion
+  def hsv_to_rgb(h : Float64, s : Float64, v : Float64)
+    h = h % 1.0
+    i = (h * 6).floor
+    f = h * 6 - i
+    p = v * (1 - s)
+    q = v * (1 - f * s)
+    t = v * (1 - (1 - f) * s)
+    case i % 6
+    when 0; {r: v, g: t, b: p}
+    when 1; {r: q, g: v, b: p}
+    when 2; {r: p, g: v, b: t}
+    when 3; {r: p, g: q, b: v}
+    when 4; {r: t, g: p, b: v}
+    else    {r: v, g: p, b: q}
+    end
+  end
+end
+
+# Main application class for GC protection and UI management
+class SpirographApp
+  # Handler, area, and window are kept as instance variables for GC protection
+  @handler : UIng::Area::Handler
+  @area : UIng::Area
+  @main_window : UIng::Window
+  @info_label : UIng::Label
+  getter spirograph : Spirograph
+
+  def initialize
+    # Create spirograph instance and randomize initial parameters
+    @spirograph = Spirograph.new
+    spirograph.radius_fixed = 50.0 + rand * 150.0
+    spirograph.radius_rolling = 10.0 + rand * 90.0
+    spirograph.offset = 10.0 + rand * 120.0
+    spirograph.hue = rand
+
+    # Create handler and area
+    @handler = UIng::Area::Handler.new
+    @area = UIng::Area.new(@handler)
+    @main_window = UIng::Window.new("Spirograph Example", 600, 500)
+    @info_label = UIng::Label.new("Click: Randomize | Q/A: R | W/S: r | E/D: a")
+
+    setup_handlers
+    setup_ui
+    update_info_label
+  end
+
+  # Set up all event handlers (draw, mouse, key)
+  private def setup_handlers
+    @handler.draw do |area, params|
+      ctx = params.context
+
+      # Draw background
+      bg_brush = UIng::Area::Draw::Brush.new(:solid, 0.1, 0.1, 0.15, 1.0)
+      ctx.fill_path(bg_brush) do |path|
+        path.add_rectangle(0, 0, 600, 500)
+      end
+
+      # Draw spirograph curve
+      total_theta = spirograph.total_angle
+      n_points = spirograph.num_points
+      hue = spirograph.hue
+
+      # Color changes slightly on each redraw using hue
+      rgb = spirograph.hsv_to_rgb(hue, 0.7, 0.95)
+      r = rgb[:r]
+      g = rgb[:g]
+      b = rgb[:b]
+
+      ctx.stroke_path(
+        UIng::Area::Draw::Brush.new(:solid, r, g, b, 1.0),
+        cap: :round,
+        join: :round,
+        thickness: 1.0
+      ) do |path|
+        t0 = 0.0
+        x0 = spirograph.spiro_x(t0)
+        y0 = spirograph.spiro_y(t0)
+        path.new_figure(x0, y0)
+        (1...n_points).each do |i|
+          t = total_theta * i / n_points
+          x = spirograph.spiro_x(t)
+          y = spirograph.spiro_y(t)
+          path.line_to(x, y)
+        end
+      end
+    end
+
+    # Mouse event: randomize parameters and redraw (only on click down)
+    @handler.mouse_event do |area, event|
+      # Only randomize on mouse button press (down event)
+      if event.down > 0
+        spirograph.radius_fixed = 50.0 + rand * 150.0
+        spirograph.radius_rolling = 10.0 + rand * 90.0
+        spirograph.offset = 10.0 + rand * 120.0
+        # Advance hue slightly on each click
+        spirograph.hue = (spirograph.hue + 0.02) % 1.0
+        area.queue_redraw_all
+        update_info_label
+      end
+    end
+
+    # Key event: adjust parameters
+    @handler.key_event do |area, event|
+      if event.up == 0 # Key down
+        case event.key
+        when 'Q'.ord, 'q'.ord
+          spirograph.radius_fixed = spirograph.radius_fixed + 5.0
+        when 'A'.ord, 'a'.ord
+          spirograph.radius_fixed = spirograph.radius_fixed - 5.0
+        when 'W'.ord, 'w'.ord
+          spirograph.radius_rolling = spirograph.radius_rolling + 2.0
+        when 'S'.ord, 's'.ord
+          spirograph.radius_rolling = spirograph.radius_rolling - 2.0
+        when 'E'.ord, 'e'.ord
+          spirograph.offset = spirograph.offset + 5.0
+        when 'D'.ord, 'd'.ord
+          spirograph.offset = spirograph.offset - 5.0
+        end
+        area.queue_redraw_all
+        update_info_label
+      end
+      true
+    end
+  end
+
+  # Set up the UI layout
+  private def setup_ui
+    box = UIng::Box.new(:vertical)
+    box.padded = true
+    box.append(@info_label, false)
+    box.append(@area, true)
+
+    @main_window.child = box
+    @main_window.margined = true
+
+    @main_window.on_closing do
+      UIng.quit
+      true
+    end
+  end
+
+  # Update the info label to show current parameters
+  private def update_info_label
+    @info_label.text = "Q/A: R=#{spirograph.radius_fixed.to_i} | W/S: r=#{spirograph.radius_rolling.to_i} | E/D: a=#{spirograph.offset.to_i}"
+  end
+
+  # Run the application
+  def run
+    @main_window.show
+    UIng.main
+    UIng.uninit
+  end
+end
+
+# Entry point
+UIng.init
+SpirographApp.new.run

@@ -1,0 +1,39 @@
+name: CI • Windows (x64, MSVC)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+
+      - name: Setup MSVC Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install dependencies
+        run: shards install
+
+      - name: Download libui library
+        run: |
+          crystal run download.cr
+          ls libui
+
+      - name: Run tests
+        run: crystal spec
+
+      - name: Build all examples
+        run: |
+          Get-ChildItem -Path examples -Filter *.cr | ForEach-Object { crystal build $_.FullName }
+          ls
