@@ -627,6 +627,7 @@ Providing a full-featured GUI library is not the main scope of this project.
 - When adding new UI components, follow the established callback management patterns
 - libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
   - Enhancement patches such as image display functionality are provided on the dev branch.
+- `comctl32.manifest` is embedded in Windows builds so Win32 widgets use Common Controls v6 visual styles instead of the legacy classic appearance.
 
 ### Memory Safety
 
