@@ -49,50 +49,52 @@ if [ "$EXISTS" != "true" ] || [ "$HAS_WIN" != "true" ]; then
   exit 0
 fi
 
-# Write AppleScript to a temporary file to avoid heredoc issues
-cat > get_rect.applescript <<'OSA'
+# Write AppleScript to a temporary file to avoid heredoc issues.
+# AXWindowNumber is the CoreGraphics window id used by screencapture -l.
+cat > get_window_info.applescript <<'OSA'
 tell application "System Events"
   tell process "APP_NAME_PLACEHOLDER"
     set frontmost to true
     delay 1.0
     if (count of windows) = 0 then return "ERROR: no windows"
     set win to window 1
+    set windowNumber to value of attribute "AXWindowNumber" of win
     set {xPos, yPos} to position of win
     set {wSize, hSize} to size of win
     set AppleScript's text item delimiters to ","
-    return {xPos, yPos, wSize, hSize} as text
+    return {windowNumber, xPos, yPos, wSize, hSize} as text
   end tell
 end tell
 OSA
 
 # Replace placeholder with actual app name
-sed -i '' "s/APP_NAME_PLACEHOLDER/$APP_NAME/g" get_rect.applescript
+sed -i '' "s/APP_NAME_PLACEHOLDER/$APP_NAME/g" get_window_info.applescript
 
-# Get window rect as x,y,w,h
-RECT=$(osascript get_rect.applescript)
-case "$RECT" in
-  ERROR:*) echo "$RECT"; screencapture -x "$OUTPUT_FILE"; exit 0 ;;
+# Get window id and rect as id,x,y,w,h
+WINDOW_INFO=$(osascript get_window_info.applescript)
+case "$WINDOW_INFO" in
+  ERROR:*) echo "$WINDOW_INFO"; screencapture -x "$OUTPUT_FILE"; exit 0 ;;
 esac
 
 # Remove whitespace and validate format
-RECT=$(echo "$RECT" | tr -d '[:space:]')
-if ! [[ "$RECT" =~ ^[0-9]+,[0-9]+,[0-9]+,[0-9]+$ ]]; then
-  echo "ERROR: invalid rect: '$RECT'"
+WINDOW_INFO=$(echo "$WINDOW_INFO" | tr -d '[:space:]')
+if ! [[ "$WINDOW_INFO" =~ ^[0-9]+,[0-9]+,[0-9]+,[0-9]+,[0-9]+$ ]]; then
+  echo "ERROR: invalid window info: '$WINDOW_INFO'"
   screencapture -x "$OUTPUT_FILE"
   exit 0
 fi
+WINDOW_ID="${WINDOW_INFO%%,*}"
+RECT="${WINDOW_INFO#*,}"
+echo "Window id: $WINDOW_ID"
 echo "Window rect: $RECT"
 
-# Check screencapture permission (TCC/GUI)
-if ! screencapture -x /tmp/_probe.png 2>/dev/null; then
-  echo "Screen capture likely not permitted on hosted macOS runner (no GUI/TCC)."
-  screencapture -x "$OUTPUT_FILE"
-  exit 0
+# Capture the target window by id. Unlike region capture, this avoids other
+# windows such as macOS permission prompts being burned into the image.
+echo "Capturing with screencapture -l $WINDOW_ID -> $OUTPUT_FILE"
+if ! screencapture -x -t png -l"$WINDOW_ID" "$OUTPUT_FILE"; then
+  echo "Window-id capture failed; falling back to region capture."
+  screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
 fi
-
-# Capture the window region
-echo "Capturing with screencapture -R $RECT -> $OUTPUT_FILE"
-screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
 ls -la "$OUTPUT_FILE"
 
 echo "macOS window screenshot process completed successfully"
