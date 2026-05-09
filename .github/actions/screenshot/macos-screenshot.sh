@@ -50,7 +50,9 @@ if [ "$EXISTS" != "true" ] || [ "$HAS_WIN" != "true" ]; then
 fi
 
 # Write AppleScript to a temporary file to avoid heredoc issues.
-# AXWindowNumber is the CoreGraphics window id used by screencapture -l.
+# AXWindowNumber is the CoreGraphics window id used by screencapture -l, but
+# some GitHub-hosted macOS images do not expose it for every Accessibility
+# window. Keep the bounds so region capture can still produce an artifact.
 cat > get_window_info.applescript <<'OSA'
 tell application "System Events"
   tell process "APP_NAME_PLACEHOLDER"
@@ -58,7 +60,11 @@ tell application "System Events"
     delay 1.0
     if (count of windows) = 0 then return "ERROR: no windows"
     set win to window 1
-    set windowNumber to value of attribute "AXWindowNumber" of win
+    set windowNumber to "missing"
+    try
+      set axWindowNumber to value of attribute "AXWindowNumber" of win
+      if axWindowNumber is not missing value then set windowNumber to axWindowNumber as text
+    end try
     set {xPos, yPos} to position of win
     set {wSize, hSize} to size of win
     set AppleScript's text item delimiters to ","
@@ -78,7 +84,7 @@ esac
 
 # Remove whitespace and validate format
 WINDOW_INFO=$(echo "$WINDOW_INFO" | tr -d '[:space:]')
-if ! [[ "$WINDOW_INFO" =~ ^[0-9]+,[0-9]+,[0-9]+,[0-9]+,[0-9]+$ ]]; then
+if ! [[ "$WINDOW_INFO" =~ ^(missing|[0-9]+),-?[0-9]+,-?[0-9]+,[0-9]+,[0-9]+$ ]]; then
   echo "ERROR: invalid window info: '$WINDOW_INFO'"
   screencapture -x "$OUTPUT_FILE"
   exit 0
@@ -88,12 +94,17 @@ RECT="${WINDOW_INFO#*,}"
 echo "Window id: $WINDOW_ID"
 echo "Window rect: $RECT"
 
-# Capture the target window by id. Unlike region capture, this avoids other
-# windows such as macOS permission prompts being burned into the image.
-echo "Capturing with screencapture -l $WINDOW_ID -> $OUTPUT_FILE"
-if ! screencapture -x -t png -l"$WINDOW_ID" "$OUTPUT_FILE"; then
-  echo "Window-id capture failed; falling back to region capture."
+if [ "$WINDOW_ID" = "missing" ]; then
+  echo "AXWindowNumber is unavailable; falling back to region capture."
   screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
+else
+  # Capture the target window by id. Unlike region capture, this avoids other
+  # windows such as macOS permission prompts being burned into the image.
+  echo "Capturing with screencapture -l $WINDOW_ID -> $OUTPUT_FILE"
+  if ! screencapture -x -t png -l"$WINDOW_ID" "$OUTPUT_FILE"; then
+    echo "Window-id capture failed; falling back to region capture."
+    screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
+  fi
 fi
 ls -la "$OUTPUT_FILE"
 
