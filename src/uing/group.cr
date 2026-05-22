@@ -12,6 +12,7 @@ module UIng
     end
 
     def destroy
+      @child_ref.try &.release_ownership
       @child_ref = nil
       super
     end

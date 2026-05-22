@@ -41,6 +41,8 @@ module UIng
       @on_content_size_changed_box = nil
       @on_closing_box = nil
       @on_focus_changed_box = nil
+      @child_ref.try &.release_ownership
+      @child_ref = nil
       super
     end
 
