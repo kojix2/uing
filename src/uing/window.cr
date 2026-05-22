@@ -135,6 +135,15 @@ module UIng
       LibUI.window_set_resizeable(@ref_ptr, resizeable)
     end
 
+    # libui spells this "resizeable"; provide the standard spelling as an alias.
+    def resizable? : Bool
+      resizeable?
+    end
+
+    def resizable=(resizable : Bool) : Nil
+      self.resizeable = resizable
+    end
+
     def on_position_changed(&block : (Int32, Int32) -> Nil)
       wrapper = -> : Nil {
         x, y = position
