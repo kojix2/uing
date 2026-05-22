@@ -36,6 +36,8 @@ module UIng
     def delete(child : Control)
       if index = @children_refs.index(child)
         delete(index)
+      else
+        raise "Box does not contain child"
       end
     end
 

@@ -21,6 +21,8 @@ module UIng
     def delete(child : Control)
       if index = @children_refs.index(child)
         delete(index)
+      else
+        raise "Form does not contain child"
       end
     end
 
