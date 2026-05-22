@@ -33,8 +33,8 @@ module UIng
         @borrowed = false
       end
 
-      def self.new_color(r : Float64, g : Float64, b : Float64, a : Float64) : TableValue
-        TableValue.new(r, g, b, a)
+      def self.new_color(r : Float64, g : Float64, b : Float64, a : Float64) : Value
+        Value.new(r, g, b, a)
       end
 
       def free : Nil
@@ -71,13 +71,13 @@ module UIng
       end
 
       def value
-        case get_type
+        case type
         when .string? then string
         when .image?  then image
         when .int?    then int
         when .color?  then color
         else
-          raise "Unknown TableValue type: #{get_type}"
+          raise "Unknown TableValue type: #{type}"
         end
       end
 
