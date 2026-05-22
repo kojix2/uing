@@ -45,11 +45,25 @@ module UIng
         @released = true
       end
 
+      # Transfers ownership to libui. After this call, this wrapper must not be used or freed.
+      def transfer_to_libui : Pointer(LibUI::TableValue)
+        raise "Cannot transfer a borrowed TableValue to libui" if @borrowed
+        raise "TableValue has already been released" if @released
+        @released = true
+        @ref_ptr
+      end
+
+      private def check_available : Nil
+        raise "TableValue has already been released" if @released
+      end
+
       def type : Value::Type
+        check_available
         LibUI.table_value_get_type(@ref_ptr)
       end
 
       def string : String?
+        check_available
         str_ptr = LibUI.table_value_string(@ref_ptr)
         return if str_ptr.null?
         # DO NOT free the string pointer - it's borrowed from libui-ng
@@ -57,16 +71,19 @@ module UIng
       end
 
       def image : Pointer(LibUI::Image)
+        check_available
         # Return the raw pointer - DO NOT create new Image object
         # The returned pointer is borrowed from libui-ng and should not be freed
         LibUI.table_value_image(@ref_ptr)
       end
 
       def int : Int32
+        check_available
         LibUI.table_value_int(@ref_ptr)
       end
 
       def color : {Float64, Float64, Float64, Float64}
+        check_available
         LibUI.table_value_color(@ref_ptr, out r, out g, out b, out a)
         {r, g, b, a}
       end
@@ -83,6 +100,7 @@ module UIng
       end
 
       def to_unsafe
+        check_available
         @ref_ptr
       end
     end

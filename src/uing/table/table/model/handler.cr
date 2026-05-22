@@ -16,8 +16,11 @@ module UIng
   #   data = ["row1", "row2", "row3"]
   #   handler = Table::Model::Handler.new do
   #     num_rows { data.size }
-  #     cell_value { |row, col| TableValue.new(data[row][col]) }
+  #     cell_value { |row, col| Value.new(data[row][col]) }
   #   end
+  #
+  # cell_value callbacks must return a newly-created owned Value. UIng transfers
+  # that value to libui, which will free it when the table is done with it.
   class Table < Control
     class Model
       class Handler
@@ -95,7 +98,7 @@ module UIng
                 if !extended.value.cell_value_box.null?
                   callback = ::Box(Proc(LibC::Int, LibC::Int, Value)).unbox(extended.value.cell_value_box)
                   result = callback.call(row, column)
-                  result.to_unsafe
+                  result.transfer_to_libui
                 else
                   LibUI.new_table_value_string("")
                 end
