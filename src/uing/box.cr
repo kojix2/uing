@@ -49,7 +49,7 @@ module UIng
     # For DSL style
     def append(stretchy : Bool = false, &block : -> Control) : Nil
       control = block.call
-      append(control)
+      append(control, stretchy)
     end
 
     def num_children : Int32
