@@ -71,7 +71,7 @@ module UIng
     uninit
   end
 
-  def self.init(init_options : Pointer(LibUI::InitOptions)) : String?
+  def self.init(init_options : Pointer(LibUI::InitOptions)) : Nil
     @@init_options = init_options
     init
   end
