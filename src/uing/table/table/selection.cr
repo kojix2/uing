@@ -33,18 +33,21 @@ module UIng
   class Table < Control
     class Selection
       @rows : Array(Int32)?
+      @cstruct : LibUI::TableSelection
       @released : Bool = false
 
       def initialize(@ptr : Pointer(LibUI::TableSelection))
         @rows = nil
-        @cstruct = nil
+        @cstruct = uninitialized LibUI::TableSelection
       end
 
       def initialize(rows : Array(Int32))
         # Create a new Table::Selection with the given rows
         @rows = rows
-        @cstruct = LibUI::TableSelection.new(@rows.to_unsafe, @rows.size)
-        @ptr = Pointer(LibUI::TableSelection).new(@cstruct)
+        @cstruct = LibUI::TableSelection.new
+        @cstruct.rows = rows.to_unsafe
+        @cstruct.num_rows = rows.size
+        @ptr = pointerof(@cstruct)
       end
 
       def num_rows : Int32

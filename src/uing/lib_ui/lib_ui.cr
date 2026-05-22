@@ -411,7 +411,7 @@ module UIng
     fun table_column_width = uiTableColumnWidth(t : Pointer(Table), column : LibC::Int) : LibC::Int
     fun table_column_set_width = uiTableColumnSetWidth(t : Pointer(Table), column : LibC::Int, width : LibC::Int)
 
-    fun table_get_selection_mode = uiTableGetSelectionMode(t : Pointer(Table))
+    fun table_get_selection_mode = uiTableGetSelectionMode(t : Pointer(Table)) : UIng::Table::Selection::Mode
     fun table_set_selection_mode = uiTableSetSelectionMode(t : Pointer(Table), mode : UIng::Table::Selection::Mode)
     fun table_on_selection_changed = uiTableOnSelectionChanged(t : Pointer(Table), f : (Pointer(Table), Pointer(Void) -> Void), data : Pointer(Void))
 

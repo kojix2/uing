@@ -10,7 +10,7 @@ module UIng
       end
 
       def model
-        TableModel.new(@cstruct.model)
+        Model.new(@cstruct.model)
       end
 
       def model=(value : Model)
