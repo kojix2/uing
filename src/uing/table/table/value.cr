@@ -19,6 +19,7 @@ module UIng
       end
 
       def initialize(image : Image)
+        # uiNewTableValueImage does not copy the image; keep the source Image alive while the table may use it.
         @ref_ptr = LibUI.new_table_value_image(image.to_unsafe)
         @borrowed = false
       end
