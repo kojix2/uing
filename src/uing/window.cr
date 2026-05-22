@@ -21,6 +21,7 @@ module UIng
     @child_ref : Control? # Reference to the child control
 
     def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
+      @borrowed = borrowed
     end
 
     def initialize(title, width, height, menubar = false, margined : Bool = false)
