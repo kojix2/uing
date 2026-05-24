@@ -1,19 +1,22 @@
 module UIng
   class OpenTypeFeatures
     @released : Bool = false
+    @borrowed : Bool = false
     @for_each_box : Pointer(Void)?
 
     def initialize
       @ref_ptr = LibUI.new_open_type_features
     end
 
-    # Used in clone method
-    def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures))
+    # Used for wrappers around libui pointers. By default the wrapper owns the
+    # pointer, but uiAttributeFeatures() returns a pointer owned by its attribute.
+    def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures), @borrowed : Bool = false)
       @ref_ptr = ref_ptr
     end
 
     def free : Nil
       return if @released
+      return if @borrowed
       LibUI.free_open_type_features(@ref_ptr)
       @released = true
     end

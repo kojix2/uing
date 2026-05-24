@@ -122,7 +122,7 @@ module UIng
 
       def features : OpenTypeFeatures
         ref_ptr = LibUI.attribute_features(@ref_ptr)
-        OpenTypeFeatures.new(ref_ptr)
+        OpenTypeFeatures.new(ref_ptr, borrowed: true)
       end
 
       def to_unsafe
