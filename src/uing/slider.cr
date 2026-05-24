@@ -12,10 +12,9 @@ module UIng
       @ref_ptr = LibUI.new_slider(min, max)
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
       @on_released_box = nil
-      super
     end
 
     def initialize(min, max, value)
@@ -24,27 +23,27 @@ module UIng
     end
 
     def value : Int32
-      LibUI.slider_value(@ref_ptr)
+      LibUI.slider_value(ref_ptr)
     end
 
     def value=(value : Int32) : Nil
-      LibUI.slider_set_value(@ref_ptr, value)
+      LibUI.slider_set_value(ref_ptr, value)
     end
 
     def has_tool_tip? : Bool
-      LibUI.slider_has_tool_tip(@ref_ptr)
+      LibUI.slider_has_tool_tip(ref_ptr)
     end
 
     def has_tool_tip=(has_tool_tip : Bool) : Nil
-      LibUI.slider_set_has_tool_tip(@ref_ptr, has_tool_tip)
+      LibUI.slider_set_has_tool_tip(ref_ptr, has_tool_tip)
     end
 
     def set_range(min : Int32, max : Int32) : Nil
-      LibUI.slider_set_range(@ref_ptr, min, max)
+      LibUI.slider_set_range(ref_ptr, min, max)
     end
 
     def set_range(range : Range(Int32, Int32)) : Nil
-      LibUI.slider_set_range(@ref_ptr, range.min, range.max)
+      LibUI.slider_set_range(ref_ptr, range.min, range.max)
     end
 
     def on_changed(&block : Int32 -> _) : Nil
@@ -55,7 +54,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.slider_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -77,7 +76,7 @@ module UIng
       @on_released_box = ::Box.box(wrapper)
       if boxed_data = @on_released_box
         LibUI.slider_on_released(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -92,7 +91,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

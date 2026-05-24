@@ -32,8 +32,12 @@ module UIng
       self.margined = true if margined
     end
 
-    def destroy
+    def destroy : Nil
       return if @borrowed
+      super
+    end
+
+    protected def before_destroy : Nil
       @@mutex.synchronize do
         @@windows.delete(self)
       end
@@ -41,9 +45,10 @@ module UIng
       @on_content_size_changed_box = nil
       @on_closing_box = nil
       @on_focus_changed_box = nil
-      @child_ref.try &.release_ownership
+      # uiWindowDestroy destroys its child on every backend, so keep the
+      # Crystal-side wrapper graph in the same released state before C does it.
+      @child_ref.try &.mark_released_from_parent_destroy
       @child_ref = nil
-      super
     end
 
     # Raises: Not supported for this container.
@@ -52,50 +57,50 @@ module UIng
     end
 
     def title : String?
-      str_ptr = LibUI.window_title(@ref_ptr)
+      str_ptr = LibUI.window_title(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def title=(title : String) : Nil
-      LibUI.window_set_title(@ref_ptr, title)
+      LibUI.window_set_title(ref_ptr, title)
     end
 
     def position : {Int32, Int32}
-      LibUI.window_position(@ref_ptr, out x, out y)
+      LibUI.window_position(ref_ptr, out x, out y)
       {x, y}
     end
 
     def set_position(x : Int32, y : Int32) : Nil
-      LibUI.window_set_position(@ref_ptr, x, y)
+      LibUI.window_set_position(ref_ptr, x, y)
     end
 
     def content_size : {Int32, Int32}
-      LibUI.window_content_size(@ref_ptr, out width, out height)
+      LibUI.window_content_size(ref_ptr, out width, out height)
       {width, height}
     end
 
     def set_content_size(width : Int32, height : Int32) : Nil
-      LibUI.window_set_content_size(@ref_ptr, width, height)
+      LibUI.window_set_content_size(ref_ptr, width, height)
     end
 
     def fullscreen? : Bool
-      LibUI.window_fullscreen(@ref_ptr)
+      LibUI.window_fullscreen(ref_ptr)
     end
 
     def fullscreen=(fullscreen : Bool) : Nil
-      LibUI.window_set_fullscreen(@ref_ptr, fullscreen)
+      LibUI.window_set_fullscreen(ref_ptr, fullscreen)
     end
 
     def focused? : Bool
-      LibUI.window_focused(@ref_ptr)
+      LibUI.window_focused(ref_ptr)
     end
 
     def borderless? : Bool
-      LibUI.window_borderless(@ref_ptr)
+      LibUI.window_borderless(ref_ptr)
     end
 
     def borderless=(borderless : Bool) : Nil
-      LibUI.window_set_borderless(@ref_ptr, borderless)
+      LibUI.window_set_borderless(ref_ptr, borderless)
     end
 
     def child=(control) : Nil
@@ -105,7 +110,7 @@ module UIng
       if child_ref = @child_ref
         child_ref.release_ownership
       end
-      LibUI.window_set_child(@ref_ptr, UIng.to_control(control))
+      LibUI.window_set_child(ref_ptr, UIng.to_control(control))
       @child_ref = control
       control.take_ownership(self)
     end
@@ -122,19 +127,19 @@ module UIng
     end
 
     def margined? : Bool
-      LibUI.window_margined(@ref_ptr)
+      LibUI.window_margined(ref_ptr)
     end
 
     def margined=(margined : Bool) : Nil
-      LibUI.window_set_margined(@ref_ptr, margined)
+      LibUI.window_set_margined(ref_ptr, margined)
     end
 
     def resizeable? : Bool
-      LibUI.window_resizeable(@ref_ptr)
+      LibUI.window_resizeable(ref_ptr)
     end
 
     def resizeable=(resizeable : Bool) : Nil
-      LibUI.window_set_resizeable(@ref_ptr, resizeable)
+      LibUI.window_set_resizeable(ref_ptr, resizeable)
     end
 
     # libui spells this "resizeable"; provide the standard spelling as an alias.
@@ -153,7 +158,7 @@ module UIng
       }
       if boxed_data = (@on_position_changed_box = ::Box.box(wrapper))
         LibUI.window_on_position_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -174,7 +179,7 @@ module UIng
       }
       if boxed_data = (@on_content_size_changed_box = ::Box.box(wrapper))
         LibUI.window_on_content_size_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -189,10 +194,22 @@ module UIng
     end
 
     def on_closing(&block : -> Bool)
-      wrapper = -> : Bool { block.call }
+      wrapper = -> : Bool {
+        should_close = block.call
+        if should_close && !@released
+          # libui-ng will destroy the native window after this callback returns
+          # true; it does not call back into Window#destroy. Mark wrappers first.
+          mark_released_from_native_destroy
+          true
+        else
+          # If user code already called destroy, do not let libui-ng destroy the
+          # same native window a second time.
+          false
+        end
+      }
       if boxed_data = (@on_closing_box = ::Box.box(wrapper))
         LibUI.window_on_closing(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Bool {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -211,7 +228,7 @@ module UIng
       wrapper = -> : Nil { block.call(focused?) }
       if boxed_data = (@on_focus_changed_box = ::Box.box(wrapper))
         LibUI.window_on_focus_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -226,30 +243,30 @@ module UIng
     end
 
     def open_file : String?
-      str_ptr = LibUI.open_file(@ref_ptr)
+      str_ptr = LibUI.open_file(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def open_folder : String?
-      str_ptr = LibUI.open_folder(@ref_ptr)
+      str_ptr = LibUI.open_folder(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def save_file : String?
-      str_ptr = LibUI.save_file(@ref_ptr)
+      str_ptr = LibUI.save_file(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def msg_box(title : String, description : String) : Nil
-      LibUI.msg_box(@ref_ptr, title, description)
+      LibUI.msg_box(ref_ptr, title, description)
     end
 
     def msg_box_error(title : String, description : String) : Nil
-      LibUI.msg_box_error(@ref_ptr, title, description)
+      LibUI.msg_box_error(ref_ptr, title, description)
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

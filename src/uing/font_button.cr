@@ -11,9 +11,8 @@ module UIng
       @ref_ptr = LibUI.new_font_button
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def on_changed(&block : FontDescriptor -> Nil) : Nil
@@ -29,7 +28,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.font_button_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -55,7 +54,7 @@ module UIng
 
     def font(descriptor : FontDescriptor)
       descriptor.prepare_for_font_button_font
-      LibUI.font_button_font(@ref_ptr, descriptor)
+      LibUI.font_button_font(ref_ptr, descriptor)
       descriptor.font_button_font_loaded
     end
 
@@ -64,7 +63,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

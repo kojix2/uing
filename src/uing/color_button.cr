@@ -11,18 +11,17 @@ module UIng
       @ref_ptr = LibUI.new_color_button
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def color : {Float64, Float64, Float64, Float64}
-      LibUI.color_button_color(@ref_ptr, out r, out g, out b, out a)
+      LibUI.color_button_color(ref_ptr, out r, out g, out b, out a)
       {r, g, b, a}
     end
 
     def set_color(r : Float64, g : Float64, b : Float64, a : Float64) : Nil
-      LibUI.color_button_set_color(@ref_ptr, r, g, b, a)
+      LibUI.color_button_set_color(ref_ptr, r, g, b, a)
     end
 
     def on_changed(&block : Float64, Float64, Float64, Float64 -> Nil) : Nil
@@ -33,7 +32,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.color_button_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -48,7 +47,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

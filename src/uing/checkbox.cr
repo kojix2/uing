@@ -11,26 +11,25 @@ module UIng
       @ref_ptr = LibUI.new_checkbox(text)
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_toggled_box = nil
-      super
     end
 
     def text : String?
-      str_ptr = LibUI.checkbox_text(@ref_ptr)
+      str_ptr = LibUI.checkbox_text(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def text=(text : String) : Nil
-      LibUI.checkbox_set_text(@ref_ptr, text)
+      LibUI.checkbox_set_text(ref_ptr, text)
     end
 
     def checked? : Bool
-      LibUI.checkbox_checked(@ref_ptr)
+      LibUI.checkbox_checked(ref_ptr)
     end
 
     def checked=(checked : Bool) : Nil
-      LibUI.checkbox_set_checked(@ref_ptr, checked)
+      LibUI.checkbox_set_checked(ref_ptr, checked)
     end
 
     def on_toggled(&block : Bool -> Nil) : Nil
@@ -41,7 +40,7 @@ module UIng
       @on_toggled_box = ::Box.box(wrapper)
       if boxed_data = @on_toggled_box
         LibUI.checkbox_on_toggled(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -56,7 +55,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

@@ -28,6 +28,11 @@ module UIng
   @@should_quit_callback_box : Pointer(Void)?
 
   # Convert control to Pointer(LibUI::Control)
+  def self.to_control(control : Control)
+    control.check_available
+    control.to_unsafe.as(Pointer(LibUI::Control))
+  end
+
   def self.to_control(control)
     if control.is_a?(Pointer)
       control.as(Pointer(LibUI::Control))

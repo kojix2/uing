@@ -11,9 +11,8 @@ module UIng
       @ref_ptr = LibUI.new_editable_combobox
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def initialize(items : Array(String))
@@ -24,16 +23,16 @@ module UIng
     end
 
     def append(text : String) : Nil
-      LibUI.editable_combobox_append(@ref_ptr, text)
+      LibUI.editable_combobox_append(ref_ptr, text)
     end
 
     def text : String?
-      str_ptr = LibUI.editable_combobox_text(@ref_ptr)
+      str_ptr = LibUI.editable_combobox_text(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def text=(text : String) : Nil
-      LibUI.editable_combobox_set_text(@ref_ptr, text)
+      LibUI.editable_combobox_set_text(ref_ptr, text)
     end
 
     def on_changed(&block : String -> Nil) : Nil
@@ -44,7 +43,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.editable_combobox_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -59,7 +58,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

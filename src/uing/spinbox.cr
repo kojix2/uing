@@ -11,9 +11,8 @@ module UIng
       @ref_ptr = LibUI.new_spinbox(min, max)
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def initialize(min, max, value)
@@ -22,11 +21,11 @@ module UIng
     end
 
     def value : Int32
-      LibUI.spinbox_value(@ref_ptr)
+      LibUI.spinbox_value(ref_ptr)
     end
 
     def value=(value : Int32) : Nil
-      LibUI.spinbox_set_value(@ref_ptr, value)
+      LibUI.spinbox_set_value(ref_ptr, value)
     end
 
     def on_changed(&block : Int32 -> Nil) : Nil
@@ -37,7 +36,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.spinbox_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -52,7 +51,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

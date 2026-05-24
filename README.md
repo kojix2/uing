@@ -550,7 +550,7 @@ For example, when destroy is called on controls such as Window, Box, Grid, Group
 In the case of a Window, there are two common situations:
 
 When the user clicks the close (×) button on the title bar
-In this case, on_closing is triggered, and Window#destroy is called automatically.
+In this case, `on_closing` is triggered. If the callback returns `true`, libui-ng destroys the native window. UIng mirrors that native destruction by marking the `Window` wrapper and all child wrappers as destroyed. Do not call `Window#destroy` from inside `on_closing`; return `true` to allow the close, or `false` to keep the window open.
 
 When on_should_quit is triggered
 This means the entire program is about to quit. But here, Window#destroy is not called automatically, so the user needs to call it explicitly.
@@ -560,6 +560,7 @@ Crystal has garbage collection (GC) and provides a finalize hook when objects ar
 Therefore, UIng's primary policy is:
 
 - Control objects (`Window`, `Box`, `Grid`, `Tab`, etc.) are managed with explicit `destroy`.
+- Child controls are owned by their parent. To remove a child without destroying it, use the container's delete/remove API where available. Destroying a child directly while it still has a parent is not allowed.
 - C resources that require strict ordering (for example `Table::Model`) are managed with explicit `free`.
 - `finalize` is never treated as a primary cleanup mechanism for order-sensitive resources.
 

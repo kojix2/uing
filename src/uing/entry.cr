@@ -21,26 +21,25 @@ module UIng
       end
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def text : String?
-      str_ptr = LibUI.entry_text(@ref_ptr)
+      str_ptr = LibUI.entry_text(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def text=(text : String) : Nil
-      LibUI.entry_set_text(@ref_ptr, text)
+      LibUI.entry_set_text(ref_ptr, text)
     end
 
     def read_only? : Bool
-      LibUI.entry_read_only(@ref_ptr)
+      LibUI.entry_read_only(ref_ptr)
     end
 
     def read_only=(readonly : Bool) : Nil
-      LibUI.entry_set_read_only(@ref_ptr, readonly)
+      LibUI.entry_set_read_only(ref_ptr, readonly)
     end
 
     def on_changed(&block : String -> Nil) : Nil
@@ -51,7 +50,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.entry_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -66,7 +65,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

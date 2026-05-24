@@ -18,37 +18,36 @@ module UIng
       end
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def text : String?
-      str_ptr = LibUI.multiline_entry_text(@ref_ptr)
+      str_ptr = LibUI.multiline_entry_text(ref_ptr)
       UIng.string_from_pointer(str_ptr)
     end
 
     def text=(text : String) : Nil
-      LibUI.multiline_entry_set_text(@ref_ptr, text)
+      LibUI.multiline_entry_set_text(ref_ptr, text)
     end
 
     def append(text : String) : Nil
-      LibUI.multiline_entry_append(@ref_ptr, text)
+      LibUI.multiline_entry_append(ref_ptr, text)
     end
 
     def read_only? : Bool
-      LibUI.multiline_entry_read_only(@ref_ptr)
+      LibUI.multiline_entry_read_only(ref_ptr)
     end
 
     def read_only=(readonly : Bool) : Nil
-      LibUI.multiline_entry_set_read_only(@ref_ptr, readonly)
+      LibUI.multiline_entry_set_read_only(ref_ptr, readonly)
     end
 
     def on_changed(&block : -> Nil) : Nil
       @on_changed_box = ::Box.box(block)
       if boxed_data = @on_changed_box
         LibUI.multiline_entry_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(block)).unbox(data)
@@ -73,7 +72,7 @@ module UIng
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.multiline_entry_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -88,7 +87,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

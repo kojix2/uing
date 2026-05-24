@@ -11,9 +11,8 @@ module UIng
       @ref_ptr = LibUI.new_radio_buttons
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_selected_box = nil
-      super
     end
 
     def initialize(items : Array(String))
@@ -24,15 +23,15 @@ module UIng
     end
 
     def append(text : String) : Nil
-      LibUI.radio_buttons_append(@ref_ptr, text)
+      LibUI.radio_buttons_append(ref_ptr, text)
     end
 
     def selected : Int32
-      LibUI.radio_buttons_selected(@ref_ptr)
+      LibUI.radio_buttons_selected(ref_ptr)
     end
 
     def selected=(index : Int32) : Nil
-      LibUI.radio_buttons_set_selected(@ref_ptr, index)
+      LibUI.radio_buttons_set_selected(ref_ptr, index)
     end
 
     def on_selected(&block : Int32 -> Nil) : Nil
@@ -43,7 +42,7 @@ module UIng
       @on_selected_box = ::Box.box(wrapper)
       if boxed_data = @on_selected_box
         LibUI.radio_buttons_on_selected(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
@@ -58,7 +57,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

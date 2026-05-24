@@ -26,11 +26,11 @@ module UIng
       self.padded = true if padded
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @children_refs.each do |child|
-        child.release_ownership
+        child.mark_released_from_parent_destroy
       end
-      super
+      @children_refs.clear
     end
 
     def delete(child : Control)
@@ -43,7 +43,7 @@ module UIng
 
     def append(control, stretchy : Bool = false) : Nil
       control.check_can_move
-      LibUI.box_append(@ref_ptr, UIng.to_control(control), stretchy)
+      LibUI.box_append(ref_ptr, UIng.to_control(control), stretchy)
       @children_refs << control
       control.take_ownership(self)
     end
@@ -55,26 +55,26 @@ module UIng
     end
 
     def num_children : Int32
-      LibUI.box_num_children(@ref_ptr)
+      LibUI.box_num_children(ref_ptr)
     end
 
     def delete(index : Int32) : Nil
       child = @children_refs[index]
-      LibUI.box_delete(@ref_ptr, index)
+      LibUI.box_delete(ref_ptr, index)
       @children_refs.delete_at(index)
       child.release_ownership
     end
 
     def padded? : Bool
-      LibUI.box_padded(@ref_ptr)
+      LibUI.box_padded(ref_ptr)
     end
 
     def padded=(padded : Bool) : Nil
-      LibUI.box_set_padded(@ref_ptr, padded)
+      LibUI.box_set_padded(ref_ptr, padded)
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end

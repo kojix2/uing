@@ -28,16 +28,15 @@ module UIng
       @tm = UIng::TM.new
     end
 
-    def destroy
+    protected def before_destroy : Nil
       @on_changed_box = nil
-      super
     end
 
     def time : Time
-      return Time.local unless @ref_ptr
+      return Time.local unless ref_ptr
 
       begin
-        LibUI.date_time_picker_time(@ref_ptr, @tm)
+        LibUI.date_time_picker_time(ref_ptr, @tm)
         @tm.to_time
       rescue e
         UIng.handle_callback_error(e, "DateTimePicker time retrieval")
@@ -46,14 +45,14 @@ module UIng
     end
 
     def time=(time : Time) : Nil
-      return unless @ref_ptr
+      return unless ref_ptr
 
       begin
         # Update our persistent @tm instance with new time
         temp_tm = UIng::TM.new(time)
-        LibUI.date_time_picker_set_time(@ref_ptr, temp_tm)
+        LibUI.date_time_picker_set_time(ref_ptr, temp_tm)
         # Sync @tm with the actual widget state
-        LibUI.date_time_picker_time(@ref_ptr, @tm)
+        LibUI.date_time_picker_time(ref_ptr, @tm)
       rescue e
         UIng.handle_callback_error(e, "DateTimePicker time setting")
       end
@@ -61,14 +60,14 @@ module UIng
 
     def on_changed(&block : Time -> Nil) : Nil
       wrapper = -> : Nil {
-        LibUI.date_time_picker_time(@ref_ptr, @tm)
+        LibUI.date_time_picker_time(ref_ptr, @tm)
         current_time = @tm.to_time
         block.call(current_time)
       }
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
         LibUI.date_time_picker_on_changed(
-          @ref_ptr,
+          ref_ptr,
           ->(_sender, data) : Nil {
             data_as_callback = ::Box(typeof(wrapper)).unbox(data)
             data_as_callback.call
@@ -79,7 +78,7 @@ module UIng
     end
 
     def to_unsafe
-      @ref_ptr
+      ref_ptr
     end
   end
 end
