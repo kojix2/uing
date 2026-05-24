@@ -53,12 +53,12 @@ struct StarTransform
     cx = center[:x] + @translate_x
     cy = center[:y] + @translate_y
 
-    UIng::Area::Draw::Matrix.new.tap do |m|
-      m.set_identity
-      m.translate(cx, cy)
-      m.scale(cx, cy, @scale_x, @scale_y)
-      m.rotate(cx, cy, @rotation)
-      m.skew(cx, cy, @skew_x, @skew_y)
+    UIng::Area::Draw::Matrix.new.tap do |matrix|
+      matrix.set_identity
+      matrix.translate(cx, cy)
+      matrix.scale(cx, cy, @scale_x, @scale_y)
+      matrix.rotate(cx, cy, @rotation)
+      matrix.skew(cx, cy, @skew_x, @skew_y)
     end
   end
 end
@@ -76,10 +76,10 @@ struct PaintKit
   def initialize
     @bg_brush = UIng::Area::Draw::Brush.new(:solid, 0.96, 0.97, 1.0, 1.0)
     @grid_brush = UIng::Area::Draw::Brush.new(:solid, 0.86, 0.88, 0.92, 1.0)
-    @grid_stroke = UIng::Area::Draw::StrokeParams.new.tap { |s| s.thickness = 1.0 }
+    @grid_stroke = UIng::Area::Draw::StrokeParams.new.tap(&.thickness=(1.0))
 
     @star_fill = UIng::Area::Draw::Brush.new(:solid, 1.0, 0.82, 0.0, 0.85)
-    @star_stroke = UIng::Area::Draw::StrokeParams.new.tap { |s| s.thickness = 3.0 }
+    @star_stroke = UIng::Area::Draw::StrokeParams.new.tap(&.thickness=(3.0))
     @star_outline = UIng::Area::Draw::Brush.new(:solid, 0.85, 0.45, 0.05, 1.0)
 
     @center_brush = UIng::Area::Draw::Brush.new(:solid, 1.0, 0.15, 0.2, 1.0)
@@ -158,7 +158,7 @@ class StarMatrixDemo
 
   private def create_area : UIng::Area
     handler = UIng::Area::Handler.new
-    handler.draw { |_, params| draw_scene(params.context) }
+    handler.draw { |_area, params| draw_scene(params.context) }
     UIng::Area.new(handler)
   end
 
@@ -261,17 +261,17 @@ class StarMatrixDemo
   end
 
   private def draw_background(ctx : UIng::Area::Draw::Context) : Nil
-    ctx.fill_path(@paint.bg_brush) do |p|
-      p.add_rectangle(0, 0, Config::AREA_SIZE, Config::AREA_SIZE)
+    ctx.fill_path(@paint.bg_brush) do |path|
+      path.add_rectangle(0, 0, Config::AREA_SIZE, Config::AREA_SIZE)
     end
   end
 
   private def build_grid_path : UIng::Area::Draw::Path
     path = UIng::Area::Draw::Path.new(:winding)
     # Vertical and horizontal lines
-    (0..Config::AREA_SIZE.to_i).step(Config::GRID_STEP) do |t|
-      x = t.to_f64
-      y = t.to_f64
+    (0..Config::AREA_SIZE.to_i).step(Config::GRID_STEP) do |tick|
+      x = tick.to_f64
+      y = tick.to_f64
       path.new_figure(x, 0.0)
       path.line_to(x, Config::AREA_SIZE)
       path.new_figure(0.0, y)
@@ -307,7 +307,7 @@ class StarMatrixDemo
   private def draw_original_star(ctx : UIng::Area::Draw::Context) : Nil
     # Gray guide (stroke only, low alpha)
     guide = UIng::Area::Draw::Brush.new(:solid, 0.55, 0.55, 0.60, 0.35)
-    stroke = UIng::Area::Draw::StrokeParams.new.tap { |s| s.thickness = 2.0 }
+    stroke = UIng::Area::Draw::StrokeParams.new.tap(&.thickness=(2.0))
     if star_path = @star_path_center
       ctx.draw_stroke(star_path, guide, stroke)
     end
@@ -322,8 +322,8 @@ class StarMatrixDemo
   end
 
   private def draw_center_point(ctx : UIng::Area::Draw::Context) : Nil
-    ctx.fill_path(@paint.center_brush) do |p|
-      p.new_figure_with_arc(Config::CENTER[:x], Config::CENTER[:y], 3.0, 0.0, Math::PI * 2, false)
+    ctx.fill_path(@paint.center_brush) do |path|
+      path.new_figure_with_arc(Config::CENTER[:x], Config::CENTER[:y], 3.0, 0.0, Math::PI * 2, false)
     end
   end
 

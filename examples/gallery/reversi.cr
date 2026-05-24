@@ -385,7 +385,7 @@ class ReversiUI
   private def create_area : UIng::Area
     handler = UIng::Area::Handler.new
 
-    handler.draw do |_, params|
+    handler.draw do |_area, params|
       draw_board(params.context)
     end
 
@@ -644,7 +644,7 @@ class ReversiUI
 
   # Attach menu item handlers (called after menus are created and instance constructed)
   def attach_menu_handlers(new_item, about_item)
-    new_item.on_clicked do |_window|
+    new_item.on_clicked do |_menu_window|
       handle_new_game
     end
 

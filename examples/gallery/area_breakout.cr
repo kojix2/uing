@@ -63,7 +63,8 @@ end
 
 # Bouncing ball
 struct Ball
-  property x : Float64, y : Float64, velocity_x : Float64, velocity_y : Float64, radius : Float64, active : Bool
+  property x : Float64, y : Float64, velocity_x : Float64, velocity_y : Float64, radius : Float64
+  property? active : Bool
 
   def initialize(@x : Float64, @y : Float64, @radius : Float64 = Config::BALL_RADIUS)
     @velocity_x = 0.0
@@ -140,7 +141,8 @@ end
 
 # Destructible block
 struct Block
-  property x : Float64, y : Float64, width : Float64, height : Float64, active : Bool, color : NamedTuple(r: Float64, g: Float64, b: Float64)
+  property x : Float64, y : Float64, width : Float64, height : Float64, color : NamedTuple(r: Float64, g: Float64, b: Float64)
+  property? active : Bool
 
   def initialize(@x : Float64, @y : Float64, @width : Float64 = 80.0, @height : Float64 = 30.0, @color = {r: 0.8, g: 0.2, b: 0.2})
     @active = true
@@ -246,7 +248,7 @@ class BreakoutGame
       end
     end
 
-    if @blocks.none?(&.active)
+    if @blocks.none?(&.active?)
       @game_state = GameState::Won
     end
   end
@@ -260,7 +262,7 @@ class BreakoutGame
 
   # Paddle reflection with angle control
   def check_ball_paddle_collision
-    return unless @ball.active
+    return unless @ball.active?
 
     if rectangles_intersect?(@ball.bounds, @paddle.bounds)
       @ball.y = @paddle.y - @ball.radius - 0.1
@@ -285,14 +287,14 @@ class BreakoutGame
 
   # Block collision with overlap detection
   def check_ball_block_collisions
-    return unless @ball.active
+    return unless @ball.active?
 
     ball = @ball.bounds
     bx1 = ball[:x]; by1 = ball[:y]
     bx2 = bx1 + ball[:width]; by2 = by1 + ball[:height]
 
     @blocks.each_with_index do |block, index|
-      next unless block.active
+      next unless block.active?
       r = block.bounds
       rx1 = r[:x]; ry1 = r[:y]
       rx2 = rx1 + r[:width]; ry2 = ry1 + r[:height]
@@ -337,7 +339,7 @@ class BreakoutGame
 
   def handle_mouse_move(x : Float64, y : Float64)
     @paddle.set_position(x, @screen_width)
-    if @game_state == GameState::Waiting && !@ball.active
+    if @game_state == GameState::Waiting && !@ball.active?
       @ball.x = @paddle.x + @paddle.width / 2.0
       @ball.y = @paddle.y - 20.0
     end
@@ -385,7 +387,7 @@ class BreakoutGame
   end
 
   private def update_ball_position_if_waiting
-    if @game_state == GameState::Waiting && !@ball.active
+    if @game_state == GameState::Waiting && !@ball.active?
       @ball.x = @paddle.x + @paddle.width / 2.0
       @ball.y = @paddle.y - 20.0
     end
@@ -418,23 +420,23 @@ CONTROLS_TEXT.set_attribute(UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0),
 GAME    = BreakoutGame.new
 HANDLER = UIng::Area::Handler.new
 
-HANDLER.draw do |area, params|
+HANDLER.draw do |_area, params|
   ctx = params.context
 
   bg = UIng::Area::Draw::Brush.new(:solid, 0.1, 0.1, 0.2, 1.0)
-  ctx.fill_path(bg) { |p| p.add_rectangle(0, 0, GAME.screen_width, GAME.screen_height) }
+  ctx.fill_path(bg) { |path| path.add_rectangle(0, 0, GAME.screen_width, GAME.screen_height) }
 
   GAME.blocks.each do |block|
-    next unless block.active
+    next unless block.active?
     b = UIng::Area::Draw::Brush.new(:solid, block.color[:r], block.color[:g], block.color[:b], 1.0)
-    ctx.fill_path(b) { |p| p.add_rectangle(block.x, block.y, block.width, block.height) }
+    ctx.fill_path(b) { |path| path.add_rectangle(block.x, block.y, block.width, block.height) }
   end
 
   pb = UIng::Area::Draw::Brush.new(:solid, 0.8, 0.8, 0.8, 1.0)
-  ctx.fill_path(pb) { |p| p.add_rectangle(GAME.paddle.x, GAME.paddle.y, GAME.paddle.width, GAME.paddle.height) }
+  ctx.fill_path(pb) { |path| path.add_rectangle(GAME.paddle.x, GAME.paddle.y, GAME.paddle.width, GAME.paddle.height) }
 
   bb = UIng::Area::Draw::Brush.new(:solid, 1.0, 1.0, 1.0, 1.0)
-  ctx.fill_path(bb) { |p| p.new_figure_with_arc(GAME.ball.x, GAME.ball.y, GAME.ball.radius, 0, Math::PI * 2, false) }
+  ctx.fill_path(bb) { |path| path.new_figure_with_arc(GAME.ball.x, GAME.ball.y, GAME.ball.radius, 0, Math::PI * 2, false) }
 
   # Draw text based on game state
   case GAME.game_state

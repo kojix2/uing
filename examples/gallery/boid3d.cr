@@ -716,7 +716,7 @@ AREA3D    = UIng::Area.new(HANDLER3D)
 
 # Setup handlers
 def setup_handlers_3d
-  HANDLER3D.draw do |_area, params|
+  HANDLER3D.draw do |_area3d, params|
     RENDERER3D.draw(params)
   end
 

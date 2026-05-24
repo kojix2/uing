@@ -10,8 +10,8 @@ end
 
 color_button = UIng::ColorButton.new do
   set_color(255, 0, 0, 255)
-  on_changed do |r, g, b, a|
-    window.msg_box("Color Changed", "R=#{r}, G=#{g}, B=#{b}, A=#{a}")
+  on_changed do |red, green, blue, alpha|
+    window.msg_box("Color Changed", "R=#{red}, G=#{green}, B=#{blue}, A=#{alpha}")
   end
 end
 

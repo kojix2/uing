@@ -16,7 +16,7 @@ def mute(r : Float64, g : Float64, b : Float64, factor : Float64 = 0.5) : NamedT
 end
 
 handler = UIng::Area::Handler.new do
-  draw { |area, params|
+  draw do |_area, params|
     ctx = params.context
 
     # Fill background with white for better color visibility
@@ -146,7 +146,7 @@ handler = UIng::Area::Handler.new do
         end
       end
     end
-  }
+  end
 end
 
 window = UIng::Window.new("Area - Colors and Brushes", 400, 300)

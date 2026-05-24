@@ -104,7 +104,7 @@ end
 UIng.init
 
 handler = UIng::Area::Handler.new do
-  draw { |area, params|
+  draw do |_area, params|
     center_x, center_y = params.area_width / 2.0, params.area_height / 2.0
     # Ensure 20px margin while clamping radius to minimum 10
     radius = Math.min(params.area_width, params.area_height) / 2.0 - 20.0
@@ -112,7 +112,7 @@ handler = UIng::Area::Handler.new do
 
     clock_drawer = ClockDrawer.new(params.context, center_x, center_y, radius)
     clock_drawer.draw_clock(Time.local)
-  }
+  end
 end
 
 window = UIng::Window.new("Simple Analog Clock", 300, 300)

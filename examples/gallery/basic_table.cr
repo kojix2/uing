@@ -15,10 +15,10 @@ data = [
 
 model_handler = UIng::Table::Model::Handler.new do
   num_columns { 2 }
-  column_type { |column| UIng::Table::Value::Type::String }
+  column_type { |_column| UIng::Table::Value::Type::String }
   num_rows { data.size }
   cell_value { |row, column| UIng::Table::Value.new(data[row][column]) }
-  set_cell_value { |row, column, value| }
+  set_cell_value { |_row, _column, _value| }
 end
 
 table_model = UIng::Table::Model.new(model_handler)

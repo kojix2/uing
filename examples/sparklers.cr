@@ -182,7 +182,7 @@ end
 handler = UIng::Area::Handler.new
 App.set_handler(handler)
 
-handler.draw do |_, area_draw_params|
+handler.draw do |_sender_area, area_draw_params|
   ctx = area_draw_params.context
 
   # Draw animated background
@@ -246,8 +246,8 @@ handler.mouse_event do |sender_area, mouse_event|
   sender_area.queue_redraw_all
 end
 
-handler.mouse_crossed { |_, _| }
-handler.drag_broken { |_| }
+handler.mouse_crossed { |_sender_area, _left| }
+handler.drag_broken { |_sender_area| }
 
 # Simplified key event handler
 handler.key_event do |sender_area, key_event|

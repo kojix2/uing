@@ -6,7 +6,7 @@ UIng.init
 # Demonstrates: Area setup, basic drawing operations, solid brushes, simple paths
 
 handler = UIng::Area::Handler.new do
-  draw { |area, params|
+  draw do |_area, params|
     ctx = params.context
 
     # Draw a blue rectangle
@@ -47,7 +47,7 @@ handler = UIng::Area::Handler.new do
       # x, y, width, height
       path.add_rectangle(190, 110, 60, 50)
     end
-  }
+  end
 end
 
 window = UIng::Window.new("Area - Basic Shapes", 300, 200)

@@ -9,8 +9,8 @@ window.on_closing do
 end
 
 date_picker = UIng::DateTimePicker.new(:date) do
-  on_changed do |tm|
-    window.msg_box("Date Changed", tm.to_s)
+  on_changed do |time|
+    window.msg_box("Date Changed", time.to_s)
   end
 end
 

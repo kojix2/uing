@@ -20,7 +20,7 @@ model_handler = UIng::Table::Model::Handler.new do
     2
   end
 
-  column_type do |column|
+  column_type do |_column|
     UIng::Table::Value::Type::String
   end
 
@@ -32,7 +32,7 @@ model_handler = UIng::Table::Model::Handler.new do
     UIng::Table::Value.new(data[row][column])
   end
 
-  set_cell_value do |row, column, value|
+  set_cell_value do |_row, _column, _value|
     # This example doesn't support editing, so we do nothing
   end
 end

@@ -108,7 +108,7 @@ class SpirographApp
 
   # Set up all event handlers (draw, mouse, key)
   private def setup_handlers
-    @handler.draw do |area, params|
+    @handler.draw do |_area, params|
       ctx = params.context
 
       # Draw background

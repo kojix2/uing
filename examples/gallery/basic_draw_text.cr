@@ -61,7 +61,7 @@ append_to_attr_str(ATTR_STR, str3, GREEN_COLOR)
 append_to_attr_str(ATTR_STR, str4, RED_COLOR)
 append_to_attr_str(ATTR_STR, str5, GREEN_COLOR)
 
-handler.draw do |area, params|
+handler.draw do |_area, params|
   UIng::Area::Draw::TextLayout.open(
     string: ATTR_STR,
     default_font: DEFAULT_FONT,
@@ -72,10 +72,10 @@ handler.draw do |area, params|
   end
 end
 
-handler.mouse_event { |_, _| }
-handler.mouse_crossed { |_, _| }
-handler.drag_broken { |_| }
-handler.key_event { |_, _| false }
+handler.mouse_event { |_area, _event| }
+handler.mouse_crossed { |_area, _left| }
+handler.drag_broken { |_area| }
+handler.key_event { |_area, _event| false }
 
 box = UIng::Box.new(:vertical)
 box.padded = true

@@ -87,7 +87,7 @@ class MandelbrotRenderer
   end
 
   private def setup_handlers
-    @handler.draw do |_, params|
+    @handler.draw do |_area, params|
       ctx = params.context
 
       ctx.fill_path(UIng::Area::Draw::Brush.new(:solid, 0.08, 0.09, 0.11, 1.0)) do |path|
@@ -110,7 +110,7 @@ class MandelbrotRenderer
       image.free
     end
 
-    @handler.mouse_event do |_, event|
+    @handler.mouse_event do |_area, event|
       case event.down
       when LEFT_BUTTON
         zoom_at(event.x, event.y, 1.0 / ZOOM_FACTOR)
@@ -121,9 +121,9 @@ class MandelbrotRenderer
       end
     end
 
-    @handler.mouse_crossed { |_, _| }
-    @handler.drag_broken { |_| }
-    @handler.key_event { |_, _| false }
+    @handler.mouse_crossed { |_area, _left| }
+    @handler.drag_broken { |_area| }
+    @handler.key_event { |_area, _event| false }
   end
 
   private def setup_ui
@@ -203,7 +203,7 @@ class MandelbrotRenderer
     @area.queue_redraw_all
 
     workers.times do |worker_id|
-      worker_tiles = tiles.each_with_index.select { |_, index| index % workers == worker_id }.map(&.[0])
+      worker_tiles = tiles.each_with_index.select { |_tile, index| index % workers == worker_id }.map(&.[0])
       @worker_context.spawn(name: "mandelbrot-#{worker_id}") do
         worker_tiles.each do |tile|
           break unless @job_id.get == job_id

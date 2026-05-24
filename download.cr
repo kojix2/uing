@@ -18,8 +18,6 @@ def windows_flavor_from_msystem
     "ucrt"
   when "MINGW64"
     "mingw64"
-  else
-    nil
   end
 end
 

@@ -26,7 +26,7 @@ class CSVViewer
     # Create initial table model and table directly in initialize
     model_handler = UIng::Table::Model::Handler.new do
       num_columns { @column_count > 0 ? @column_count : 1 }
-      column_type { |_| UIng::Table::Value::Type::String }
+      column_type { |_column| UIng::Table::Value::Type::String }
       num_rows { @csv_data.size }
       cell_value do |row, column|
         if row < @csv_data.size && column < @csv_data[row].size
@@ -35,7 +35,7 @@ class CSVViewer
           UIng::Table::Value.new("")
         end
       end
-      set_cell_value { |_, _, _| }
+      set_cell_value { |_row, _column, _value| }
     end
 
     @table_model = UIng::Table::Model.new(model_handler)
@@ -91,7 +91,7 @@ class CSVViewer
   private def create_table_with_columns(column_count : Int32)
     model_handler = UIng::Table::Model::Handler.new do
       num_columns { column_count }
-      column_type { |_| UIng::Table::Value::Type::String }
+      column_type { |_column| UIng::Table::Value::Type::String }
       num_rows { @csv_data.size }
       cell_value do |row, column|
         if row < @csv_data.size && column < @csv_data[row].size
@@ -100,7 +100,7 @@ class CSVViewer
           UIng::Table::Value.new("")
         end
       end
-      set_cell_value { |_, _, _| }
+      set_cell_value { |_row, _column, _value| }
     end
 
     @table_model = UIng::Table::Model.new(model_handler)
@@ -137,8 +137,8 @@ class CSVViewer
   end
 
   private def update_existing_table
-    @csv_data.each_with_index do |_, i|
-      @table_model.row_inserted(i)
+    @csv_data.each_with_index do |_row_data, row_index|
+      @table_model.row_inserted(row_index)
     end
 
     puts "Table updated with new data"

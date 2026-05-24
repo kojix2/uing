@@ -5,14 +5,14 @@ UIng.init do
     on_closing do
       UIng.quit; true
     end
-    on_position_changed do |a, b|
-      p "x: #{a}, y: #{b}"
+    on_position_changed do |x, y|
+      puts "x: #{x}, y: #{y}"
     end
-    on_content_size_changed do |w, h|
-      p "width: #{w}, height: #{h}"
+    on_content_size_changed do |width, height|
+      puts "width: #{width}, height: #{height}"
     end
     on_focus_changed do |focused|
-      p "focused: #{focused}"
+      puts "focused: #{focused}"
     end
     show
   end

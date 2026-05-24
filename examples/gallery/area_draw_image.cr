@@ -42,8 +42,8 @@ window.on_closing do
   true
 end
 
-area_handler = UIng::Area::Handler.new do |header|
-  draw do |area, params|
+area_handler = UIng::Area::Handler.new do |_handler|
+  draw do |_area, params|
     ctx = params.context
     white_brush = UIng::Area::Draw::Brush.new(:solid, 1.0, 1.0, 1.0, 1.0)
     ctx.fill_path(white_brush) do |path|

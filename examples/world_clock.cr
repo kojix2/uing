@@ -129,7 +129,7 @@ def update_clocks(time_labels : Array(CityTimeLabel)) : Nil
       now = Time.local(location)
       emoji = get_time_emoji(now.hour)
       city_time_label.label.text = "#{emoji} #{now.to_s(TIME_FORMAT)}"
-    rescue ex
+    rescue
       # Handle timezone loading errors gracefully
       city_time_label.label.text = "❌ Error"
     end

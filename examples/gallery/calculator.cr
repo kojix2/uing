@@ -21,7 +21,6 @@ enum Operation
     when "-" then Subtract
     when "×" then Multiply
     when "÷" then Divide
-    else          nil
     end
   end
 end
@@ -31,7 +30,7 @@ struct State
   property stored_value : Float64 = 0.0
   property operation : Operation? = nil
   property memory : Float64 = 0.0
-  property waiting_for_operand : Bool = true
+  property? waiting_for_operand : Bool = true
   property last_operation : Operation? = nil
   property last_operand : Float64 = 0.0
 
@@ -55,7 +54,7 @@ class Calculator
 
   # Safe arithmetic operations that return nil on error
   private def safe_sqrt(value : Float64) : Float64?
-    return nil if value < 0
+    return if value < 0
     Math.sqrt(value)
   end
 
@@ -71,7 +70,7 @@ class Calculator
   end
 
   def input_digit(digit : String)
-    if @state.waiting_for_operand || is_error_state?
+    if @state.waiting_for_operand? || error_state?
       @display.text = digit
       @state.waiting_for_operand = false
     else
@@ -83,7 +82,7 @@ class Calculator
   end
 
   def input_dot
-    if @state.waiting_for_operand || is_error_state?
+    if @state.waiting_for_operand? || error_state?
       @display.text = "0."
       @state.waiting_for_operand = false
     else
@@ -97,7 +96,7 @@ class Calculator
   def perform_operation(next_operation : String?)
     input_value = get_display_value
 
-    if (op = @state.operation) && !@state.waiting_for_operand
+    if (op = @state.operation) && !@state.waiting_for_operand?
       result = safe_operation(op, @state.stored_value, input_value)
 
       if result.nil?
@@ -123,7 +122,7 @@ class Calculator
 
     if op = @state.operation
       # If operator was just pressed, use stored_value as rhs
-      rhs = @state.waiting_for_operand ? @state.stored_value : lhs
+      rhs = @state.waiting_for_operand? ? @state.stored_value : lhs
 
       result = safe_operation(op, @state.stored_value, rhs)
 
@@ -138,7 +137,7 @@ class Calculator
       @state.operation = nil
       @state.stored_value = 0.0
       @state.waiting_for_operand = true
-    elsif (last_op = @state.last_operation) && @state.waiting_for_operand
+    elsif (last_op = @state.last_operation) && @state.waiting_for_operand?
       # Repeat previous = operation (apply last_operand to lhs)
       result = safe_operation(last_op, lhs, @state.last_operand)
 
@@ -203,12 +202,12 @@ class Calculator
     @state.memory = 0.0
   end
 
-  private def is_error_state? : Bool
+  private def error_state? : Bool
     @display.text == "Error"
   end
 
   private def get_display_value : Float64
-    return 0.0 if is_error_state?
+    return 0.0 if error_state?
     text = @display.text
     return 0.0 if text.nil? || text.empty?
     text.to_f64? || 0.0
@@ -259,7 +258,7 @@ alias ButtonAction = Calculator ->
 
 BUTTON_ACTIONS = Hash(String, ButtonAction).new.tap do |actions|
   # Digit buttons
-  (0..9).each { |n| actions[n.to_s] = ->(calc : Calculator) { calc.input_digit(n.to_s) } }
+  (0..9).each { |number| actions[number.to_s] = ->(calc : Calculator) { calc.input_digit(number.to_s) } }
 
   # Operation buttons
   actions["+"] = ->(calc : Calculator) { calc.perform_operation("+") }

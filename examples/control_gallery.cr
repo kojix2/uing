@@ -4,11 +4,11 @@ UIng.init
 
 # File menu
 UIng::Menu.new("File") do
-  append_item("Open").on_clicked do |w|
-    puts w.open_file
+  append_item("Open").on_clicked do |window|
+    puts window.open_file
   end
-  append_item("Save").on_clicked do |w|
-    puts w.save_file
+  append_item("Save").on_clicked do |window|
+    puts window.save_file
   end
   append_separator
   should_quit_item = append_check_item("Should Quit_", checked: true)
@@ -42,8 +42,8 @@ end
 # Help menu
 UIng::Menu.new("Help") do
   append_item("Help")
-  append_about_item.on_clicked do |w|
-    w.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
+  append_about_item.on_clicked do |window|
+    window.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
   end
 end
 
@@ -84,24 +84,24 @@ inner.append UIng::Separator.new(:horizontal)
 
 # Date Picker
 dp = UIng::DateTimePicker.new(:date) do
-  on_changed do |tm|
-    puts "DateTimePicker changed: #{tm}"
+  on_changed do |time|
+    puts "DateTimePicker changed: #{time}"
   end
 end
 inner.append dp
 
 # Time Picker
 tp = UIng::DateTimePicker.new(:time) do
-  on_changed do |tm|
-    puts "TimePicker changed: #{tm}"
+  on_changed do |time|
+    puts "TimePicker changed: #{time}"
   end
 end
 inner.append tp
 
 # Date Time Picker
 dtp = UIng::DateTimePicker.new do
-  on_changed do |tm|
-    puts "DateTimePicker changed: #{tm}"
+  on_changed do |time|
+    puts "DateTimePicker changed: #{time}"
   end
 end
 inner.append dtp
@@ -109,19 +109,15 @@ inner.append dtp
 # Font Button
 font_button = UIng::FontButton.new do
   on_changed do |font_descriptor|
-    p family: font_descriptor.family,
-      size: font_descriptor.size,
-      weight: font_descriptor.weight,
-      italic: font_descriptor.italic,
-      stretch: font_descriptor.stretch
+    puts "Font changed: family=#{font_descriptor.family}, size=#{font_descriptor.size}, weight=#{font_descriptor.weight}, italic=#{font_descriptor.italic}, stretch=#{font_descriptor.stretch}"
   end
 end
 inner.append font_button
 
 # Color Button
 color_button = UIng::ColorButton.new do
-  on_changed do |r, g, b, a|
-    puts "Color changed: R=#{r}, G=#{g}, B=#{b}, A=#{a}"
+  on_changed do |red, green, blue, alpha|
+    puts "Color changed: R=#{red}, G=#{green}, B=#{blue}, A=#{alpha}"
   end
 end
 inner.append color_button
@@ -222,7 +218,8 @@ def create_ref_window
     end
     set_child(
       UIng::Box.new(:vertical, padded: true) do
-        append(label = UIng::Label.new("Preferences"), stretchy: false)
+        label = UIng::Label.new("Preferences")
+        append(label, stretchy: false)
         append(
           UIng::Form.new(padded: true) do
             append("name: ", UIng::Entry.new)

@@ -22,7 +22,7 @@ class Employee
   property age : Int32
   property department : String
   property salary : Int32
-  property active : Bool
+  property? active : Bool
   property avatar : UIng::Image?
   property progress : Int32 # Progress value (0-100, or -1 for indeterminate)
 
@@ -156,7 +156,7 @@ model_handler = UIng::Table::Model::Handler.new do
     when .progress?
       UIng::Table::Value.new(employee.progress)
     when .active?
-      UIng::Table::Value.new(employee.active ? 1 : 0)
+      UIng::Table::Value.new(employee.active? ? 1 : 0)
     else
       UIng::Table::Value.new("")
     end
@@ -268,7 +268,7 @@ table.on_header_clicked do |column|
   when .salary?
     EMPLOYEES.sort! { |a, b| ascending ? a.salary <=> b.salary : b.salary <=> a.salary }
   when .active?
-    EMPLOYEES.sort! { |a, b| ascending ? (a.active ? 1 : 0) <=> (b.active ? 1 : 0) : (b.active ? 1 : 0) <=> (a.active ? 1 : 0) }
+    EMPLOYEES.sort! { |a, b| ascending ? (a.active? ? 1 : 0) <=> (b.active? ? 1 : 0) : (b.active? ? 1 : 0) <=> (a.active? ? 1 : 0) }
   end
 
   # Update sort indicator
@@ -325,7 +325,7 @@ toggle_button.on_clicked do
       (0...selection.num_rows).each do |i|
         row = selection.rows[i]
         if row < EMPLOYEES.size
-          EMPLOYEES[row].active = !EMPLOYEES[row].active
+          EMPLOYEES[row].active = !EMPLOYEES[row].active?
           table_model.row_changed(row)
         end
       end
