@@ -295,13 +295,13 @@ module UIng
     fun attribute_size = uiAttributeSize(a : Pointer(Attribute)) : LibC::Double
 
     fun new_weight_attribute = uiNewWeightAttribute(weight : TextWeight) : Pointer(Attribute)
-    fun attribute_weight = uiAttributeWeight(a : Pointer(Attribute))
+    fun attribute_weight = uiAttributeWeight(a : Pointer(Attribute)) : TextWeight
 
     fun new_italic_attribute = uiNewItalicAttribute(italic : TextItalic) : Pointer(Attribute)
-    fun attribute_italic = uiAttributeItalic(a : Pointer(Attribute))
+    fun attribute_italic = uiAttributeItalic(a : Pointer(Attribute)) : TextItalic
 
     fun new_stretch_attribute = uiNewStretchAttribute(stretch : TextStretch) : Pointer(Attribute)
-    fun attribute_stretch = uiAttributeStretch(a : Pointer(Attribute))
+    fun attribute_stretch = uiAttributeStretch(a : Pointer(Attribute)) : TextStretch
     fun new_color_attribute = uiNewColorAttribute(r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
     fun attribute_color = uiAttributeColor(a : Pointer(Attribute), r : Pointer(LibC::Double), g : Pointer(LibC::Double), b : Pointer(LibC::Double), alpha : Pointer(LibC::Double))
     fun new_background_attribute = uiNewBackgroundAttribute(r : LibC::Double, g : LibC::Double, b : LibC::Double, a : LibC::Double) : Pointer(Attribute)
