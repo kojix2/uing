@@ -78,7 +78,7 @@ module UIng
         @released = true
       end
 
-      def type : AttributeType
+      def type : Type
         LibUI.attribute_get_type(@ref_ptr)
       end
 
