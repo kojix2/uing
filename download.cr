@@ -78,44 +78,81 @@ def url_for_libui_ng_nightly(file_name)
 end
 
 def download_file(file_name, url)
-  puts "Running: curl -L -o #{file_name} #{url}"
-  curl_status = system("curl -L -o #{file_name} #{url}")
-  unless curl_status && File.exists?(file_name)
+  args = ["-fL", "-o", file_name, url]
+  puts "Running: curl #{args.join(" ")}"
+  process = Process.run("curl", args, output: STDOUT, error: STDERR)
+  unless process.success? && File.exists?(file_name)
     STDERR.puts "Error: Failed to download #{file_name} from #{url}"
     exit 1
   end
 end
 
+def normalize_zip_path(path)
+  return if path.empty? || path.includes?('\0')
+  normalized_separators = path.tr("\\", "/")
+  return if normalized_separators.starts_with?("/") || normalized_separators.matches?(/\A[A-Za-z]:/)
+
+  parts = [] of String
+  normalized_separators.split('/').each do |part|
+    next if part.empty? || part == "."
+
+    if part == ".."
+      return if parts.empty?
+      parts.pop
+    else
+      parts << part
+    end
+  end
+
+  return if parts.empty?
+  parts.join("/")
+end
+
 def extract_zip_files(file_name, lib_path)
-  return unless file_name.ends_with?(".zip")
+  return [] of String unless file_name.ends_with?(".zip")
+
+  allowed_paths = lib_path.compact_map { |path| normalize_zip_path(path) }
+  extracted_paths = [] of String
 
   Compress::Zip::File.open(file_name) do |zip_file|
     zip_file.entries.each do |entry|
-      if lib_path.any? { |path| entry.filename == path || entry.filename.starts_with?(path + "/") }
-        print "Extracting #{entry.filename} from #{file_name}..."
+      entry_path = normalize_zip_path(entry.filename)
+      next unless entry_path
+      next unless allowed_paths.any? { |path| entry_path == path || entry_path.starts_with?(path + "/") }
 
-        # Preserve complete directory structure
-        target_path = entry.filename
-        FileUtils.mkdir_p(File.dirname(target_path)) unless entry.dir?
+      print "Extracting #{entry.filename} from #{file_name}..."
 
-        unless entry.dir?
-          entry.open do |io|
-            File.open(target_path, "wb") do |file|
-              IO.copy(io, file)
-            end
+      # Preserve complete directory structure after normalizing the ZIP entry path.
+      target_path = entry_path
+      FileUtils.mkdir_p(File.dirname(target_path)) unless entry.dir?
+
+      unless entry.dir?
+        entry.open do |io|
+          File.open(target_path, "wb") do |file|
+            IO.copy(io, file)
           end
         end
-        puts "done"
+        extracted_paths << target_path
       end
+      puts "done"
     end
   end
+
+  extracted_paths
 end
 
 def download_from_url(lib_path, file_name, url)
   puts "Downloading #{lib_path} from #{url}"
 
   download_file(file_name, url)
-  extract_zip_files(file_name, lib_path)
+  extracted_paths = extract_zip_files(file_name, lib_path)
+  missing_paths = lib_path.select { |path| !extracted_paths.includes?(path) && !Dir.exists?(path) }
+  unless missing_paths.empty?
+    STDERR.puts "Error: #{file_name} did not contain expected entries: #{missing_paths.join(", ")}"
+    exit 1
+  end
+
+  extracted_paths
 ensure
   File.delete(file_name) if File.exists?(file_name)
 end
@@ -127,12 +164,15 @@ def download_libui_ng_nightly(lib_path, file_name)
 end
 
 def download_and_place(zip_name : String, src : String, dest : String)
+  FileUtils.rm_rf src if File.exists?(src)
   download_libui_ng_nightly([src], zip_name)
   FileUtils.mkdir_p File.dirname(dest)
   FileUtils.cp src, dest
 end
 
 def process_msvc_pdb_files(entry)
+  FileUtils.rm_rf LIBUI_SOURCE if File.exists?(LIBUI_SOURCE)
+  FileUtils.rm_rf PDB_SOURCE_DIR if Dir.exists?(PDB_SOURCE_DIR)
   download_libui_ng_nightly([LIBUI_SOURCE, PDB_SOURCE_DIR], entry[:zip])
   FileUtils.mkdir_p File.dirname(entry[:dest])
   FileUtils.cp LIBUI_SOURCE, entry[:dest]
@@ -205,7 +245,11 @@ end
   {% else %}
     {% raise "Unsupported MinGW architecture. Supported: x86_64" %}
   {% end %}
-  system(p("windres comctl32.rc -O coff -o comctl32.res"))
+  windres_process = Process.run("windres", ["comctl32.rc", "-O", "coff", "-o", "comctl32.res"])
+  unless windres_process.success?
+    STDERR.puts "Error: windres failed to generate comctl32.res"
+    exit 1
+  end
 {% else %}
   {% raise "Unsupported platform. Supported: Darwin, Linux, MSVC, MinGW" %}
 {% end %}
