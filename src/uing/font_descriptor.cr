@@ -1,9 +1,14 @@
 module UIng
   class FontDescriptor
+    private enum FamilyOwnership
+      None
+      ControlFont
+      FontButton
+    end
+
     # Store reference to family string to prevent garbage collection
     @family_string : String = ""
-    @family_borrowed = false # Getting a FontDescriptor from FontButton.
-
+    @family_ownership = FamilyOwnership::None
     @released = false
 
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
@@ -33,8 +38,10 @@ module UIng
     end
 
     def family=(value : String)
+      release_family
       @family_string = value
-      @family_borrowed = false # manage memory on crystal side.
+      @family_ownership = FamilyOwnership::None
+      @released = false
       @cstruct.family = @family_string.to_unsafe
     end
 
@@ -72,15 +79,38 @@ module UIng
 
     def free : Nil
       return if @released
-      @cstruct.family = Pointer(UInt8).null unless @family_borrowed
-      LibUI.free_font_descriptor(to_unsafe)
+      release_family
+      @cstruct.family = Pointer(UInt8).null
       @released = true
     end
 
     def load_control_font : Nil
+      release_family
       LibUI.load_control_font(to_unsafe)
-      @family_string = String.new(@cstruct.family)
-      @family_borrowed = true # The family string is borrowed from the control font.
+      @family_string = ""
+      @family_ownership = FamilyOwnership::ControlFont
+      @released = false
+    end
+
+    def prepare_for_font_button_font : Nil
+      release_family
+      @released = false
+    end
+
+    def font_button_font_loaded : Nil
+      @family_string = ""
+      @family_ownership = FamilyOwnership::FontButton
+      @released = false
+    end
+
+    def free_font_button_font : Nil
+      return if @released
+      if @family_ownership == FamilyOwnership::FontButton
+        LibUI.free_font_button_font(to_unsafe)
+        @cstruct.family = Pointer(UInt8).null
+        @family_ownership = FamilyOwnership::None
+      end
+      @released = true
     end
 
     def to_unsafe
@@ -89,6 +119,22 @@ module UIng
 
     def finalize
       free
+    end
+
+    private def release_family : Nil
+      return if @released
+
+      case @family_ownership
+      in FamilyOwnership::None
+        return
+      in FamilyOwnership::ControlFont
+        LibUI.free_font_descriptor(to_unsafe)
+      in FamilyOwnership::FontButton
+        LibUI.free_font_button_font(to_unsafe)
+      end
+
+      @cstruct.family = Pointer(UInt8).null
+      @family_ownership = FamilyOwnership::None
     end
   end
 end

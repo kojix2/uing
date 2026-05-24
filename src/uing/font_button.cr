@@ -20,8 +20,11 @@ module UIng
       wrapper = -> : Nil {
         font_descriptor = FontDescriptor.new
         font(font_descriptor)
-        block.call(font_descriptor)
-        free_font(font_descriptor)
+        begin
+          block.call(font_descriptor)
+        ensure
+          free_font(font_descriptor)
+        end
       }
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
@@ -43,16 +46,21 @@ module UIng
     def font(&block : FontDescriptor -> Nil)
       font_descriptor = FontDescriptor.new
       font(font_descriptor)
-      block.call(font_descriptor)
-      free_font(font_descriptor)
+      begin
+        block.call(font_descriptor)
+      ensure
+        free_font(font_descriptor)
+      end
     end
 
     def font(descriptor : FontDescriptor)
+      descriptor.prepare_for_font_button_font
       LibUI.font_button_font(@ref_ptr, descriptor)
+      descriptor.font_button_font_loaded
     end
 
     def free_font(font_descriptor : FontDescriptor) : Nil
-      LibUI.free_font_button_font(font_descriptor.to_unsafe)
+      font_descriptor.free_font_button_font
     end
 
     def to_unsafe
