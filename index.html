@@ -1048,13 +1048,14 @@ However, it also provides some automatic memory management. The basic rule is: w
 <p>For example, when destroy is called on controls such as Window, Box, Grid, Group, or Tab, it first destroys all child controls and then destroys itself.</p>
 <p>In the case of a Window, there are two common situations:</p>
 <p>When the user clicks the close (×) button on the title bar
-In this case, on_closing is triggered, and Window#destroy is called automatically.</p>
+In this case, <code>on_closing</code> is triggered. If the callback returns <code>true</code>, libui-ng destroys the native window. UIng mirrors that native destruction by marking the <code>Window</code> wrapper and all child wrappers as destroyed. Do not call <code>Window#destroy</code> from inside <code>on_closing</code>; return <code>true</code> to allow the close, or <code>false</code> to keep the window open.</p>
 <p>When on_should_quit is triggered
 This means the entire program is about to quit. But here, Window#destroy is not called automatically, so the user needs to call it explicitly.</p>
 <p>Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. However, GC timing is non-deterministic, and libui-ng controls often require deterministic destruction order.</p>
 <p>Therefore, UIng's primary policy is:</p>
 <ul>
 <li>Control objects (<code>Window</code>, <code>Box</code>, <code>Grid</code>, <code>Tab</code>, etc.) are managed with explicit <code>destroy</code>.</li>
+<li>Child controls are owned by their parent. To remove a child without destroying it, use the container's delete/remove API where available. Destroying a child directly while it still has a parent is not allowed.</li>
 <li>C resources that require strict ordering (for example <code>Table::Model</code>) are managed with explicit <code>free</code>.</li>
 <li><code>finalize</code> is never treated as a primary cleanup mechanism for order-sensitive resources.</li>
 </ul>
