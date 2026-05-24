@@ -118,12 +118,12 @@ module UIng
       LibUI.table_append_text_column(@ref_ptr, name, text_model_column, text_editable_model_column, nil)
     end
 
-    def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TableTextColumnOptionalParams) : Nil
+    def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil
       LibUI.table_append_text_column(@ref_ptr, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
     end
 
     def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
-      table_text_column_optional_params = TableTextColumnOptionalParams.new(color_model_column)
+      table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
       LibUI.table_append_text_column(@ref_ptr, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
     end
 
@@ -135,12 +135,12 @@ module UIng
       LibUI.table_append_image_text_column(@ref_ptr, name, image_model_column, text_model_column, text_editable_model_column, nil)
     end
 
-    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TableTextColumnOptionalParams) : Nil
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil
       LibUI.table_append_image_text_column(@ref_ptr, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
     end
 
     def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
-      table_text_column_optional_params = TableTextColumnOptionalParams.new(color_model_column)
+      table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
       LibUI.table_append_image_text_column(@ref_ptr, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
     end
 
@@ -152,12 +152,12 @@ module UIng
       LibUI.table_append_checkbox_text_column(@ref_ptr, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, nil)
     end
 
-    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TableTextColumnOptionalParams) : Nil
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil
       LibUI.table_append_checkbox_text_column(@ref_ptr, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
     end
 
     def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
-      table_text_column_optional_params = TableTextColumnOptionalParams.new(color_model_column)
+      table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
       LibUI.table_append_checkbox_text_column(@ref_ptr, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
     end
 
