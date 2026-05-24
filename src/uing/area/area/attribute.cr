@@ -115,7 +115,7 @@ module UIng
       end
 
       def underline_color : {UnderlineColor, Float64, Float64, Float64, Float64}
-        underline_color = LibUI::UnderlineColor.new
+        underline_color = UnderlineColor::Custom
         LibUI.attribute_underline_color(@ref_ptr, pointerof(underline_color), out r, out g, out b, out a)
         {underline_color, r, g, b, a}
       end
