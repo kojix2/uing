@@ -5,8 +5,8 @@ module UIng
     def initialize(@ref_ptr : Pointer(LibUI::Image))
     end
 
-    def initialize(width : Int32, height : Int32)
-      @ref_ptr = LibUI.new_image(width, height)
+    def initialize(width : Number, height : Number)
+      @ref_ptr = LibUI.new_image(width.to_f64, height.to_f64)
     end
 
     def append(pixels, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil
