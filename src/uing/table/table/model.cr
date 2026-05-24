@@ -12,7 +12,7 @@ module UIng
   # Safe usage pattern:
   #   model_handler = Table::Model::Handler.new
   #   model = Table::Model.new(model_handler)
-  #   table = Table.new(Table::Params.new(model))
+  #   table = Table.new(model)
   #   # ... use table ...
   #   table.destroy  # Destroy table first
   #   model.free     # Then free model
