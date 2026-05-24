@@ -50,7 +50,7 @@ module UIng
               if !extended.value.draw_box.null?
                 callback = ::Box(Proc(Area, Area::Draw::Params, Nil)).unbox(extended.value.draw_box)
                 # Create wrapper instances for type-safe access
-                area_wrapper = Area.new(area)
+                area_wrapper = Area.new(area, borrowed: true)
                 params_wrapper = Area::Draw::Params.new(params)
                 callback.call(area_wrapper, params_wrapper)
               end
@@ -64,7 +64,7 @@ module UIng
               if !extended.value.mouse_event_box.null?
                 callback = ::Box(Proc(Area, Area::MouseEvent, Nil)).unbox(extended.value.mouse_event_box)
                 # Create wrapper instances for type-safe access
-                area_wrapper = Area.new(area)
+                area_wrapper = Area.new(area, borrowed: true)
                 event_wrapper = Area::MouseEvent.new(event)
                 callback.call(area_wrapper, event_wrapper)
               end
@@ -78,7 +78,7 @@ module UIng
               if !extended.value.mouse_crossed_box.null?
                 callback = ::Box(Proc(Area, Bool, Nil)).unbox(extended.value.mouse_crossed_box)
                 # Create wrapper instances for type-safe access
-                area_wrapper = Area.new(area)
+                area_wrapper = Area.new(area, borrowed: true)
                 left_bool = left != 0
                 callback.call(area_wrapper, left_bool)
               end
@@ -92,7 +92,7 @@ module UIng
               if !extended.value.drag_broken_box.null?
                 callback = ::Box(Proc(Area, Nil)).unbox(extended.value.drag_broken_box)
                 # Create wrapper instances for type-safe access
-                area_wrapper = Area.new(area)
+                area_wrapper = Area.new(area, borrowed: true)
                 callback.call(area_wrapper)
               end
             rescue e
@@ -105,7 +105,7 @@ module UIng
               if !extended.value.key_event_box.null?
                 callback = ::Box(Proc(Area, Area::KeyEvent, Bool)).unbox(extended.value.key_event_box)
                 # Create wrapper instances for type-safe access
-                area_wrapper = Area.new(area)
+                area_wrapper = Area.new(area, borrowed: true)
                 event_wrapper = Area::KeyEvent.new(event)
                 result = callback.call(area_wrapper, event_wrapper)
                 result ? 1_i32 : 0_i32

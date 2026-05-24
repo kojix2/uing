@@ -7,10 +7,18 @@ module UIng
   class Area < Control
     block_constructor
 
+    @borrowed : Bool = false
+
     # Keep a reference to the Area::Handler to prevent GC
     @area_handler : Handler?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Area))
+    def initialize(@ref_ptr : Pointer(LibUI::Area), borrowed : Bool = true)
+      @borrowed = borrowed
+    end
+
+    def destroy : Nil
+      return if @borrowed
+      super
     end
 
     def initialize(area_handler : Handler)
