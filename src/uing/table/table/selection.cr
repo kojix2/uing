@@ -12,7 +12,7 @@ module UIng
   # 1. Using on_selection_changed callback (RECOMMENDED):
   #   table.on_selection_changed do |selection|
   #     if selection.num_rows > 0
-  #       selected_row = selection.rows[0]
+  #       selected_row = selection.rows.first
   #       # ... use selection data ...
   #     end
   #     # Table::Selection is automatically freed after this block
@@ -54,7 +54,12 @@ module UIng
         @ptr.value.num_rows
       end
 
-      def rows : Pointer(Int32)
+      def rows : Array(Int32)
+        rows_ptr = self.rows_ptr
+        Array.new(num_rows) { |i| rows_ptr[i] }
+      end
+
+      def rows_ptr : Pointer(Int32)
         @ptr.value.rows
       end
 

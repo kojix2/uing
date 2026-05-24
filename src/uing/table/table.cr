@@ -93,9 +93,12 @@ module UIng
               # Get current selection and pass it to the callback
               selection_ptr = LibUI.table_get_selection(table)
               selection = Selection.new(selection_ptr)
-              callback.call(selection)
-              # Automatically free the selection after callback
-              selection.free
+              begin
+                callback.call(selection)
+              ensure
+                # Automatically free the selection after callback
+                selection.free
+              end
             rescue e
               UIng.handle_callback_error(e, "Table on_selection_changed")
             end
