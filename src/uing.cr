@@ -124,6 +124,8 @@ module UIng
       begin
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         data_as_callback.call
+      rescue e
+        UIng.handle_callback_error(e, "UIng.queue_main")
       ensure
         # Remove from global array after execution to prevent memory leak
         @@callback_mutex.synchronize do
@@ -142,14 +144,22 @@ module UIng
       @@timer_callback_boxes << boxed_data
     end
     LibUI.timer(sender, ->(data) : LibC::Int do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      result = data_as_callback.call
-      if result == 0
+      begin
+        data_as_callback = ::Box(typeof(callback)).unbox(data)
+        result = data_as_callback.call
+        if result == 0
+          @@callback_mutex.synchronize do
+            @@timer_callback_boxes.delete(data)
+          end
+        end
+        result
+      rescue e
+        UIng.handle_callback_error(e, "UIng.timer")
         @@callback_mutex.synchronize do
           @@timer_callback_boxes.delete(data)
         end
+        0_i32
       end
-      result
     end, boxed_data)
   end
 
@@ -158,8 +168,13 @@ module UIng
     # Store in dedicated variable (libui-ng supports only one callback, overwrites previous)
     @@should_quit_callback_box = boxed_data
     LibUI.on_should_quit(->(data) : Bool do
-      data_as_callback = ::Box(typeof(callback)).unbox(data)
-      data_as_callback.call
+      begin
+        data_as_callback = ::Box(typeof(callback)).unbox(data)
+        data_as_callback.call
+      rescue e
+        UIng.handle_callback_error(e, "UIng.on_should_quit")
+        false
+      end
     end, boxed_data)
   end
 

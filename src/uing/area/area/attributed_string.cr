@@ -72,19 +72,26 @@ module UIng
         for_each_attribute_box = ::Box.box(block)
         @for_each_attribute_box = for_each_attribute_box
 
-        LibUI.attributed_string_for_each_attribute(@ref_ptr,
-          ->(_sender, attr, start, end_, data) do
-            callback = ::Box(typeof(block)).unbox(data)
-            # Wrap as borrowed - libui owns this attribute, we must not free it
-            attribute = Area::Attribute.borrowed(attr)
-            # Return block's result directly to LibUI (0 or 1)
-            callback.call(attribute, start, end_)
-          end,
-          for_each_attribute_box
-        )
-
-        # Clear reference after enumeration
-        @for_each_attribute_box = nil
+        begin
+          LibUI.attributed_string_for_each_attribute(@ref_ptr,
+            ->(_sender, attr, start, end_, data) do
+              begin
+                callback = ::Box(typeof(block)).unbox(data)
+                # Wrap as borrowed - libui owns this attribute, we must not free it
+                attribute = Area::Attribute.borrowed(attr)
+                # Return block's result directly to LibUI (0 or 1)
+                callback.call(attribute, start, end_)
+              rescue e
+                UIng.handle_callback_error(e, "AttributedString for_each_attribute")
+                1_i32 # uiForEachStop
+              end
+            end,
+            for_each_attribute_box
+          )
+        ensure
+          # Clear reference after enumeration
+          @for_each_attribute_box = nil
+        end
       end
 
       def num_graphemes : LibC::SizeT

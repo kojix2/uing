@@ -52,15 +52,23 @@ module UIng
       boxed_callback = @for_each_box || raise "failed to box callback"
 
       proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
-        data_as_callback = ::Box(typeof(callback)).unbox(data)
-        tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
-        data_as_callback.call(tag, value.to_i32)
-        0 # uiForEachContinue
+        begin
+          data_as_callback = ::Box(typeof(callback)).unbox(data)
+          tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
+          data_as_callback.call(tag, value.to_i32)
+          0_i32 # uiForEachContinue
+        rescue e
+          UIng.handle_callback_error(e, "OpenTypeFeatures for_each")
+          1_i32 # uiForEachStop
+        end
       end
-      LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_callback)
 
-      # Clear the box reference after enumeration completes
-      @for_each_box = nil
+      begin
+        LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_callback)
+      ensure
+        # Clear the box reference after enumeration completes
+        @for_each_box = nil
+      end
     end
 
     def to_unsafe

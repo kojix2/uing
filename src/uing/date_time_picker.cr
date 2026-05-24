@@ -69,8 +69,12 @@ module UIng
         LibUI.date_time_picker_on_changed(
           ref_ptr,
           ->(_sender, data) : Nil {
-            data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-            data_as_callback.call
+            begin
+              data_as_callback = ::Box(typeof(wrapper)).unbox(data)
+              data_as_callback.call
+            rescue e
+              UIng.handle_callback_error(e, "DateTimePicker on_changed")
+            end
           },
           boxed_data
         )
