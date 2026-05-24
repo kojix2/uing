@@ -30,7 +30,7 @@ module UIng
     end
 
     def content_mode=(mode : ContentMode)
-      LibUI.image_view_set_content_mode(@ref_ptr, LibUI::ImageViewContentMode.new(mode.value))
+      LibUI.image_view_set_content_mode(@ref_ptr, mode)
     end
 
     def to_unsafe
