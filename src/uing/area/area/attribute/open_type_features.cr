@@ -27,20 +27,17 @@ module UIng
     end
 
     def add(tag : String, value : Int32 = 1) : Nil
-      raise ArgumentError.new("OpenType tag must be exactly 4 characters") unless tag.size == 4
-      bytes = tag.bytes
+      bytes = tag_bytes(tag)
       LibUI.open_type_features_add(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], value.to_u32)
     end
 
     def remove(tag : String) : Nil
-      raise ArgumentError.new("OpenType tag must be exactly 4 characters") unless tag.size == 4
-      bytes = tag.bytes
+      bytes = tag_bytes(tag)
       LibUI.open_type_features_remove(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3])
     end
 
     def get(tag : String) : {Bool, Int32}
-      raise ArgumentError.new("OpenType tag must be exactly 4 characters") unless tag.size == 4
-      bytes = tag.bytes
+      bytes = tag_bytes(tag)
       result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
       {result, value.to_i32}
     end
@@ -78,6 +75,17 @@ module UIng
     def finalize
       # Releasing timing is not critical for this class
       free
+    end
+
+    private def tag_bytes(tag : String) : Bytes
+      raise ArgumentError.new("OpenType tag must be exactly 4 bytes") unless tag.bytesize == 4
+
+      bytes = tag.to_slice
+      unless bytes.all? { |byte| 0x20 <= byte <= 0x7e }
+        raise ArgumentError.new("OpenType tag must contain only printable ASCII bytes")
+      end
+
+      bytes
     end
   end
 end
