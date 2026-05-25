@@ -20,6 +20,9 @@ public class Win32 {
     
     [DllImport("user32.dll")]
     public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+    [DllImport("dwmapi.dll")]
+    public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
     
     [DllImport("user32.dll")]
     public static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -43,6 +46,7 @@ public class Win32 {
     
     public const int SW_RESTORE = 9;
     public const int SW_SHOW = 5;
+    public const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -64,6 +68,8 @@ try {
 
     # Find the main window for the process
     $mainWindow = $null
+    $bitmap = $null
+    $graphics = $null
     $processId = $process.Id
     
     # Enumerate windows to find the one belonging to our process
@@ -120,11 +126,37 @@ try {
         [Win32]::SetForegroundWindow($mainWindow)
         Start-Sleep -Seconds 1
         
-        # Get window rectangle
+        # Get the visible DWM frame bounds. GetWindowRect includes the invisible
+        # resize border on modern Windows, which leaves wallpaper around edges.
         $rect = New-Object RECT
-        if ([Win32]::GetWindowRect($mainWindow, [ref]$rect)) {
+        $dwmResult = [Win32]::DwmGetWindowAttribute(
+            $mainWindow,
+            [Win32]::DWMWA_EXTENDED_FRAME_BOUNDS,
+            [ref]$rect,
+            [System.Runtime.InteropServices.Marshal]::SizeOf([type][RECT])
+        )
+        if ($dwmResult -eq 0) {
+            Write-Host "Using DWM extended frame bounds"
+        }
+        elseif ([Win32]::GetWindowRect($mainWindow, [ref]$rect)) {
+            Write-Host "DWM frame bounds unavailable (HRESULT: $dwmResult); using GetWindowRect"
+        }
+        else {
+            Write-Warning "Could not get window rectangle. Falling back to screen capture."
+
+            # Fallback to full screen capture
+            $bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+            $bitmap = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height
+            $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+            $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)
+        }
+
+        if ($graphics -eq $null) {
             $width = $rect.Right - $rect.Left
             $height = $rect.Bottom - $rect.Top
+            if ($width -le 0 -or $height -le 0) {
+                throw "Invalid window bounds: Left=$($rect.Left), Top=$($rect.Top), Right=$($rect.Right), Bottom=$($rect.Bottom)"
+            }
             
             Write-Host "Window bounds: Left=$($rect.Left), Top=$($rect.Top), Width=$width, Height=$height"
             
@@ -135,15 +167,6 @@ try {
             $bitmap = New-Object System.Drawing.Bitmap $width, $height
             $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
             $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, [System.Drawing.Size]::new($width, $height))
-        }
-        else {
-            Write-Warning "Could not get window rectangle. Falling back to screen capture."
-            
-            # Fallback to full screen capture
-            $bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
-            $bitmap = New-Object System.Drawing.Bitmap $bounds.Width, $bounds.Height
-            $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
-            $graphics.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)
         }
     }
 
