@@ -1,6 +1,12 @@
 require "./control"
 
 module UIng
+  # EditableCombobox follows libui-ng's uiEditableCombobox API, which is
+  # text-centric rather than a selectable list API. libui-ng intentionally does
+  # not expose selected item, insert, delete, clear, or item-count operations
+  # here because editable comboboxes have no consistent native concept of a
+  # selected item across backends. Use Combobox when you need list management
+  # and selection indices.
   class EditableCombobox < Control
     block_constructor
 
