@@ -10,7 +10,8 @@ module UIng
 
     # Extended handler structure that contains the base TableModelHandler
     # and individual boxes for each callback
-    @[Packed]
+    # Keep this C-ABI aligned; base_handler is first so it can be cast to
+    # TableModelHandler* without using @[Packed].
     struct TableModelHandlerExtended
       base_handler : TableModelHandler
       num_columns_box : Pointer(Void)
