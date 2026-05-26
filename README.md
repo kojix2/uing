@@ -542,41 +542,99 @@ Note: Image display is a feature introduced experimentally in a fork of libui-ng
 
 ## Memory Management Policy
 
-libui-ng is a C library, so normally the user is expected to manage memory manually.
-However, it also provides some automatic memory management. The basic rule is: when a parent control is destroyed, all of its child controls are automatically destroyed as well.
+UIng wraps libui-ng, a C library with explicit ownership rules. Crystal's GC keeps wrapper objects alive, but it does not decide when native widgets are destroyed. Use `destroy` for controls and `free` for standalone native resources.
 
-For example, when destroy is called on controls such as Window, Box, Grid, Group, or Tab, it first destroys all child controls and then destroys itself.
+The main rule is simple: a parent control owns its children. Destroying a parent destroys the native children too, and UIng marks the child wrappers as destroyed. Do not call `destroy` on a child while it still belongs to a parent.
 
-In the case of a Window, there are two common situations:
+```crystal
+window = UIng::Window.new("App", 400, 300)
+box = UIng::Box.new(:vertical)
+button = UIng::Button.new("OK")
 
-When the user clicks the close (×) button on the title bar
-In this case, `on_closing` is triggered. If the callback returns `true`, libui-ng destroys the native window. UIng mirrors that native destruction by marking the `Window` wrapper and all child wrappers as destroyed. Do not call `Window#destroy` from inside `on_closing`; return `true` to allow the close, or `false` to keep the window open.
+box.append(button)
+window.child = box
 
-When on_should_quit is triggered
-This means the entire program is about to quit. But here, Window#destroy is not called automatically, so the user needs to call it explicitly.
+window.destroy # also destroys box and button
+```
 
-Crystal has garbage collection (GC) and provides a finalize hook when objects are freed. However, GC timing is non-deterministic, and libui-ng controls often require deterministic destruction order.
+If you want to reuse a child, detach it first when the container supports it:
 
-Therefore, UIng's primary policy is:
+```crystal
+box.delete(button) # detaches; button is still alive
+other_box.append(button)
+```
 
-- Control objects (`Window`, `Box`, `Grid`, `Tab`, etc.) are managed with explicit `destroy`.
-- Child controls are owned by their parent. To remove a child without destroying it, use the container's delete/remove API where available. Destroying a child directly while it still has a parent is not allowed.
-- C resources that require strict ordering (for example `Table::Model`) are managed with explicit `free`.
-- `finalize` is never treated as a primary cleanup mechanism for order-sensitive resources.
+Container behavior:
 
-Some lightweight wrappers include idempotent cleanup in `finalize` as a fallback, but this is best-effort only and not a correctness guarantee.
+- `Window` and `Group` have one child. Assigning a new child detaches the old child without destroying it. Destroying the `Window` or `Group` destroys its current child.
+- `Box`, `Form`, and `Tab` support `delete(index)` and `delete(child)`. `delete` detaches the child; call `child.destroy` afterwards if you are done with it.
+- `Grid` does not currently expose a delete API. Destroy the whole grid, or build a new grid if you need to remove children.
+- Controls with no parent can be destroyed directly with `destroy`.
 
-It may seem a bit tricky, but understanding how libui-ng handles memory will help you avoid problems when building applications.
+Window closing has one special rule. In `Window#on_closing`, return `true` to let libui-ng destroy the native window, or `false` to keep it open. Do not call `window.destroy` inside that callback.
 
-Some controls require specific destruction order for proper memory cleanup
+```crystal
+window.on_closing do
+  UIng.quit
+  true
+end
+```
 
-- [#6](https://github.com/kojix2/uing/issues/6)
-  - Table
-- [#19](https://github.com/kojix2/uing/issues/19)
-  - MultilineEntry
-  - Tab
-  - Grid
-  - Area
+`on_should_quit` does not destroy windows for you. If your app exits from there, explicitly destroy any windows you created.
+
+Some non-control resources must be freed manually:
+
+- `Table::Model`: destroy all `Table` controls using the model first, then call `model.free`.
+- `Image`: call `image.free` when it is no longer needed. `ImageView#image=` copies or retains what it needs, but table image values borrow the image, so keep the `Image` alive while the table may display it.
+- `Table::Selection`: selections passed to `on_selection_changed` are freed automatically after the callback. If you call `table.selection` manually, free the returned selection when done.
+
+After `destroy` or `free`, do not use the wrapper again.
+
+Example cleanup patterns:
+
+```crystal
+# Reuse a child by detaching it first.
+left = UIng::Box.new(:vertical)
+right = UIng::Box.new(:vertical)
+button = UIng::Button.new("Move me")
+
+left.append(button)
+left.delete(button)  # button is detached, not destroyed
+right.append(button)
+```
+
+```crystal
+# Remove a child permanently.
+box = UIng::Box.new(:vertical)
+button = UIng::Button.new("Delete me")
+
+box.append(button)
+box.delete(button)
+button.destroy
+```
+
+```crystal
+# Table models must outlive tables that use them.
+handler = UIng::Table::Model::Handler.new
+model = UIng::Table::Model.new(handler)
+table = UIng::Table.new(model)
+
+# ... use table ...
+
+table.destroy
+model.free
+```
+
+```crystal
+# Images can be freed after ImageView receives them.
+image = UIng::Image.new(16, 16)
+pixels = Bytes.new(16 * 16 * 4, 0_u8)
+image.append(pixels.to_unsafe.as(Pointer(Void)), 16, 16, 16 * 4)
+
+image_view = UIng::ImageView.new
+image_view.image = image
+image.free
+```
 
 ## Limitations
 
