@@ -105,8 +105,8 @@ module UIng
 
     def child=(control) : Nil
       control.check_can_move
-      # libui-ng automatically replaces existing child, but we need to
-      # release ownership on Crystal side to maintain reference consistency
+      # uiWindowSetChild detaches the existing child; it does not destroy it.
+      # Mirror that detach on the Crystal side so the old wrapper can be reused.
       if child_ref = @child_ref
         child_ref.release_ownership
       end
