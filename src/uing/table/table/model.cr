@@ -43,19 +43,27 @@ module UIng
         @model_handler_ref = nil
       end
 
+      private def check_available : Nil
+        raise "Table::Model has already been released" if @released
+      end
+
       def row_inserted(new_index : Int32) : Nil
+        check_available
         LibUI.table_model_row_inserted(@ref_ptr, new_index)
       end
 
       def row_changed(index : Int32) : Nil
+        check_available
         LibUI.table_model_row_changed(@ref_ptr, index)
       end
 
       def row_deleted(old_index : Int32) : Nil
+        check_available
         LibUI.table_model_row_deleted(@ref_ptr, old_index)
       end
 
       def to_unsafe
+        check_available
         @ref_ptr
       end
     end
