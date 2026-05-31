@@ -12,7 +12,7 @@
 [![CI • Windows (x64, MinGW64)](https://github.com/kojix2/uing/actions/workflows/ci-windows-mingw64.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci-windows-mingw64.yml)
 [![CI • Windows (x64, UCRT64)](https://github.com/kojix2/uing/actions/workflows/ci-windows-ucrt64.yml/badge.svg)](https://github.com/kojix2/uing/actions/workflows/ci-windows-ucrt64.yml)
 
-UIng is a [Crystal](https://crystal-lang.org/) binding for [libui-ng](https://github.com/libui-ng/libui-ng).
+UIng is a [Crystal](https://crystal-lang.org/) binding for [kojix2/libui-ng](https://github.com/kojix2/libui-ng).
 
 libui-ng uses the native APIs of each platform: Win32 API, [Direct2D](https://learn.microsoft.com/windows/win32/Direct2D/), and [DirectWrite](https://learn.microsoft.com/windows/win32/directwrite/) on Windows; [Cocoa](<https://en.wikipedia.org/wiki/Cocoa_(API)>) (AppKit) on macOS; and [GTK+ 3.10+](https://docs.gtk.org/gtk3/) and [Pango](https://docs.gtk.org/Pango/) on Linux/Unix.
 You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets.
