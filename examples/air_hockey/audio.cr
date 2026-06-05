@@ -256,6 +256,8 @@
     end
   end
 {% else %}
+  {% puts "Audio disabled; build with -Dpreview_mt -Dexecution_context to enable sound." %}
+
   class AirHockey3DAudio
     def self.start : self
       AirHockey3DLog.info("audio disabled: build with -Dpreview_mt -Dexecution_context")
