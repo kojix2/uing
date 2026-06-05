@@ -1,0 +1,22 @@
+name: air_hockey
+version: 0.1.0
+
+authors:
+  - kojix2 <2xijok@gmail.com>
+
+description: |
+  Air hockey game example using UIng Area drawing.
+
+dependencies:
+  uing:
+    path: ../../
+  raudio:
+    github: kojix2/raudio.cr
+
+targets:
+  air_hockey:
+    main: air_hockey.cr
+
+crystal: ">= 1.0.0"
+
+license: MIT
