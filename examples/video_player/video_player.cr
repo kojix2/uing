@@ -1,4 +1,4 @@
-require "../../src/uing"
+require "uing"
 require "./src/mpv_bindings"
 require "./src/mpv_player"
 
