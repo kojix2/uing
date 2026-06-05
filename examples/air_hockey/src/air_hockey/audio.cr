@@ -1,28 +1,21 @@
-{% if file_exists?("#{__DIR__}/lib/raudio/src/raudio.cr") %}
-  require "./lib/raudio/src/raudio"
-{% else %}
-  require "raudio"
-{% end %}
+require "raudio"
+require "fiber/execution_context"
 
-{% if flag?(:execution_context) %}
-  require "fiber/execution_context"
-{% end %}
-
-# Audio runs outside the GUI thread. On macOS, libui must stay on the main
-# thread, so the main program only sends small sound events through a Channel.
-{% if flag?(:execution_context) %}
-  class AirHockey3DAudio
+module AirHockey
+  # Audio runs outside the GUI thread. On macOS, libui must stay on the main
+  # thread, so the main program only sends small sound events through a Channel.
+  class Audio
     SAMPLE_RATE  = 44_100
     WAV_TYPE     = ".wav"
     PROBE_EVENTS = {
-      "serve"  => AirHockey3DSoundEvent::Serve,
-      "mallet" => AirHockey3DSoundEvent::MalletHit,
-      "rail"   => AirHockey3DSoundEvent::RailHit,
-      "goal"   => AirHockey3DSoundEvent::Goal,
-      "match"  => AirHockey3DSoundEvent::MatchOver,
+      "serve"  => SoundEvent::Serve,
+      "mallet" => SoundEvent::MalletHit,
+      "rail"   => SoundEvent::RailHit,
+      "goal"   => SoundEvent::Goal,
+      "match"  => SoundEvent::MatchOver,
     }
 
-    @commands : Channel(AirHockey3DSoundEvent)
+    @commands : Channel(SoundEvent)
     @context : Fiber::ExecutionContext::Isolated
     @closed = false
 
@@ -31,20 +24,20 @@
     end
 
     def initialize
-      @commands = Channel(AirHockey3DSoundEvent).new(64)
+      @commands = Channel(SoundEvent).new(64)
       @context = Fiber::ExecutionContext::Isolated.new("air-hockey-audio") do
         run_audio_loop(@commands)
       end
     end
 
-    def play(event : AirHockey3DSoundEvent)
-      return unless AirHockey3DConfig::AUDIO_ENABLED
+    def play(event : SoundEvent)
+      return unless Config::AUDIO_ENABLED
 
       # Never let audio back pressure stall the UI timer or input callbacks.
       select
       when @commands.send(event)
       else
-        AirHockey3DLog.info("audio event dropped: #{event}")
+        Log.info("audio event dropped: #{event}")
       end
     rescue Channel::ClosedError
     end
@@ -56,13 +49,13 @@
       @commands.close
       @context.wait
     rescue error
-      AirHockey3DLog.exception("audio shutdown", error)
+      Log.exception("audio shutdown", error)
     end
 
-    private def run_audio_loop(commands : Channel(AirHockey3DSoundEvent))
-      return unless AirHockey3DConfig::AUDIO_ENABLED
+    private def run_audio_loop(commands : Channel(SoundEvent))
+      return unless Config::AUDIO_ENABLED
 
-      AirHockey3DLog.info("audio context starting")
+      Log.info("audio context starting")
       Raudio::AudioDevice.open do
         Raudio::AudioDevice.master_volume = 0.72_f32
         sounds = SoundBank.new
@@ -88,9 +81,9 @@
         end
       end
     rescue error
-      AirHockey3DLog.exception("audio context", error)
+      Log.exception("audio context", error)
     ensure
-      AirHockey3DLog.info("audio context stopped")
+      Log.info("audio context stopped")
     end
 
     private def start_music(music : BgmPlayer?)
@@ -100,31 +93,31 @@
     end
 
     private def bgm_enabled? : Bool
-      ENV["AIR_HOCKEY3D_BGM"]? != "0"
+      ENV["AIR_HOCKEY_BGM"]? != "0"
     end
 
     private def sfx_enabled? : Bool
-      ENV["AIR_HOCKEY3D_SFX"]? != "0"
+      ENV["AIR_HOCKEY_SFX"]? != "0"
     end
 
     private def run_probe(sounds : SoundBank, music : BgmPlayer?)
-      probe = ENV["AIR_HOCKEY3D_AUDIO_PROBE"]?.try(&.downcase)
+      probe = ENV["AIR_HOCKEY_AUDIO_PROBE"]?.try(&.downcase)
       return unless probe
 
-      AirHockey3DLog.info("audio probe: #{probe}")
+      Log.info("audio probe: #{probe}")
       events =
         case probe
         when "all"
           PROBE_EVENTS.values
         when "music", "bgm"
-          [] of AirHockey3DSoundEvent
+          [] of SoundEvent
         else
           event = PROBE_EVENTS[probe]?
-          event ? [event] : [] of AirHockey3DSoundEvent
+          event ? [event] : [] of SoundEvent
         end
 
       events.each do |event|
-        AirHockey3DLog.info("audio probe playing: #{event}")
+        Log.info("audio probe playing: #{event}")
         sounds.play(event)
         pump_music(music, 900.milliseconds)
       end
@@ -141,18 +134,18 @@
     end
 
     private class BgmPlayer
-      DEFAULT_FILE = File.join(__DIR__, "assets", "bgm.wav")
+      DEFAULT_FILE = File.expand_path("../../assets/bgm.wav", __DIR__)
 
       def self.load : self?
-        path = ENV["AIR_HOCKEY3D_BGM_FILE"]? || DEFAULT_FILE
+        path = ENV["AIR_HOCKEY_BGM_FILE"]? || DEFAULT_FILE
         unless File.exists?(path)
-          AirHockey3DLog.info("BGM file not found: #{path}")
+          Log.info("BGM file not found: #{path}")
           return nil
         end
 
         new(path)
       rescue error
-        AirHockey3DLog.exception("BGM load", error)
+        Log.exception("BGM load", error)
         nil
       end
 
@@ -178,15 +171,15 @@
     private class SoundBank
       def initialize
         @sounds = {
-          AirHockey3DSoundEvent::Serve     => Synth.tone(0.16, 540.0, 0.34, 9.0),
-          AirHockey3DSoundEvent::MalletHit => Synth.tone(0.09, 230.0, 0.48, 22.0),
-          AirHockey3DSoundEvent::RailHit   => Synth.tone(0.06, 760.0, 0.22, 30.0),
-          AirHockey3DSoundEvent::Goal      => Synth.chime(0.70),
-          AirHockey3DSoundEvent::MatchOver => Synth.chime(1.10),
+          SoundEvent::Serve     => Synth.tone(0.16, 540.0, 0.34, 9.0),
+          SoundEvent::MalletHit => Synth.tone(0.09, 230.0, 0.48, 22.0),
+          SoundEvent::RailHit   => Synth.tone(0.06, 760.0, 0.22, 30.0),
+          SoundEvent::Goal      => Synth.chime(0.70),
+          SoundEvent::MatchOver => Synth.chime(1.10),
         }
       end
 
-      def play(event : AirHockey3DSoundEvent)
+      def play(event : SoundEvent)
         @sounds[event]?.try(&.play)
       end
 
@@ -255,19 +248,4 @@
       end
     end
   end
-{% else %}
-  {% puts "Audio disabled; build with -Dpreview_mt -Dexecution_context to enable sound." %}
-
-  class AirHockey3DAudio
-    def self.start : self
-      AirHockey3DLog.info("audio disabled: build with -Dpreview_mt -Dexecution_context")
-      new
-    end
-
-    def play(event : AirHockey3DSoundEvent)
-    end
-
-    def close
-    end
-  end
-{% end %}
+end

@@ -15,7 +15,7 @@ dependencies:
 
 targets:
   air_hockey:
-    main: air_hockey.cr
+    main: src/air_hockey.cr
 
 crystal: ">= 1.0.0"
 
