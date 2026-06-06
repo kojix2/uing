@@ -4,7 +4,11 @@ SHARDS ?= shards
 CRFLAGS ?= -Dpreview_mt -Dexecution_context
 SOURCE = src/air_hockey.cr
 TARGET = bin/air_hockey
-RELEASE_FLAGS = $(if $(release),--release,)
+TARGET_DIR = bin
+RELEASE_FLAGS =
+ifdef release
+RELEASE_FLAGS = --release
+endif
 
 .PHONY: all help deps build run clean
 
@@ -27,6 +31,7 @@ deps:
 	$(SHARDS) install
 
 build: deps
+	mkdir -p $(TARGET_DIR)
 	$(CRYSTAL) build $(RELEASE_FLAGS) $(CRFLAGS) $(SOURCE) -o $(TARGET)
 
 run: build
