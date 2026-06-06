@@ -1,6 +1,16 @@
 module AirHockey
   class Renderer
+    alias ProjectedPoint = NamedTuple(x: Float64, y: Float64, scale: Float64)
+    alias GoalLine = NamedTuple(left: ProjectedPoint, right: ProjectedPoint, y_offset: Float64)
+
     def initialize(@game : Game)
+      @cached_width = -1.0
+      @cached_height = -1.0
+      @table_outline = [] of ProjectedPoint
+      @center_left = {x: 0.0, y: 0.0, scale: 1.0}
+      @center_right = {x: 0.0, y: 0.0, scale: 1.0}
+      @center = {x: 0.0, y: 0.0, scale: 1.0}
+      @goals = [] of GoalLine
     end
 
     # Draw back-to-front. Far objects are drawn first, then the puck/player mallet
@@ -8,6 +18,7 @@ module AirHockey
     def draw(params)
       @game.screen_width = params.area_width
       @game.screen_height = params.area_height
+      update_static_geometry_cache
       ctx = params.context
 
       draw_background(ctx)
@@ -45,7 +56,7 @@ module AirHockey
     end
 
     private def draw_table(ctx)
-      outline = table_outline_points
+      outline = @table_outline
 
       ctx.fill_path(brush(0.58, 0.62, 0.66, 0.20)) do |path|
         path.new_figure(outline.first[:x] + 4.0, outline.first[:y] + 20.0)
@@ -88,9 +99,7 @@ module AirHockey
     private def draw_table_lines(ctx)
       line_brush = brush(0.84, 0.93, 0.95, 0.72)
       edge_brush = brush(0.78, 0.86, 0.88, 0.9)
-      outline = table_outline_points
-      center_left = @game.project(Vec2.new(-@game.table_width / 2.0, 0.0))
-      center_right = @game.project(Vec2.new(@game.table_width / 2.0, 0.0))
+      outline = @table_outline
 
       ctx.stroke_path(edge_brush, thickness: 5.0) do |path|
         path.new_figure(outline.first[:x], outline.first[:y])
@@ -99,32 +108,26 @@ module AirHockey
       end
 
       ctx.stroke_path(line_brush, thickness: 2.0) do |path|
-        path.new_figure(center_left[:x], center_left[:y])
-        path.line_to(center_right[:x], center_right[:y])
+        path.new_figure(@center_left[:x], @center_left[:y])
+        path.line_to(@center_right[:x], @center_right[:y])
       end
 
-      center = @game.project(Vec2.new(0.0, 0.0))
       ctx.stroke_path(line_brush, thickness: 2.0) do |path|
-        r = 78.0 * center[:scale]
-        ellipse(path, center[:x], center[:y], r, r * 0.42)
+        r = 78.0 * @center[:scale]
+        ellipse(path, @center[:x], @center[:y], r, r * 0.42)
       end
     end
 
     private def draw_goals(ctx)
-      [-1.0, 1.0].each do |side|
-        z = side * @game.table_depth / 2.0
-        left = @game.project(Vec2.new(-@game.goal_width / 2.0, z))
-        right = @game.project(Vec2.new(@game.goal_width / 2.0, z))
-        y_offset = side < 0 ? 15.0 : -15.0
-
+      @goals.each do |goal|
         ctx.stroke_path(brush(0.02, 0.025, 0.03, 0.42), thickness: 10.0) do |path|
-          path.new_figure(left[:x], left[:y] + y_offset)
-          path.line_to(right[:x], right[:y] + y_offset)
+          path.new_figure(goal[:left][:x], goal[:left][:y] + goal[:y_offset])
+          path.line_to(goal[:right][:x], goal[:right][:y] + goal[:y_offset])
         end
 
         ctx.stroke_path(brush(1.0, 0.74, 0.24, 0.96), thickness: 5.0) do |path|
-          path.new_figure(left[:x], left[:y] + y_offset)
-          path.line_to(right[:x], right[:y] + y_offset)
+          path.new_figure(goal[:left][:x], goal[:left][:y] + goal[:y_offset])
+          path.line_to(goal[:right][:x], goal[:right][:y] + goal[:y_offset])
         end
       end
     end
@@ -182,8 +185,28 @@ module AirHockey
 
     private def draw_score(ctx)
       score_y = 10.0
-      draw_text(ctx, "#{@game.opponent_score}", @game.screen_width / 2.0 - 86.0, score_y, 34.0, 70.0, 0.98, 0.34, 0.28, UIng::Area::Draw::TextAlign::Center)
-      draw_text(ctx, "#{@game.player_score}", @game.screen_width / 2.0 + 16.0, score_y, 34.0, 70.0, 0.30, 0.66, 1.0, UIng::Area::Draw::TextAlign::Center)
+      draw_text(ctx, @game.opponent_score.to_s, @game.screen_width / 2.0 - 86.0, score_y, 34.0, 70.0, 0.98, 0.34, 0.28, UIng::Area::Draw::TextAlign::Center)
+      draw_text(ctx, @game.player_score.to_s, @game.screen_width / 2.0 + 16.0, score_y, 34.0, 70.0, 0.30, 0.66, 1.0, UIng::Area::Draw::TextAlign::Center)
+    end
+
+    private def update_static_geometry_cache
+      return if @cached_width == @game.screen_width && @cached_height == @game.screen_height
+
+      # Static table geometry only changes when the Area size changes.
+      @cached_width = @game.screen_width
+      @cached_height = @game.screen_height
+      @table_outline = table_outline_points
+      @center_left = @game.project(Vec2.new(-@game.table_width / 2.0, 0.0))
+      @center_right = @game.project(Vec2.new(@game.table_width / 2.0, 0.0))
+      @center = @game.project(Vec2.new(0.0, 0.0))
+      @goals = [-1.0, 1.0].map do |side|
+        z = side * @game.table_depth / 2.0
+        {
+          left:     @game.project(Vec2.new(-@game.goal_width / 2.0, z)),
+          right:    @game.project(Vec2.new(@game.goal_width / 2.0, z)),
+          y_offset: side < 0 ? 15.0 : -15.0,
+        }
+      end
     end
 
     private def draw_message(ctx)
