@@ -13,6 +13,9 @@ module AirHockey
       @handler = UIng::Area::Handler.new
       @area = nil
       @shutting_down = false
+      @pending_mouse_x = 0.0
+      @pending_mouse_y = 0.0
+      @mouse_pending = false
     end
 
     def run
@@ -48,12 +51,13 @@ module AirHockey
 
       @handler.mouse_event do |area, event|
         Log.info("mouse event: x=#{event.x}, y=#{event.y}, down=#{event.down}, up=#{event.up}") if event.down != 0 || event.up != 0
-        @game.handle_mouse(event.x, event.y)
+        @pending_mouse_x = event.x
+        @pending_mouse_y = event.y
+        @mouse_pending = true
         if event.down != 0
           Log.info("serve requested by mouse")
           @game.serve
         end
-        area.queue_redraw_all unless @shutting_down || area.released?
         true
       end
 
@@ -98,6 +102,7 @@ module AirHockey
         next 0 if @shutting_down || area.released?
 
         Log.tick
+        apply_pending_mouse
         @game.update
         @game.drain_sound_events.each { |event| @audio.play(event) }
         area.queue_redraw_all unless area.released?
@@ -123,6 +128,14 @@ module AirHockey
 
     private def active_area : UIng::Area
       @area || raise "area has not been initialized"
+    end
+
+    private def apply_pending_mouse
+      return unless @mouse_pending
+
+      # Coalesce high-frequency mouse motion into the timer tick.
+      @mouse_pending = false
+      @game.handle_mouse(@pending_mouse_x, @pending_mouse_y)
     end
   end
 end
