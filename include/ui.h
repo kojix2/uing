@@ -72,12 +72,13 @@ _UI_EXTERN void uiQuit(void);
 
 _UI_EXTERN void uiQueueMain(void (*f)(void *data), void *data);
 
-// TODO standardize the looping behavior return type, either with some enum or something, and the test expressions throughout the code
-// TODO figure out what to do about looping and the exact point that the timer is rescheduled so we can document it; see https://github.com/andlabs/libui/pull/277
-// TODO (also in the above link) document that this cannot be called from any thread, unlike uiQueueMain()
-// TODO document that the minimum exact timing, either accuracy (timer burst, etc.) or granularity (15ms on Windows, etc.), is OS-defined
-// TODO also figure out how long until the initial tick is registered on all platforms to document
-// TODO also add a comment about how useful this could be in bindings, depending on the language being bound to
+// uiTimer() must be called on the main UI thread after uiInit() and before uiUninit().
+// milliseconds must be greater than 0, and f must not be NULL.
+// Timer callbacks run on the main UI thread. Return 0 from f to stop the timer;
+// return non-zero to keep it running. uiUninit() cancels any active timers.
+// Timer timing, including granularity and the first tick, is OS-defined.
+// uiQueueMain() may be called from other threads. To quit from another thread,
+// queue uiQuit() with uiQueueMain() instead of calling uiQuit() directly.
 _UI_EXTERN void uiTimer(int milliseconds, int (*f)(void *data), void *data);
 
 _UI_EXTERN void uiOnShouldQuit(int (*f)(void *data), void *data);
@@ -1820,7 +1821,7 @@ _UI_EXTERN void uiMenuItemDisable(uiMenuItem *m);
  * Registers a callback for when the menu item is clicked.
  *
  * @param m uiMenuItem instance.
- * @param f Callback function.\n
+ * @param f Callback function; must not be @c NULL.\n
  *          @p sender Back reference to the instance that triggered the callback.\n
  *          @p window Reference to the window from which the callback got triggered.\
  *          @p senderData User data registered with the sender instance.
@@ -2745,11 +2746,12 @@ _UI_EXTERN void uiDrawTextLayoutExtents(uiDrawTextLayout *tl, double *width, dou
  * The function automatically selects the most appropriate image
  * representation based on the display's pixel density.
  *
- * The image data is copied internally; ownership of `img` is not
- * transferred. The caller may free `img` immediately after this call.
+ * `img` is borrowed only for the duration of this call. Image data is not
+ * copied or retained by uiDrawImage().
  * 
  * @param c Drawing context.
- * @param img Image to draw. Must not be NULL.
+ * @param img Image to draw. Must not be NULL and must remain valid for the
+ *            duration of this call.
  * @param x X coordinate of the top-left corner.
  * @param y Y coordinate of the top-left corner.
  * @param width Width to draw the image. Must be positive.
@@ -3183,7 +3185,7 @@ _UI_EXTERN uiGrid *uiNewGrid(void);
  * The system will automatically determine the correct image to render depending
  * on the screen's pixel density.
  *
- * uiImage only supports premultiplied 32-bit RGBA images.
+ * uiImage only supports 32-bit RGBA images.
  *
  * No image file loading or image format conversion utilities are provided.
  *
@@ -3216,7 +3218,7 @@ _UI_EXTERN void uiFreeImage(uiImage *i);
  * Appends a new image representation.
  *
  * @param i uiImage instance.
- * @param pixels Byte array of premultiplied pixels in [R G B A] order.\n
+ * @param pixels Byte array of pixels in [R G B A] order.\n
  *               `((uint8_t *) pixels)[0]` equals the **R** of the first pixel,
  *               `[3]` the **A** of the first pixel.\n
  *               `pixels` must be at least `byteStride * pixelHeight` bytes long.\n
