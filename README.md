@@ -73,7 +73,7 @@ crystal run download.cr
 To run the `control_gallery` example, use the following command:
 
 ```sh
-crystal run examples/control_gallery.cr
+crystal run examples/gallery/control_gallery.cr
 ```
 
 ### Windows MSVC Setup
