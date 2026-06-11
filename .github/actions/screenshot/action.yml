@@ -1,0 +1,96 @@
+name: "Take Screenshot"
+description: "Take a screenshot of one or more applications on different platforms"
+inputs:
+  os:
+    description: "Operating system (ubuntu or windows or macos)"
+    required: true
+  app-names:
+    description: "Space-separated list of application executable names"
+    required: true
+  output-files:
+    description: "Space-separated list of output screenshot filenames (must match app-names order)"
+    required: true
+outputs:
+  screenshot-paths:
+    description: "Space-separated list of generated screenshot paths"
+    value: ${{ steps.screenshot.outputs.paths }}
+runs:
+  using: "composite"
+  steps:
+    - name: Take screenshots on Ubuntu
+      id: screenshot-ubuntu
+      if: inputs.os == 'ubuntu'
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/ubuntu-screenshot.sh
+        IFS=' ' read -r -a apps <<< "${{ inputs.app-names }}"
+        IFS=' ' read -r -a outs <<< "${{ inputs.output-files }}"
+        paths=""
+        for i in "${!apps[@]}"; do
+          app="${apps[$i]}"
+          out="${outs[$i]}"
+          echo "Taking screenshot for $app -> $out"
+          ${{ github.action_path }}/ubuntu-screenshot.sh "$app" "$out"
+          paths="$paths$out "
+        done
+        echo "paths=${paths}" >> $GITHUB_OUTPUT
+
+    - name: Take screenshots on Windows
+      id: screenshot-windows
+      if: inputs.os == 'windows'
+      shell: pwsh
+      run: |
+        $apps = "${{ inputs.app-names }}".Split(" ")
+        $outs = "${{ inputs.output-files }}".Split(" ")
+        $paths = ""
+        for ($i = 0; $i -lt $apps.Length; $i++) {
+          $app = $apps[$i]
+          $out = $outs[$i]
+          Write-Host "Taking screenshot for $app -> $out"
+          & "${{ github.action_path }}/windows-screenshot.ps1" -AppName $app -OutputFile $out
+          $paths += "$out "
+        }
+        echo "paths=$paths" >> $env:GITHUB_OUTPUT
+
+    - name: Maximize macOS resolution (non-Retina)
+      if: inputs.os == 'macos'
+      shell: bash
+      run: |
+        brew install displayplacer
+        DISPLAY_ID=$(displayplacer list | awk -F': ' '/Persistent screen id/{print $2; exit}')
+        BEST_RES=$(displayplacer list | awk '/Resolution:/ {print $2}' \
+          | awk -Fx '{print $1*$2, $1"x"$2}' \
+          | sort -nr | head -1 | awk '{print $2}')
+        echo "Selected best resolution: $BEST_RES"
+        displayplacer "id:${DISPLAY_ID} res:${BEST_RES} hz:60 color_depth:8 scaling:off origin:(0,0) degree:0" || true
+        sleep 2
+
+    - name: Take screenshots on macOS
+      id: screenshot-macos
+      if: inputs.os == 'macos'
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/macos-screenshot.sh
+        IFS=' ' read -r -a apps <<< "${{ inputs.app-names }}"
+        IFS=' ' read -r -a outs <<< "${{ inputs.output-files }}"
+        paths=""
+        for i in "${!apps[@]}"; do
+          app="${apps[$i]}"
+          out="${outs[$i]}"
+          echo "Taking screenshot for $app -> $out"
+          ${{ github.action_path }}/macos-screenshot.sh "$app" "$out"
+          paths="$paths$out "
+        done
+        echo "paths=${paths}" >> $GITHUB_OUTPUT
+
+    - name: Set output
+      id: screenshot
+      shell: bash
+      run: |
+        if [ "${{ inputs.os }}" == "ubuntu" ]; then
+          echo "paths=${{ steps.screenshot-ubuntu.outputs.paths }}" >> $GITHUB_OUTPUT
+        elif [ "${{ inputs.os }}" == "windows" ]; then
+          echo "paths=${{ steps.screenshot-windows.outputs.paths }}" >> $GITHUB_OUTPUT
+        elif [ "${{ inputs.os }}" == "macos" ]; then
+          echo "paths=${{ steps.screenshot-macos.outputs.paths }}" >> $GITHUB_OUTPUT
+        fi

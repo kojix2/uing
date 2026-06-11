@@ -1,0 +1,43 @@
+name: CI • Windows (x64, UCRT64)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-crystal
+            mingw-w64-ucrt-x86_64-shards
+            git
+
+      - name: Install dependencies
+        shell: msys2 {0}
+        run: shards install
+
+      - name: Download libui library
+        shell: msys2 {0}
+        run: |
+          crystal run download.cr
+          ls libui
+
+      - name: Run tests
+        shell: msys2 {0}
+        run: crystal spec
+
+      - name: Build all examples
+        shell: msys2 {0}
+        run: |
+          for f in examples/*.cr; do crystal build "$f"; done
+          ls -l
