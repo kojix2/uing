@@ -582,6 +582,24 @@ end
 
 `on_should_quit` does not destroy windows for you. If your app exits from there, explicitly destroy any windows you created.
 
+Recommended shutdown pattern when both callbacks are used:
+
+- `Window#on_closing`: call `UIng.quit` and return `true`; do not call `window.destroy` there.
+- `UIng.on_should_quit`: explicitly destroy top-level windows, then return `true`.
+- To avoid double-destroy in mixed exit paths, guard with `released?`.
+
+```crystal
+window.on_closing do
+  UIng.quit
+  true
+end
+
+UIng.on_should_quit do
+  window.destroy unless window.released?
+  true
+end
+```
+
 Some non-control resources must be freed manually:
 
 - `Table::Model`: destroy all `Table` controls using the model first, then call `model.free`.
