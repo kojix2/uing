@@ -176,6 +176,7 @@ class CSVViewer
 
     UIng.on_should_quit do
       cleanup
+      @window.destroy unless @window.released?
       true
     end
   end
