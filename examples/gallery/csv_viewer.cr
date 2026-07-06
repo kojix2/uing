@@ -53,11 +53,25 @@ class CSVViewer
 
     @hbox.append(@table, true)
 
-    # Create menu after UI components are initialized
-    setup_menu
+    # Menus must be created before windows with menubars.
+    UIng::Menu.new("File") do
+      append_item("Open").on_clicked do |window|
+        if filename = window.open_file
+          update_table_with_file(filename)
+        end
+      end
+      append_separator
+      append_quit_item
+    end
 
     @window = UIng::Window.new("CSV Viewer", WINDOW_WIDTH, WINDOW_HEIGHT, menubar: true)
     @window.child = @hbox
+
+    UIng.on_should_quit do
+      cleanup
+      @window.destroy unless @window.released?
+      true
+    end
   end
 
   private def generate_column_name(index : Int32) : String
@@ -161,24 +175,6 @@ class CSVViewer
 
     @column_count = new_column_count
     true
-  end
-
-  private def setup_menu
-    UIng::Menu.new("File") do
-      append_item("Open").on_clicked do |window|
-        if filename = window.open_file
-          update_table_with_file(filename)
-        end
-      end
-      append_separator
-      append_quit_item
-    end
-
-    UIng.on_should_quit do
-      cleanup
-      @window.destroy unless @window.released?
-      true
-    end
   end
 
   private def setup_initial_data
