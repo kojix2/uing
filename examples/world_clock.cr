@@ -124,15 +124,13 @@ end
 # Update all time labels with current time and appropriate emoji
 def update_clocks(time_labels : Array(CityTimeLabel)) : Nil
   time_labels.each do |city_time_label|
-    begin
-      location = Time::Location.load(city_time_label.timezone)
-      now = Time.local(location)
-      emoji = get_time_emoji(now.hour)
-      city_time_label.label.text = "#{emoji} #{now.to_s(TIME_FORMAT)}"
-    rescue
-      # Handle timezone loading errors gracefully
-      city_time_label.label.text = "❌ Error"
-    end
+    location = Time::Location.load(city_time_label.timezone)
+    now = Time.local(location)
+    emoji = get_time_emoji(now.hour)
+    city_time_label.label.text = "#{emoji} #{now.to_s(TIME_FORMAT)}"
+  rescue
+    # Handle timezone loading errors gracefully
+    city_time_label.label.text = "❌ Error"
   end
 end
 

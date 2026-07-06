@@ -21,8 +21,12 @@ class ControlGalleryApp
     end
   end
 
+  def run
+    UIng.main
+  end
+
   private def main_window : UIng::Window
-    @main_window.not_nil!
+    @main_window || raise "main window has not been initialized"
   end
 
   private def preferences_open? : Bool
@@ -286,6 +290,5 @@ class ControlGalleryApp
 end
 
 UIng.init
-app = ControlGalleryApp.new
-UIng.main
+ControlGalleryApp.new.run
 UIng.uninit
