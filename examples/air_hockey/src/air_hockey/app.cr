@@ -49,7 +49,7 @@ module AirHockey
         @renderer.draw(params)
       end
 
-      @handler.mouse_event do |area, event|
+      @handler.mouse_event do |_area, event|
         Log.info("mouse event: x=#{event.x}, y=#{event.y}, down=#{event.down}, up=#{event.up}") if event.down != 0 || event.up != 0
         @pending_mouse_x = event.x
         @pending_mouse_y = event.y

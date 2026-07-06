@@ -112,13 +112,13 @@ module AirHockey
         when "music", "bgm"
           [] of SoundEvent
         else
-          event = PROBE_EVENTS[probe]?
-          event ? [event] : [] of SoundEvent
+          selected_event = PROBE_EVENTS[probe]?
+          selected_event ? [selected_event] : [] of SoundEvent
         end
 
-      events.each do |event|
-        Log.info("audio probe playing: #{event}")
-        sounds.play(event)
+      events.each do |probe_event|
+        Log.info("audio probe playing: #{probe_event}")
+        sounds.play(probe_event)
         pump_music(music, 900.milliseconds)
       end
 
@@ -140,7 +140,7 @@ module AirHockey
         path = ENV["AIR_HOCKEY_BGM_FILE"]? || DEFAULT_FILE
         unless File.exists?(path)
           Log.info("BGM file not found: #{path}")
-          return nil
+          return
         end
 
         new(path)
@@ -207,7 +207,7 @@ module AirHockey
         end
       end
 
-      private def sound_from_wav(seconds : Float64, &block : Float64 -> Float64) : Raudio::Sound
+      private def sound_from_wav(seconds : Float64, & : Float64 -> Float64) : Raudio::Sound
         bytes = wav_bytes(seconds) { |time| yield time }
         wave = Raudio::Wave.load_from_memory(WAV_TYPE, bytes)
         Raudio::Sound.from_wave(wave)
@@ -215,7 +215,7 @@ module AirHockey
         wave.try(&.release)
       end
 
-      private def wav_bytes(seconds : Float64, &block : Float64 -> Float64) : Bytes
+      private def wav_bytes(seconds : Float64, & : Float64 -> Float64) : Bytes
         frames = (seconds * SAMPLE_RATE).to_i
         data_size = frames * sizeof(Int16)
         io = IO::Memory.new(44 + data_size)
