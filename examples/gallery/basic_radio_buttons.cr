@@ -1,0 +1,23 @@
+require "../../src/uing"
+
+UIng.init
+
+window = UIng::Window.new("RadioButtons Example", 300, 100, margined: true)
+window.on_closing do
+  UIng.quit
+  true
+end
+
+group = UIng::Group.new("Options")
+
+radio_buttons = UIng::RadioButtons.new(["Option 1", "Option 2", "Option 3"])
+radio_buttons.on_selected do |idx|
+  window.msg_box("RadioButtons Changed", "Selected index: #{idx}")
+end
+
+group.child = radio_buttons
+window.child = group
+window.show
+
+UIng.main
+UIng.uninit
