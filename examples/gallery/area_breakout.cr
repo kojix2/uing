@@ -35,7 +35,7 @@ end
 alias Bounds = NamedTuple(x: Float64, y: Float64, width: Float64, height: Float64)
 
 # Player paddle
-struct Paddle
+class Paddle
   property x : Float64, y : Float64, width : Float64, height : Float64, speed : Float64
 
   def initialize(@x : Float64, @y : Float64, @width : Float64 = Config::PADDLE_W, @height : Float64 = Config::PADDLE_H)
@@ -62,7 +62,7 @@ struct Paddle
 end
 
 # Bouncing ball
-struct Ball
+class Ball
   property x : Float64, y : Float64, velocity_x : Float64, velocity_y : Float64, radius : Float64
   property? active : Bool
 
@@ -140,7 +140,7 @@ struct Ball
 end
 
 # Destructible block
-struct Block
+class Block
   property x : Float64, y : Float64, width : Float64, height : Float64, color : NamedTuple(r: Float64, g: Float64, b: Float64)
   property? active : Bool
 
@@ -327,9 +327,7 @@ class BreakoutGame
 
       @ball.normalize_speed
 
-      # ★ ここが重要：structの変更を配列へ書き戻す
       block.destroy
-      @blocks[index] = block
 
       @score += 10
       puts "Block destroyed at index #{index}, score: #{@score}" if Config::DEBUG
