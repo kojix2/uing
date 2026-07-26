@@ -24,7 +24,7 @@ module SliderMap
   end
 end
 
-struct StarTransform
+class StarTransform
   property translate_x : Float64 = 0.0
   property translate_y : Float64 = 0.0
   property scale_x : Float64 = 1.0

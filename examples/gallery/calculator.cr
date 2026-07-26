@@ -25,7 +25,7 @@ enum Operation
   end
 end
 
-struct State
+class State
   property current_value : Float64 = 0.0
   property stored_value : Float64 = 0.0
   property operation : Operation? = nil
