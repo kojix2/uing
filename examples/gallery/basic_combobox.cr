@@ -1,0 +1,20 @@
+require "../../src/uing"
+
+UIng.init
+
+window = UIng::Window.new("Combobox Example", 300, 100, margined: true)
+window.on_closing do
+  UIng.quit
+  true
+end
+
+combobox = UIng::Combobox.new(["Item 1", "Item 2", "Item 3"])
+combobox.on_selected do |idx|
+  window.msg_box("Combobox Changed", "Selected index: #{idx}")
+end
+
+window.child = combobox
+window.show
+
+UIng.main
+UIng.uninit

@@ -1,0 +1,91 @@
+module UIng
+  class OpenTypeFeatures
+    @released : Bool = false
+    @borrowed : Bool = false
+    @for_each_box : Pointer(Void)?
+
+    def initialize
+      @ref_ptr = LibUI.new_open_type_features
+    end
+
+    # Used for wrappers around libui pointers. By default the wrapper owns the
+    # pointer, but uiAttributeFeatures() returns a pointer owned by its attribute.
+    def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures), @borrowed : Bool = false)
+      @ref_ptr = ref_ptr
+    end
+
+    def free : Nil
+      return if @released
+      return if @borrowed
+      LibUI.free_open_type_features(@ref_ptr)
+      @released = true
+    end
+
+    def clone : OpenTypeFeatures
+      ref_ptr = LibUI.open_type_features_clone(@ref_ptr)
+      OpenTypeFeatures.new(ref_ptr)
+    end
+
+    def add(tag : String, value : Int32 = 1) : Nil
+      bytes = tag_bytes(tag)
+      LibUI.open_type_features_add(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], value.to_u32)
+    end
+
+    def remove(tag : String) : Nil
+      bytes = tag_bytes(tag)
+      LibUI.open_type_features_remove(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3])
+    end
+
+    def get(tag : String) : {Bool, Int32}
+      bytes = tag_bytes(tag)
+      result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
+      {result, value.to_i32}
+    end
+
+    # FIXME : Is this appropriate for OpenTypeFeatures?
+
+    def for_each(&callback : (String, Int32) -> _) : Nil
+      @for_each_box = ::Box.box(callback)
+      boxed_callback = @for_each_box || raise "failed to box callback"
+
+      proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
+        begin
+          data_as_callback = ::Box(typeof(callback)).unbox(data)
+          tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
+          data_as_callback.call(tag, value.to_i32)
+          0_i32 # uiForEachContinue
+        rescue e
+          UIng.handle_callback_error(e, "OpenTypeFeatures for_each")
+          1_i32 # uiForEachStop
+        end
+      end
+
+      begin
+        LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_callback)
+      ensure
+        # Clear the box reference after enumeration completes
+        @for_each_box = nil
+      end
+    end
+
+    def to_unsafe
+      @ref_ptr
+    end
+
+    def finalize
+      # Releasing timing is not critical for this class
+      free
+    end
+
+    private def tag_bytes(tag : String) : Bytes
+      raise ArgumentError.new("OpenType tag must be exactly 4 bytes") unless tag.bytesize == 4
+
+      bytes = tag.to_slice
+      unless bytes.all? { |byte| 0x20 <= byte <= 0x7e }
+        raise ArgumentError.new("OpenType tag must contain only printable ASCII bytes")
+      end
+
+      bytes
+    end
+  end
+end
