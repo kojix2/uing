@@ -64,11 +64,6 @@ jobs:
         with:
           crystal: latest
 
-      - name: Install system dependencies
-        run: |
-          brew install gtk+3 openssl@3
-          sudo gem install fpm
-
       - name: Build DMG package
         working-directory: examples/md5_checker
         run: |
