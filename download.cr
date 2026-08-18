@@ -1,7 +1,7 @@
 require "compress/zip"
 require "file_utils"
 
-COMMIT_HASH = ENV["LIBUI_NG_COMMIT_HASH"]? || "495954f8-experimental"
+COMMIT_HASH = ENV["LIBUI_NG_COMMIT_HASH"]? || "de01db9e-experimental"
 
 # Path constants
 BUILD_DIR      = "builddir"
