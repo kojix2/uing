@@ -217,4 +217,15 @@ describe "lifetime safety" do
     table.release_for_spec
     model.tracked_table_count.should eq(0)
   end
+
+  it "keeps and returns the original Model from Table::Params" do
+    model = LifetimeSafetyModel.new
+    replacement = LifetimeSafetyModel.new
+    params = UIng::Table::Params.new(model)
+
+    params.model.same?(model).should be_true
+
+    params.model = replacement
+    params.model.same?(replacement).should be_true
+  end
 end
