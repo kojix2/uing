@@ -45,12 +45,18 @@ module UIng
         end
 
         def extents : {Float64, Float64}
+          check_available
           LibUI.draw_text_layout_extents(@ref_ptr, out width, out height)
           {width, height}
         end
 
         def to_unsafe
+          check_available
           @ref_ptr
+        end
+
+        private def check_available : Nil
+          raise "TextLayout has already been released" if @released
         end
       end
     end

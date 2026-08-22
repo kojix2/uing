@@ -31,24 +31,29 @@ module UIng
       end
 
       def string : String?
+        check_available
         str_ptr = LibUI.attributed_string_string(@ref_ptr)
         # The returned string is owned by the attributed string?
         str_ptr.null? ? nil : String.new(str_ptr)
       end
 
       def len : LibC::SizeT
+        check_available
         LibUI.attributed_string_len(@ref_ptr)
       end
 
       def append_unattributed(text : String) : Nil
+        check_available
         LibUI.attributed_string_append_unattributed(@ref_ptr, text)
       end
 
       def insert_at_unattributed(text : String, at : LibC::SizeT) : Nil
+        check_available
         LibUI.attributed_string_insert_at_unattributed(@ref_ptr, text, at)
       end
 
       def delete(start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+        check_available
         LibUI.attributed_string_delete(@ref_ptr, start, end_)
       end
 
@@ -62,6 +67,7 @@ module UIng
       # Example:
       #   attr_str.set_attribute(Attribute.new_color(1.0, 0.0, 0.0, 1.0), 0, 5)
       def set_attribute(attribute : Attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
+        check_available
         LibUI.attributed_string_set_attribute(@ref_ptr, attribute, start, end_)
         # AttributedString takes ownership of the attribute
         attribute.released = true
@@ -69,6 +75,7 @@ module UIng
 
       # Return value: 0 = Continue, 1 = Stop (follows LibUI's uiForEach convention)
       def for_each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> LibC::Int) : Nil
+        check_available
         for_each_attribute_box = ::Box.box(block)
         @for_each_attribute_box = for_each_attribute_box
 
@@ -95,23 +102,31 @@ module UIng
       end
 
       def num_graphemes : LibC::SizeT
+        check_available
         LibUI.attributed_string_num_graphemes(@ref_ptr)
       end
 
       def byte_index_to_grapheme(pos : LibC::SizeT) : LibC::SizeT
+        check_available
         LibUI.attributed_string_byte_index_to_grapheme(@ref_ptr, pos)
       end
 
       def grapheme_to_byte_index(pos : LibC::SizeT) : LibC::SizeT
+        check_available
         LibUI.attributed_string_grapheme_to_byte_index(@ref_ptr, pos)
       end
 
       def to_unsafe
+        check_available
         @ref_ptr
       end
 
       def finalize
         free
+      end
+
+      private def check_available : Nil
+        raise "AttributedString has already been released" if @released
       end
     end
   end

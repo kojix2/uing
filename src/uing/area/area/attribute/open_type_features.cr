@@ -16,27 +16,30 @@ module UIng
 
     def free : Nil
       return if @released
-      return if @borrowed
-      LibUI.free_open_type_features(@ref_ptr)
+      LibUI.free_open_type_features(@ref_ptr) unless @borrowed
       @released = true
     end
 
     def clone : OpenTypeFeatures
+      check_available
       ref_ptr = LibUI.open_type_features_clone(@ref_ptr)
       OpenTypeFeatures.new(ref_ptr)
     end
 
     def add(tag : String, value : Int32 = 1) : Nil
+      check_available
       bytes = tag_bytes(tag)
       LibUI.open_type_features_add(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], value.to_u32)
     end
 
     def remove(tag : String) : Nil
+      check_available
       bytes = tag_bytes(tag)
       LibUI.open_type_features_remove(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3])
     end
 
     def get(tag : String) : {Bool, Int32}
+      check_available
       bytes = tag_bytes(tag)
       result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
       {result, value.to_i32}
@@ -45,6 +48,7 @@ module UIng
     # FIXME : Is this appropriate for OpenTypeFeatures?
 
     def for_each(&callback : (String, Int32) -> _) : Nil
+      check_available
       @for_each_box = ::Box.box(callback)
       boxed_callback = @for_each_box || raise "failed to box callback"
 
@@ -69,12 +73,17 @@ module UIng
     end
 
     def to_unsafe
+      check_available
       @ref_ptr
     end
 
     def finalize
       # Releasing timing is not critical for this class
       free
+    end
+
+    private def check_available : Nil
+      raise "OpenTypeFeatures has already been released" if @released
     end
 
     private def tag_bytes(tag : String) : Bytes

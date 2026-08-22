@@ -48,6 +48,34 @@ private class ReleasedLifetimeSafetySelection < UIng::Table::Selection
   end
 end
 
+private class ReleasedLifetimeSafetyAttribute < UIng::Area::Attribute
+  def initialize
+    super(Pointer(UIng::LibUI::Attribute).null)
+    self.released = true
+  end
+end
+
+private class ReleasedLifetimeSafetyAttributedString < UIng::Area::AttributedString
+  def initialize
+    super(Pointer(UIng::LibUI::AttributedString).null)
+    @released = true
+  end
+end
+
+private class ReleasedLifetimeSafetyOpenTypeFeatures < UIng::OpenTypeFeatures
+  def initialize
+    super(Pointer(UIng::LibUI::OpenTypeFeatures).null)
+    @released = true
+  end
+end
+
+private class ReleasedLifetimeSafetyTextLayout < UIng::Area::Draw::TextLayout
+  def initialize
+    @ref_ptr = Pointer(UIng::LibUI::DrawTextLayout).null
+    @released = true
+  end
+end
+
 private class LifetimeSafetyModel < UIng::Table::Model
   getter native_freed = false
 
@@ -86,6 +114,61 @@ describe "lifetime safety" do
     expect_raises(Exception, /already been released/) { selection.num_rows }
     expect_raises(Exception, /already been released/) { selection.rows }
     expect_raises(Exception, /already been released/) { selection.rows_ptr }
+  end
+
+  it "rejects every Attribute operation after free" do
+    attribute = ReleasedLifetimeSafetyAttribute.new
+
+    expect_raises(Exception, /already been released/) { attribute.type }
+    expect_raises(Exception, /already been released/) { attribute.family }
+    expect_raises(Exception, /already been released/) { attribute.size }
+    expect_raises(Exception, /already been released/) { attribute.weight }
+    expect_raises(Exception, /already been released/) { attribute.italic }
+    expect_raises(Exception, /already been released/) { attribute.stretch }
+    expect_raises(Exception, /already been released/) { attribute.color }
+    expect_raises(Exception, /already been released/) { attribute.underline }
+    expect_raises(Exception, /already been released/) { attribute.underline_color }
+    expect_raises(Exception, /already been released/) { attribute.features }
+    expect_raises(Exception, /already been released/) { attribute.to_unsafe }
+  end
+
+  it "rejects every AttributedString operation after free" do
+    string = ReleasedLifetimeSafetyAttributedString.new
+    attribute = ReleasedLifetimeSafetyAttribute.new
+
+    expect_raises(Exception, /already been released/) { string.string }
+    expect_raises(Exception, /already been released/) { string.len }
+    expect_raises(Exception, /already been released/) { string.append_unattributed("x") }
+    expect_raises(Exception, /already been released/) { string.insert_at_unattributed("x", 0) }
+    expect_raises(Exception, /already been released/) { string.delete(0, 0) }
+    expect_raises(Exception, /already been released/) { string.set_attribute(attribute, 0, 0) }
+    expect_raises(Exception, /already been released/) do
+      string.for_each_attribute { |_attribute, _start, _end| 0_i32 }
+    end
+    expect_raises(Exception, /already been released/) { string.num_graphemes }
+    expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }
+    expect_raises(Exception, /already been released/) { string.grapheme_to_byte_index(0) }
+    expect_raises(Exception, /already been released/) { string.to_unsafe }
+  end
+
+  it "rejects every OpenTypeFeatures operation after free" do
+    features = ReleasedLifetimeSafetyOpenTypeFeatures.new
+
+    expect_raises(Exception, /already been released/) { features.clone }
+    expect_raises(Exception, /already been released/) { features.add("liga") }
+    expect_raises(Exception, /already been released/) { features.remove("liga") }
+    expect_raises(Exception, /already been released/) { features.get("liga") }
+    expect_raises(Exception, /already been released/) do
+      features.for_each { |_tag, _value| }
+    end
+    expect_raises(Exception, /already been released/) { features.to_unsafe }
+  end
+
+  it "rejects every TextLayout operation after free" do
+    layout = ReleasedLifetimeSafetyTextLayout.new
+
+    expect_raises(Exception, /already been released/) { layout.extents }
+    expect_raises(Exception, /already been released/) { layout.to_unsafe }
   end
 
   it "uninitializes UIng when its init block raises" do
