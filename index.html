@@ -1053,17 +1053,16 @@ box.append(button)
 window.child <span class="o">=</span> box
 
 window.destroy <span class="c"># also destroys box and button</span></code></pre>
-<p>If you want to reuse a child, detach it first when the container supports it:</p>
-<pre><code class="language-crystal">box.delete(button) <span class="c"># detaches; button is still alive</span>
+<p>If you want to reuse a child, detach it first:</p>
+<pre><code class="language-crystal">button.detach <span class="c"># still alive</span>
 other_box.append(button)</code></pre>
 <p>Container behavior:</p>
 <ul>
-<li><code>Window</code> and <code>Group</code> have one child. Assigning a new child detaches the old child without destroying it. Destroying the <code>Window</code> or <code>Group</code> destroys its current child.</li>
-<li><code>Box</code>, <code>Form</code>, and <code>Tab</code> support <code>delete(index)</code> and <code>delete(child)</code>. <code>delete</code> detaches the child; call <code>child.destroy</code> afterwards if you are done with it.</li>
-<li><code>Grid</code> does not currently expose a delete API. Destroy the whole grid, or build a new grid if you need to remove children.</li>
+<li><code>Window</code> and <code>Group</code> have one child. Assigning <code>nil</code> or a new child detaches the old child without destroying it. Destroying the <code>Window</code> or <code>Group</code> destroys its current child.</li>
+<li><code>Box</code>, <code>Form</code>, <code>Tab</code>, and <code>Grid</code> support <code>delete(child)</code>; the first three also support <code>delete(index)</code>.</li>
 <li>Controls with no parent can be destroyed directly with <code>destroy</code>.</li>
 </ul>
-<p>Window closing has one special rule. In <code>Window#on_closing</code>, return <code>true</code> to let libui-ng destroy the native window, or <code>false</code> to keep it open. Do not call <code>window.destroy</code> inside that callback.</p>
+<p>Window closing has one special rule. In <code>Window#on_closing</code>, return <code>true</code> to let libui-ng destroy the native window, or <code>false</code> to keep it open. Do not call <code>window.destroy</code> inside that callback. Menu callbacks receive <code>Window?</code> because macOS can invoke them without an active window.</p>
 <pre><code class="language-crystal">window.on_closing <span class="k">do</span>
   <span class="t">UIng</span>.quit
   <span class="n">true</span>

@@ -528,7 +528,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L4" target="_blank">
         uing/window.cr
       </a>
     
@@ -599,7 +599,17 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#child%3D%28control%3AUIng%3A%3AControl%7CNil%29%3ANil-instance-method" class="signature"><strong>#child=</strong>(control : UIng::Control | Nil) : Nil</a>
+        <a href="#child%3AControl%7CNil-instance-method" class="signature"><strong>#child</strong> : Control | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#child%3D%28control%3AControl%29%3ANil-instance-method" class="signature"><strong>#child=</strong>(control : Control) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#child%3D%28control%3ANil%29%3ANil-instance-method" class="signature"><strong>#child=</strong>(control : Nil) : Nil</a>
         
       </li>
     
@@ -610,8 +620,6 @@
     
       <li class="entry-summary">
         <a href="#delete%28child%3AControl%29-instance-method" class="signature"><strong>#delete</strong>(child : Control)</a>
-        
-          <div class="summary"><p>Raises: Not supported for this container.</p></div>
         
       </li>
     
@@ -720,7 +728,7 @@
       <li class="entry-summary">
         <a href="#set_child%28control%3AControl%29%3ANil-instance-method" class="signature"><strong>#set_child</strong>(control : Control) : Nil</a>
         
-          <div class="summary"><p>alias for <code><a href="../UIng/Window.html#child%3D%28control%3AUIng%3A%3AControl%7CNil%29%3ANil-instance-method">#child=</a></code></p></div>
+          <div class="summary"><p>alias for <code><a href="../UIng/Window.html#child%3D%28control%3AControl%29%3ANil-instance-method">#child=</a></code></p></div>
         
       </li>
     
@@ -785,6 +793,11 @@
     <a href="../UIng/Control.html#destroy%3ANil-instance-method" class="tooltip">
       <span>destroy : Nil</span>
     destroy</a>, 
+    
+  
+    <a href="../UIng/Control.html#detach%3Aself-instance-method" class="tooltip">
+      <span>detach : <span class="k">self</span></span>
+    detach</a>, 
     
   
     <a href="../UIng/Control.html#disable%3ANil-instance-method" class="tooltip">
@@ -940,7 +953,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -956,7 +969,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -972,7 +985,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -988,7 +1001,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L23" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1020,7 +1033,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L103" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1036,23 +1049,55 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L98" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="child=(control:UIng::Control|Nil):Nil-instance-method">
+    <div class="entry-detail" id="child:Control|Nil-instance-method">
       <div class="signature">
         
-        def <strong>child=</strong>(control : <a href="../UIng/Control.html">UIng::Control</a> | Nil) : Nil
+        def <strong>child</strong> : <a href="../UIng/Control.html">Control</a> | Nil
 
-        <a class="method-permalink" href="#child%3D%28control%3AUIng%3A%3AControl%7CNil%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#child%3AControl%7CNil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L106" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L127" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="child=(control:Control):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>child=</strong>(control : <a href="../UIng/Control.html">Control</a>) : Nil
+
+        <a class="method-permalink" href="#child%3D%28control%3AControl%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L107" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="child=(control:Nil):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>child=</strong>(control : Nil) : Nil
+
+        <a class="method-permalink" href="#child%3D%28control%3ANil%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L120" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1068,7 +1113,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L77" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1081,15 +1126,10 @@
         <a class="method-permalink" href="#delete%28child%3AControl%29-instance-method">#</a>
       </div>
       
-        <div class="doc">
-          
-          <p>Raises: Not supported for this container.</p>
-        </div>
-      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L55" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L53" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1105,7 +1145,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1121,7 +1161,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L94" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L95" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1137,7 +1177,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L90" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L91" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1153,7 +1193,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L87" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1169,7 +1209,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L133" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L150" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1185,7 +1225,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L129" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L146" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1201,7 +1241,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L260" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L275" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1217,7 +1257,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L264" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L279" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1233,7 +1273,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L196" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L213" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1249,7 +1289,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L192" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1265,7 +1305,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L227" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L242" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1281,7 +1321,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L154" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L171" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1297,7 +1337,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L245" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L260" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1313,7 +1353,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L250" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L265" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1329,7 +1369,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L69" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1345,7 +1385,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L150" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L167" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1366,7 +1406,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L146" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L163" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1382,7 +1422,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L158" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1398,7 +1438,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L154" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1414,7 +1454,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L255" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L270" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1429,13 +1469,13 @@
       
         <div class="doc">
           
-          <p>alias for <code><a href="../UIng/Window.html#child%3D%28control%3AUIng%3A%3AControl%7CNil%29%3ANil-instance-method">#child=</a></code></p>
+          <p>alias for <code><a href="../UIng/Window.html#child%3D%28control%3AControl%29%3ANil-instance-method">#child=</a></code></p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L119" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L136" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1456,7 +1496,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L124" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1472,7 +1512,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1488,7 +1528,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1504,7 +1544,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1520,7 +1560,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1536,7 +1576,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/9f5f9114db4f85cc3e3a1da04aaa23e388220ce7/src/uing/window.cr#L268" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/6a0aaea4773209f2fe9755171d7e06ed9d88b916/src/uing/window.cr#L283" target="_blank">View source</a>]
         
       </div>
     </div>
