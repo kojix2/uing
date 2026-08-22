@@ -45,8 +45,6 @@ module UIng
       {result, value.to_i32}
     end
 
-    # FIXME : Is this appropriate for OpenTypeFeatures?
-
     def for_each(&callback : (String, Int32) -> _) : Nil
       check_available
       @for_each_box = ::Box.box(callback)

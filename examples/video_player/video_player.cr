@@ -37,7 +37,7 @@ class VideoPlayerApp
     # Draw handler - simple drawing for now
     handler.draw do |_area, _params|
       # For now, just do basic drawing - mpv rendering will be handled separately
-      # TODO: Integrate mpv rendering here once we solve the closure issue
+      # mpv rendering integration is pending resolution of the closure issue.
     end
 
     # Mouse event handler - do nothing for now

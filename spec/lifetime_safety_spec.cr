@@ -29,7 +29,7 @@ module UIng
 end
 
 private class LifetimeSafetyMenuItem < UIng::MenuItem
-  getter callback_was_retained_when_cleared = false
+  getter? callback_was_retained_when_cleared = false
 
   def callback_retained? : Bool
     !@on_clicked_box.nil?
@@ -103,7 +103,7 @@ private class ReleasedLifetimeSafetyTextLayout < UIng::Area::Draw::TextLayout
 end
 
 private class LifetimeSafetyModel < UIng::Table::Model
-  getter native_freed = false
+  getter? native_freed = false
 
   def initialize
     super(Pointer(UIng::LibUI::TableModel).null)
@@ -213,7 +213,7 @@ describe "lifetime safety" do
 
     item.destroy
 
-    item.callback_was_retained_when_cleared.should be_true
+    item.callback_was_retained_when_cleared?.should be_true
   end
 
   it "invalidates menu wrappers and resets special items after uninit" do
@@ -242,7 +242,7 @@ describe "lifetime safety" do
     table.release_for_spec
     model.tracked_table_count.should eq(0)
     model.free
-    model.native_freed.should be_true
+    model.native_freed?.should be_true
   end
 
   it "allows model free immediately after its Table becomes DestroyPending" do
@@ -252,7 +252,7 @@ describe "lifetime safety" do
     table.destroy
     model.free
 
-    model.native_freed.should be_true
+    model.native_freed?.should be_true
     model.tracked_table_count.should eq(1)
     expect_raises(Exception, /already been released/) { model.to_unsafe }
 

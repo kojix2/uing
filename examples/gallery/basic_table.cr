@@ -32,7 +32,7 @@ hbox.append(table, true)
 main_window.show
 
 main_window.on_closing do
-  # FIXME: https://github.com/kojix2/uing/issues/6
+  # Detach and destroy the table before freeing its model.
   hbox.delete(0)
   table.destroy    # Destroy table firs
   table_model.free # Then free model

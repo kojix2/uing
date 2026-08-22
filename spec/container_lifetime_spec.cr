@@ -17,7 +17,7 @@ private class DetachableControl < UIng::Control
 end
 
 private class DetachableWindow < UIng::Window
-  getter native_child_cleared = false
+  getter? native_child_cleared = false
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Window).null
@@ -32,7 +32,7 @@ private class DetachableWindow < UIng::Window
 end
 
 private class DetachableGroup < UIng::Group
-  getter native_child_cleared = false
+  getter? native_child_cleared = false
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Group).null
@@ -47,7 +47,7 @@ private class DetachableGroup < UIng::Group
 end
 
 private class DetachableGrid < UIng::Grid
-  getter native_child_deleted = false
+  getter? native_child_deleted = false
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Grid).null
@@ -64,7 +64,7 @@ private class DetachableGrid < UIng::Grid
 end
 
 private class DetachableBox < UIng::Box
-  getter native_child_deleted = false
+  getter? native_child_deleted = false
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Box).null
@@ -81,7 +81,7 @@ private class DetachableBox < UIng::Box
 end
 
 private class DetachableForm < UIng::Form
-  getter native_child_deleted = false
+  getter? native_child_deleted = false
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Form).null
@@ -98,7 +98,7 @@ private class DetachableForm < UIng::Form
 end
 
 private class DetachableTab < UIng::Tab
-  getter native_child_deleted = false
+  getter? native_child_deleted = false
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Tab).null
@@ -121,7 +121,7 @@ private def verify_child_deletion(container : T) : Nil forall T
   child.detach
 
   child.parent.should be_nil
-  container.native_child_deleted.should be_true
+  container.native_child_deleted?.should be_true
 end
 
 describe "container lifetime" do
@@ -167,7 +167,7 @@ describe "container lifetime" do
 
     window.child.should be_nil
     child.parent.should be_nil
-    window.native_child_cleared.should be_true
+    window.native_child_cleared?.should be_true
   end
 
   it "clears and detaches a Group child" do
@@ -180,7 +180,7 @@ describe "container lifetime" do
 
     group.child.should be_nil
     child.parent.should be_nil
-    group.native_child_cleared.should be_true
+    group.native_child_cleared?.should be_true
   end
 
   it "detaches a Grid child through uiGridDelete" do
@@ -191,7 +191,7 @@ describe "container lifetime" do
     child.detach
 
     child.parent.should be_nil
-    grid.native_child_deleted.should be_true
+    grid.native_child_deleted?.should be_true
   end
 
   it "preserves Box, Form, and Tab child deletion semantics" do

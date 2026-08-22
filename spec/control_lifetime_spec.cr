@@ -13,7 +13,7 @@ end
 private class LifetimeControl < UIng::Control
   @ref_ptr : Pointer(UIng::LibUI::Button)
 
-  getter cleaned_up = false
+  getter? cleaned_up = false
 
   def initialize(address : UInt64 = 0_u64, register : Bool = false)
     @ref_ptr = Pointer(UIng::LibUI::Button).new(address)
@@ -176,11 +176,11 @@ describe UIng::Control do
     control.state_name.should eq("Alive")
     control.destroy
     control.state_name.should eq("DestroyPending")
-    control.cleaned_up.should be_false
+    control.cleaned_up?.should be_false
 
     UIng.native_control_destroyed_for_spec(ptr)
     control.state_name.should eq("Destroyed")
-    control.cleaned_up.should be_true
+    control.cleaned_up?.should be_true
   end
 
   it "marks a closing Window pending before native destruction is flushed" do
