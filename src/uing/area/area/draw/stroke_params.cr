@@ -6,8 +6,8 @@ module UIng
 
         def initialize(cap : UIng::Area::Draw::LineCap = UIng::Area::Draw::LineCap::Flat,
                        join : UIng::Area::Draw::LineJoin = UIng::Area::Draw::LineJoin::Miter,
-                       thickness : Number = 0.0,
-                       miter_limit : Number = 0.0,
+                       thickness : Number = 1.0,
+                       miter_limit : Number = LibUI::DRAWDEFAULTMITERLIMIT,
                        dash_phase : Number = 0.0,
                        dashes : Enumerable(Float64)? = nil)
           @cstruct = LibUI::DrawStrokeParams.new
