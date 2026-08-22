@@ -31,6 +31,10 @@ end
 private class LifetimeSafetyMenuItem < UIng::MenuItem
   getter callback_was_retained_when_cleared = false
 
+  def callback_retained? : Bool
+    !@on_clicked_box.nil?
+  end
+
   def initialize
     super(Pointer(UIng::LibUI::MenuItem).null)
     @on_clicked_box = Pointer(Void).new(1_u64)
@@ -38,6 +42,28 @@ private class LifetimeSafetyMenuItem < UIng::MenuItem
 
   private def clear_native_callback : Nil
     @callback_was_retained_when_cleared = !@on_clicked_box.nil?
+  end
+end
+
+class UIng::Menu
+  def initialize(@ref_ptr : Pointer(UIng::LibUI::Menu), *, lifetime_spec : Bool)
+    @@mutex.synchronize do
+      @@menu << self
+    end
+  end
+
+  def add_item_for_lifetime_spec(item : UIng::MenuItem) : Nil
+    @menu_items << item
+  end
+
+  def self.reserve_special_items_for_lifetime_spec : Nil
+    @@has_quit_item = true
+    @@has_preferences_item = true
+    @@has_about_item = true
+  end
+
+  def self.special_items_reserved_for_lifetime_spec? : Bool
+    @@has_quit_item && @@has_preferences_item && @@has_about_item
   end
 end
 
@@ -188,6 +214,22 @@ describe "lifetime safety" do
     item.destroy
 
     item.callback_was_retained_when_cleared.should be_true
+  end
+
+  it "invalidates menu wrappers and resets special items after uninit" do
+    menu = UIng::Menu.new(Pointer(UIng::LibUI::Menu).null, lifetime_spec: true)
+    item = LifetimeSafetyMenuItem.new
+    menu.add_item_for_lifetime_spec(item)
+    UIng::Menu.reserve_special_items_for_lifetime_spec
+
+    UIng::Menu.reset_after_uninit
+
+    UIng::Menu.special_items_reserved_for_lifetime_spec?.should be_false
+    item.callback_retained?.should be_false
+    expect_raises(Exception, /already been released/) { menu.to_unsafe }
+    expect_raises(Exception, /already been released/) { menu.append_item("Item") }
+    expect_raises(Exception, /already been released/) { item.to_unsafe }
+    expect_raises(Exception, /already been released/) { item.enable }
   end
 
   it "prevents freeing a model while a registered Table is alive" do

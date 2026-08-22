@@ -26,22 +26,27 @@ module UIng
     # no new_menu_item function in libui
 
     def enable : Nil
+      check_available
       LibUI.menu_item_enable(@ref_ptr)
     end
 
     def disable : Nil
+      check_available
       LibUI.menu_item_disable(@ref_ptr)
     end
 
     def checked? : Bool
+      check_available
       LibUI.menu_item_checked(@ref_ptr)
     end
 
     def checked=(checked : Bool) : Nil
+      check_available
       LibUI.menu_item_set_checked(@ref_ptr, checked)
     end
 
     def on_clicked(&block : UIng::Window? -> Nil) : Nil
+      check_available
       # Convert to the internal callback format that matches LibUI expectation
       callback2 = ->(w : Pointer(LibUI::Window)) : Nil {
         block.call(window_from_native(w))
@@ -69,7 +74,20 @@ module UIng
     end
 
     def to_unsafe
+      check_available
       @ref_ptr
+    end
+
+    # Marks an item invalid after libui-ng has released all menus in uiUninit().
+    # This must not call back into native code because the pointer is already dead.
+    # :nodoc:
+    def invalidate_after_uninit : Nil
+      @on_clicked_box = nil
+      @released = true
+    end
+
+    private def check_available : Nil
+      raise "MenuItem has already been released" if @released
     end
   end
 end

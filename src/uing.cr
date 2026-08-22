@@ -86,6 +86,7 @@ module UIng
 
   def self.uninit : Nil
     LibUI.uninit
+    Menu.reset_after_uninit
     # Clear global callback arrays on uninit to prevent memory leaks
     @@callback_mutex.synchronize do
       @@timer_callback_boxes.clear
