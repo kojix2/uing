@@ -35,7 +35,7 @@ module UIng
       self.sec = time.second
       self.wday = time.day_of_week.to_i % 7 # 0 = Sunday
       self.yday = time.day_of_year - 1      # 0-based
-      self.isdst = 0                        # Not handling DST
+      self.isdst = -1                       # Let mktime determine whether DST applies
       {% unless flag?(:windows) %}
         self.gmtoff = time.offset.to_i64
         self.zone = time.location.name
