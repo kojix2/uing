@@ -528,7 +528,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L2" target="_blank">
         uing/menu_item.cr
       </a>
     
@@ -599,12 +599,19 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#invalidate_after_uninit%3ANil-instance-method" class="signature"><strong>#invalidate_after_uninit</strong> : Nil</a>
+        
+          <div class="summary"><p>Marks an item invalid after libui-ng has released all menus in uiUninit().</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#on_clicked%28%26block%3AUIng%3A%3AWindow%7CNil-%3ENil%29%3ANil-instance-method" class="signature"><strong>#on_clicked</strong>(&block : UIng::Window | Nil -> Nil) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#to_unsafe%3APointer%28Void%29-instance-method" class="signature"><strong>#to_unsafe</strong> : Pointer(Void)</a>
+        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
         
       </li>
     
@@ -663,7 +670,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -695,7 +702,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L43" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -711,7 +718,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -727,7 +734,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -743,7 +750,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L33" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -759,7 +766,30 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L28" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="invalidate_after_uninit:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>invalidate_after_uninit</strong> : Nil
+
+        <a class="method-permalink" href="#invalidate_after_uninit%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Marks an item invalid after libui-ng has released all menus in uiUninit().
+This must not call back into native code because the pointer is already dead.
+:nodoc:</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L84" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -775,23 +805,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L44" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L48" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="to_unsafe:Pointer(Void)-instance-method">
+    <div class="entry-detail" id="to_unsafe-instance-method">
       <div class="signature">
         
-        def <strong>to_unsafe</strong> : Pointer(Void)
+        def <strong>to_unsafe</strong>
 
-        <a class="method-permalink" href="#to_unsafe%3APointer%28Void%29-instance-method">#</a>
+        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d24903dcb0ffd16ed9caf98d622cb1ffc4600f66/src/uing/menu_item.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/e54b990741514e48c0b9ac232d6a0fb4be73e53c/src/uing/menu_item.cr#L76" target="_blank">View source</a>]
         
       </div>
     </div>
