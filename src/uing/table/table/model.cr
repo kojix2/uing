@@ -19,6 +19,7 @@ module UIng
   class Table < Control
     class Model
       @released : Bool = false
+      @tables = Set(Table).new
 
       # Store Table::Model::Handler reference to prevent GC collection
       # IMPORTANT: This prevents GC of handler while model is alive
@@ -37,10 +38,24 @@ module UIng
       # Calling this while Tables are still active will cause crashes.
       def free : Nil
         return if @released
+        unless @tables.empty?
+          raise "Table::Model cannot be freed while it is still used by a Table"
+        end
         LibUI.free_table_model(@ref_ptr)
         @released = true
         # Clear handler reference to allow GC
         @model_handler_ref = nil
+      end
+
+      # Internal lifetime bookkeeping used by Table. Keeping the wrappers here
+      # also prevents a live native Table from outliving its Crystal wrapper.
+      protected def register(table : Table) : Nil
+        check_available
+        @tables.add(table)
+      end
+
+      protected def unregister(table : Table) : Nil
+        @tables.delete(table)
       end
 
       private def check_available : Nil

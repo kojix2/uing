@@ -72,8 +72,11 @@ module UIng
 
   def self.init(&)
     init
-    yield
-    uninit
+    begin
+      yield
+    ensure
+      uninit
+    end
   end
 
   def self.init(init_options : Pointer(LibUI::InitOptions)) : Nil

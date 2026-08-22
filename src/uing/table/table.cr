@@ -19,6 +19,7 @@ module UIng
       table_params = Params.new(model, row_background_color_model_column)
       @ref_ptr = LibUI.new_table(table_params)
       @table_model_ref = model
+      model.register(self)
     end
 
     protected def before_destroy : Nil
@@ -26,6 +27,10 @@ module UIng
       @on_row_double_clicked_box = nil
       @on_header_clicked_box = nil
       @on_selection_changed_box = nil
+      if model = @table_model_ref
+        model.unregister(self)
+        @table_model_ref = nil
+      end
     end
 
     def on_row_clicked(&block : LibC::Int -> Nil) : Nil

@@ -51,15 +51,18 @@ module UIng
       end
 
       def num_rows : Int32
+        check_available
         @ptr.value.num_rows
       end
 
       def rows : Array(Int32)
+        check_available
         rows_ptr = self.rows_ptr
         Array.new(num_rows) { |i| rows_ptr[i] }
       end
 
       def rows_ptr : Pointer(Int32)
+        check_available
         @ptr.value.rows
       end
 
@@ -68,6 +71,10 @@ module UIng
         return if @released # Prevent double-free
         LibUI.free_table_selection(@ptr)
         @released = true
+      end
+
+      private def check_available : Nil
+        raise "Table::Selection has already been released" if @released
       end
 
       def to_unsafe

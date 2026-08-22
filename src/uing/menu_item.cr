@@ -10,8 +10,17 @@ module UIng
 
     def destroy
       return if @released
+      clear_native_callback
       @on_clicked_box = nil
       @released = true
+    end
+
+    private def clear_native_callback : Nil
+      LibUI.menu_item_on_clicked(
+        @ref_ptr,
+        ->(_sender, _window, _data) : Nil { },
+        Pointer(Void).null
+      )
     end
 
     # no new_menu_item function in libui
