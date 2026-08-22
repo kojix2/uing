@@ -79,6 +79,7 @@ module UIng
     fun free_text = uiFreeText(text : Pointer(LibC::Char))
     # Control is a struct
     fun control_destroy = uiControlDestroy(c : Pointer(Control))
+    fun control_on_destroyed = uiControlOnDestroyed(c : Pointer(Control), f : (Pointer(Control), Pointer(Void) -> Void), data : Pointer(Void))
     fun control_handle = uiControlHandle(c : Pointer(Control)) : Pointer(Void)
     fun control_parent = uiControlParent(c : Pointer(Control)) : Pointer(Control)
     fun control_set_parent = uiControlSetParent(c : Pointer(Control), parent : Pointer(Control))
@@ -365,6 +366,7 @@ module UIng
     alias Grid = Void
     fun grid_append = uiGridAppend(g : Pointer(Grid), c : Pointer(Control), left : LibC::Int, top : LibC::Int, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
     fun grid_insert_at = uiGridInsertAt(g : Pointer(Grid), c : Pointer(Control), existing : Pointer(Control), at : UIng::Grid::At, xspan : LibC::Int, yspan : LibC::Int, hexpand : LibC::Int, halign : Align, vexpand : LibC::Int, valign : Align)
+    fun grid_delete = uiGridDelete(g : Pointer(Grid), c : Pointer(Control))
     fun grid_padded = uiGridPadded(g : Pointer(Grid)) : Bool
     fun grid_set_padded = uiGridSetPadded(g : Pointer(Grid), padded : Bool)
     fun new_grid = uiNewGrid : Pointer(Grid)

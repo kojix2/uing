@@ -49,12 +49,18 @@ private class ReleasedLifetimeSafetySelection < UIng::Table::Selection
 end
 
 private class LifetimeSafetyModel < UIng::Table::Model
+  getter native_freed = false
+
   def initialize
     super(Pointer(UIng::LibUI::TableModel).null)
   end
 
   def tracked_table_count : Int32
     @tables.size
+  end
+
+  protected def free_native : Nil
+    @native_freed = true
   end
 end
 
@@ -66,7 +72,10 @@ private class LifetimeSafetyTable < UIng::Table
   end
 
   def release_for_spec : Nil
-    mark_released_from_parent_destroy
+    after_destroy
+  end
+
+  protected def destroy_native : Nil
   end
 end
 
@@ -104,6 +113,23 @@ describe "lifetime safety" do
 
     model.tracked_table_count.should eq(1)
     expect_raises(Exception, /still used by a Table/) { model.free }
+
+    table.release_for_spec
+    model.tracked_table_count.should eq(0)
+    model.free
+    model.native_freed.should be_true
+  end
+
+  it "allows model free immediately after its Table becomes DestroyPending" do
+    model = LifetimeSafetyModel.new
+    table = LifetimeSafetyTable.new(model)
+
+    table.destroy
+    model.free
+
+    model.native_freed.should be_true
+    model.tracked_table_count.should eq(1)
+    expect_raises(Exception, /already been released/) { model.to_unsafe }
 
     table.release_for_spec
     model.tracked_table_count.should eq(0)

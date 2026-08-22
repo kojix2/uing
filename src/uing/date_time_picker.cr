@@ -21,14 +21,16 @@ module UIng
         raise "Invalid type: #{type}"
       end
       @tm = UIng::TM.new
+      register_control
     end
 
     def initialize
       @ref_ptr = LibUI.new_date_time_picker
       @tm = UIng::TM.new
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_changed_box = nil
     end
 

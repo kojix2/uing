@@ -6,6 +6,7 @@ module UIng
 
     def initialize(text : String)
       @ref_ptr = LibUI.new_label(text)
+      register_control
     end
 
     def text : String?

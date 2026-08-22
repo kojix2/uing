@@ -704,8 +704,8 @@ def setup_menus_3d
   end
 
   UIng::Menu.new("Help") do
-    append_about_item.on_clicked do |window|
-      window.msg_box("About", "Boid 3D Simulation\nA 3D flocking behavior demonstration with perspective projection\n\nPress [Space] to reset")
+    append_about_item.on_clicked do
+      UIng.msg_box("About", "Boid 3D Simulation\nA 3D flocking behavior demonstration with perspective projection\n\nPress [Space] to reset")
     end
   end
 end

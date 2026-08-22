@@ -34,17 +34,18 @@ module UIng
       end
 
       # Explicitly free the Table::Model.
-      # WARNING: Only call this AFTER all Tables using this model are destroyed.
-      # Calling this while Tables are still active will cause crashes.
+      # Tables may be DestroyPending; libui-ng defers the native model free until
+      # those table destructions have completed. An Alive Table still rejects it.
       def free : Nil
         return if @released
-        unless @tables.empty?
+        if @tables.any? { |table| !table.released? }
           raise "Table::Model cannot be freed while it is still used by a Table"
         end
-        LibUI.free_table_model(@ref_ptr)
+        free_native
         @released = true
-        # Clear handler reference to allow GC
-        @model_handler_ref = nil
+        # If destruction is deferred, keep the handler alive until the final
+        # Table destroyed notification removes it from @tables.
+        @model_handler_ref = nil if @tables.empty?
       end
 
       # Internal lifetime bookkeeping used by Table. Keeping the wrappers here
@@ -56,6 +57,11 @@ module UIng
 
       protected def unregister(table : Table) : Nil
         @tables.delete(table)
+        @model_handler_ref = nil if @released && @tables.empty?
+      end
+
+      protected def free_native : Nil
+        LibUI.free_table_model(@ref_ptr)
       end
 
       private def check_available : Nil

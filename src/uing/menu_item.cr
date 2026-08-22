@@ -41,10 +41,10 @@ module UIng
       LibUI.menu_item_set_checked(@ref_ptr, checked)
     end
 
-    def on_clicked(&block : UIng::Window -> Nil) : Nil
+    def on_clicked(&block : UIng::Window? -> Nil) : Nil
       # Convert to the internal callback format that matches LibUI expectation
       callback2 = ->(w : Pointer(LibUI::Window)) : Nil {
-        block.call(UIng::Window.new(w))
+        block.call(window_from_native(w))
       }
       @on_clicked_box = ::Box.box(callback2)
       if boxed_data = @on_clicked_box
@@ -61,6 +61,11 @@ module UIng
           boxed_data
         )
       end
+    end
+
+    private def window_from_native(window : Pointer(LibUI::Window)) : Window?
+      return if window.null?
+      ControlRegistry.lookup(window).as?(Window) || Window.new(window, borrowed: true)
     end
 
     def to_unsafe

@@ -16,9 +16,10 @@ module UIng
       if read_only
         self.read_only = true
       end
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_changed_box = nil
     end
 

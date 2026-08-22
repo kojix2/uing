@@ -15,8 +15,13 @@ module UIng
       end
     end
 
-    # Flag to track if the control is released (prevents double-free)
-    @released : Bool = false
+    private enum State
+      Alive
+      DestroyPending
+      Destroyed
+    end
+
+    @state : State = State::Alive
 
     # Parent reference (for GC protection and tree uniqueness)
     # Use `__parent__` and `__set_parent__` if you need to access native functions for some reason
@@ -49,7 +54,7 @@ module UIng
     end
 
     protected def check_available : Nil
-      raise "#{self.class} has already been destroyed" if @released
+      raise "#{self.class} has already been destroyed" unless @state.alive?
     end
 
     protected def check_can_destroy : Nil
@@ -59,41 +64,51 @@ module UIng
       end
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
     end
 
-    # libui-ng container destructors call uiControlDestroy() on their children.
-    # The child Crystal wrapper does not see Control#destroy in that path, so
-    # containers call this before destroying their own native control.
-    protected def mark_released_from_parent_destroy : Nil
-      return if @released
-      before_destroy
+    protected def mark_destroyed_from_native : Nil
+      return if @state.destroyed?
+      @state = State::Destroyed
       @parent = nil
-      @released = true
+      after_destroy
     end
 
-    # Some native callbacks destroy a root control inside libui-ng itself. The
-    # close-window callback is the important example: returning true from
-    # uiWindowOnClosing triggers uiControlDestroy(uiControl(window)) in C.
-    protected def mark_released_from_native_destroy : Nil
-      return if @released
-      before_destroy
-      @parent = nil
-      @released = true
+    protected def register_control(install_destroy_callback : Bool = true) : Nil
+      ControlRegistry.register(self, @ref_ptr.as(Pointer(LibUI::Control)), install_destroy_callback)
+    end
+
+    protected def lifecycle_state : State
+      @state
+    end
+
+    protected def mark_destroy_pending : Bool
+      return false unless @state.alive?
+      @state = State::DestroyPending
+      true
+    end
+
+    protected def destroy_native : Nil
+      LibUI.control_destroy(UIng.to_control(@ref_ptr))
     end
 
     def released? : Bool
-      @released
+      !@state.alive?
     end
 
     def destroy : Nil
-      return if @released
+      return unless @state.alive?
       # libui-ng rejects uiFreeControl() while the control still has a parent.
       # Ask callers to detach with the container's delete/remove API instead.
       check_can_destroy
-      before_destroy
-      LibUI.control_destroy(UIng.to_control(@ref_ptr))
-      @released = true
+      return unless mark_destroy_pending
+      destroy_native
+    end
+
+    def detach : self
+      check_available
+      @parent.try &.delete(self)
+      self
     end
 
     def handle
@@ -166,7 +181,7 @@ module UIng
     abstract def to_unsafe
 
     def finalize
-      @released = true
+      @state = State::Destroyed
     end
   end
 end

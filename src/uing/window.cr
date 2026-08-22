@@ -22,6 +22,7 @@ module UIng
 
     def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
       @borrowed = borrowed
+      register_control
     end
 
     def initialize(title, width, height, menubar = false, margined : Bool = false)
@@ -30,6 +31,7 @@ module UIng
         @@windows << self
       end
       self.margined = true if margined
+      register_control
     end
 
     def destroy : Nil
@@ -37,7 +39,7 @@ module UIng
       super
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @@mutex.synchronize do
         @@windows.delete(self)
       end
@@ -45,15 +47,14 @@ module UIng
       @on_content_size_changed_box = nil
       @on_closing_box = nil
       @on_focus_changed_box = nil
-      # uiWindowDestroy destroys its child on every backend, so keep the
-      # Crystal-side wrapper graph in the same released state before C does it.
-      @child_ref.try &.mark_released_from_parent_destroy
       @child_ref = nil
     end
 
-    # Raises: Not supported for this container.
     def delete(child : Control)
-      raise "Window does not support delete(child : Control)"
+      unless @child_ref.same?(child)
+        raise "Window does not contain child"
+      end
+      self.child = nil
     end
 
     def title : String?
@@ -103,16 +104,32 @@ module UIng
       LibUI.window_set_borderless(ref_ptr, borderless)
     end
 
-    def child=(control) : Nil
+    def child=(control : Control) : Nil
+      check_available
       control.check_can_move
+      previous_child = @child_ref
       # uiWindowSetChild detaches the existing child; it does not destroy it.
-      # Mirror that detach on the Crystal side so the old wrapper can be reused.
-      if child_ref = @child_ref
-        child_ref.release_ownership
-      end
-      LibUI.window_set_child(ref_ptr, UIng.to_control(control))
+      # Update the Crystal ownership graph only after the native operation
+      # succeeds, so an exception cannot leave the two trees inconsistent.
+      set_native_child(UIng.to_control(control))
+      previous_child.try &.release_ownership
       @child_ref = control
       control.take_ownership(self)
+    end
+
+    def child=(control : Nil) : Nil
+      check_available
+      set_native_child(Pointer(LibUI::Control).null)
+      @child_ref.try &.release_ownership
+      @child_ref = nil
+    end
+
+    def child : Control?
+      @child_ref
+    end
+
+    protected def set_native_child(child : Pointer(LibUI::Control)) : Nil
+      LibUI.window_set_child(ref_ptr, child)
     end
 
     # alias for `child=`
@@ -195,17 +212,7 @@ module UIng
 
     def on_closing(&block : -> Bool)
       wrapper = -> : Bool {
-        should_close = block.call
-        if should_close && !@released
-          # libui-ng will destroy the native window after this callback returns
-          # true; it does not call back into Window#destroy. Mark wrappers first.
-          mark_released_from_native_destroy
-          true
-        else
-          # If user code already called destroy, do not let libui-ng destroy the
-          # same native window a second time.
-          false
-        end
+        handle_closing(block)
       }
       if boxed_data = (@on_closing_box = ::Box.box(wrapper))
         LibUI.window_on_closing(
@@ -222,6 +229,14 @@ module UIng
           boxed_data
         )
       end
+    end
+
+    protected def handle_closing(block : -> Bool) : Bool
+      return false unless block.call
+      # libui-ng calls uiControlDestroy() after this callback returns. Reflect
+      # that commitment immediately, while retaining callback boxes until the
+      # uiControlOnDestroyed notification transitions us to Destroyed.
+      mark_destroy_pending
     end
 
     def on_focus_changed(&block : Bool -> Nil)

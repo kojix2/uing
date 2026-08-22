@@ -20,9 +20,10 @@ module UIng
       @ref_ptr = LibUI.new_table(table_params)
       @table_model_ref = model
       model.register(self)
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_row_clicked_box = nil
       @on_row_double_clicked_box = nil
       @on_header_clicked_box = nil

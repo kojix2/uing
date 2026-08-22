@@ -10,9 +10,10 @@ module UIng
 
     def initialize(min, max)
       @ref_ptr = LibUI.new_slider(min, max)
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_changed_box = nil
       @on_released_box = nil
     end
@@ -20,6 +21,7 @@ module UIng
     def initialize(min, max, value)
       @ref_ptr = LibUI.new_slider(min, max)
       self.value = value
+      register_control
     end
 
     def value : Int32

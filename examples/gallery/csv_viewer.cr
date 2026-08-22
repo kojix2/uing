@@ -56,7 +56,7 @@ class CSVViewer
     # Menus must be created before windows with menubars.
     UIng::Menu.new("File") do
       append_item("Open").on_clicked do |window|
-        if filename = window.open_file
+        if filename = window.try &.open_file
           update_table_with_file(filename)
         end
       end

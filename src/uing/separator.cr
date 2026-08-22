@@ -13,6 +13,7 @@ module UIng
       else
         raise "Invalid orientation: #{orientation}"
       end
+      register_control
     end
 
     def to_unsafe

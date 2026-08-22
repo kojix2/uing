@@ -9,9 +9,10 @@ module UIng
 
     def initialize
       @ref_ptr = LibUI.new_radio_buttons
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_selected_box = nil
     end
 

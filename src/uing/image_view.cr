@@ -11,6 +11,7 @@ module UIng
 
     def initialize
       @ref_ptr = LibUI.new_image_view
+      register_control
     end
 
     def initialize(image : Image, mode : ContentMode = ContentMode::Fit)
@@ -18,6 +19,7 @@ module UIng
       # uiImageViewSetImage copies/retains its own native image; the source Image may be freed after this call.
       LibUI.image_view_set_image(ref_ptr, image.to_unsafe)
       LibUI.image_view_set_content_mode(ref_ptr, mode)
+      register_control
     end
 
     def image=(image : Image?)

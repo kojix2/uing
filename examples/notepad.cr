@@ -60,7 +60,7 @@ class NotepadApp
 
   private def bind_open(open_item)
     # Open file functionality
-    open_item.on_clicked do |window|
+    open_item.on_clicked do
       if file_path = @window.open_file
         begin
           content = File.read(file_path)
@@ -69,7 +69,7 @@ class NotepadApp
           @dirty = false
           refresh_title
         rescue ex
-          window.msg_box_error("Error", "Could not open file: #{ex.message}")
+          UIng.msg_box_error("Error", "Could not open file: #{ex.message}")
         end
       end
     end
@@ -77,7 +77,7 @@ class NotepadApp
 
   private def bind_save(save_item)
     # Save file functionality
-    save_item.on_clicked do |window|
+    save_item.on_clicked do
       if @file_path
         begin
           if path = @file_path
@@ -86,7 +86,7 @@ class NotepadApp
           @dirty = false
           refresh_title
         rescue ex
-          window.msg_box_error("Error", "Could not save file: #{ex.message}")
+          UIng.msg_box_error("Error", "Could not save file: #{ex.message}")
         end
       else
         # If no current file, act like Save As
@@ -106,7 +106,7 @@ class NotepadApp
 
   private def bind_save_as(save_as_item)
     # Save As functionality
-    save_as_item.on_clicked do |window|
+    save_as_item.on_clicked do
       if file_path = @window.save_file
         begin
           File.write(file_path, @entry.text || "")
@@ -114,7 +114,7 @@ class NotepadApp
           @dirty = false
           refresh_title
         rescue ex
-          window.msg_box_error("Error", "Could not save file: #{ex.message}")
+          UIng.msg_box_error("Error", "Could not save file: #{ex.message}")
         end
       end
     end
@@ -134,8 +134,8 @@ class NotepadApp
 
   private def bind_about(about_item)
     # About functionality
-    about_item.on_clicked do |window|
-      window.msg_box("About Notepad", "Simple Notepad Application\nBuilt with UIng (Crystal binding for libui-ng)")
+    about_item.on_clicked do
+      UIng.msg_box("About Notepad", "Simple Notepad Application\nBuilt with UIng (Crystal binding for libui-ng)")
     end
   end
 

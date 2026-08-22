@@ -6,6 +6,7 @@ module UIng
 
     def initialize
       @ref_ptr = LibUI.new_progress_bar
+      register_control
     end
 
     def value : Int32

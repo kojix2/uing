@@ -9,9 +9,10 @@ module UIng
 
     def initialize(text : String)
       @ref_ptr = LibUI.new_button(text)
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_clicked_box = nil
     end
 

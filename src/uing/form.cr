@@ -9,12 +9,10 @@ module UIng
     def initialize(padded : Bool = false)
       @ref_ptr = LibUI.new_form
       self.padded = true if padded
+      register_control
     end
 
-    protected def before_destroy : Nil
-      @children_refs.each do |child|
-        child.mark_released_from_parent_destroy
-      end
+    protected def after_destroy : Nil
       @children_refs.clear
     end
 
@@ -45,9 +43,13 @@ module UIng
 
     def delete(index : Int32) : Nil
       child = @children_refs[index]
-      LibUI.form_delete(ref_ptr, index)
+      delete_native_child(index)
       @children_refs.delete_at(index)
       child.release_ownership
+    end
+
+    protected def delete_native_child(index : Int32) : Nil
+      LibUI.form_delete(ref_ptr, index)
     end
 
     def padded? : Bool

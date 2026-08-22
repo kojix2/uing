@@ -7,8 +7,8 @@ UIng::Menu.new("File") do
     Window.open_file
   end
   append_separator
-  append_preferences_item.on_clicked do |window|
-    window.msg_box("Preferences", "Preferences clicked")
+  append_preferences_item.on_clicked do
+    UIng.msg_box("Preferences", "Preferences clicked")
   end
   append_separator
   append_quit_item
@@ -19,14 +19,14 @@ UIng::Menu.new("Edit") do
     # No-op
   end
   append_separator
-  append_item("Click").on_clicked do |window|
-    window.msg_box("Click", "Click menu clicked")
+  append_item("Click").on_clicked do
+    UIng.msg_box("Click", "Click menu clicked")
   end
 end
 
 UIng::Menu.new("Help") do
-  append_about_item.on_clicked do |window|
-    window.msg_box("About", "Menu example")
+  append_about_item.on_clicked do
+    UIng.msg_box("About", "Menu example")
   end
 end
 

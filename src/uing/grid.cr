@@ -9,18 +9,24 @@ module UIng
     def initialize(padded : Bool = false)
       @ref_ptr = LibUI.new_grid
       self.padded = true if padded
+      register_control
     end
 
-    protected def before_destroy : Nil
-      @children_refs.each do |child|
-        child.mark_released_from_parent_destroy
-      end
+    protected def after_destroy : Nil
       @children_refs.clear
     end
 
-    # Raises: Not supported for this container.
     def delete(child : Control)
-      raise "Grid does not support delete(child : Control)"
+      unless @children_refs.includes?(child)
+        raise "Grid does not contain child"
+      end
+      delete_native_child(child)
+      @children_refs.delete(child)
+      child.release_ownership
+    end
+
+    protected def delete_native_child(child : Control) : Nil
+      LibUI.grid_delete(ref_ptr, UIng.to_control(child))
     end
 
     def append(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil

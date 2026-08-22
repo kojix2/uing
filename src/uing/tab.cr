@@ -10,12 +10,10 @@ module UIng
 
     def initialize
       @ref_ptr = LibUI.new_tab
+      register_control
     end
 
-    protected def before_destroy : Nil
-      @children_refs.each do |child|
-        child.mark_released_from_parent_destroy
-      end
+    protected def after_destroy : Nil
       @children_refs.clear
       @on_selected_box = nil
     end
@@ -45,9 +43,13 @@ module UIng
 
     def delete(index : Int32) : Nil
       child = @children_refs[index]
-      LibUI.tab_delete(ref_ptr, index)
+      delete_native_child(index)
       @children_refs.delete_at(index)
       child.release_ownership
+    end
+
+    protected def delete_native_child(index : Int32) : Nil
+      LibUI.tab_delete(ref_ptr, index)
     end
 
     def delete(child : Control)

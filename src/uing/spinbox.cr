@@ -9,15 +9,17 @@ module UIng
 
     def initialize(min, max)
       @ref_ptr = LibUI.new_spinbox(min, max)
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @on_changed_box = nil
     end
 
     def initialize(min, max, value)
       @ref_ptr = LibUI.new_spinbox(min, max)
       self.value = value
+      register_control
     end
 
     def value : Int32

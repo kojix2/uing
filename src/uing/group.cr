@@ -9,16 +9,18 @@ module UIng
     def initialize(title : String, margined : Bool = false)
       @ref_ptr = LibUI.new_group(title)
       self.margined = true if margined
+      register_control
     end
 
-    protected def before_destroy : Nil
-      @child_ref.try &.mark_released_from_parent_destroy
+    protected def after_destroy : Nil
       @child_ref = nil
     end
 
-    # Raises: Not supported for this container.
     def delete(child : Control)
-      raise "Group does not support delete(child : Control)"
+      unless @child_ref.same?(child)
+        raise "Group does not contain child"
+      end
+      self.child = nil
     end
 
     def title : String?
@@ -30,16 +32,32 @@ module UIng
       LibUI.group_set_title(ref_ptr, title)
     end
 
-    def child=(control) : Nil
+    def child=(control : Control) : Nil
+      check_available
       control.check_can_move
+      previous_child = @child_ref
       # uiGroupSetChild detaches the existing child; it does not destroy it.
-      # Mirror that detach on the Crystal side so the old wrapper can be reused.
-      if child_ref = @child_ref
-        child_ref.release_ownership
-      end
-      LibUI.group_set_child(ref_ptr, UIng.to_control(control))
+      # Update the Crystal ownership graph only after the native operation
+      # succeeds, so an exception cannot leave the two trees inconsistent.
+      set_native_child(UIng.to_control(control))
+      previous_child.try &.release_ownership
       @child_ref = control
       control.take_ownership(self)
+    end
+
+    def child=(control : Nil) : Nil
+      check_available
+      set_native_child(Pointer(LibUI::Control).null)
+      @child_ref.try &.release_ownership
+      @child_ref = nil
+    end
+
+    def child : Control?
+      @child_ref
+    end
+
+    protected def set_native_child(child : Pointer(LibUI::Control)) : Nil
+      LibUI.group_set_child(ref_ptr, child)
     end
 
     # alias for `child=`

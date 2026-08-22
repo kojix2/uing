@@ -47,10 +47,10 @@ class ControlGalleryApp
   private def setup_menus : Nil
     UIng::Menu.new("File") do
       append_item("Open").on_clicked do |window|
-        puts window.open_file
+        puts window.try &.open_file
       end
       append_item("Save").on_clicked do |window|
-        puts window.save_file
+        puts window.try &.save_file
       end
       append_separator
       should_quit_item = append_check_item("Should Quit_", checked: true)
@@ -83,8 +83,8 @@ class ControlGalleryApp
 
     UIng::Menu.new("Help") do
       append_item("Help")
-      append_about_item.on_clicked do |window|
-        window.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
+      append_about_item.on_clicked do
+        UIng.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
       end
     end
   end

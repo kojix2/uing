@@ -557,21 +557,20 @@ window.child = box
 window.destroy # also destroys box and button
 ```
 
-If you want to reuse a child, detach it first when the container supports it:
+If you want to reuse a child, detach it first:
 
 ```crystal
-box.delete(button) # detaches; button is still alive
+button.detach # still alive
 other_box.append(button)
 ```
 
 Container behavior:
 
-- `Window` and `Group` have one child. Assigning a new child detaches the old child without destroying it. Destroying the `Window` or `Group` destroys its current child.
-- `Box`, `Form`, and `Tab` support `delete(index)` and `delete(child)`. `delete` detaches the child; call `child.destroy` afterwards if you are done with it.
-- `Grid` does not currently expose a delete API. Destroy the whole grid, or build a new grid if you need to remove children.
+- `Window` and `Group` have one child. Assigning `nil` or a new child detaches the old child without destroying it. Destroying the `Window` or `Group` destroys its current child.
+- `Box`, `Form`, `Tab`, and `Grid` support `delete(child)`; the first three also support `delete(index)`.
 - Controls with no parent can be destroyed directly with `destroy`.
 
-Window closing has one special rule. In `Window#on_closing`, return `true` to let libui-ng destroy the native window, or `false` to keep it open. Do not call `window.destroy` inside that callback.
+Window closing has one special rule. In `Window#on_closing`, return `true` to let libui-ng destroy the native window, or `false` to keep it open. Do not call `window.destroy` inside that callback. Menu callbacks receive `Window?` because macOS can invoke them without an active window.
 
 ```crystal
 window.on_closing do

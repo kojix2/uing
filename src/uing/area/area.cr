@@ -14,6 +14,7 @@ module UIng
 
     def initialize(@ref_ptr : Pointer(LibUI::Area), borrowed : Bool = true)
       @borrowed = borrowed
+      register_control
     end
 
     def destroy : Nil
@@ -24,20 +25,23 @@ module UIng
     def initialize(area_handler : Handler)
       @area_handler = area_handler # Keep reference to prevent GC
       @ref_ptr = LibUI.new_area(area_handler.to_unsafe)
+      register_control
     end
 
     # scrolling area
 
     def initialize(area_handler : Pointer(LibUI::AreaHandler), width : Int32, height : Int32)
       @ref_ptr = LibUI.new_scrolling_area(area_handler, width, height)
+      register_control
     end
 
     def initialize(area_handler : Handler, width : Int32, height : Int32)
       @area_handler = area_handler # Keep reference to prevent GC
       @ref_ptr = LibUI.new_scrolling_area(area_handler.to_unsafe, width, height)
+      register_control
     end
 
-    protected def before_destroy : Nil
+    protected def after_destroy : Nil
       @area_handler = nil
     end
 
