@@ -40,7 +40,7 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
 
 - macOS: x86_64 (64-bit), ARM64 (Apple Silicon)
 - Linux: x86_64 (64-bit), ARM64
-- Windows: x86_64 (64-bit, MSVC, MinGW, and UCRT), x86 (32-bit, MSVC only)
+- Windows: x86_64 (64-bit, MSVC, MinGW, and UCRT)
 
 ## Installation
 
