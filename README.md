@@ -481,7 +481,7 @@ Note: The Table API has quirks. For example, you must manually free memory as [i
   </tbody>
 </table>
 
-### Image (experimental)
+### Image
 
 <table>
   <thead>
@@ -508,7 +508,7 @@ Note: The Table API has quirks. For example, you must manually free memory as [i
   </tbody>
 </table>
 
-Note: Image display is a feature introduced experimentally in a fork of libui-ng. Please be aware that this feature is not present in the original libui-ng.
+Note: Image display is a feature introduced in `kojix2/libui-ng`. This feature is not present in the original libui-ng.
 
 ## API Levels
 
@@ -538,7 +538,7 @@ Note: Image display is a feature introduced experimentally in a fork of libui-ng
 </table>
 
 - Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
-- APIs for advanced controls such as `Table` and `Area` are also provided. However, these are still under development and there may still be memory management issues.
+- APIs for advanced controls such as `Table` and `Area` are also provided. 
 
 ## Memory Management Policy
 
@@ -657,13 +657,9 @@ image.free
 
 libui-ng is cross-platform, but comes with some limitations:
 
-1. The original libui-ng does not provide image display functionality. A patch has been applied in this project to add experimental support, which is available in the main branch.
+1. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is an intentional constraint to ensure consistent behavior across all three platforms.
 
-2. The grid layout system is known to be broken on macOS. A patch has been applied to improve the behavior, though it still does not fully match the expected design.
-
-3. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is likely an intentional constraint to ensure consistent behavior across all three platforms.
-
-4. There is no function to delete columns from the table.
+2. There is no function to delete columns from the table.
 
 ## Windows Setup
 
