@@ -195,13 +195,13 @@ table_model = UIng::Table::Model.new(model_handler)
 
 table = UIng::Table.new(table_model) do
   # Add columns with different types
-  append_image_column("Avatar", 0)          # Image column (read-only)
-  append_text_column("Name", 1, 1)          # Editable text
-  append_text_column("Age", 2, 2)           # Editable number (as text)
-  append_text_column("Department", 3, 3)    # Editable text
-  append_text_column("Salary", 4, 4)        # Editable number (as text)
-  append_progress_bar_column("Progress", 5) # Progress bar (read-only)
-  append_checkbox_column("Active", 6, 6)    # Editable checkbox
+  append_image_column("Avatar", 0)                       # Image column (read-only)
+  append_text_column("Name", 1, editable: :always)       # Editable text
+  append_text_column("Age", 2, editable: :always)        # Editable number (as text)
+  append_text_column("Department", 3, editable: :always) # Editable text
+  append_text_column("Salary", 4, editable: :always)     # Editable number (as text)
+  append_progress_bar_column("Progress", 5)              # Progress bar (read-only)
+  append_checkbox_column("Active", 6, editable: :always) # Editable checkbox
 end
 
 # Configure table

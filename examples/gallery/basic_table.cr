@@ -24,8 +24,8 @@ end
 table_model = UIng::Table::Model.new(model_handler)
 
 table = UIng::Table.new(table_model) do
-  append_text_column("OS", 0, -1)
-  append_text_column("Vendor", 1, -1)
+  append_text_column("OS", 0, editable: :never)
+  append_text_column("Vendor", 1, editable: :never)
 end
 
 hbox.append(table, true)

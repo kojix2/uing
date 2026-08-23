@@ -122,59 +122,62 @@ module UIng
       LibUI.table_header_set_visible(ref_ptr, value)
     end
 
-    def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32) : Nil
-      LibUI.table_append_text_column(ref_ptr, name, text_model_column, text_editable_model_column, nil)
+    # `editable` can be `:never`, `:always`, or a model column whose values
+    # control editability for each row.
+    def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), nil)
     end
 
-    def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil
-      LibUI.table_append_text_column(ref_ptr, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
+    def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), table_text_column_optional_params)
     end
 
-    def append_text_column(name : String, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
+    def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
       table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
-      LibUI.table_append_text_column(ref_ptr, name, text_model_column, text_editable_model_column, table_text_column_optional_params)
+      LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), table_text_column_optional_params)
     end
 
     def append_image_column(name : String, image_model_column : Int32) : Nil
       LibUI.table_append_image_column(ref_ptr, name, image_model_column)
     end
 
-    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32) : Nil
-      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, text_editable_model_column, nil)
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), nil)
     end
 
-    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil
-      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), table_text_column_optional_params)
     end
 
-    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
       table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
-      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
+      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), table_text_column_optional_params)
     end
 
-    def append_checkbox_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32) : Nil
-      LibUI.table_append_checkbox_column(ref_ptr, name, checkbox_model_column, checkbox_editable_model_column)
+    def append_checkbox_column(name : String, checkbox_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      LibUI.table_append_checkbox_column(ref_ptr, name, checkbox_model_column, model_column(editable))
     end
 
-    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32) : Nil
-      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, nil)
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn) : Nil
+      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), nil)
     end
 
-    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil
-      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), table_text_column_optional_params)
     end
 
-    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
       table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
-      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, checkbox_editable_model_column, text_model_column, text_editable_model_column, table_text_column_optional_params)
+      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), table_text_column_optional_params)
     end
 
     def append_progress_bar_column(name : String, progress_model_column : Int32) : Nil
       LibUI.table_append_progress_bar_column(ref_ptr, name, progress_model_column)
     end
 
-    def append_button_column(name : String, button_model_column : Int32, button_clickable_model_column : Int32) : Nil
-      LibUI.table_append_button_column(ref_ptr, name, button_model_column, button_clickable_model_column)
+    # `clickable` follows the same rules as column editability.
+    def append_button_column(name : String, button_model_column : Int32, clickable : Int32 | ModelColumn) : Nil
+      LibUI.table_append_button_column(ref_ptr, name, button_model_column, model_column(clickable))
     end
 
     def header_visible? : Bool
@@ -223,6 +226,10 @@ module UIng
 
     def selection=(selection : Selection) : Nil
       LibUI.table_set_selection(ref_ptr, selection.to_unsafe)
+    end
+
+    private def model_column(column : Int32 | ModelColumn) : Int32
+      column.is_a?(ModelColumn) ? column.value : column
     end
   end
 end

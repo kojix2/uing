@@ -43,11 +43,11 @@ class CSVViewer
     @table = UIng::Table.new(@table_model) do
       if @column_count > 0
         (0...@column_count).each do |i|
-          append_text_column(generate_column_name(i), i, -1)
+          append_text_column(generate_column_name(i), i, editable: :never)
         end
       else
         # Default single column if no data loaded yet
-        append_text_column("A", 0, -1)
+        append_text_column("A", 0, editable: :never)
       end
     end
 
@@ -121,7 +121,7 @@ class CSVViewer
 
     @table = UIng::Table.new(@table_model) do
       (0...column_count).each do |i|
-        append_text_column(generate_column_name(i), i, -1)
+        append_text_column(generate_column_name(i), i, editable: :never)
       end
     end
 
