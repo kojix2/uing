@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::Grid::At - uing main</title>
+  <title>UIng::Table::ModelColumn - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -287,12 +287,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="uing/UIng/Grid" data-name="uing::grid">
+  <li class="parent " data-id="uing/UIng/Grid" data-name="uing::grid">
       <a href="../../UIng/Grid.html">Grid</a>
       
         <ul>
   
-  <li class=" current" data-id="uing/UIng/Grid/At" data-name="uing::grid::at">
+  <li class=" " data-id="uing/UIng/Grid/At" data-name="uing::grid::at">
       <a href="../../UIng/Grid/At.html">At</a>
       
     </li>
@@ -382,7 +382,7 @@
       
     </li>
   
-  <li class="parent " data-id="uing/UIng/Table" data-name="uing::table">
+  <li class="parent open current" data-id="uing/UIng/Table" data-name="uing::table">
       <a href="../../UIng/Table.html">Table</a>
       
         <ul>
@@ -402,7 +402,7 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/Table/ModelColumn" data-name="uing::table::modelcolumn">
+  <li class=" current" data-id="uing/UIng/Table/ModelColumn" data-name="uing::table::modelcolumn">
       <a href="../../UIng/Table/ModelColumn.html">ModelColumn</a>
       
     </li>
@@ -498,13 +498,25 @@
 
   <span class="kind">
     enum
-  </span> UIng::<wbr>Grid::<wbr>At
+  </span> UIng::<wbr>Table::<wbr>ModelColumn
 
 </h1>
 
 
 
 
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Special values used where libui-ng accepts a model column that controls
+whether a table cell is editable or clickable.</p>
 
 
 
@@ -531,8 +543,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/grid/at.cr#L3" target="_blank">
-        uing/grid/at.cr
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/model_column.cr#L5" target="_blank">
+        uing/table/table/model_column.cr
       </a>
     
     <br/>
@@ -552,23 +564,13 @@
   
   <dl>
     
-      <dt class="entry-const" id="Leading">
-        <strong>Leading</strong> = <code><span class="n">0</span></code>
+      <dt class="entry-const" id="Never">
+        <strong>Never</strong> = <code><span class="n">-1</span></code>
       </dt>
       
     
-      <dt class="entry-const" id="Top">
-        <strong>Top</strong> = <code><span class="n">1</span></code>
-      </dt>
-      
-    
-      <dt class="entry-const" id="Trailing">
-        <strong>Trailing</strong> = <code><span class="n">2</span></code>
-      </dt>
-      
-    
-      <dt class="entry-const" id="Bottom">
-        <strong>Bottom</strong> = <code><span class="n">3</span></code>
+      <dt class="entry-const" id="Always">
+        <strong>Always</strong> = <code><span class="n">-2</span></code>
       </dt>
       
     
@@ -594,30 +596,16 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#bottom%3F-instance-method" class="signature"><strong>#bottom?</strong></a>
+        <a href="#always%3F-instance-method" class="signature"><strong>#always?</strong></a>
         
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Bottom">Bottom</a></code></p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#leading%3F-instance-method" class="signature"><strong>#leading?</strong></a>
-        
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Leading">Leading</a></code></p></div>
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Table/ModelColumn.html#Always">Always</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#top%3F-instance-method" class="signature"><strong>#top?</strong></a>
+        <a href="#never%3F-instance-method" class="signature"><strong>#never?</strong></a>
         
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Top">Top</a></code></p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#trailing%3F-instance-method" class="signature"><strong>#trailing?</strong></a>
-        
-          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Trailing">Trailing</a></code></p></div>
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Table/ModelColumn.html#Never">Never</a></code></p></div>
         
       </li>
     
@@ -697,86 +685,44 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="bottom?-instance-method">
+    <div class="entry-detail" id="always?-instance-method">
       <div class="signature">
         
-        def <strong>bottom?</strong>
+        def <strong>always?</strong>
 
-        <a class="method-permalink" href="#bottom%3F-instance-method">#</a>
+        <a class="method-permalink" href="#always%3F-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Bottom">Bottom</a></code></p>
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Table/ModelColumn.html#Always">Always</a></code></p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/grid/at.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/model_column.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="leading?-instance-method">
+    <div class="entry-detail" id="never?-instance-method">
       <div class="signature">
         
-        def <strong>leading?</strong>
+        def <strong>never?</strong>
 
-        <a class="method-permalink" href="#leading%3F-instance-method">#</a>
+        <a class="method-permalink" href="#never%3F-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Leading">Leading</a></code></p>
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Table/ModelColumn.html#Never">Never</a></code></p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/grid/at.cr#L4" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="top?-instance-method">
-      <div class="signature">
-        
-        def <strong>top?</strong>
-
-        <a class="method-permalink" href="#top%3F-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Top">Top</a></code></p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/grid/at.cr#L5" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="trailing?-instance-method">
-      <div class="signature">
-        
-        def <strong>trailing?</strong>
-
-        <a class="method-permalink" href="#trailing%3F-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Returns <code>true</code> if this enum value equals <code><a href="../../UIng/Grid/At.html#Trailing">Trailing</a></code></p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/grid/at.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/model_column.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>

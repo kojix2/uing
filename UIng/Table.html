@@ -402,6 +402,11 @@
       
     </li>
   
+  <li class=" " data-id="uing/UIng/Table/ModelColumn" data-name="uing::table::modelcolumn">
+      <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>
+      
+    </li>
+  
   <li class=" " data-id="uing/UIng/Table/Params" data-name="uing::table::params">
       <a href="../UIng/Table/Params.html">Params</a>
       
@@ -579,70 +584,77 @@ Memory is automatically managed by Crystal's garbage collector.</li>
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L5" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L5" target="_blank">
         uing/table/table.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/model.cr#L19" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/model.cr#L19" target="_blank">
         uing/table/table/model.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/model/handler.cr#L24" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/model/handler.cr#L24" target="_blank">
         uing/table/table/model/handler.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/params.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/model_column.cr#L2" target="_blank">
+        uing/table/table/model_column.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/params.cr#L2" target="_blank">
         uing/table/table/params.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/selection.cr#L33" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/selection.cr#L33" target="_blank">
         uing/table/table/selection.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/selection/mode.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/selection/mode.cr#L2" target="_blank">
         uing/table/table/selection/mode.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/sort_indicator.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/sort_indicator.cr#L2" target="_blank">
         uing/table/table/sort_indicator.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/text_column_optional_params.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/text_column_optional_params.cr#L2" target="_blank">
         uing/table/table/text_column_optional_params.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/value.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/value.cr#L4" target="_blank">
         uing/table/table/value.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table/value/type.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table/value/type.cr#L2" target="_blank">
         uing/table/table/value/type.cr
       </a>
     
@@ -700,27 +712,29 @@ Memory is automatically managed by Crystal's garbage collector.</li>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#append_button_column%28name%3AString%2Cbutton_model_column%3AInt32%2Cbutton_clickable_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_button_column</strong>(name : String, button_model_column : Int32, button_clickable_model_column : Int32) : Nil</a>
+        <a href="#append_button_column%28name%3AString%2Cbutton_model_column%3AInt32%2Cclickable%3AInt32%7CModelColumn%29%3ANil-instance-method" class="signature"><strong>#append_button_column</strong>(name : String, button_model_column : Int32, clickable : Int32 | ModelColumn) : Nil</a>
+        
+          <div class="summary"><p><code>clickable</code> follows the same rules as column editability.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_checkbox_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32) : Nil</a>
+        <a href="#append_checkbox_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_column</strong>(name : String, checkbox_model_column : Int32, editable : Int32 | ModelColumn) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil</a>
+        <a href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable%3AInt32%7CModelColumn%2Ctext_model_column%3AInt32%2Ctext_editable%3AInt32%7CModelColumn%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ccolor_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil</a>
+        <a href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable%3AInt32%7CModelColumn%2Ctext_model_column%3AInt32%2Ctext_editable%3AInt32%7CModelColumn%2Ccolor_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, color_model_column : Int32) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32) : Nil</a>
+        <a href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable%3AInt32%7CModelColumn%2Ctext_model_column%3AInt32%2Ctext_editable%3AInt32%7CModelColumn%29%3ANil-instance-method" class="signature"><strong>#append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn) : Nil</a>
         
       </li>
     
@@ -730,17 +744,17 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       </li>
     
       <li class="entry-summary">
-        <a href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method" class="signature"><strong>#append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil</a>
+        <a href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method" class="signature"><strong>#append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ccolor_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil</a>
+        <a href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ccolor_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32) : Nil</a>
+        <a href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%29%3ANil-instance-method" class="signature"><strong>#append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil</a>
         
       </li>
     
@@ -750,17 +764,19 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       </li>
     
       <li class="entry-summary">
-        <a href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method" class="signature"><strong>#append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : TextColumnOptionalParams) : Nil</a>
+        <a href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method" class="signature"><strong>#append_text_column</strong>(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ccolor_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil</a>
+        <a href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ccolor_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_text_column</strong>(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32) : Nil</a>
+        <a href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%29%3ANil-instance-method" class="signature"><strong>#append_text_column</strong>(name : String, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil</a>
+        
+          <div class="summary"><p><code>editable</code> can be <code>:never</code>, <code>:always</code>, or a model column whose values control editability for each row.</p></div>
         
       </li>
     
@@ -1035,7 +1051,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1051,7 +1067,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1072,7 +1088,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1093,82 +1109,87 @@ Memory is automatically managed by Crystal's garbage collector.</li>
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="append_button_column(name:String,button_model_column:Int32,button_clickable_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_button_column(name:String,button_model_column:Int32,clickable:Int32|ModelColumn):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_button_column</strong>(name : String, button_model_column : Int32, button_clickable_model_column : Int32) : Nil
+        def <strong>append_button_column</strong>(name : String, button_model_column : Int32, clickable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>) : Nil
 
-        <a class="method-permalink" href="#append_button_column%28name%3AString%2Cbutton_model_column%3AInt32%2Cbutton_clickable_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_button_column%28name%3AString%2Cbutton_model_column%3AInt32%2Cclickable%3AInt32%7CModelColumn%29%3ANil-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p><code>clickable</code> follows the same rules as column editability.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L176" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L179" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_checkbox_column(name:String,checkbox_model_column:Int32,checkbox_editable_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_checkbox_column(name:String,checkbox_model_column:Int32,editable:Int32|ModelColumn):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_checkbox_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32) : Nil
+        def <strong>append_checkbox_column</strong>(name : String, checkbox_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>) : Nil
 
-        <a class="method-permalink" href="#append_checkbox_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_checkbox_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L155" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L157" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32,table_text_column_optional_params:TextColumnOptionalParams):Nil-instance-method">
+    <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable:Int32|ModelColumn,text_model_column:Int32,text_editable:Int32|ModelColumn,table_text_column_optional_params:TextColumnOptionalParams):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>) : Nil
+        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, text_model_column : Int32, text_editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, table_text_column_optional_params : <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>) : Nil
 
-        <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable%3AInt32%7CModelColumn%2Ctext_model_column%3AInt32%2Ctext_editable%3AInt32%7CModelColumn%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L163" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L165" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32,color_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable:Int32|ModelColumn,text_model_column:Int32,text_editable:Int32|ModelColumn,color_model_column:Int32):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
+        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, text_model_column : Int32, text_editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, color_model_column : Int32) : Nil
 
-        <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ccolor_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable%3AInt32%7CModelColumn%2Ctext_model_column%3AInt32%2Ctext_editable%3AInt32%7CModelColumn%2Ccolor_model_column%3AInt32%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L167" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L169" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_checkbox_text_column(name:String,checkbox_model_column:Int32,checkbox_editable:Int32|ModelColumn,text_model_column:Int32,text_editable:Int32|ModelColumn):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32) : Nil
+        def <strong>append_checkbox_text_column</strong>(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, text_model_column : Int32, text_editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>) : Nil
 
-        <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_checkbox_text_column%28name%3AString%2Ccheckbox_model_column%3AInt32%2Ccheckbox_editable%3AInt32%7CModelColumn%2Ctext_model_column%3AInt32%2Ctext_editable%3AInt32%7CModelColumn%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L161" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1184,55 +1205,55 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L140" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32,table_text_column_optional_params:TextColumnOptionalParams):Nil-instance-method">
+    <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,editable:Int32|ModelColumn,table_text_column_optional_params:TextColumnOptionalParams):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>) : Nil
+        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, table_text_column_optional_params : <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>) : Nil
 
-        <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L146" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L148" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32,color_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,editable:Int32|ModelColumn,color_model_column:Int32):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
+        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, color_model_column : Int32) : Nil
 
-        <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ccolor_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ccolor_model_column%3AInt32%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L150" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L152" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,text_editable_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_image_text_column(name:String,image_model_column:Int32,text_model_column:Int32,editable:Int32|ModelColumn):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, text_editable_model_column : Int32) : Nil
+        def <strong>append_image_text_column</strong>(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>) : Nil
 
-        <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_image_text_column%28name%3AString%2Cimage_model_column%3AInt32%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L142" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L144" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1248,55 +1269,61 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L172" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L174" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,text_editable_model_column:Int32,table_text_column_optional_params:TextColumnOptionalParams):Nil-instance-method">
+    <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,editable:Int32|ModelColumn,table_text_column_optional_params:TextColumnOptionalParams):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32, table_text_column_optional_params : <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>) : Nil
+        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, table_text_column_optional_params : <a href="../UIng/Table/TextColumnOptionalParams.html">TextColumnOptionalParams</a>) : Nil
 
-        <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ctable_text_column_optional_params%3ATextColumnOptionalParams%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L129" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L131" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,text_editable_model_column:Int32,color_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,editable:Int32|ModelColumn,color_model_column:Int32):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32, color_model_column : Int32) : Nil
+        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>, color_model_column : Int32) : Nil
 
-        <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%2Ccolor_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%2Ccolor_model_column%3AInt32%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L133" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L135" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,text_editable_model_column:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append_text_column(name:String,text_model_column:Int32,editable:Int32|ModelColumn):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, text_editable_model_column : Int32) : Nil
+        def <strong>append_text_column</strong>(name : String, text_model_column : Int32, editable : Int32 | <a href="../UIng/Table/ModelColumn.html">ModelColumn</a>) : Nil
 
-        <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ctext_editable_model_column%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append_text_column%28name%3AString%2Ctext_model_column%3AInt32%2Ceditable%3AInt32%7CModelColumn%29%3ANil-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p><code>editable</code> can be <code>:never</code>, <code>:always</code>, or a model column whose values
+control editability for each row.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L125" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L127" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1312,7 +1339,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L196" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L199" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1328,7 +1355,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L192" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L195" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1344,7 +1371,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L184" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L187" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1360,7 +1387,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L188" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L191" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1376,7 +1403,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L121" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1392,7 +1419,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L180" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L183" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1408,7 +1435,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1424,7 +1451,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1440,7 +1467,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L55" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1456,7 +1483,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L91" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1472,7 +1499,7 @@ Memory is automatically managed by Crystal's garbage collector.</li>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L208" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L211" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1494,7 +1521,7 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L215" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L218" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1510,7 +1537,7 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L224" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L227" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1526,7 +1553,7 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L200" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L203" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1542,7 +1569,7 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L204" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L207" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1558,7 +1585,7 @@ This eliminates the need for manual free() calls</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/183f54ffc75211c48153381e999111f912c58a51/src/uing/table/table.cr#L117" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/d54c2771ce25e620775f5d31756419cb84d50a83/src/uing/table/table.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
