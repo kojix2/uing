@@ -208,6 +208,11 @@ end
 table.header_visible = true
 table.selection_mode = UIng::Table::Selection::Mode::ZeroOrMany
 
+# Size each column to its widest current cell or header.
+COLUMN_NAMES.each_index do |column|
+  table.column_set_width(column, -1)
+end
+
 vbox.append(table, true)
 
 # Table event handlers
