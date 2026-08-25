@@ -739,8 +739,7 @@ I also maintain several projects that are based purely on the Vibe Coding style,
 
 - Fork this repository
 - Report bugs and submit pull requests
-- Improve documentation
-- Test memory safety improvements
+- Write a blog post about Uing
 
 ## License
 
