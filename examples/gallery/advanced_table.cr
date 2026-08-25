@@ -73,7 +73,7 @@ EMPLOYEES = [
 SORT_COLUMN    = -1
 SORT_ASCENDING = true
 
-main_window = UIng::Window.new("Advanced Table Example", 800, 600)
+main_window = UIng::Window.new("Advanced Table Example", 600, 450)
 main_window.margined = true
 
 vbox = UIng::Box.new(:vertical)
