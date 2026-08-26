@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::Button - uing main</title>
+  <title>UIng::ToolbarItem - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -232,7 +232,7 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/Button" data-name="uing::button">
+  <li class=" " data-id="uing/UIng/Button" data-name="uing::button">
       <a href="../UIng/Button.html">Button</a>
       
     </li>
@@ -482,7 +482,7 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/ToolbarItem" data-name="uing::toolbaritem">
+  <li class=" current" data-id="uing/UIng/ToolbarItem" data-name="uing::toolbaritem">
       <a href="../UIng/ToolbarItem.html">ToolbarItem</a>
       
     </li>
@@ -508,15 +508,26 @@
 
   <span class="kind">
     class
-  </span> UIng::<wbr>Button
+  </span> UIng::<wbr>ToolbarItem
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/Button.html">UIng::Button</a></li><li class="superclass"><a href="../UIng/Control.html">UIng::Control</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/ToolbarItem.html">UIng::ToolbarItem</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>A borrowed item owned by a Toolbar.</p>
 
 
 
@@ -543,8 +554,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L4" target="_blank">
-        uing/button.cr
+      <a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L122" target="_blank">
+        uing/toolbar.cr
       </a>
     
     <br/>
@@ -555,33 +566,6 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28%2Aargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, &)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, **kwargs, &)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28text%3AString%29-class-method" class="signature"><strong>.new</strong>(text : String)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
@@ -599,7 +583,42 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#on_clicked%28%26block%3A-%3ENil%29%3ANil-instance-method" class="signature"><strong>#on_clicked</strong>(&block :  -> Nil) : Nil</a>
+        <a href="#checked%3D%28checked%3ABool%29%3ANil-instance-method" class="signature"><strong>#checked=</strong>(checked : Bool) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#checked%3F%3ABool-instance-method" class="signature"><strong>#checked?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#disable%3ANil-instance-method" class="signature"><strong>#disable</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#enable%3ANil-instance-method" class="signature"><strong>#enable</strong> : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#enabled%3F%3ABool-instance-method" class="signature"><strong>#enabled?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#icon%3D%28icon%3AImage%29%3ANil-instance-method" class="signature"><strong>#icon=</strong>(icon : Image) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#icon%3D%28icon%3ANil%29%3ANil-instance-method" class="signature"><strong>#icon=</strong>(icon : Nil) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_clicked%28%26block%3AToolbarItem-%3ENil%29%3ANil-instance-method" class="signature"><strong>#on_clicked</strong>(&block : ToolbarItem -> Nil) : Nil</a>
         
       </li>
     
@@ -618,145 +637,21 @@
         
       </li>
     
+      <li class="entry-summary">
+        <a href="#tooltip%3AString%7CNil-instance-method" class="signature"><strong>#tooltip</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#tooltip%3D%28tooltip%3AString%29%3ANil-instance-method" class="signature"><strong>#tooltip=</strong>(tooltip : String) : Nil</a>
+        
+      </li>
+    
   </ul>
 
 
 
   <div class="methods-inherited">
-    
-      
-
-  <h3>Instance methods inherited from class <code><a href="../UIng/Control.html">UIng::Control</a></code></h3>
-  
-  
-    <a href="../UIng/Control.html#__parent__-instance-method" class="tooltip">
-      <span>__parent__</span>
-    __parent__</a>, 
-    
-  
-    <a href="../UIng/Control.html#__set_parent__%28parent%29%3ANil-instance-method" class="tooltip">
-      <span>__set_parent__(parent) : Nil</span>
-    __set_parent__</a>, 
-    
-  
-    <a href="../UIng/Control.html#delete%28child%3AControl%29-instance-method" class="tooltip">
-      <span>delete(child : Control)</span>
-    delete</a>, 
-    
-  
-    <a href="../UIng/Control.html#destroy%3ANil-instance-method" class="tooltip">
-      <span>destroy : Nil</span>
-    destroy</a>, 
-    
-  
-    <a href="../UIng/Control.html#detach%3Aself-instance-method" class="tooltip">
-      <span>detach : <span class="k">self</span></span>
-    detach</a>, 
-    
-  
-    <a href="../UIng/Control.html#disable%3ANil-instance-method" class="tooltip">
-      <span>disable : Nil</span>
-    disable</a>, 
-    
-  
-    <a href="../UIng/Control.html#enable%3ANil-instance-method" class="tooltip">
-      <span>enable : Nil</span>
-    enable</a>, 
-    
-  
-    <a href="../UIng/Control.html#enabled%3F%3ABool-instance-method" class="tooltip">
-      <span>enabled? : Bool</span>
-    enabled?</a>, 
-    
-  
-    <a href="../UIng/Control.html#enabled_to_user%3F%3ABool-instance-method" class="tooltip">
-      <span>enabled_to_user? : Bool</span>
-    enabled_to_user?</a>, 
-    
-  
-    <a href="../UIng/Control.html#finalize-instance-method" class="tooltip">
-      <span>finalize</span>
-    finalize</a>, 
-    
-  
-    <a href="../UIng/Control.html#handle-instance-method" class="tooltip">
-      <span>handle</span>
-    handle</a>, 
-    
-  
-    <a href="../UIng/Control.html#hide%3ANil-instance-method" class="tooltip">
-      <span>hide : Nil</span>
-    hide</a>, 
-    
-  
-    <a href="../UIng/Control.html#parent%3AControl%7CNil-instance-method" class="tooltip">
-      <span>parent : Control | Nil</span>
-    parent</a>, 
-    
-  
-    <a href="../UIng/Control.html#released%3F%3ABool-instance-method" class="tooltip">
-      <span>released? : Bool</span>
-    released?</a>, 
-    
-  
-    <a href="../UIng/Control.html#show%3ANil-instance-method" class="tooltip">
-      <span>show : Nil</span>
-    show</a>, 
-    
-  
-    <a href="../UIng/Control.html#to_unsafe-instance-method" class="tooltip">
-      <span>to_unsafe</span>
-    to_unsafe</a>, 
-    
-  
-    <a href="../UIng/Control.html#toplevel%3F%3ABool-instance-method" class="tooltip">
-      <span>toplevel? : Bool</span>
-    toplevel?</a>, 
-    
-  
-    <a href="../UIng/Control.html#verify_set_parent%28parent%29%3ANil-instance-method" class="tooltip">
-      <span>verify_set_parent(parent) : Nil</span>
-    verify_set_parent</a>, 
-    
-  
-    <a href="../UIng/Control.html#visible%3F%3ABool-instance-method" class="tooltip">
-      <span>visible? : Bool</span>
-    visible?</a>
-    
-  
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-  <h3>Macros inherited from module <code>UIng::BlockConstructor</code></h3>
-  
-  
-    <a href="../UIng/BlockConstructor.html#block_constructor-macro" class="tooltip">
-      <span>block_constructor</span>
-    block_constructor</a>
-    
-  
-
-
     
       
 
@@ -787,64 +682,6 @@
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(*args,&amp;)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(*args, &)
-
-        <a class="method-permalink" href="#new%28%2Aargs%2C%26%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L5" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(*args,**kwargs,&amp;)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(*args, **kwargs, &)
-
-        <a class="method-permalink" href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L5" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(text:String)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(text : String)
-
-        <a class="method-permalink" href="#new%28text%3AString%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L10" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
@@ -860,18 +697,130 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="on_clicked(&amp;block:-&gt;Nil):Nil-instance-method">
+    <div class="entry-detail" id="checked=(checked:Bool):Nil-instance-method">
       <div class="signature">
         
-        def <strong>on_clicked</strong>(&block :  -> Nil) : Nil
+        def <strong>checked=</strong>(checked : Bool) : Nil
 
-        <a class="method-permalink" href="#on_clicked%28%26block%3A-%3ENil%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#checked%3D%28checked%3ABool%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L170" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="checked?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>checked?</strong> : Bool
+
+        <a class="method-permalink" href="#checked%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L166" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="disable:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>disable</strong> : Nil
+
+        <a class="method-permalink" href="#disable%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L162" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enable:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>enable</strong> : Nil
+
+        <a class="method-permalink" href="#enable%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L158" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enabled?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>enabled?</strong> : Bool
+
+        <a class="method-permalink" href="#enabled%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L154" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="icon=(icon:Image):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>icon=</strong>(icon : <a href="../UIng/Image.html">Image</a>) : Nil
+
+        <a class="method-permalink" href="#icon%3D%28icon%3AImage%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L137" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="icon=(icon:Nil):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>icon=</strong>(icon : Nil) : Nil
+
+        <a class="method-permalink" href="#icon%3D%28icon%3ANil%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L142" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_clicked(&amp;block:ToolbarItem-&gt;Nil):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>on_clicked</strong>(&block : <a href="../UIng/ToolbarItem.html">ToolbarItem</a> -> Nil) : Nil
+
+        <a class="method-permalink" href="#on_clicked%28%26block%3AToolbarItem-%3ENil%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L174" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -887,7 +836,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -903,7 +852,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L133" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -919,7 +868,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/button.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L193" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="tooltip:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>tooltip</strong> : String | Nil
+
+        <a class="method-permalink" href="#tooltip%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L146" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="tooltip=(tooltip:String):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>tooltip=</strong>(tooltip : String) : Nil
+
+        <a class="method-permalink" href="#tooltip%3D%28tooltip%3AString%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/f3237687cf5bdc54292c2f0160a832df752ca290/src/uing/toolbar.cr#L150" target="_blank">View source</a>]
         
       </div>
     </div>
