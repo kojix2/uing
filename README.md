@@ -165,6 +165,8 @@ Images are automatically generated and stored in the `screenshots` branch.
   </tbody>
 </table>
 
+Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and may change.
+
 ### Control
 
 <table>
