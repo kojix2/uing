@@ -30,6 +30,9 @@ module UIng
       @drag_broken_box : Pointer(Void)
       @key_event_box : Pointer(Void)
 
+      # Ameba counts branches inside the five C callback closures as branches
+      # of this initializer even though each closure is an independent handler.
+      # ameba:disable Metrics/CyclomaticComplexity
       def initialize
         # Initialize instance variables
         @draw_box = Pointer(Void).null
@@ -126,6 +129,8 @@ module UIng
         @extended_handler.drag_broken_box = @drag_broken_box
         @extended_handler.key_event_box = @key_event_box
       end
+
+      # ameba:enable Metrics/CyclomaticComplexity
 
       # Convenience methods for setting individual callbacks
       # Each method boxes the callback individually for type safety and efficiency

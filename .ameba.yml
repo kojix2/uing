@@ -1,2 +1,8 @@
 Naming/AccessorMethodName:
   Enabled: false
+
+# Ameba 1.7's embedded formatter disagrees with Crystal 1.21 on continued
+# string literal indentation in this example.
+Lint/Formatting:
+  Excluded:
+    - examples/gallery/basic_draw_text.cr

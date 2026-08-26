@@ -265,15 +265,15 @@ table.on_header_clicked do |column|
   # Sort the data
   case column_enum
   when .name?
-    EMPLOYEES.sort! { |a, b| ascending ? a.name <=> b.name : b.name <=> a.name }
+    EMPLOYEES.sort! { |left, right| ascending ? left.name <=> right.name : right.name <=> left.name }
   when .age?
-    EMPLOYEES.sort! { |a, b| ascending ? a.age <=> b.age : b.age <=> a.age }
+    EMPLOYEES.sort! { |left, right| ascending ? left.age <=> right.age : right.age <=> left.age }
   when .department?
-    EMPLOYEES.sort! { |a, b| ascending ? a.department <=> b.department : b.department <=> a.department }
+    EMPLOYEES.sort! { |left, right| ascending ? left.department <=> right.department : right.department <=> left.department }
   when .salary?
-    EMPLOYEES.sort! { |a, b| ascending ? a.salary <=> b.salary : b.salary <=> a.salary }
+    EMPLOYEES.sort! { |left, right| ascending ? left.salary <=> right.salary : right.salary <=> left.salary }
   when .active?
-    EMPLOYEES.sort! { |a, b| ascending ? (a.active? ? 1 : 0) <=> (b.active? ? 1 : 0) : (b.active? ? 1 : 0) <=> (a.active? ? 1 : 0) }
+    EMPLOYEES.sort! { |left, right| ascending ? (left.active? ? 1 : 0) <=> (right.active? ? 1 : 0) : (right.active? ? 1 : 0) <=> (left.active? ? 1 : 0) }
   end
 
   # Update sort indicator
@@ -363,8 +363,6 @@ main_window.on_closing do
   # Free the default avatar
   DEFAULT_AVATAR.free
 
-  # FIXME: Free the table model and table
-  # https://github.com/kojix2/uing/issues/6
   vbox.delete(2)
   table.destroy
   table_model.free
