@@ -18,7 +18,8 @@ module UIng
     @on_closing_box : Pointer(Void)?
     @on_focus_changed_box : Pointer(Void)?
 
-    @child_ref : Control? # Reference to the child control
+    @child_ref : Control?   # Reference to the child control
+    @toolbar_ref : Toolbar? # The native window borrows this toolbar
 
     def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
       @borrowed = borrowed
@@ -40,6 +41,8 @@ module UIng
     end
 
     protected def after_destroy : Nil
+      @toolbar_ref.try &.__detached_by__(self)
+      @toolbar_ref = nil
       @@mutex.synchronize do
         @@windows.delete(self)
       end
@@ -141,6 +144,30 @@ module UIng
     def set_child(&block : -> Control)
       control = block.call
       self.child = control
+    end
+
+    def toolbar : Toolbar?
+      check_available
+      @toolbar_ref
+    end
+
+    def toolbar=(toolbar : Toolbar) : Nil
+      check_available
+      return if @toolbar_ref.same?(toolbar)
+      toolbar.__ensure_attachable__(self)
+      previous_toolbar = @toolbar_ref
+      LibUI.window_set_toolbar(ref_ptr, toolbar.to_unsafe)
+      previous_toolbar.try &.__detached_by__(self)
+      @toolbar_ref = toolbar
+      toolbar.__attached_by__(self)
+    end
+
+    def toolbar=(toolbar : Nil) : Nil
+      check_available
+      return unless previous_toolbar = @toolbar_ref
+      LibUI.window_set_toolbar(ref_ptr, Pointer(LibUI::Toolbar).null)
+      @toolbar_ref = nil
+      previous_toolbar.__detached_by__(self)
     end
 
     def margined? : Bool

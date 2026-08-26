@@ -156,6 +156,12 @@ Images are automatically generated and stored in the `screenshots` branch.
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-windows.png" alt="basic_window-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-macos.png" alt="basic_window-macos"></td>
     </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_toolbar.cr">Toolbar</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_toolbar-ubuntu.png" alt="basic_toolbar-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_toolbar-windows.png" alt="basic_toolbar-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_toolbar-macos.png" alt="basic_toolbar-macos"></td>
+    </tr>
   </tbody>
 </table>
 
