@@ -16,22 +16,14 @@ jobs:
         include:
           - os: ubuntu
             runner: ubuntu-latest
-            setup-display: true
           - os: windows
             runner: windows-latest
-            setup-display: false
           - os: macos
             runner: macos-latest
-            setup-display: false
-
-    env:
-      DISPLAY: ${{ matrix.setup-display && ':99' || '' }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-        with:
-          submodules: true
 
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
@@ -78,7 +70,6 @@ jobs:
 
       - name: Generate app-names and output-files
         if: matrix.os != 'windows'
-        id: gen_names
         shell: bash
         run: |
           APPS=$(for f in examples/gallery/*.cr; do basename "$f" .cr; done | xargs)
@@ -88,7 +79,6 @@ jobs:
 
       - name: Generate app-names and output-files (Windows)
         if: matrix.os == 'windows'
-        id: gen_names_win
         shell: pwsh
         run: |
           $apps = (Get-ChildItem examples/gallery/*.cr | ForEach-Object { $_.BaseName }) -join ' '
@@ -108,6 +98,7 @@ jobs:
         with:
           name: screenshots-${{ matrix.os }}
           path: "*.png"
+          if-no-files-found: error
           retention-days: 30
 
   push_screenshots:
@@ -118,17 +109,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-        with:
-          submodules: true
 
       - name: Prepare orphan branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Prepare orphan branch first
-          git fetch origin screenshots || true
-          git checkout --orphan screenshots || git checkout screenshots
+          git checkout --orphan screenshots
+          git rm -rfq .
 
       - name: Download all screenshots artifacts
         uses: actions/download-artifact@v8
@@ -138,25 +126,6 @@ jobs:
 
       - name: Commit screenshots
         run: |
-          # Debug: Check downloaded files
-          echo "=== Downloaded files ==="
-          ls -la
-
-          # Add gallery.md if it exists
-          if [ -f gallery.md ]; then
-            git add gallery.md
-          fi
-
-          # Commit only if PNG files exist
-          if ls *.png 1> /dev/null 2>&1; then
-            git add *.png
-            git status
-            if ! git diff --cached --quiet; then
-              git commit -m "Update screenshots [skip ci]"
-              git push -f origin screenshots
-            else
-              echo "No changes to commit."
-            fi
-          else
-            echo "No PNG files found to commit."
-          fi
+          git add -- *.png
+          git commit -qm "Update screenshots [skip ci]"
+          git push -f origin screenshots

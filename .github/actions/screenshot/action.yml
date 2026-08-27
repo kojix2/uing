@@ -10,15 +10,10 @@ inputs:
   output-files:
     description: "Space-separated list of output screenshot filenames (must match app-names order)"
     required: true
-outputs:
-  screenshot-paths:
-    description: "Space-separated list of generated screenshot paths"
-    value: ${{ steps.screenshot.outputs.paths }}
 runs:
   using: "composite"
   steps:
     - name: Take screenshots on Ubuntu
-      id: screenshot-ubuntu
       if: inputs.os == 'ubuntu'
       shell: bash
       run: |
@@ -33,59 +28,36 @@ runs:
         sleep 2
         IFS=' ' read -r -a apps <<< "${{ inputs.app-names }}"
         IFS=' ' read -r -a outs <<< "${{ inputs.output-files }}"
-        paths=""
         for i in "${!apps[@]}"; do
           app="${apps[$i]}"
           out="${outs[$i]}"
           echo "Taking screenshot for $app -> $out"
           ${{ github.action_path }}/ubuntu-screenshot.sh "$app" "$out"
-          paths="$paths$out "
         done
-        echo "paths=${paths}" >> $GITHUB_OUTPUT
 
     - name: Take screenshots on Windows
-      id: screenshot-windows
       if: inputs.os == 'windows'
       shell: pwsh
       run: |
         $apps = "${{ inputs.app-names }}".Split(" ")
         $outs = "${{ inputs.output-files }}".Split(" ")
-        $paths = ""
         for ($i = 0; $i -lt $apps.Length; $i++) {
           $app = $apps[$i]
           $out = $outs[$i]
           Write-Host "Taking screenshot for $app -> $out"
           & "${{ github.action_path }}/windows-screenshot.ps1" -AppName $app -OutputFile $out
-          $paths += "$out "
         }
-        echo "paths=$paths" >> $env:GITHUB_OUTPUT
 
     - name: Take screenshots on macOS
-      id: screenshot-macos
       if: inputs.os == 'macos'
       shell: bash
       run: |
         chmod +x ${{ github.action_path }}/macos-screenshot.sh
         IFS=' ' read -r -a apps <<< "${{ inputs.app-names }}"
         IFS=' ' read -r -a outs <<< "${{ inputs.output-files }}"
-        paths=""
         for i in "${!apps[@]}"; do
           app="${apps[$i]}"
           out="${outs[$i]}"
           echo "Taking screenshot for $app -> $out"
           ${{ github.action_path }}/macos-screenshot.sh "$app" "$out"
-          paths="$paths$out "
         done
-        echo "paths=${paths}" >> $GITHUB_OUTPUT
-
-    - name: Set output
-      id: screenshot
-      shell: bash
-      run: |
-        if [ "${{ inputs.os }}" == "ubuntu" ]; then
-          echo "paths=${{ steps.screenshot-ubuntu.outputs.paths }}" >> $GITHUB_OUTPUT
-        elif [ "${{ inputs.os }}" == "windows" ]; then
-          echo "paths=${{ steps.screenshot-windows.outputs.paths }}" >> $GITHUB_OUTPUT
-        elif [ "${{ inputs.os }}" == "macos" ]; then
-          echo "paths=${{ steps.screenshot-macos.outputs.paths }}" >> $GITHUB_OUTPUT
-        fi

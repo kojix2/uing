@@ -6,23 +6,11 @@ OUTPUT_FILE="${2:?output filename is required}"
 
 echo "Starting macOS window screenshot process for $APP_NAME"
 
-# Cleanup function to kill the app process
-cleanup() {
-  echo "Cleaning up processes..."
-  if [ -f app.pid ]; then
-    APP_PID=$(cat app.pid)
-    echo "Killing application process (PID: $APP_PID)..."
-    kill "$APP_PID" 2>/dev/null || true
-    rm -f app.pid
-  fi
-}
-trap cleanup EXIT INT TERM
-
 # Launch the application (assume executable name = process name)
 echo "Launching application: ./$APP_NAME"
 "./$APP_NAME" &
 APP_PID=$!
-echo $APP_PID > app.pid
+trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
 echo "Application launched with PID: $APP_PID"
 
 # CoreGraphics can expose the window id used by screencapture -l even when
@@ -122,9 +110,6 @@ SWIFT
   swiftc get_cg_window_info.swift -o get_cg_window_info
 fi
 
-# Wait for application startup
-sleep 3
-
 # Write AppleScript to a temporary file to avoid heredoc issues.
 # AXWindowNumber is the CoreGraphics window id used by screencapture -l, but
 # some GitHub-hosted macOS images do not expose it for every Accessibility
@@ -158,7 +143,7 @@ WINDOW_INFO=$(./get_cg_window_info "$APP_NAME" "$APP_PID" || true)
 if [[ "$WINDOW_INFO" == ERROR:* ]] || [ -z "$WINDOW_INFO" ]; then
   echo "$WINDOW_INFO"
   echo "CoreGraphics lookup failed; trying Accessibility window lookup."
-  for i in {1..20}; do
+  for _ in {1..20}; do
     EXISTS=$(osascript -e "tell application \"System Events\" to return exists process \"$APP_NAME\"" || true)
     if [ "$EXISTS" = "true" ]; then
       HAS_WIN=$(osascript -e "tell application \"System Events\" to tell process \"$APP_NAME\" to return (count of windows) > 0" || true)

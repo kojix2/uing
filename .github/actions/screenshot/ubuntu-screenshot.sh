@@ -97,7 +97,6 @@ fi
 # Verify screenshot was created
 if [ -f "$OUTPUT_FILE" ]; then
   echo "Screenshot created successfully: $OUTPUT_FILE"
-  file "$OUTPUT_FILE"
   identify "$OUTPUT_FILE" || true
 else
   echo "Failed to create screenshot"

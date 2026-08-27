@@ -16,9 +16,6 @@ using System.Drawing;
 
 public class Win32 {
     [DllImport("user32.dll")]
-    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-    
-    [DllImport("user32.dll")]
     public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
     [DllImport("dwmapi.dll")]
@@ -45,7 +42,6 @@ public class Win32 {
     public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
     
     public const int SW_RESTORE = 9;
-    public const int SW_SHOW = 5;
     public const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
 }
 
