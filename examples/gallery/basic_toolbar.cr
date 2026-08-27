@@ -66,7 +66,7 @@ end
 
 UIng.init
 
-window = UIng::Window.new("Toolbar", 300, 100)
+window = UIng::Window.new("Toolbar", 400, 100)
 window.set_child(UIng::Label.new("Resize the window to see the flexible space."))
 
 icons = [
