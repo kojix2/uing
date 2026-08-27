@@ -59,11 +59,9 @@ try {
     $process = Start-Process -FilePath ".\$AppName" -PassThru
     Write-Host "Application launched with PID: $($process.Id)"
 
-    # Wait for application to fully load
-    Start-Sleep -Seconds 5
-
     # Find the main window for the process
     $mainWindow = $null
+    $guiWindowFound = $false
     $bitmap = $null
     $graphics = $null
     $processId = $process.Id
@@ -81,13 +79,13 @@ try {
             
             if ($windowTitle.Length -gt 0) {
                 $titleString = $windowTitle.ToString()
-                Write-Host "Found window: $titleString (Handle: $hWnd)"
                 
                 # Prioritize GUI application windows over console windows
                 # Look for windows that don't end with .exe (console windows typically do)
                 if ($titleString -notlike "*.exe") {
                     Write-Host "Selecting GUI window: $titleString"
                     $script:mainWindow = $hWnd
+                    $script:guiWindowFound = $true
                     return $false  # Stop enumeration
                 }
                 elseif ($script:mainWindow -eq $null) {
@@ -100,7 +98,12 @@ try {
         return $true  # Continue enumeration
     }
     
-    [Win32]::EnumWindows($callback, [IntPtr]::Zero)
+    for ($attempt = 0; $attempt -lt 50 -and !$guiWindowFound; $attempt++) {
+        [void][Win32]::EnumWindows($callback, [IntPtr]::Zero)
+        if (!$guiWindowFound) {
+            Start-Sleep -Milliseconds 100
+        }
+    }
     
     if ($mainWindow -eq $null) {
         Write-Warning "Could not find main window for process. Falling back to screen capture."
