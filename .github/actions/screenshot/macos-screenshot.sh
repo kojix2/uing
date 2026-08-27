@@ -13,8 +13,7 @@ APP_PID=$!
 trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
 echo "Application launched with PID: $APP_PID"
 
-# CoreGraphics can expose the window id used by screencapture -l even when
-# Accessibility does not provide AXWindowNumber on GitHub-hosted runners.
+# Find the on-screen window id used by screencapture -l.
 if [ ! -x get_cg_window_info ]; then
   cat > get_cg_window_info.swift <<'SWIFT'
 import CoreGraphics
@@ -27,10 +26,6 @@ struct Candidate {
   let layer: Int
   let area: Int
   let id: Int
-  let x: Int
-  let y: Int
-  let width: Int
-  let height: Int
 }
 
 func intValue(_ value: Any?) -> Int {
@@ -59,7 +54,7 @@ func doubleValue(_ value: Any?, default defaultValue: Double = 0) -> Double {
   return defaultValue
 }
 
-for _ in 0..<30 {
+for _ in 0..<90 {
   let info = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) as? [[String: Any]] ?? []
   var candidates: [Candidate] = []
 
@@ -82,11 +77,7 @@ for _ in 0..<30 {
     candidates.append(Candidate(
       layer: intValue(window[kCGWindowLayer as String]),
       area: width * height,
-      id: windowID,
-      x: intValue(bounds["X"]),
-      y: intValue(bounds["Y"]),
-      width: width,
-      height: height
+      id: windowID
     ))
   }
 
@@ -96,7 +87,7 @@ for _ in 0..<30 {
     }
     return $0.layer < $1.layer
   }).first {
-    print("\(best.id),\(best.x),\(best.y),\(best.width),\(best.height)")
+    print(best.id)
     exit(0)
   }
 
@@ -110,88 +101,14 @@ SWIFT
   swiftc get_cg_window_info.swift -o get_cg_window_info
 fi
 
-# Write AppleScript to a temporary file to avoid heredoc issues.
-# AXWindowNumber is the CoreGraphics window id used by screencapture -l, but
-# some GitHub-hosted macOS images do not expose it for every Accessibility
-# window. Keep the bounds so region capture can still produce an artifact.
-cat > get_window_info.applescript <<'OSA'
-tell application "System Events"
-  tell process "APP_NAME_PLACEHOLDER"
-    set frontmost to true
-    delay 1.0
-    if (count of windows) = 0 then return "ERROR: no windows"
-    set win to window 1
-    set windowNumber to "missing"
-    try
-      set axWindowNumber to value of attribute "AXWindowNumber" of win
-      if axWindowNumber is not missing value then set windowNumber to axWindowNumber as text
-    end try
-    set {xPos, yPos} to position of win
-    set {wSize, hSize} to size of win
-    set AppleScript's text item delimiters to ","
-    return {windowNumber, xPos, yPos, wSize, hSize} as text
-  end tell
-end tell
-OSA
-
-# Replace placeholder with actual app name
-sed -i '' "s/APP_NAME_PLACEHOLDER/$APP_NAME/g" get_window_info.applescript
-
-# Get window id and rect as id,x,y,w,h
 echo "Waiting for window to appear..."
-WINDOW_INFO=$(./get_cg_window_info "$APP_NAME" "$APP_PID" || true)
-if [[ "$WINDOW_INFO" == ERROR:* ]] || [ -z "$WINDOW_INFO" ]; then
-  echo "$WINDOW_INFO"
-  echo "CoreGraphics lookup failed; trying Accessibility window lookup."
-  for _ in {1..20}; do
-    EXISTS=$(osascript -e "tell application \"System Events\" to return exists process \"$APP_NAME\"" || true)
-    if [ "$EXISTS" = "true" ]; then
-      HAS_WIN=$(osascript -e "tell application \"System Events\" to tell process \"$APP_NAME\" to return (count of windows) > 0" || true)
-      if [ "$HAS_WIN" = "true" ]; then
-        break
-      fi
-    fi
-    sleep 0.5
-  done
-
-  if [ "${EXISTS:-false}" != "true" ] || [ "${HAS_WIN:-false}" != "true" ]; then
-    echo "ERROR: process or window not found"
-    osascript -e 'tell application "System Events" to get name of every process' | tr "," "\n" | head -50
-    # Fallback: full screen capture
-    screencapture -x "$OUTPUT_FILE"
-    exit 0
-  fi
-
-  WINDOW_INFO=$(osascript get_window_info.applescript)
-fi
-case "$WINDOW_INFO" in
-  ERROR:*) echo "$WINDOW_INFO"; screencapture -x "$OUTPUT_FILE"; exit 0 ;;
-esac
-
-# Remove whitespace and validate format
-WINDOW_INFO=$(echo "$WINDOW_INFO" | tr -d '[:space:]')
-if ! [[ "$WINDOW_INFO" =~ ^(missing|[0-9]+),-?[0-9]+,-?[0-9]+,[0-9]+,[0-9]+$ ]]; then
-  echo "ERROR: invalid window info: '$WINDOW_INFO'"
-  screencapture -x "$OUTPUT_FILE"
-  exit 0
-fi
-WINDOW_ID="${WINDOW_INFO%%,*}"
-RECT="${WINDOW_INFO#*,}"
+WINDOW_ID=$(./get_cg_window_info "$APP_NAME" "$APP_PID") || {
+  echo "$WINDOW_ID"
+  exit 1
+}
 echo "Window id: $WINDOW_ID"
-echo "Window rect: $RECT"
-
-if [ "$WINDOW_ID" = "missing" ]; then
-  echo "AXWindowNumber is unavailable; falling back to region capture."
-  screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
-else
-  # Capture the target window by id. Unlike region capture, this avoids other
-  # windows such as macOS permission prompts being burned into the image.
-  echo "Capturing with screencapture -l $WINDOW_ID -> $OUTPUT_FILE"
-  if ! screencapture -x -t png -l"$WINDOW_ID" "$OUTPUT_FILE"; then
-    echo "Window-id capture failed; falling back to region capture."
-    screencapture -x -t png -R "$RECT" "$OUTPUT_FILE"
-  fi
-fi
+echo "Capturing with screencapture -l $WINDOW_ID -> $OUTPUT_FILE"
+screencapture -x -t png -l"$WINDOW_ID" "$OUTPUT_FILE"
 ls -la "$OUTPUT_FILE"
 
 echo "macOS window screenshot process completed successfully"
