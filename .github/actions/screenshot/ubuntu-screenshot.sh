@@ -6,23 +6,10 @@ OUTPUT_FILE="$2"
 
 echo "Starting Ubuntu window screenshot process for $APP_NAME"
 
-# Start Xvfb with proper screen resolution
-Xvfb :99 -screen 0 1280x800x24 -ac +extension GLX +render -noreset &
-echo $! > xvfb.pid
-sleep 3
-
-# Ensure all X clients use the same display
-export DISPLAY=:99
-echo "Using DISPLAY=$DISPLAY"
-
-# Start window manager (avoid --config-file /dev/null to suppress syntax error dialog)
-openbox &
-echo $! > wm.pid
-sleep 2
-
 # Launch the application in background
 "./$APP_NAME" &
-echo $! > app.pid
+APP_PID=$!
+trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
 
 # Short initial wait; loop below will wait for the window anyway
 sleep 1
@@ -31,7 +18,6 @@ sleep 1
 WINDOW_ID=""
 ATTEMPTS=0
 MAX_ATTEMPTS=10
-APP_PID=$(cat app.pid)
 
 echo "Searching for window belonging to PID: $APP_PID"
 
@@ -117,25 +103,5 @@ else
   echo "Failed to create screenshot"
   exit 1
 fi
-
-# Cleanup function
-cleanup() {
-  echo "Cleaning up processes..."
-  if [ -f app.pid ]; then
-    kill $(cat app.pid) 2>/dev/null || true
-    rm -f app.pid
-  fi
-  if [ -f wm.pid ]; then
-    kill $(cat wm.pid) 2>/dev/null || true
-    rm -f wm.pid
-  fi
-  if [ -f xvfb.pid ]; then
-    kill $(cat xvfb.pid) 2>/dev/null || true
-    rm -f xvfb.pid
-  fi
-}
-
-# Set trap to cleanup on exit
-trap cleanup EXIT
 
 echo "Ubuntu window screenshot process completed successfully"
