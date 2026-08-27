@@ -98,10 +98,10 @@ try {
         return $true  # Continue enumeration
     }
     
-    for ($attempt = 0; $attempt -lt 50 -and !$guiWindowFound; $attempt++) {
+    for ($attempt = 0; $attempt -lt 20 -and !$guiWindowFound; $attempt++) {
         [void][Win32]::EnumWindows($callback, [IntPtr]::Zero)
         if (!$guiWindowFound) {
-            Start-Sleep -Milliseconds 100
+            Start-Sleep -Milliseconds 500
         }
     }
     

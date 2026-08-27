@@ -54,7 +54,7 @@ func doubleValue(_ value: Any?, default defaultValue: Double = 0) -> Double {
   return defaultValue
 }
 
-for _ in 0..<90 {
+for _ in 0..<20 {
   let info = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) as? [[String: Any]] ?? []
   var candidates: [Candidate] = []
 

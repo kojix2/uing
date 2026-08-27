@@ -11,13 +11,10 @@ echo "Starting Ubuntu window screenshot process for $APP_NAME"
 APP_PID=$!
 trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
 
-# Short initial wait; loop below will wait for the window anyway
-sleep 1
-
 # Try to find the application window by PID
 WINDOW_ID=""
 ATTEMPTS=0
-MAX_ATTEMPTS=10
+MAX_ATTEMPTS=20
 
 echo "Searching for window belonging to PID: $APP_PID"
 
@@ -67,7 +64,7 @@ while [ -z "$WINDOW_ID" ] && [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
 
   if [ -z "$WINDOW_ID" ]; then
     echo "Attempt $((ATTEMPTS + 1))/$MAX_ATTEMPTS: Window not found yet, waiting..."
-    sleep 1
+    sleep 0.5
     ATTEMPTS=$((ATTEMPTS + 1))
   fi
 done
