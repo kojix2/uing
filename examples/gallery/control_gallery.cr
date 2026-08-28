@@ -3,9 +3,9 @@ require "base64"
 require "compress/zlib"
 
 class ControlGalleryApp
-  NEW_ICON = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
+  NEW_ICON  = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
   OPEN_ICON = "eNrtlsENACEIBK3wSrnCbNJ73dOosIQQZxKfm0EhxNb8PP0dlhOd/yF/lp9x4l9lI+rfJSqfNf+Qt8NUvcNfy7+z3/Djx4+/ut+K8v5Kt/X9VW5P/xVu7/x53RXmXw3+Wn7+v3f5b+UD4HmCow=="
-  PIN_ICON = "eNrtlksOABAMRN3KOR3RSdjaiKLU503S5XjBZHBuXjH4NDLafqlW+cupeaT7t/CfdH7leqP5ud0vzT+y6zCtu4N/Fl9b8O/itzpdytHOP3z4O/j0D/3Xk8Pd7z98+PDt+K/9/39VBiV4ujY="
+  PIN_ICON  = "eNrtlksOABAMRN3KOR3RSdjaiKLU503S5XjBZHBuXjH4NDLafqlW+cupeaT7t/CfdH7leqP5ud0vzT+y6zCtu4N/Fl9b8O/itzpdytHOP3z4O/j0D/3Xk8Pd7z98+PDt+K/9/39VBiV4ujY="
   HELP_ICON = "eNpjYKAcTMzc958cTGv9MDBQ+ke6/4e6/oGOP2L1j4KBK8OoFXej9g8t+9HBqP0jy/7R/Dea/0fz36j9o/aP2j9a/43WP6P2D237RyoAAGYovgE="
 
   @main_window : UIng::Window?
@@ -20,7 +20,7 @@ class ControlGalleryApp
     @toolbar_icons = [] of UIng::Image
 
     setup_menus
-    @main_window = UIng::Window.new("Control Gallery", 600, 500, menubar: true, margined: true) do
+    @main_window = UIng::Window.new("Control Gallery", 900, 600, menubar: true, margined: true) do
       on_closing do
         puts "Bye Bye"
         close_preferences
@@ -167,13 +167,104 @@ class ControlGalleryApp
 
     hbox.append(build_basic_controls, stretchy: true)
 
+    middle_column = UIng::Box.new(:vertical, padded: true)
+    hbox.append(middle_column, stretchy: true)
+    middle_column.append(build_area, stretchy: true)
+    middle_column.append(build_table, stretchy: true)
+
     right_column = UIng::Box.new(:vertical, padded: true)
-    hbox.append(right_column, true)
+    hbox.append(right_column, stretchy: true)
     right_column.append(build_numbers_group)
     right_column.append(build_lists_group)
     right_column.append(build_tab, true)
 
     vbox
+  end
+
+  private def build_area : UIng::Group
+    group = UIng::Group.new("Area", margined: true)
+    inner = UIng::Box.new(:vertical, padded: true)
+    group.child = inner
+
+    handler = UIng::Area::Handler.new
+    handler.draw do |_area, params|
+      brush = UIng::Area::Draw::Brush.new(
+        :linear_gradient,
+        x0: 0.0,
+        y0: 0.0,
+        x1: params.area_width,
+        y1: params.area_height,
+        stops: [
+          UIng::Area::Draw::Brush::GradientStop.new(0.0, 0.15, 0.35, 0.85, 1.0),
+          UIng::Area::Draw::Brush::GradientStop.new(0.5, 0.45, 0.25, 0.80, 1.0),
+          UIng::Area::Draw::Brush::GradientStop.new(1.0, 0.95, 0.35, 0.45, 1.0),
+        ]
+      )
+      params.context.fill_path(brush) do |path|
+        path.add_rectangle(0.0, 0.0, params.area_width, params.area_height)
+      end
+    end
+
+    inner.append(UIng::Area.new(handler), stretchy: true)
+    group
+  end
+
+  private def build_table : UIng::Group
+    group = UIng::Group.new("Table", margined: true)
+    inner = UIng::Box.new(:vertical, padded: true)
+    group.child = inner
+
+    data = [
+      {item: "Alpha", category: "Group A", value: 72, background: {0.93, 0.95, 0.98, 1.0}},
+      {item: "Beta", category: "Group B", value: 48, background: {0.97, 0.95, 0.92, 1.0}},
+      {item: "Gamma", category: "Group A", value: 88, background: {0.93, 0.97, 0.94, 1.0}},
+      {item: "Delta", category: "Group C", value: 24, background: {0.95, 0.95, 0.96, 1.0}},
+    ]
+
+    model_handler = UIng::Table::Model::Handler.new do
+      num_columns { 4 }
+      column_type do |column|
+        case column
+        when 0, 1
+          UIng::Table::Value::Type::String
+        when 2
+          UIng::Table::Value::Type::Int
+        else
+          UIng::Table::Value::Type::Color
+        end
+      end
+      num_rows { data.size }
+      cell_value do |row, column|
+        item = data[row]
+        case column
+        when 0
+          UIng::Table::Value.new(item[:item])
+        when 1
+          UIng::Table::Value.new(item[:category])
+        when 2
+          UIng::Table::Value.new(item[:value])
+        else
+          red, green, blue, alpha = item[:background]
+          UIng::Table::Value.new(red, green, blue, alpha)
+        end
+      end
+      set_cell_value { |_row, _column, _value| }
+    end
+
+    table_model = UIng::Table::Model.new(model_handler)
+    table = UIng::Table.new(table_model, 3) do
+      append_text_column("Item", 0, editable: :never)
+      append_text_column("Category", 1, editable: :never)
+      append_progress_bar_column("Value", 2)
+    end
+    table.header_visible = true
+    table.selection_mode = UIng::Table::Selection::Mode::ZeroOrOne
+    3.times do |column|
+      table.column_set_width(column, -1)
+    end
+
+    inner.append(table, stretchy: true)
+    group
   end
 
   private def build_basic_controls : UIng::Group
@@ -232,6 +323,15 @@ class ControlGalleryApp
       end
     end
     inner.append color_button
+
+    inner.append UIng::Separator.new(:horizontal)
+    inner.append(
+      UIng::Form.new(padded: true) do
+        append("Entry", UIng::Entry.new.tap(&.text=("Sample text")), stretchy: true)
+        append("Search", UIng::Entry.new(:search).tap(&.text=("Search text")), stretchy: true)
+        append("Password", UIng::Entry.new(:password).tap(&.text=("secret")), stretchy: true)
+      end
+    )
 
     group
   end
