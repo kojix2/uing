@@ -59,6 +59,9 @@ try {
     $process = Start-Process -FilePath ".\$AppName" -PassThru
     Write-Host "Application launched with PID: $($process.Id)"
 
+    # Wait for application to fully load
+    Start-Sleep -Seconds 2
+
     # Find the main window for the process
     $mainWindow = $null
     $guiWindowFound = $false
