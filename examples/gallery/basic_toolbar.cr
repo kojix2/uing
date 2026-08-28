@@ -1,81 +1,41 @@
 require "../../src/uing"
+require "base64"
+require "compress/zlib"
 
-alias Color = Tuple(UInt8, UInt8, UInt8, UInt8)
+NEW_ICON = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
+OPEN_ICON = "eNrtlsENACEIBK3wSrnCbNJ73dOosIQQZxKfm0EhxNb8PP0dlhOd/yF/lp9x4l9lI+rfJSqfNf+Qt8NUvcNfy7+z3/Djx4+/ut+K8v5Kt/X9VW5P/xVu7/x53RXmXw3+Wn7+v3f5b+UD4HmCow=="
+PIN_ICON = "eNrtlksOABAMRN3KOR3RSdjaiKLU503S5XjBZHBuXjH4NDLafqlW+cupeaT7t/CfdH7leqP5ud0vzT+y6zCtu4N/Fl9b8O/itzpdytHOP3z4O/j0D/3Xk8Pd7z98+PDt+K/9/39VBiV4ujY="
+HELP_ICON = "eNpjYKAcTMzc958cTGv9MDBQ+ke6/4e6/oGOP2L1j4KBK8OoFXej9g8t+9HBqP0jy/7R/Dea/0fz36j9o/aP2j9a/43WP6P2D237RyoAAGYovgE="
 
-def paint(pixels : Bytes, size : Int32, x : Int32, y : Int32, color : Color) : Nil
-  return unless 0 <= x < size && 0 <= y < size
-  offset = (y * size + x) * 4
-  pixels[offset], pixels[offset + 1], pixels[offset + 2], pixels[offset + 3] = color
-end
 
-def fill_rect(pixels : Bytes, size : Int32, x0 : Int32, y0 : Int32,
-              width : Int32, height : Int32, color : Color) : Nil
-  y0.upto(y0 + height - 1) do |y|
-    x0.upto(x0 + width - 1) { |x| paint(pixels, size, x, y, color) }
+def decode_icon(data : String) : Bytes
+  compressed = Base64.decode(data)
+  io = IO::Memory.new(compressed)
+
+  Compress::Zlib::Reader.open(io) do |zlib|
+    zlib.getb_to_end
   end
 end
 
-def icon_pixels(size : Int32, color : Color, symbol : Symbol) : Bytes
-  pixels = Bytes.new(size * size * 4, 0_u8)
-  margin = Math.max(1, size // 16)
-  white = {255_u8, 255_u8, 255_u8, 255_u8}
+def new_icon(data : String) : UIng::Image
+  pixels = decode_icon(data)
 
-  fill_rect(pixels, size, margin, margin, size - margin * 2, size - margin * 2, color)
-
-  stroke = Math.max(2, size // 8)
-  middle = (size - stroke) // 2
-  inner = size // 5
-  span = size - inner * 2
-
-  case symbol
-  when :new
-    fill_rect(pixels, size, middle, inner, stroke, span, white)
-    fill_rect(pixels, size, inner, middle, span, stroke, white)
-  when :open
-    # A centered down arrow entering a tray.
-    arrow_height = size // 5
-    fill_rect(pixels, size, middle, inner, stroke, size // 3, white)
-    arrow_height.times do |row|
-      width = stroke + (arrow_height - row - 1) * 2
-      fill_rect(pixels, size, (size - width) // 2, size // 2 + row, width, 1, white)
-    end
-    fill_rect(pixels, size, inner, size - inner - stroke, span, stroke, white)
-  when :pin
-    # A pushpin mirrored around its vertical axis.
-    fill_rect(pixels, size, inner, inner, span, stroke, white)
-    body_width = stroke * 2
-    fill_rect(pixels, size, (size - body_width) // 2, inner + stroke, body_width, size // 4, white)
-    fill_rect(pixels, size, inner, size // 2, span, stroke, white)
-    fill_rect(pixels, size, middle, size // 2 + stroke, stroke, size // 4, white)
-  when :help
-    # A centered information mark keeps the help icon simple and symmetric.
-    fill_rect(pixels, size, middle, inner, stroke, stroke, white)
-    fill_rect(pixels, size, middle, inner + stroke * 2, stroke, size // 3, white)
-  end
-  pixels
-end
-
-def new_icon(color : Color, symbol : Symbol) : UIng::Image
   image = UIng::Image.new(16, 16)
-  {16, 32}.each do |size|
-    pixels = icon_pixels(size, color, symbol)
-    image.append(pixels, size, size, size * 4)
-  end
+  image.append(pixels[0, 1024], 16, 16, 64)
+  image.append(pixels[1024, 4096], 32, 32, 128)
   image
 end
 
 UIng.init
 
-window = UIng::Window.new("Toolbar", 400, 100)
-window.set_child(UIng::Label.new("Resize the window to see the flexible space."))
-
 icons = [
-  new_icon({72_u8, 140_u8, 210_u8, 255_u8}, :new),
-  new_icon({78_u8, 170_u8, 110_u8, 255_u8}, :open),
-  new_icon({225_u8, 145_u8, 55_u8, 255_u8}, :pin),
-  new_icon({145_u8, 105_u8, 190_u8, 255_u8}, :help),
+  new_icon(NEW_ICON),
+  new_icon(OPEN_ICON),
+  new_icon(PIN_ICON),
+  new_icon(HELP_ICON),
 ]
 
+window = UIng::Window.new("Toolbar", 400, 100)
 toolbar = UIng::Toolbar.new
 
 new_item = toolbar.append_button("New", icons[0])
@@ -87,16 +47,19 @@ open_item.tooltip = "Open document"
 open_item.on_clicked { puts "Open clicked" }
 
 toolbar.append_separator
+
 pinned_item = toolbar.append_toggle_button("Pinned", icons[2])
 pinned_item.tooltip = "Pin document"
 pinned_item.on_clicked { |item| puts "Pinned: #{item.checked? ? "yes" : "no"}" }
 
 toolbar.append_flexible_space
+
 help_item = toolbar.append_button("Help", icons[3])
 help_item.tooltip = "Show help"
 help_item.on_clicked { puts "Help clicked" }
 
 window.toolbar = toolbar
+
 window.on_closing do
   window.toolbar = nil
   toolbar.free
