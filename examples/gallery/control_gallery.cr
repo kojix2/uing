@@ -1,24 +1,38 @@
 require "../../src/uing"
+require "base64"
+require "compress/zlib"
 
 class ControlGalleryApp
+  NEW_ICON = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
+  OPEN_ICON = "eNrtlsENACEIBK3wSrnCbNJ73dOosIQQZxKfm0EhxNb8PP0dlhOd/yF/lp9x4l9lI+rfJSqfNf+Qt8NUvcNfy7+z3/Djx4+/ut+K8v5Kt/X9VW5P/xVu7/x53RXmXw3+Wn7+v3f5b+UD4HmCow=="
+  PIN_ICON = "eNrtlksOABAMRN3KOR3RSdjaiKLU503S5XjBZHBuXjH4NDLafqlW+cupeaT7t/CfdH7leqP5ud0vzT+y6zCtu4N/Fl9b8O/itzpdytHOP3z4O/j0D/3Xk8Pd7z98+PDt+K/9/39VBiV4ujY="
+  HELP_ICON = "eNpjYKAcTMzc958cTGv9MDBQ+ke6/4e6/oGOP2L1j4KBK8OoFXej9g8t+9HBqP0jy/7R/Dea/0fz36j9o/aP2j9a/43WP6P2D237RyoAAGYovgE="
+
   @main_window : UIng::Window?
   @preferences_window : UIng::Window?
+  @toolbar : UIng::Toolbar?
+  @toolbar_icons : Array(UIng::Image)
 
   def initialize
     @main_window = nil
     @preferences_window = nil
+    @toolbar = nil
+    @toolbar_icons = [] of UIng::Image
 
     setup_menus
     @main_window = UIng::Window.new("Control Gallery", 600, 500, menubar: true, margined: true) do
       on_closing do
         puts "Bye Bye"
         close_preferences
+        release_toolbar
         UIng.quit
         true
       end
       set_child(build_content)
-      show
     end
+
+    main_window.toolbar = build_toolbar
+    main_window.show
   end
 
   def run
@@ -44,6 +58,62 @@ class ControlGalleryApp
     end
   end
 
+  private def icon(data : String) : UIng::Image
+    pixels = Compress::Zlib::Reader.open(IO::Memory.new(Base64.decode(data))) do |zlib|
+      zlib.getb_to_end
+    end
+
+    UIng::Image.new(16, 16).tap do |image|
+      image.append(pixels[0, 16 * 16 * 4], 16, 16, 16 * 4)
+      image.append(pixels[16 * 16 * 4, 32 * 32 * 4], 32, 32, 32 * 4)
+    end
+  end
+
+  private def build_toolbar : UIng::Toolbar
+    @toolbar_icons = [
+      icon(NEW_ICON),
+      icon(OPEN_ICON),
+      icon(PIN_ICON),
+      icon(HELP_ICON),
+    ]
+
+    UIng::Toolbar.new.tap do |toolbar|
+      @toolbar = toolbar
+
+      new_item = toolbar.append_button("New", @toolbar_icons[0])
+      new_item.tooltip = "New document"
+      new_item.on_clicked { puts "New clicked" }
+
+      open_item = toolbar.append_button("Open", @toolbar_icons[1])
+      open_item.tooltip = "Open document"
+      open_item.on_clicked { puts main_window.open_file }
+
+      toolbar.append_separator
+
+      pinned_item = toolbar.append_toggle_button("Pinned", @toolbar_icons[2])
+      pinned_item.tooltip = "Pin document"
+      pinned_item.on_clicked { |item| puts "Pinned: #{item.checked?}" }
+
+      toolbar.append_flexible_space
+
+      help_item = toolbar.append_button("Help", @toolbar_icons[3])
+      help_item.tooltip = "Show help"
+      help_item.on_clicked do
+        main_window.msg_box("Help", "This is the toolbar control.")
+      end
+    end
+  end
+
+  private def release_toolbar : Nil
+    main_window.toolbar = nil
+
+    @toolbar.try &.free
+    @toolbar = nil
+
+    @toolbar_icons.each &.free
+    @toolbar_icons.clear
+  end
+
   private def setup_menus : Nil
     UIng::Menu.new("File") do
       append_item("Open").on_clicked do |window|
@@ -61,6 +131,7 @@ class ControlGalleryApp
         if should_quit_item.checked?
           puts "Bye Bye (on_should_quit)"
           close_preferences
+          release_toolbar
           main_window.destroy # You have to destroy the window manually.
           true                # UIng.quit is automatically called in the C function onQuitClicked().
         else
