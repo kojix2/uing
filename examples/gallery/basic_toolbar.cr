@@ -2,11 +2,10 @@ require "../../src/uing"
 require "base64"
 require "compress/zlib"
 
-NEW_ICON = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
+NEW_ICON  = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
 OPEN_ICON = "eNrtlsENACEIBK3wSrnCbNJ73dOosIQQZxKfm0EhxNb8PP0dlhOd/yF/lp9x4l9lI+rfJSqfNf+Qt8NUvcNfy7+z3/Djx4+/ut+K8v5Kt/X9VW5P/xVu7/x53RXmXw3+Wn7+v3f5b+UD4HmCow=="
-PIN_ICON = "eNrtlksOABAMRN3KOR3RSdjaiKLU503S5XjBZHBuXjH4NDLafqlW+cupeaT7t/CfdH7leqP5ud0vzT+y6zCtu4N/Fl9b8O/itzpdytHOP3z4O/j0D/3Xk8Pd7z98+PDt+K/9/39VBiV4ujY="
+PIN_ICON  = "eNrtlksOABAMRN3KOR3RSdjaiKLU503S5XjBZHBuXjH4NDLafqlW+cupeaT7t/CfdH7leqP5ud0vzT+y6zCtu4N/Fl9b8O/itzpdytHOP3z4O/j0D/3Xk8Pd7z98+PDt+K/9/39VBiV4ujY="
 HELP_ICON = "eNpjYKAcTMzc958cTGv9MDBQ+ke6/4e6/oGOP2L1j4KBK8OoFXej9g8t+9HBqP0jy/7R/Dea/0fz36j9o/aP2j9a/43WP6P2D237RyoAAGYovgE="
-
 
 def decode_icon(data : String) : Bytes
   compressed = Base64.decode(data)
