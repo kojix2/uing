@@ -1,6 +1,7 @@
 require "../../src/uing"
 require "base64"
 require "compress/zlib"
+require "stumpy_png"
 
 class ControlGalleryApp
   NEW_ICON  = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
@@ -12,12 +13,16 @@ class ControlGalleryApp
   @preferences_window : UIng::Window?
   @toolbar : UIng::Toolbar?
   @toolbar_icons : Array(UIng::Image)
+  @area_text : UIng::Area::AttributedString?
+  @area_font : UIng::FontDescriptor?
 
   def initialize
     @main_window = nil
     @preferences_window = nil
     @toolbar = nil
     @toolbar_icons = [] of UIng::Image
+    @area_text = nil
+    @area_font = nil
 
     setup_menus
     @main_window = UIng::Window.new("Control Gallery", 900, 600, menubar: true, margined: true) do
@@ -25,6 +30,7 @@ class ControlGalleryApp
         puts "Bye Bye"
         close_preferences
         release_toolbar
+        release_area_text
         UIng.quit
         true
       end
@@ -114,6 +120,13 @@ class ControlGalleryApp
     @toolbar_icons.clear
   end
 
+  private def release_area_text : Nil
+    @area_text.try &.free
+    @area_text = nil
+    @area_font.try &.free
+    @area_font = nil
+  end
+
   private def setup_menus : Nil
     UIng::Menu.new("File") do
       append_item("Open").on_clicked do |window|
@@ -132,6 +145,7 @@ class ControlGalleryApp
           puts "Bye Bye (on_should_quit)"
           close_preferences
           release_toolbar
+          release_area_text
           main_window.destroy # You have to destroy the window manually.
           true                # UIng.quit is automatically called in the C function onQuitClicked().
         else
@@ -170,6 +184,7 @@ class ControlGalleryApp
     middle_column = UIng::Box.new(:vertical, padded: true)
     hbox.append(middle_column, stretchy: true)
     middle_column.append(build_area, stretchy: true)
+    middle_column.append(build_image_view, stretchy: true)
     middle_column.append(build_table, stretchy: true)
 
     right_column = UIng::Box.new(:vertical, padded: true)
@@ -185,6 +200,13 @@ class ControlGalleryApp
     group = UIng::Group.new("Area", margined: true)
     inner = UIng::Box.new(:vertical, padded: true)
     group.child = inner
+
+    text = UIng::Area::AttributedString.new("Hello World")
+    text.set_attribute(UIng::Area::Attribute.new_color(1.0, 1.0, 1.0, 1.0), 0, text.len)
+    @area_text = text
+
+    font = UIng::FontDescriptor.new(size: 18, weight: :bold)
+    @area_font = font
 
     handler = UIng::Area::Handler.new
     handler.draw do |_area, params|
@@ -203,9 +225,72 @@ class ControlGalleryApp
       params.context.fill_path(brush) do |path|
         path.add_rectangle(0.0, 0.0, params.area_width, params.area_height)
       end
+
+      drop_scale = params.area_width < params.area_height ? params.area_width : params.area_height
+      x, y, radius = params.area_width * 0.18, params.area_height * 0.50, drop_scale * 0.15
+
+      # Sample the background at x = 18%: RGB (0.258, 0.314, 0.832), HSV S = 0.690, V = 0.832.
+      # Scaling all RGB channels equally changes value while preserving hue and saturation.
+      base = {0.258, 0.314, 0.832}
+      bright = {base[0] / 0.832, base[1] / 0.832, base[2] / 0.832}
+      glass = {bright[0] * 0.70 + 0.30, bright[1] * 0.70 + 0.30, bright[2] * 0.70 + 0.30}
+      dark = {base[0] * 0.55, base[1] * 0.55, base[2] * 0.55}
+
+      [
+        {0.08, 0.11, 1.04, dark[0], dark[1], dark[2], 0.16},      # shadow
+        {0.00, 0.00, 1.00, glass[0], glass[1], glass[2], 0.16},   # water
+        {-0.07, -0.09, 0.78, glass[0], glass[1], glass[2], 0.06}, # inner light
+        {0.27, 0.30, 0.30, glass[0], glass[1], glass[2], 0.18},   # refraction
+        {-0.29, -0.31, 0.16, 1.0, 1.0, 1.0, 0.78},                # reflection
+        {-0.18, -0.20, 0.05, 1.0, 1.0, 1.0, 0.94},                # sparkle
+      ].each do |dx, dy, scale, red, green, blue, alpha|
+        layer = UIng::Area::Draw::Brush.new(:solid, red, green, blue, alpha)
+        params.context.fill_path(layer) do |path|
+          path.new_figure_with_arc(x + radius * dx, y + radius * dy, radius * scale, 0.0, Math::PI * 2, false)
+        end
+      end
+
+      rim = UIng::Area::Draw::Brush.new(:solid, glass[0], glass[1], glass[2], 0.55)
+      params.context.stroke_path(rim, thickness: 1.1) do |path|
+        path.new_figure_with_arc(x, y, radius, 0.0, Math::PI * 2, false)
+      end
+
+      UIng::Area::Draw::TextLayout.open(
+        string: text,
+        default_font: font,
+        width: params.area_width * 0.74,
+        align: UIng::Area::Draw::TextAlign::Center
+      ) do |layout|
+        text_height = layout.extents[1]
+        params.context.draw_text_layout(layout, params.area_width * 0.26, (params.area_height - text_height) / 2)
+      end
     end
 
     inner.append(UIng::Area.new(handler), stretchy: true)
+    group
+  end
+
+  private def build_image_view : UIng::Group
+    group = UIng::Group.new("ImageView", margined: true)
+    canvas = StumpyPNG.read(File.join(__DIR__, "crys.png"))
+    width, height = canvas.width.to_i32, canvas.height.to_i32
+    pixels = Bytes.new(width * height * 4)
+
+    height.times do |y|
+      width.times do |x|
+        offset = (y * width + x) * 4
+        red, green, blue, alpha = canvas[x, y].to_rgba
+        pixels[offset] = red
+        pixels[offset + 1] = green
+        pixels[offset + 2] = blue
+        pixels[offset + 3] = alpha || 255_u8
+      end
+    end
+
+    image = UIng::Image.new(width, height)
+    image.append(pixels, width, height, width * 4)
+    group.child = UIng::ImageView.new(image, :fit)
+    image.free
     group
   end
 
@@ -272,18 +357,21 @@ class ControlGalleryApp
     inner = UIng::Box.new(:vertical, padded: true)
     group.child = inner
 
+    checkbox = UIng::Checkbox.new("Show error dialog")
+    checkbox.on_toggled do |checked|
+      puts "Show error dialog: #{checked}"
+    end
+
     button = UIng::Button.new("Button") do
       on_clicked do
-        main_window.msg_box("Information", "You clicked the button")
+        if checkbox.checked?
+          main_window.msg_box_error("Error", "You clicked the button")
+        else
+          main_window.msg_box("Information", "You clicked the button")
+        end
       end
     end
     inner.append(button, false)
-
-    checkbox = UIng::Checkbox.new("Checkbox")
-    checkbox.on_toggled do |checked|
-      main_window.title = "Checkbox is #{checked}"
-      checkbox.text = "I am the checkbox (#{checked})"
-    end
     inner.append checkbox
 
     inner.append UIng::Label.new("Label")
@@ -396,11 +484,11 @@ class ControlGalleryApp
       puts "Tab selected: index #{idx}"
     end
 
-    text_entry = UIng::Entry.new
+    text_entry = UIng::MultilineEntry.new
     text_entry.text = "Please enter your feelings"
-    text_entry.on_changed do
+    text_entry.on_changed_with_text do |text|
       print "Current textbox data: "
-      puts text_entry.text
+      puts text
     end
     hbox1.append(text_entry, true)
 
