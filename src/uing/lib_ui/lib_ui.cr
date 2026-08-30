@@ -129,7 +129,6 @@ module UIng
     fun toolbar_append_toggle_button = uiToolbarAppendToggleButton(t : Pointer(Toolbar), text : Pointer(LibC::Char), icon : Pointer(Image)) : Pointer(ToolbarItem)
     fun toolbar_append_separator = uiToolbarAppendSeparator(t : Pointer(Toolbar))
     fun toolbar_append_space = uiToolbarAppendSpace(t : Pointer(Toolbar))
-    fun toolbar_append_flexible_space = uiToolbarAppendFlexibleSpace(t : Pointer(Toolbar))
     fun toolbar_item_text = uiToolbarItemText(item : Pointer(ToolbarItem)) : Pointer(LibC::Char)
     fun toolbar_item_set_text = uiToolbarItemSetText(item : Pointer(ToolbarItem), text : Pointer(LibC::Char))
     fun toolbar_item_set_icon = uiToolbarItemSetIcon(item : Pointer(ToolbarItem), icon : Pointer(Image))

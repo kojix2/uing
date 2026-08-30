@@ -48,11 +48,6 @@ module UIng
       LibUI.toolbar_append_space(ref_ptr)
     end
 
-    def append_flexible_space : Nil
-      check_mutable
-      LibUI.toolbar_append_flexible_space(ref_ptr)
-    end
-
     # Returns the requested display mode. The default is
     # `DisplayMode::IconAndTextVertical`.
     def display_mode : DisplayMode

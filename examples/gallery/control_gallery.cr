@@ -104,7 +104,7 @@ class ControlGalleryApp
       pinned_item.tooltip = "Pin document"
       pinned_item.on_clicked { |item| puts "Pinned: #{item.checked?}" }
 
-      toolbar.append_flexible_space
+      toolbar.append_space
 
       help_item = toolbar.append_button("Help", @toolbar_icons[3])
       help_item.tooltip = "Show help"
