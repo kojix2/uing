@@ -15,6 +15,7 @@ class ControlGalleryApp
   @toolbar_icons : Array(UIng::Image)
   @area_text : UIng::Area::AttributedString?
   @area_font : UIng::FontDescriptor?
+  @table_model : UIng::Table::Model?
 
   def initialize
     @main_window = nil
@@ -23,6 +24,7 @@ class ControlGalleryApp
     @toolbar_icons = [] of UIng::Image
     @area_text = nil
     @area_font = nil
+    @table_model = nil
 
     setup_menus
     @main_window = UIng::Window.new("Control Gallery", 900, 600, menubar: true, margined: true) do
@@ -43,6 +45,8 @@ class ControlGalleryApp
 
   def run
     UIng.main
+  ensure
+    release_table_model
   end
 
   private def main_window : UIng::Window
@@ -125,6 +129,11 @@ class ControlGalleryApp
     @area_text = nil
     @area_font.try &.free
     @area_font = nil
+  end
+
+  private def release_table_model : Nil
+    @table_model.try &.free
+    @table_model = nil
   end
 
   private def setup_menus : Nil
@@ -337,6 +346,7 @@ class ControlGalleryApp
     end
 
     table_model = UIng::Table::Model.new(model_handler)
+    @table_model = table_model
     table = UIng::Table.new(table_model, 3) do
       append_text_column("Item", 0, editable: :never)
       append_text_column("Category", 1, editable: :never)
