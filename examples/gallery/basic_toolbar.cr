@@ -52,7 +52,7 @@ pinned_item = toolbar.append_toggle_button("Pinned", icons[2])
 pinned_item.tooltip = "Pin document"
 pinned_item.on_clicked { |item| puts "Pinned: #{item.checked? ? "yes" : "no"}" }
 
-toolbar.append_space
+toolbar.append_separator
 
 help_item = toolbar.append_button("Help", icons[3])
 help_item.tooltip = "Show help"
