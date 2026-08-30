@@ -36,6 +36,7 @@ icons = [
 
 window = UIng::Window.new("Toolbar", 400, 100)
 toolbar = UIng::Toolbar.new
+toolbar.display_mode = UIng::Toolbar::DisplayMode::IconAndTextVertical
 
 new_item = toolbar.append_button("New", icons[0])
 new_item.tooltip = "New document"

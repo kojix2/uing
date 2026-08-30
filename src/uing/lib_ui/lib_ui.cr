@@ -121,6 +121,8 @@ module UIng
     alias ToolbarItem = Void
     fun new_toolbar = uiNewToolbar : Pointer(Toolbar)
     fun free_toolbar = uiFreeToolbar(t : Pointer(Toolbar))
+    fun toolbar_get_display_mode = uiToolbarGetDisplayMode(t : Pointer(Toolbar)) : UIng::Toolbar::DisplayMode
+    fun toolbar_set_display_mode = uiToolbarSetDisplayMode(t : Pointer(Toolbar), mode : UIng::Toolbar::DisplayMode)
     fun window_set_toolbar = uiWindowSetToolbar(w : Pointer(Window), t : Pointer(Toolbar))
     fun window_toolbar = uiWindowToolbar(w : Pointer(Window)) : Pointer(Toolbar)
     fun toolbar_append_button = uiToolbarAppendButton(t : Pointer(Toolbar), text : Pointer(LibC::Char), icon : Pointer(Image)) : Pointer(ToolbarItem)

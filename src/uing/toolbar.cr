@@ -5,6 +5,13 @@ module UIng
   # window. Images passed to toolbar items are borrowed by libui-ng and must
   # remain alive until the toolbar is freed.
   class Toolbar
+    enum DisplayMode
+      IconOnly              = 0
+      IconAndTextHorizontal = 1
+      IconAndTextVertical   = 2
+      TextOnly              = 3
+    end
+
     @released = false
     @ever_attached = false
     @attached_window : Window?
@@ -44,6 +51,22 @@ module UIng
     def append_flexible_space : Nil
       check_mutable
       LibUI.toolbar_append_flexible_space(ref_ptr)
+    end
+
+    # Returns the requested display mode. The default is
+    # `DisplayMode::IconAndTextVertical`.
+    def display_mode : DisplayMode
+      LibUI.toolbar_get_display_mode(ref_ptr)
+    end
+
+    # Sets the display mode before the toolbar is first attached to a window.
+    # macOS displays `DisplayMode::IconAndTextHorizontal` vertically.
+    def display_mode=(mode : DisplayMode) : Nil
+      check_available
+      if @ever_attached
+        raise "Toolbar display mode cannot be changed after the toolbar has been attached"
+      end
+      LibUI.toolbar_set_display_mode(ref_ptr, mode)
     end
 
     def attached? : Bool
