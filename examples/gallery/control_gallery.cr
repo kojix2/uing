@@ -425,9 +425,9 @@ class ControlGalleryApp
     inner.append UIng::Separator.new(:horizontal)
     inner.append(
       UIng::Form.new(padded: true) do
-        append("Entry", UIng::Entry.new.tap(&.text=("Sample text")), stretchy: true)
-        append("Search", UIng::Entry.new(:search).tap(&.text=("Search text")), stretchy: true)
-        append("Password", UIng::Entry.new(:password).tap(&.text=("secret")), stretchy: true)
+        append("Entry", UIng::Entry.new.tap(&.text=("Sample text")))
+        append("Search", UIng::Entry.new(:search).tap(&.text=("Search text")))
+        append("Password", UIng::Entry.new(:password).tap(&.text=("secret")))
       end
     )
 
