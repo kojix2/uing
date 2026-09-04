@@ -545,7 +545,7 @@ Note: Image display is a feature introduced in `kojix2/libui-ng`. This feature i
 </table>
 
 - Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
-- APIs for advanced controls such as `Table` and `Area` are also provided. 
+- APIs for advanced controls such as `Table` and `Area` are also provided.
 
 ## Memory Management Policy
 
