@@ -252,10 +252,10 @@ class ControlGalleryApp
         {0.27, 0.30, 0.30, glass[0], glass[1], glass[2], 0.18},   # refraction
         {-0.29, -0.31, 0.16, 1.0, 1.0, 1.0, 0.78},                # reflection
         {-0.18, -0.20, 0.05, 1.0, 1.0, 1.0, 0.94},                # sparkle
-      ].each do |dx, dy, scale, red, green, blue, alpha|
+      ].each do |x_offset, y_offset, scale, red, green, blue, alpha|
         layer = UIng::Area::Draw::Brush.new(:solid, red, green, blue, alpha)
         params.context.fill_path(layer) do |path|
-          path.new_figure_with_arc(x + radius * dx, y + radius * dy, radius * scale, 0.0, Math::PI * 2, false)
+          path.new_figure_with_arc(x + radius * x_offset, y + radius * y_offset, radius * scale, 0.0, Math::PI * 2, false)
         end
       end
 
