@@ -331,8 +331,6 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
   </tbody>
 </table>
 
-Note: Grid Layout does not work as expected on macOS.
-
 ### Table
 
 <table>
