@@ -64,7 +64,8 @@ private class DetachableGrid < UIng::Grid
 end
 
 private class DetachableBox < UIng::Box
-  getter? native_child_deleted = false
+  getter native_delete_calls = 0
+  getter native_deleted_index : Int32?
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Box).null
@@ -75,13 +76,19 @@ private class DetachableBox < UIng::Box
     child.adopt(self)
   end
 
+  def child_refs : Array(UIng::Control)
+    @children_refs.dup
+  end
+
   protected def delete_native_child(index : Int32) : Nil
-    @native_child_deleted = true
+    @native_delete_calls += 1
+    @native_deleted_index = index
   end
 end
 
 private class DetachableForm < UIng::Form
-  getter? native_child_deleted = false
+  getter native_delete_calls = 0
+  getter native_deleted_index : Int32?
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Form).null
@@ -92,13 +99,19 @@ private class DetachableForm < UIng::Form
     child.adopt(self)
   end
 
+  def child_refs : Array(UIng::Control)
+    @children_refs.dup
+  end
+
   protected def delete_native_child(index : Int32) : Nil
-    @native_child_deleted = true
+    @native_delete_calls += 1
+    @native_deleted_index = index
   end
 end
 
 private class DetachableTab < UIng::Tab
-  getter? native_child_deleted = false
+  getter native_delete_calls = 0
+  getter native_deleted_index : Int32?
 
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::Tab).null
@@ -109,8 +122,13 @@ private class DetachableTab < UIng::Tab
     child.adopt(self)
   end
 
+  def child_refs : Array(UIng::Control)
+    @children_refs.dup
+  end
+
   protected def delete_native_child(index : Int32) : Nil
-    @native_child_deleted = true
+    @native_delete_calls += 1
+    @native_deleted_index = index
   end
 end
 
@@ -121,7 +139,32 @@ private def verify_child_deletion(container : T) : Nil forall T
   child.detach
 
   child.parent.should be_nil
-  container.native_child_deleted?.should be_true
+  container.native_delete_calls.should eq(1)
+  container.native_deleted_index.should eq(0)
+end
+
+private def verify_invalid_child_deletions(container : T, empty_container : T) : Nil forall T
+  first_child = DetachableControl.new
+  second_child = DetachableControl.new
+  container.adopt(first_child)
+  container.adopt(second_child)
+  expected_children = [first_child, second_child] of UIng::Control
+
+  [-1, -2, -3, 2].each do |index|
+    expect_raises(IndexError) { container.delete(index) }
+
+    container.native_delete_calls.should eq(0)
+    container.child_refs.should eq(expected_children)
+    first_child.parent.should be(container)
+    second_child.parent.should be(container)
+  end
+
+  [-1, 0].each do |index|
+    expect_raises(IndexError) { empty_container.delete(index) }
+
+    empty_container.native_delete_calls.should eq(0)
+    empty_container.child_refs.should be_empty
+  end
 end
 
 describe "container lifetime" do
@@ -198,5 +241,11 @@ describe "container lifetime" do
     verify_child_deletion(DetachableBox.new)
     verify_child_deletion(DetachableForm.new)
     verify_child_deletion(DetachableTab.new)
+  end
+
+  it "rejects invalid Box, Form, and Tab deletion indices without changing ownership" do
+    verify_invalid_child_deletions(DetachableBox.new, DetachableBox.new)
+    verify_invalid_child_deletions(DetachableForm.new, DetachableForm.new)
+    verify_invalid_child_deletions(DetachableTab.new, DetachableTab.new)
   end
 end

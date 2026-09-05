@@ -42,6 +42,10 @@ module UIng
     end
 
     def delete(index : Int32) : Nil
+      if index < 0 || index >= @children_refs.size
+        raise IndexError.new("Index out of bounds")
+      end
+
       child = @children_refs[index]
       delete_native_child(index)
       @children_refs.delete_at(index)
