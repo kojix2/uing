@@ -9,7 +9,7 @@ module UIng
     class Attribute
       include BlockConstructor; block_constructor
 
-      property? released : Bool = false
+      getter? released : Bool = false
       @borrowed : Bool = false
 
       def initialize(@ref_ptr : Pointer(LibUI::Attribute), @borrowed : Bool = false)
@@ -23,6 +23,15 @@ module UIng
 
       protected def invalidate_borrow : Nil
         @released = true if @borrowed
+      end
+
+      protected def check_transferable : Nil
+        check_available
+        raise "Cannot transfer a borrowed Attribute to an AttributedString" if @borrowed
+      end
+
+      protected def transfer_to_attributed_string : Nil
+        @released = true
       end
 
       def self.new_family(family : String) : Attribute
@@ -87,7 +96,7 @@ module UIng
       end
 
       def family : String?
-        check_available
+        check_type(Type::Family)
         str_ptr = LibUI.attribute_family(@ref_ptr)
         # The returned string is owned by the attribute
         # and should not be freed (probably)
@@ -95,45 +104,45 @@ module UIng
       end
 
       def size : Float64
-        check_available
+        check_type(Type::Size)
         LibUI.attribute_size(@ref_ptr)
       end
 
       def weight : TextWeight
-        check_available
+        check_type(Type::Weight)
         LibUI.attribute_weight(@ref_ptr)
       end
 
       def italic : TextItalic
-        check_available
+        check_type(Type::Italic)
         LibUI.attribute_italic(@ref_ptr)
       end
 
       def stretch : TextStretch
-        check_available
+        check_type(Type::Stretch)
         LibUI.attribute_stretch(@ref_ptr)
       end
 
       def color : {Float64, Float64, Float64, Float64}
-        check_available
+        check_type(Type::Color, Type::Background)
         LibUI.attribute_color(@ref_ptr, out r, out g, out b, out a)
         {r, g, b, a}
       end
 
       def underline : Underline
-        check_available
+        check_type(Type::Underline)
         LibUI.attribute_underline(@ref_ptr)
       end
 
       def underline_color : {UnderlineColor, Float64, Float64, Float64, Float64}
-        check_available
+        check_type(Type::UnderlineColor)
         underline_color = UnderlineColor::Custom
         LibUI.attribute_underline_color(@ref_ptr, pointerof(underline_color), out r, out g, out b, out a)
         {underline_color, r, g, b, a}
       end
 
       def features : OpenTypeFeatures
-        check_available
+        check_type(Type::Features)
         ref_ptr = LibUI.attribute_features(@ref_ptr)
         # Return an owned clone so it remains valid independently of this Attribute.
         OpenTypeFeatures.new(LibUI.open_type_features_clone(ref_ptr))
@@ -150,6 +159,13 @@ module UIng
 
       private def check_available : Nil
         raise "Attribute has already been released" if @released
+      end
+
+      private def check_type(*expected_types : Type) : Nil
+        actual_type = type
+        return if expected_types.includes?(actual_type)
+        expected = expected_types.join(" or ")
+        raise TypeCastError.new("Attribute type mismatch: expected #{expected}, got #{actual_type}")
       end
     end
   end

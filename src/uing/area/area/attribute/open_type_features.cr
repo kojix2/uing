@@ -2,7 +2,8 @@ module UIng
   class OpenTypeFeatures
     @released : Bool = false
     @borrowed : Bool = false
-    @for_each_box : Pointer(Void)?
+    @enumeration_depth : Int32 = 0
+    @for_each_boxes = [] of Pointer(Void)
 
     def initialize
       @ref_ptr = LibUI.new_open_type_features
@@ -16,6 +17,7 @@ module UIng
 
     def free : Nil
       return if @released
+      check_not_enumerating("free")
       LibUI.free_open_type_features(@ref_ptr) unless @borrowed
       @released = true
     end
@@ -26,35 +28,39 @@ module UIng
       OpenTypeFeatures.new(ref_ptr)
     end
 
-    def add(tag : String, value : Int32 = 1) : Nil
+    def add(tag : String, value : UInt32 = 1_u32) : Nil
       check_available
+      check_not_enumerating("add features")
       bytes = tag_bytes(tag)
-      LibUI.open_type_features_add(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], value.to_u32)
+      LibUI.open_type_features_add(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], value)
     end
 
     def remove(tag : String) : Nil
       check_available
+      check_not_enumerating("remove features")
       bytes = tag_bytes(tag)
       LibUI.open_type_features_remove(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3])
     end
 
-    def get(tag : String) : {Bool, Int32}
+    def get(tag : String) : {Bool, UInt32}
       check_available
       bytes = tag_bytes(tag)
       result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
-      {result != 0, value.to_i32}
+      return {false, 0_u32} if result == 0
+      {true, value}
     end
 
-    def for_each(&callback : (String, Int32) -> _) : Nil
+    def for_each(&callback : (String, UInt32) -> _) : Nil
       check_available
-      @for_each_box = ::Box.box(callback)
-      boxed_callback = @for_each_box || raise "failed to box callback"
+      boxed_callback = ::Box.box(callback)
+      @for_each_boxes << boxed_callback
+      @enumeration_depth += 1
 
       proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
         begin
           data_as_callback = ::Box(typeof(callback)).unbox(data)
           tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
-          data_as_callback.call(tag, value.to_i32)
+          data_as_callback.call(tag, value)
           0_i32 # uiForEachContinue
         rescue e
           UIng.handle_callback_error(e, "OpenTypeFeatures for_each")
@@ -65,8 +71,8 @@ module UIng
       begin
         LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_callback)
       ensure
-        # Clear the box reference after enumeration completes
-        @for_each_box = nil
+        @enumeration_depth -= 1
+        @for_each_boxes.pop
       end
     end
 
@@ -82,6 +88,11 @@ module UIng
 
     private def check_available : Nil
       raise "OpenTypeFeatures has already been released" if @released
+    end
+
+    private def check_not_enumerating(operation : String) : Nil
+      return if @enumeration_depth == 0
+      raise "Cannot #{operation} while OpenTypeFeatures is being enumerated"
     end
 
     private def tag_bytes(tag : String) : Bytes

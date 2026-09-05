@@ -4,7 +4,7 @@ module UIng
   class Table < Control
     class Value
       @released : Bool = false
-      property? borrowed : Bool = false
+      getter? borrowed : Bool = false
 
       # Unified constructor - handles both borrowed and owned TableValue
       def initialize(@ref_ptr : Pointer(LibUI::TableValue), borrowed : Bool = true)
@@ -71,7 +71,7 @@ module UIng
       end
 
       def string : String?
-        check_available
+        check_type(Type::String)
         str_ptr = LibUI.table_value_string(@ref_ptr)
         return if str_ptr.null?
         # DO NOT free the string pointer - it's borrowed from libui-ng
@@ -79,19 +79,19 @@ module UIng
       end
 
       def image : Pointer(LibUI::Image)
-        check_available
+        check_type(Type::Image)
         # Return the raw pointer - DO NOT create new Image object
         # The returned pointer is borrowed from libui-ng and should not be freed
         LibUI.table_value_image(@ref_ptr)
       end
 
       def int : Int32
-        check_available
+        check_type(Type::Int)
         LibUI.table_value_int(@ref_ptr)
       end
 
       def color : {Float64, Float64, Float64, Float64}
-        check_available
+        check_type(Type::Color)
         LibUI.table_value_color(@ref_ptr, out r, out g, out b, out a)
         {r, g, b, a}
       end
@@ -110,6 +110,12 @@ module UIng
       def to_unsafe
         check_available
         @ref_ptr
+      end
+
+      private def check_type(expected_type : Type) : Nil
+        actual_type = type
+        return if actual_type == expected_type
+        raise TypeCastError.new("TableValue type mismatch: expected #{expected_type}, got #{actual_type}")
       end
     end
   end

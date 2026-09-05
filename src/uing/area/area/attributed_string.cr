@@ -6,7 +6,8 @@ module UIng
       include BlockConstructor; block_constructor
 
       @released : Bool = false
-      @for_each_attribute_box : Pointer(Void)?
+      @enumeration_depth : Int32 = 0
+      @for_each_attribute_boxes = [] of Pointer(Void)
 
       def initialize(@ref_ptr : Pointer(LibUI::AttributedString))
       end
@@ -26,6 +27,7 @@ module UIng
 
       def free : Nil
         return if @released
+        check_not_enumerating("free")
         LibUI.free_attributed_string(@ref_ptr)
         @released = true
       end
@@ -44,16 +46,19 @@ module UIng
 
       def append_unattributed(text : String) : Nil
         check_available
+        check_not_enumerating("append text")
         LibUI.attributed_string_append_unattributed(@ref_ptr, text)
       end
 
       def insert_at_unattributed(text : String, at : LibC::SizeT) : Nil
         check_available
+        check_not_enumerating("insert text")
         LibUI.attributed_string_insert_at_unattributed(@ref_ptr, text, at)
       end
 
       def delete(start : LibC::SizeT, end_ : LibC::SizeT) : Nil
         check_available
+        check_not_enumerating("delete text")
         LibUI.attributed_string_delete(@ref_ptr, start, end_)
       end
 
@@ -68,9 +73,11 @@ module UIng
       #   attr_str.set_attribute(Attribute.new_color(1.0, 0.0, 0.0, 1.0), 0, 5)
       def set_attribute(attribute : Attribute, start : LibC::SizeT, end_ : LibC::SizeT) : Nil
         check_available
+        check_not_enumerating("set an attribute")
+        attribute.check_transferable
         LibUI.attributed_string_set_attribute(@ref_ptr, attribute, start, end_)
         # AttributedString takes ownership of the attribute
-        attribute.released = true
+        attribute.transfer_to_attributed_string
       end
 
       # The yielded Attribute is borrowed and only valid until the block returns.
@@ -78,7 +85,8 @@ module UIng
       def for_each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> LibC::Int) : Nil
         check_available
         for_each_attribute_box = ::Box.box(block)
-        @for_each_attribute_box = for_each_attribute_box
+        @for_each_attribute_boxes << for_each_attribute_box
+        @enumeration_depth += 1
 
         begin
           LibUI.attributed_string_for_each_attribute(@ref_ptr,
@@ -101,8 +109,8 @@ module UIng
             for_each_attribute_box
           )
         ensure
-          # Clear reference after enumeration
-          @for_each_attribute_box = nil
+          @enumeration_depth -= 1
+          @for_each_attribute_boxes.pop
         end
       end
 
@@ -132,6 +140,11 @@ module UIng
 
       private def check_available : Nil
         raise "AttributedString has already been released" if @released
+      end
+
+      private def check_not_enumerating(operation : String) : Nil
+        return if @enumeration_depth == 0
+        raise "Cannot #{operation} while AttributedString is being enumerated"
       end
     end
   end
