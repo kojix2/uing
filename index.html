@@ -1165,16 +1165,6 @@ button.destroy</code></pre>
 <li>Draw contexts are valid only during the draw callback.</li>
 </ul>
 <p>Calling <code>destroy</code> or <code>free</code> makes the corresponding wrapper unavailable for further use.</p>
-<h2><a id="callback-error-handling" class="anchor" href="#callback-error-handling">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Callback Error Handling</h2>
-<p>Exceptions raised by callbacks are logged to standard error. Applications can install an additional notification policy with <code>UIng.on_error</code>. For example, a GUI application may display its own message box after determining that it is safe to do so. This can also help when investigating callback errors.</p>
-<p>Pass <code>nil</code> to remove the handler.</p>
-<pre><code class="language-crystal"><span class="t">UIng</span>.on_error <span class="k">do</span> <span class="o">|</span>exception, context<span class="o">|</span>
-  <span class="t">STDERR</span>.puts <span class="s">&quot;</span><span class="i">#{</span>context<span class="i">}</span><span class="s">: </span><span class="i">#{</span>exception.message<span class="i">}</span><span class="s">&quot;</span>
-<span class="k">end</span></code></pre>
 <h2><a id="limitations" class="anchor" href="#limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
