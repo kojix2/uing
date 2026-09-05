@@ -79,8 +79,8 @@ module UIng
 
     begin
       handler.call(ex, ctx)
-    rescue handler_error
-      Crystal::System.print_error "error handler failed: %s\n", handler_error.message
+    rescue error
+      Crystal::System.print_error "error handler failed: %s\n", error.message
     end
   end
 

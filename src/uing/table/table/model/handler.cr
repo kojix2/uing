@@ -43,6 +43,9 @@ module UIng
         @column_type_callback : Proc(LibC::Int, Value::Type)?
         @column_types : Array(Value::Type)?
 
+        # Ameba counts branches inside the C callback closures as branches of
+        # this initializer even though each closure is an independent handler.
+        # ameba:disable Metrics/CyclomaticComplexity
         def initialize
           # Initialize instance variables
           @num_columns_box = Pointer(Void).null
@@ -104,6 +107,9 @@ module UIng
                 0_i32
               end
             },
+            # This callback must select a type-correct fallback without allowing
+            # exceptions to cross the C boundary.
+            # ameba:disable Metrics/CyclomaticComplexity
             cell_value: ->(mh : LibUI::TableModelHandler*, _model : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
               extended = mh.as(LibUI::TableModelHandlerExtended*)
               column_types = ::Box(Array(Value::Type)).unbox(extended.value.column_type_box)
@@ -171,6 +177,8 @@ module UIng
           @extended_handler.cell_value_box = Pointer(Void).null
           @extended_handler.set_cell_value_box = Pointer(Void).null
         end
+
+        # ameba:enable Metrics/CyclomaticComplexity
 
         # Convenience methods for setting individual callbacks
         # Each method boxes the callback individually for type safety and efficiency

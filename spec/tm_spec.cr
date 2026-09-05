@@ -1,10 +1,10 @@
 require "./spec_helper"
 
 private def tm_with_date(year : Int32, month : Int32, day : Int32) : UIng::TM
-  UIng::TM.new.tap do |tm|
-    tm.year = year - 1900
-    tm.mon = month - 1
-    tm.mday = day
+  UIng::TM.new.tap do |value|
+    value.year = year - 1900
+    value.mon = month - 1
+    value.mday = day
   end
 end
 
