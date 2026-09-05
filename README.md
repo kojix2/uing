@@ -362,8 +362,6 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
   </tbody>
 </table>
 
-Note: The Table API has quirks. For example, you must manually free memory as [instructed](https://github.com/kojix2/uing/issues/6) when the program terminates.
-
 ### Area
 
 <table>
@@ -615,59 +613,16 @@ UIng.on_error do |exception, context|
 end
 ```
 
-Some non-control resources must be freed manually:
+Some non-control resources need explicit ownership handling:
 
 - `Table::Model`: destroy all `Table` controls using the model first, then call `model.free`.
 - `Image`: call `image.free` when it is no longer needed. `ImageView#image=` copies or retains what it needs, but table image values borrow the image, so keep the `Image` alive while the table may display it.
-- `Table::Selection`: selections passed to `on_selection_changed` are freed automatically after the callback. If you call `table.selection` manually, free the returned selection when done.
+- `Toolbar`, `Draw::Path`, and `Draw::TextLayout`: call `free`; prefer `.open` where available.
+- `Table::Selection`: block and callback forms free it automatically; a direct `table.selection` result must be freed. Do not free `Table::Selection.new(rows)`.
+- `Table::Value` returned from `cell_value` transfers automatically. Values passed to `set_cell_value`, attributes yielded by `for_each_attribute`, and draw contexts are borrowed only for that callback.
+- Other objects exposing `free`, such as `AttributedString`, `Attribute`, and `OpenTypeFeatures`, may be released early. `set_attribute` takes ownership of its `Attribute`.
 
 After `destroy` or `free`, do not use the wrapper again.
-
-Example cleanup patterns:
-
-```crystal
-# Reuse a child by detaching it first.
-left = UIng::Box.new(:vertical)
-right = UIng::Box.new(:vertical)
-button = UIng::Button.new("Move me")
-
-left.append(button)
-left.delete(button)  # button is detached, not destroyed
-right.append(button)
-```
-
-```crystal
-# Remove a child permanently.
-box = UIng::Box.new(:vertical)
-button = UIng::Button.new("Delete me")
-
-box.append(button)
-box.delete(button)
-button.destroy
-```
-
-```crystal
-# Table models must outlive tables that use them.
-handler = UIng::Table::Model::Handler.new
-model = UIng::Table::Model.new(handler)
-table = UIng::Table.new(model)
-
-# ... use table ...
-
-table.destroy
-model.free
-```
-
-```crystal
-# Images can be freed after ImageView receives them.
-image = UIng::Image.new(16, 16)
-pixels = Bytes.new(16 * 16 * 4, 0_u8)
-image.append(pixels.to_unsafe.as(Pointer(Void)), 16, 16, 16 * 4)
-
-image_view = UIng::ImageView.new
-image_view.image = image
-image.free
-```
 
 ## Limitations
 
@@ -721,13 +676,13 @@ Providing a full-featured GUI library is not the main scope of this project.
 
 UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:
 
-- Callback Protection: Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using `::Box.box()`, allowing Crystal blocks that capture external variables to be safely used as C callbacks.
+- Control Lifetime: A registry keeps wrappers alive until native destruction; parent references mirror the native control tree.
 
-- Reference Chains: Controls are passed to parent containers (e.g., `Window -> Box -> Button`), ensuring that children remain referenced as long as the parent exists. Root components such as `Window` and `Menu` are stored as class variables to avoid premature collection.
+- Callback Protection: Callbacks and boxed closures remain referenced for as long as native code may invoke them.
 
 - Extended Handler Structures: For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
 
-- Resource Management rules are defined in [Memory Management Policy](#memory-management-policy). In short, UIng prioritizes explicit ownership and explicit release (`destroy` / `free`), while RAII-style APIs are provided where possible.
+- Borrowed Lifetimes: Callback-only wrappers are invalidated on return. Other rules are defined in [Memory Management Policy](#memory-management-policy).
 
 ### Closures in Low-Level Contexts
 
