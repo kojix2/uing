@@ -23,6 +23,8 @@ module UIng
   # that value to libui, which will free it when the table is done with it.
   # They may return nil where libui-ng permits a NULL cell value. Likewise,
   # set_cell_value receives nil for special notifications such as button clicks.
+  # A non-nil Value passed to set_cell_value is borrowed and only valid until
+  # that callback returns.
   class Table < Control
     class Model
       class Handler
@@ -146,8 +148,12 @@ module UIng
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.set_cell_value_box.null?
                   callback = ::Box(Proc(LibC::Int, LibC::Int, Value?, Nil)).unbox(extended.value.set_cell_value_box)
-                  table_value = value.null? ? nil : Value.new(value, borrowed: true)
-                  callback.call(row, column, table_value)
+                  table_value = value.null? ? nil : Value.borrowed(value)
+                  begin
+                    callback.call(row, column, table_value)
+                  ensure
+                    table_value.try &.invalidate_borrow
+                  end
                 end
               rescue e
                 UIng.handle_callback_error(e, "Table::Model::Handler set_cell_value")

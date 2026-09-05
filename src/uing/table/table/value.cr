@@ -11,6 +11,14 @@ module UIng
         @borrowed = borrowed
       end
 
+      protected def self.borrowed(ref_ptr : Pointer(LibUI::TableValue)) : Value
+        Value.new(ref_ptr, borrowed: true)
+      end
+
+      protected def invalidate_borrow : Nil
+        @released = true if @borrowed
+      end
+
       # Public constructors for creating new TableValue objects
       # These MUST be freed after use
       def initialize(str : String)

@@ -65,16 +65,19 @@ describe UIng::Table::Model::Handler do
   it "wraps a non-NULL set-cell value as borrowed" do
     value_ptr = Pointer(UIng::LibUI::TableValue).new(0x200_u64)
     received_value = nil
+    callback_value_ptr = nil
     handler = UIng::Table::Model::Handler.new
     handler.set_cell_value do |_row, _column, value|
       received_value = value
+      callback_value_ptr = value.try &.to_unsafe
     end
 
     call_set_cell_value(handler, 0, 0, value_ptr)
 
     value = received_value.should_not be_nil
     value.borrowed?.should be_true
-    value.to_unsafe.should eq(value_ptr)
+    callback_value_ptr.should eq(value_ptr)
+    expect_raises(Exception, /already been released/) { value.to_unsafe }
   end
 
   it "returns NULL when the cell-value callback returns nil" do
