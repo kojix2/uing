@@ -20,7 +20,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libgtk-3-dev
+          sudo apt-get install -y libgtk-3-dev xvfb xauth
 
       - name: Install dependencies
         run: shards install
@@ -32,6 +32,10 @@ jobs:
 
       - name: Run tests
         run: crystal spec
+
+      - name: Run native GUI tests
+        timeout-minutes: 2
+        run: xvfb-run -a env UING_NATIVE_GUI_TESTS=1 crystal spec spec/native
 
       - name: Build all examples
         run: |

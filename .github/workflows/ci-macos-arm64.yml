@@ -28,6 +28,12 @@ jobs:
       - name: Run tests
         run: crystal spec
 
+      - name: Run native GUI tests
+        timeout-minutes: 2
+        env:
+          UING_NATIVE_GUI_TESTS: "1"
+        run: crystal spec spec/native
+
       - name: Build all examples
         run: |
           for f in examples/*.cr; do crystal build "$f"; done
