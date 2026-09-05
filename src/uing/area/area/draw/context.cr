@@ -3,14 +3,23 @@ module UIng
     module Draw
       class Context
         include BlockConstructor; block_constructor
+        @callback_scope : CallbackScope?
 
         def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
+          @callback_scope = nil
+        end
+
+        protected def self.borrowed(ref_ptr : Pointer(LibUI::DrawContext), callback_scope : CallbackScope) : Context
+          Context.new(ref_ptr, callback_scope)
+        end
+
+        protected def initialize(@ref_ptr : Pointer(LibUI::DrawContext), @callback_scope : CallbackScope)
         end
 
         # Low-level: stroke an ended path
         def draw_stroke(path : Path, brush : Brush, stroke_params : StrokeParams) : Nil
           raise ArgumentError.new("Path must be ended before stroking") unless path.ended?
-          LibUI.draw_stroke(@ref_ptr, path.to_unsafe, brush.to_unsafe, stroke_params.to_unsafe)
+          LibUI.draw_stroke(to_unsafe, path.to_unsafe, brush.to_unsafe, stroke_params.to_unsafe)
         end
 
         # Convenience overload to build StrokeParams inline
@@ -65,7 +74,7 @@ module UIng
         # Low-level: fill an ended path
         def draw_fill(path : Path, brush : Brush) : Nil
           raise ArgumentError.new("Path must be ended before filling") unless path.ended?
-          LibUI.draw_fill(@ref_ptr, path.to_unsafe, brush.to_unsafe)
+          LibUI.draw_fill(to_unsafe, path.to_unsafe, brush.to_unsafe)
         end
 
         # High-level: build a path in a block, end it, and fill
@@ -79,13 +88,13 @@ module UIng
 
         # Matrix composition (same semantics as libui's uiDrawTransform)
         def transform(matrix : Matrix) : Nil
-          LibUI.draw_transform(@ref_ptr, matrix.to_unsafe)
+          LibUI.draw_transform(to_unsafe, matrix.to_unsafe)
         end
 
         # Low-level clipping: apply a finished path as clip
         def clip(path : Path) : Nil
           raise ArgumentError.new("Path must be ended before clipping") unless path.ended?
-          LibUI.draw_clip(@ref_ptr, path.to_unsafe)
+          LibUI.draw_clip(to_unsafe, path.to_unsafe)
         end
 
         # High-level clipping: build a path in a block, end it, and clip
@@ -123,26 +132,27 @@ module UIng
 
         # Save/restore helpers
         def save : Nil
-          LibUI.draw_save(@ref_ptr)
+          LibUI.draw_save(to_unsafe)
         end
 
         def restore : Nil
-          LibUI.draw_restore(@ref_ptr)
+          LibUI.draw_restore(to_unsafe)
         end
 
         # Text drawing (libui uiDrawText equivalent)
         def draw_text_layout(text_layout : TextLayout, x : Float64, y : Float64) : Nil
-          LibUI.draw_text(@ref_ptr, text_layout.to_unsafe, x, y)
+          LibUI.draw_text(to_unsafe, text_layout.to_unsafe, x, y)
         end
 
         def draw_image(img : UIng::Image, x : Number, y : Number, width : Number, height : Number) : Nil
           raise ArgumentError.new("Width must be positive") if width <= 0
           raise ArgumentError.new("Height must be positive") if height <= 0
 
-          LibUI.draw_image(@ref_ptr, img.to_unsafe, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
+          LibUI.draw_image(to_unsafe, img.to_unsafe, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
         end
 
         def to_unsafe
+          @callback_scope.try &.check_available
           @ref_ptr
         end
       end

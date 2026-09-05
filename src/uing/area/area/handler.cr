@@ -54,8 +54,12 @@ module UIng
                 callback = ::Box(Proc(Area, Area::Draw::Params, Nil)).unbox(extended.value.draw_box)
                 # Create wrapper instances for type-safe access
                 area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
-                params_wrapper = Area::Draw::Params.new(params)
-                callback.call(area_wrapper, params_wrapper)
+                params_wrapper = Area::Draw::Params.borrowed(params)
+                begin
+                  callback.call(area_wrapper, params_wrapper)
+                ensure
+                  params_wrapper.invalidate_borrow
+                end
               end
             rescue e
               UIng.handle_callback_error(e, "Area draw")

@@ -153,6 +153,39 @@ describe "lifetime safety" do
     expect_raises(Exception, /already been released/) { selection.to_unsafe }
   end
 
+  it "invalidates draw parameters and contexts after the callback" do
+    draw_params = UIng::LibUI::AreaDrawParams.new(
+      context: Pointer(UIng::LibUI::DrawContext).null,
+      area_width: 640.0,
+      area_height: 480.0,
+      clip_x: 0.0,
+      clip_y: 0.0,
+      clip_width: 640.0,
+      clip_height: 480.0
+    )
+    saved_params = nil
+    saved_context = nil
+    handler = UIng::Area::Handler.new
+    handler.draw do |_area, params|
+      saved_params = params
+      saved_context = params.context
+    end
+
+    handler_ptr = handler.to_unsafe
+    handler_ptr.value.draw.call(
+      handler_ptr,
+      Pointer(UIng::LibUI::Area).null,
+      pointerof(draw_params)
+    )
+
+    params = saved_params.should_not be_nil
+    context = saved_context.should_not be_nil
+    expect_raises(Exception, /no longer available/) { params.context }
+    expect_raises(Exception, /no longer available/) { params.to_unsafe }
+    expect_raises(Exception, /no longer available/) { context.to_unsafe }
+    params.area_width.should eq(640.0)
+  end
+
   it "rejects every Attribute operation after free" do
     attribute = ReleasedLifetimeSafetyAttribute.new
 
