@@ -72,11 +72,11 @@ module UIng
     end
 
     def margined? : Bool
-      LibUI.group_margined(ref_ptr)
+      LibUI.group_margined(ref_ptr) != 0
     end
 
     def margined=(margined : Bool) : Nil
-      LibUI.group_set_margined(ref_ptr, margined)
+      LibUI.group_set_margined(ref_ptr, margined ? 1 : 0)
     end
 
     def to_unsafe

@@ -33,11 +33,11 @@ module UIng
     end
 
     def has_tool_tip? : Bool
-      LibUI.slider_has_tool_tip(ref_ptr)
+      LibUI.slider_has_tool_tip(ref_ptr) != 0
     end
 
     def has_tool_tip=(has_tool_tip : Bool) : Nil
-      LibUI.slider_set_has_tool_tip(ref_ptr, has_tool_tip)
+      LibUI.slider_set_has_tool_tip(ref_ptr, has_tool_tip ? 1 : 0)
     end
 
     def set_range(min : Int32, max : Int32) : Nil

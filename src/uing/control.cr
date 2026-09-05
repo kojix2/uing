@@ -141,12 +141,12 @@ module UIng
 
     def toplevel? : Bool
       check_available
-      LibUI.control_toplevel(UIng.to_control(@ref_ptr))
+      LibUI.control_toplevel(UIng.to_control(@ref_ptr)) != 0
     end
 
     def visible? : Bool
       check_available
-      LibUI.control_visible(UIng.to_control(@ref_ptr))
+      LibUI.control_visible(UIng.to_control(@ref_ptr)) != 0
     end
 
     def show : Nil
@@ -161,7 +161,7 @@ module UIng
 
     def enabled? : Bool
       check_available
-      LibUI.control_enabled(UIng.to_control(@ref_ptr))
+      LibUI.control_enabled(UIng.to_control(@ref_ptr)) != 0
     end
 
     def enable : Nil
@@ -176,7 +176,7 @@ module UIng
 
     def enabled_to_user? : Bool
       check_available
-      LibUI.control_enabled_to_user(UIng.to_control(@ref_ptr))
+      LibUI.control_enabled_to_user(UIng.to_control(@ref_ptr)) != 0
     end
 
     def verify_set_parent(parent) : Nil

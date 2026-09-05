@@ -165,7 +165,7 @@ module UIng
     end
 
     def enabled? : Bool
-      LibUI.toolbar_item_enabled(ref_ptr)
+      LibUI.toolbar_item_enabled(ref_ptr) != 0
     end
 
     def enable : Nil
@@ -177,11 +177,11 @@ module UIng
     end
 
     def checked? : Bool
-      LibUI.toolbar_item_checked(ref_ptr)
+      LibUI.toolbar_item_checked(ref_ptr) != 0
     end
 
     def checked=(checked : Bool) : Nil
-      LibUI.toolbar_item_set_checked(ref_ptr, checked)
+      LibUI.toolbar_item_set_checked(ref_ptr, checked ? 1 : 0)
     end
 
     def on_clicked(&block : ToolbarItem -> Nil) : Nil

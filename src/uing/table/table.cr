@@ -119,7 +119,7 @@ module UIng
     end
 
     def header_visible=(value : Bool)
-      LibUI.table_header_set_visible(ref_ptr, value)
+      LibUI.table_header_set_visible(ref_ptr, value ? 1 : 0)
     end
 
     # `editable` can be `:never`, `:always`, or a model column whose values
@@ -181,7 +181,7 @@ module UIng
     end
 
     def header_visible? : Bool
-      LibUI.table_header_visible(ref_ptr)
+      LibUI.table_header_visible(ref_ptr) != 0
     end
 
     def header_set_sort_indicator(column : Int32, sort_indicator : SortIndicator) : Nil

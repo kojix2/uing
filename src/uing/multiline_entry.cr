@@ -37,11 +37,11 @@ module UIng
     end
 
     def read_only? : Bool
-      LibUI.multiline_entry_read_only(ref_ptr)
+      LibUI.multiline_entry_read_only(ref_ptr) != 0
     end
 
     def read_only=(readonly : Bool) : Nil
-      LibUI.multiline_entry_set_read_only(ref_ptr, readonly)
+      LibUI.multiline_entry_set_read_only(ref_ptr, readonly ? 1 : 0)
     end
 
     def on_changed(&block : -> Nil) : Nil

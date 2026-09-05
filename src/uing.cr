@@ -110,8 +110,8 @@ module UIng
     LibUI.main_steps
   end
 
-  def self.main_step(wait) : Bool
-    LibUI.main_step(wait)
+  def self.main_step(wait : Bool) : Bool
+    LibUI.main_step(wait ? 1 : 0) != 0
   end
 
   def self.quit : Nil
@@ -171,13 +171,13 @@ module UIng
     boxed_data = ::Box.box(callback)
     # Store in dedicated variable (libui-ng supports only one callback, overwrites previous)
     @@should_quit_callback_box = boxed_data
-    LibUI.on_should_quit(->(data) : Bool do
+    LibUI.on_should_quit(->(data) : LibC::Int do
       begin
         data_as_callback = ::Box(typeof(callback)).unbox(data)
-        data_as_callback.call
+        data_as_callback.call ? 1 : 0
       rescue e
         UIng.handle_callback_error(e, "UIng.on_should_quit")
-        false
+        0
       end
     end, boxed_data)
   end

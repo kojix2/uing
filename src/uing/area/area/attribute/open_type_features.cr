@@ -42,7 +42,7 @@ module UIng
       check_available
       bytes = tag_bytes(tag)
       result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
-      {result, value.to_i32}
+      {result != 0, value.to_i32}
     end
 
     def for_each(&callback : (String, Int32) -> _) : Nil

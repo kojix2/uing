@@ -39,11 +39,11 @@ module UIng
         end
 
         def invertible? : Bool
-          LibUI.draw_matrix_invertible(to_unsafe)
+          LibUI.draw_matrix_invertible(to_unsafe) != 0
         end
 
         def invert : Bool
-          LibUI.draw_matrix_invert(to_unsafe)
+          LibUI.draw_matrix_invert(to_unsafe) != 0
         end
 
         def transform_point(x : Float64, y : Float64) : {Float64, Float64}

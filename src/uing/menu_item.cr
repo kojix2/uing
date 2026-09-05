@@ -37,12 +37,12 @@ module UIng
 
     def checked? : Bool
       check_available
-      LibUI.menu_item_checked(@ref_ptr)
+      LibUI.menu_item_checked(@ref_ptr) != 0
     end
 
     def checked=(checked : Bool) : Nil
       check_available
-      LibUI.menu_item_set_checked(@ref_ptr, checked)
+      LibUI.menu_item_set_checked(@ref_ptr, checked ? 1 : 0)
     end
 
     def on_clicked(&block : UIng::Window? -> Nil) : Nil

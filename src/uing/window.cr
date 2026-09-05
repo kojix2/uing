@@ -27,7 +27,7 @@ module UIng
     end
 
     def initialize(title, width, height, menubar = false, margined : Bool = false)
-      @ref_ptr = LibUI.new_window(title, width, height, menubar)
+      @ref_ptr = LibUI.new_window(title, width, height, menubar ? 1 : 0)
       @@mutex.synchronize do
         @@windows << self
       end
@@ -88,23 +88,23 @@ module UIng
     end
 
     def fullscreen? : Bool
-      LibUI.window_fullscreen(ref_ptr)
+      LibUI.window_fullscreen(ref_ptr) != 0
     end
 
     def fullscreen=(fullscreen : Bool) : Nil
-      LibUI.window_set_fullscreen(ref_ptr, fullscreen)
+      LibUI.window_set_fullscreen(ref_ptr, fullscreen ? 1 : 0)
     end
 
     def focused? : Bool
-      LibUI.window_focused(ref_ptr)
+      LibUI.window_focused(ref_ptr) != 0
     end
 
     def borderless? : Bool
-      LibUI.window_borderless(ref_ptr)
+      LibUI.window_borderless(ref_ptr) != 0
     end
 
     def borderless=(borderless : Bool) : Nil
-      LibUI.window_set_borderless(ref_ptr, borderless)
+      LibUI.window_set_borderless(ref_ptr, borderless ? 1 : 0)
     end
 
     def child=(control : Control) : Nil
@@ -171,19 +171,19 @@ module UIng
     end
 
     def margined? : Bool
-      LibUI.window_margined(ref_ptr)
+      LibUI.window_margined(ref_ptr) != 0
     end
 
     def margined=(margined : Bool) : Nil
-      LibUI.window_set_margined(ref_ptr, margined)
+      LibUI.window_set_margined(ref_ptr, margined ? 1 : 0)
     end
 
     def resizeable? : Bool
-      LibUI.window_resizeable(ref_ptr)
+      LibUI.window_resizeable(ref_ptr) != 0
     end
 
     def resizeable=(resizeable : Bool) : Nil
-      LibUI.window_set_resizeable(ref_ptr, resizeable)
+      LibUI.window_set_resizeable(ref_ptr, resizeable ? 1 : 0)
     end
 
     # libui spells this "resizeable"; provide the standard spelling as an alias.
@@ -244,13 +244,13 @@ module UIng
       if boxed_data = (@on_closing_box = ::Box.box(wrapper))
         LibUI.window_on_closing(
           ref_ptr,
-          ->(_sender, data) : Bool {
+          ->(_sender, data) : LibC::Int {
             begin
               data_as_callback = ::Box(typeof(wrapper)).unbox(data)
-              data_as_callback.call
+              data_as_callback.call ? 1 : 0
             rescue e
               UIng.handle_callback_error(e, "Window on_closing")
-              false # Default to not closing on error
+              0 # Default to not closing on error
             end
           },
           boxed_data

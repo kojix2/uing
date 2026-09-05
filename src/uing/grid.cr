@@ -47,11 +47,11 @@ module UIng
     end
 
     def padded? : Bool
-      LibUI.grid_padded(ref_ptr)
+      LibUI.grid_padded(ref_ptr) != 0
     end
 
     def padded=(padded : Bool) : Nil
-      LibUI.grid_set_padded(ref_ptr, padded)
+      LibUI.grid_set_padded(ref_ptr, padded ? 1 : 0)
     end
 
     def to_unsafe

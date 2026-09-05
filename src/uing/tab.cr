@@ -68,12 +68,12 @@ module UIng
 
     def margined?(index : Int32) : Bool
       check_page_index(index)
-      LibUI.tab_margined(ref_ptr, index)
+      LibUI.tab_margined(ref_ptr, index) != 0
     end
 
     def set_margined(index : Int32, margined : Bool) : Nil
       check_page_index(index)
-      LibUI.tab_set_margined(ref_ptr, index, margined)
+      LibUI.tab_set_margined(ref_ptr, index, margined ? 1 : 0)
     end
 
     def selected : Int32

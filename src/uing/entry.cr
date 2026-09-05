@@ -36,11 +36,11 @@ module UIng
     end
 
     def read_only? : Bool
-      LibUI.entry_read_only(ref_ptr)
+      LibUI.entry_read_only(ref_ptr) != 0
     end
 
     def read_only=(readonly : Bool) : Nil
-      LibUI.entry_set_read_only(ref_ptr, readonly)
+      LibUI.entry_set_read_only(ref_ptr, readonly ? 1 : 0)
     end
 
     def on_changed(&block : String -> Nil) : Nil

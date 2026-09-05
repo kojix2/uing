@@ -26,11 +26,11 @@ module UIng
     end
 
     def checked? : Bool
-      LibUI.checkbox_checked(ref_ptr)
+      LibUI.checkbox_checked(ref_ptr) != 0
     end
 
     def checked=(checked : Bool) : Nil
-      LibUI.checkbox_set_checked(ref_ptr, checked)
+      LibUI.checkbox_set_checked(ref_ptr, checked ? 1 : 0)
     end
 
     def on_toggled(&block : Bool -> Nil) : Nil

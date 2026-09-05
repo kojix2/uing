@@ -72,11 +72,11 @@ module UIng
     end
 
     def padded? : Bool
-      LibUI.box_padded(ref_ptr)
+      LibUI.box_padded(ref_ptr) != 0
     end
 
     def padded=(padded : Bool) : Nil
-      LibUI.box_set_padded(ref_ptr, padded)
+      LibUI.box_set_padded(ref_ptr, padded ? 1 : 0)
     end
 
     def to_unsafe
