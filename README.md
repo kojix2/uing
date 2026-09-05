@@ -545,9 +545,15 @@ Note: Image display is a feature introduced in `kojix2/libui-ng`. This feature i
 
 ## Memory Management Policy
 
-UIng wraps libui-ng, a C library with explicit ownership rules. Crystal's GC keeps wrapper objects alive, but it does not decide when native widgets are destroyed. Use `destroy` for controls and `free` for standalone native resources.
+Some UIng objects must be cleaned up manually when they are no longer needed. Use `destroy` for controls and `free` for some other resources, such as images.
 
-The main rule is simple: a parent control owns its children. Destroying a parent destroys the native children too, and UIng marks the child wrappers as destroyed. Do not call `destroy` on a child while it still belongs to a parent.
+This section explains when and how to clean up UIng objects.
+
+### Parent and Child Controls
+
+Some UIng controls can contain other controls. For example, a `Window` can contain a `Box`, and a `Box` can contain controls such as `Button`. The containing control is the parent, and a control inside it is a child.
+
+Destroying a parent automatically destroys all of its children. Normally, you only need to destroy the parent rather than each child individually.
 
 ```crystal
 window = UIng::Window.new("App", 400, 300)
@@ -560,20 +566,39 @@ window.child = box
 window.destroy # also destroys box and button
 ```
 
-If you want to reuse a child, detach it first:
+UIng also marks wrappers for those children as destroyed, so they can no longer be used.
+
+To reuse a child elsewhere, detach it before destroying its parent:
 
 ```crystal
 button.detach # still alive
 other_box.append(button)
 ```
 
-Container behavior:
+To destroy a child individually, detach it from its parent first and then call `destroy`:
+
+```crystal
+button.detach
+button.destroy
+```
+
+Calling `destroy` on a child that is still attached raises an exception and leaves the child intact.
+
+The following methods add, remove, or replace children in each type of parent:
 
 - `Window` and `Group` have one child. Assigning `nil` or a new child detaches the old child without destroying it. Destroying the `Window` or `Group` destroys its current child.
 - `Box`, `Form`, `Tab`, and `Grid` support `delete(child)`; the first three also support `delete(index)`.
-- Controls with no parent can be destroyed directly with `destroy`.
+- A control that has no parent can be destroyed directly with `destroy`.
 
-Window closing has one special rule. In `Window#on_closing`, return `true` to let libui-ng destroy the native window, or `false` to keep it open. Do not call `window.destroy` inside that callback. Menu callbacks receive `Window?` because macOS can invoke them without an active window.
+### Closing an Application or Window
+
+Most controls are placed under a top-level window. Destroying that window automatically destroys its children, so you do not need to call `destroy` on each control individually.
+
+`UIng.quit` stops the event loop; it does not destroy windows. `UIng.uninit` shuts down the UI system and cleans up its internal resources, but it does not destroy windows created by the application. Destroy all top-level windows before calling `UIng.uninit`.
+
+`Window#on_closing` is called mainly when the user clicks a window's close button. For a simple application with one window, this callback is usually enough to handle shutdown.
+
+Return `true` from `Window#on_closing` to close and destroy the window, or `false` to keep it open. When the callback returns `true`, libui-ng destroys the window. The callback therefore only needs to call `UIng.quit` and return `true`:
 
 ```crystal
 window.on_closing do
@@ -582,13 +607,17 @@ window.on_closing do
 end
 ```
 
-`on_should_quit` does not destroy windows for you. If your app exits from there, explicitly destroy any windows you created.
+There is no need to call `window.destroy` as well on this exit path.
 
-Recommended shutdown pattern when both callbacks are used:
+`UIng.on_should_quit` handles requests to quit the entire application, such as choosing Quit from a menu. It is separate from `Window#on_closing`, which handles a window's close button.
 
-- `Window#on_closing`: call `UIng.quit` and return `true`; do not call `window.destroy` there.
-- `UIng.on_should_quit`: explicitly destroy top-level windows, then return `true`.
-- To avoid double-destroy in mixed exit paths, guard with `released?`.
+When exiting from `UIng.on_should_quit`, destroy every top-level window created by the application. The callback does not destroy them automatically.
+
+When using both callbacks, follow this pattern:
+
+- In `Window#on_closing`, call `UIng.quit` and return `true`; libui-ng handles destruction of the window.
+- In `UIng.on_should_quit`, explicitly destroy every top-level window and then return `true`.
+- Use `released?` to avoid destroying the same window twice.
 
 ```crystal
 window.on_closing do
@@ -602,27 +631,38 @@ UIng.on_should_quit do
 end
 ```
 
-Exceptions raised by callbacks are logged to standard error. Applications can
-install an additional notification policy with `UIng.on_error`; for example,
-GUI applications may show their own message box after deciding that it is safe
-to do so. Pass `nil` to remove the handler.
+### Cleanup Rules for Other Objects
+
+For objects that are not controls, the cleanup method depends on how the object was obtained:
+
+- An object obtained directly from `.new` or as a method result usually needs to be freed after use.
+- An object used through `.open` or a block form is freed automatically when the block ends.
+- An object passed to a callback is usually valid only until that callback returns. UIng handles its cleanup.
+
+The following rules apply to specific objects:
+
+- `Table::Model`: destroy all `Table` controls using the model first, then call `model.free`.
+- `Image`: call `image.free` when the image is no longer needed. An image can be freed after passing it to `ImageView#image=`, but must remain alive while a table or `Toolbar` is using it.
+- `Toolbar`: detach it from its window before calling `free`.
+- `Draw::Path`, `Draw::TextLayout`, and `AttributedString`: prefer `.open` where available so that the object is freed automatically when the block ends.
+- `Table::Selection`: block and callback forms free the selection automatically. A direct `table.selection` result must be freed after use. `Table::Selection.new(rows)` is managed by Crystal's GC.
+- `Table::Value`: a value returned from `cell_value` is then managed by libui-ng. A value passed to `set_cell_value` is valid only until that callback returns.
+- `Attribute`: after it is passed to `set_attribute`, the receiving `AttributedString` manages it. An attribute yielded by `for_each_attribute` is valid only for that block.
+- Draw contexts are valid only during the draw callback.
+
+Calling `destroy` or `free` makes the corresponding wrapper unavailable for further use.
+
+## Callback Error Handling
+
+Exceptions raised by callbacks are logged to standard error. Applications can install an additional notification policy with `UIng.on_error`. For example, a GUI application may display its own message box after determining that it is safe to do so. This can also help when investigating callback errors.
+
+Pass `nil` to remove the handler.
 
 ```crystal
 UIng.on_error do |exception, context|
   STDERR.puts "#{context}: #{exception.message}"
 end
 ```
-
-Some non-control resources need explicit ownership handling:
-
-- `Table::Model`: destroy all `Table` controls using the model first, then call `model.free`.
-- `Image`: call `image.free` when it is no longer needed. `ImageView#image=` copies or retains what it needs, but table image values borrow the image, so keep the `Image` alive while the table may display it.
-- `Toolbar`, `Draw::Path`, and `Draw::TextLayout`: call `free`; prefer `.open` where available.
-- `Table::Selection`: block and callback forms free it automatically; a direct `table.selection` result must be freed. Do not free `Table::Selection.new(rows)`.
-- `Table::Value` returned from `cell_value` transfers automatically. Values passed to `set_cell_value`, attributes yielded by `for_each_attribute`, and draw contexts are borrowed only for that callback.
-- Other objects exposing `free`, such as `AttributedString`, `Attribute`, and `OpenTypeFeatures`, may be released early. `set_attribute` takes ownership of its `Attribute`.
-
-After `destroy` or `free`, do not use the wrapper again.
 
 ## Limitations
 
