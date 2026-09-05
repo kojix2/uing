@@ -26,6 +26,7 @@ module UIng
     # @[Link("ui", dll: "libui.dll")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
+    {% link_dir = __DIR__.gsub(/\\/, "/") %}
     @[Link("stdc++")]
     @[Link("supc++")]
     @[Link("user32")]
@@ -39,11 +40,11 @@ module UIng
     @[Link("Uxtheme")]
     # @[Link(ldflags: "-mwindows")]
     {% if flag?(:release) || !flag?(:debug) %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+      @[Link(ldflags: {{ "-L#{link_dir}/../../../libui/release" }})]
     {% else %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+      @[Link(ldflags: {{ "-L#{link_dir}/../../../libui/debug" }})]
     {% end %}
-    @[Link(ldflags: "#{__DIR__}/../../../comctl32.res")]
+    @[Link(ldflags: {{ "#{link_dir}/../../../comctl32.res" }})]
   {% elsif flag?(:linux) %}
     @[Link("gtk+-3.0")]
     @[Link("m")]
