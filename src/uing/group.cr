@@ -34,7 +34,7 @@ module UIng
 
     def child=(control : Control) : Nil
       check_available
-      control.check_can_move
+      control.check_can_move(self)
       previous_child = @child_ref
       # uiGroupSetChild detaches the existing child; it does not destroy it.
       # Update the Crystal ownership graph only after the native operation

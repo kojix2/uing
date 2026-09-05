@@ -40,7 +40,7 @@ module UIng
     end
 
     def append(control, stretchy : Bool = false) : Nil
-      control.check_can_move
+      control.check_can_move(self)
       LibUI.box_append(ref_ptr, UIng.to_control(control), stretchy)
       @children_refs << control
       control.take_ownership(self)

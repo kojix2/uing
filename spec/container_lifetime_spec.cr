@@ -71,6 +71,10 @@ private class DetachableBox < UIng::Box
     @ref_ptr = Pointer(UIng::LibUI::Box).null
   end
 
+  def adopt_by(parent : UIng::Control) : Nil
+    take_ownership(parent)
+  end
+
   def adopt(child : DetachableControl) : Nil
     @children_refs << child
     child.adopt(self)
@@ -173,6 +177,52 @@ private def verify_invalid_tab_page_index(tab : DetachableTab, index : Int32) : 
 end
 
 describe "container lifetime" do
+  it "rejects control tree cycles before changing ownership" do
+    outer = DetachableBox.new
+    inner = DetachableBox.new
+    inner.adopt_by(outer)
+
+    expect_raises(Exception, /itself or one of its descendants/) do
+      inner.append(outer)
+    end
+
+    outer.parent.should be_nil
+    inner.parent.should be(outer)
+  end
+
+  it "rejects self-parenting before changing ownership" do
+    box = DetachableBox.new
+
+    expect_raises(Exception, /itself or one of its descendants/) do
+      box.append(box)
+    end
+
+    box.parent.should be_nil
+  end
+
+  it "rejects a top-level control as a child" do
+    box = DetachableBox.new
+    window = DetachableWindow.new
+
+    expect_raises(Exception, /top-level control/) do
+      box.append(window)
+    end
+
+    window.parent.should be_nil
+  end
+
+  it "requires Grid insertion anchors to belong to the same Grid" do
+    grid = DetachableGrid.new
+    child = DetachableControl.new
+    outsider = DetachableControl.new
+
+    expect_raises(ArgumentError, /does not belong to this Grid/) do
+      grid.insert_at(child, outsider, UIng::Grid::At::Leading, 1, 1, false, UIng::Align::Fill, false, UIng::Align::Fill)
+    end
+
+    child.parent.should be_nil
+  end
+
   it "preserves Window ownership when child replacement is attempted while destruction is pending" do
     window = DetachableWindow.new
     old_child = DetachableControl.new

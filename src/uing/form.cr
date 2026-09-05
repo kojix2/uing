@@ -25,7 +25,7 @@ module UIng
     end
 
     def append(label : String, control, stretchy : Bool = false) : Nil
-      control.check_can_move
+      control.check_can_move(self)
       LibUI.form_append(ref_ptr, label, UIng.to_control(control), stretchy)
       @children_refs << control
       control.take_ownership(self)

@@ -32,12 +32,22 @@ module UIng
       @parent
     end
 
-    # Helper method to check if this control can be moved to a new parent
-    # Raises an exception if the control already has a parent (following libui-ng behavior)
-    protected def check_can_move : Nil
+    # Helper method to check if this control can be moved to a new parent.
+    # Raises before a native call if the move would violate the control tree.
+    protected def check_can_move(new_parent : Control) : Nil
       check_available
+      new_parent.check_available
+
+      raise "A top-level control cannot have a parent" if is_a?(Window)
+
       if @parent
         raise "You cannot give a uiControl a parent while it already has one"
+      end
+
+      ancestor : Control? = new_parent
+      while ancestor
+        raise "A control cannot be added to itself or one of its descendants" if same?(ancestor)
+        ancestor = ancestor.parent
       end
     end
 

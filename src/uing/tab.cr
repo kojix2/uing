@@ -19,7 +19,7 @@ module UIng
     end
 
     def append(name : String, control, margined : Bool = false) : Nil
-      control.check_can_move
+      control.check_can_move(self)
       LibUI.tab_append(ref_ptr, name, UIng.to_control(control))
       @children_refs << control
       control.take_ownership(self)
@@ -35,7 +35,7 @@ module UIng
 
     def insert_at(name : String, index : Int32, control, margined : Bool = false) : Nil
       check_insert_index(index)
-      control.check_can_move
+      control.check_can_move(self)
       LibUI.tab_insert_at(ref_ptr, name, index, UIng.to_control(control))
       @children_refs.insert(index, control)
       control.take_ownership(self)
