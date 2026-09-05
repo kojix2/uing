@@ -1,7 +1,10 @@
 require "compress/zip"
-require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
+
+{% unless flag?(:windows) %}
+  require "digest/sha256"
+{% end %}
 
 COMMIT_HASH = "79761e2a-experimental"
 
@@ -95,6 +98,22 @@ def url_for_libui_ng_nightly(file_name)
   "https://github.com/kojix2/libui-ng/releases/download/commit-#{COMMIT_HASH}/#{file_name}"
 end
 
+def sha256_file(file_name)
+  {% if flag?(:windows) %}
+    output = IO::Memory.new
+    process = Process.run("certutil", ["-hashfile", file_name, "SHA256"], output: output, error: STDERR)
+    raise "Failed to calculate SHA-256 for #{file_name}" unless process.success?
+
+    output.to_s.each_line do |line|
+      digest = line.gsub(/\s/, "")
+      return digest.downcase if digest.matches?(/\A[0-9a-fA-F]{64}\z/)
+    end
+    raise "Failed to read SHA-256 for #{file_name}"
+  {% else %}
+    Digest::SHA256.new.file(file_name).hexfinal
+  {% end %}
+end
+
 def download_file(file_name, url)
   args = ["-fL", "-o", file_name, url]
   puts "Running: curl #{args.join(" ")}"
@@ -105,7 +124,7 @@ def download_file(file_name, url)
 
   asset_name = File.basename(file_name)
   expected_sha256 = ASSET_SHA256[asset_name]? || raise "No SHA-256 checksum for #{asset_name}"
-  actual_sha256 = Digest::SHA256.new.file(file_name).hexfinal
+  actual_sha256 = sha256_file(file_name)
   unless actual_sha256 == expected_sha256
     raise "SHA-256 mismatch for #{asset_name}: expected #{expected_sha256}, got #{actual_sha256}"
   end
@@ -174,7 +193,7 @@ def download_from_url(lib_path, file_name, url)
   download_file(file_name, url)
   extracted_paths = extract_zip_files(file_name, lib_path)
   missing_paths = lib_path.select do |path|
-    relative_path = Path[path].relative_to(Path[WORK_DIR]).to_s
+    relative_path = normalize_zip_path(Path[path].relative_to(Path[WORK_DIR]).to_s)
     !extracted_paths.includes?(relative_path) && !Dir.exists?(path)
   end
   unless missing_paths.empty?
