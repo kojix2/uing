@@ -144,6 +144,17 @@ private class LifetimeSafetyTable < UIng::Table
 end
 
 describe "lifetime safety" do
+  it "keeps a snapshot of rows in user-created Table::Selection objects" do
+    rows = [1, 3]
+    selection = UIng::Table::Selection.new(rows)
+
+    rows[0] = 9
+    rows << 11
+
+    selection.rows.should eq([1, 3])
+    selection.num_rows.should eq(2)
+  end
+
   it "rejects every Table::Selection pointer read after free" do
     selection = ReleasedLifetimeSafetySelection.new
 
