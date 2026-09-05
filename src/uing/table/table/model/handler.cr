@@ -21,6 +21,8 @@ module UIng
   #
   # cell_value callbacks must return a newly-created owned Value. UIng transfers
   # that value to libui, which will free it when the table is done with it.
+  # They may return nil where libui-ng permits a NULL cell value. Likewise,
+  # set_cell_value receives nil for special notifications such as button clicks.
   class Table < Control
     class Model
       class Handler
@@ -96,9 +98,12 @@ module UIng
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.cell_value_box.null?
-                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value)).unbox(extended.value.cell_value_box)
-                  result = callback.call(row, column)
-                  result.transfer_to_libui
+                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value?)).unbox(extended.value.cell_value_box)
+                  if result = callback.call(row, column)
+                    result.transfer_to_libui
+                  else
+                    Pointer(LibUI::TableValue).null
+                  end
                 else
                   LibUI.new_table_value_string("")
                 end
@@ -111,8 +116,8 @@ module UIng
               begin
                 extended = mh.as(LibUI::TableModelHandlerExtended*)
                 if !extended.value.set_cell_value_box.null?
-                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value, Nil)).unbox(extended.value.set_cell_value_box)
-                  table_value = Value.new(value, borrowed: true)
+                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value?, Nil)).unbox(extended.value.set_cell_value_box)
+                  table_value = value.null? ? nil : Value.new(value, borrowed: true)
                   callback.call(row, column, table_value)
                 end
               rescue e
@@ -147,12 +152,12 @@ module UIng
           @extended_handler.num_rows_box = @num_rows_box
         end
 
-        def cell_value(&block : LibC::Int, LibC::Int -> Value)
+        def cell_value(&block : LibC::Int, LibC::Int -> Value?)
           @cell_value_box = ::Box.box(block)
           @extended_handler.cell_value_box = @cell_value_box
         end
 
-        def set_cell_value(&block : LibC::Int, LibC::Int, Value -> Nil)
+        def set_cell_value(&block : LibC::Int, LibC::Int, Value? -> Nil)
           @set_cell_value_box = ::Box.box(block)
           @extended_handler.set_cell_value_box = @set_cell_value_box
         end

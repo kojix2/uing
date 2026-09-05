@@ -164,6 +164,7 @@ model_handler = UIng::Table::Model::Handler.new do
 
   set_cell_value do |row, column, table_value|
     next if row >= EMPLOYEES.size
+    next unless table_value
 
     case Column.new(column)
     when .avatar?, .progress?
