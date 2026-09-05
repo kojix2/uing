@@ -1,8 +1,28 @@
 require "compress/zip"
+require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
 
-COMMIT_HASH = ENV["LIBUI_NG_COMMIT_HASH"]? || "79761e2a-experimental"
+COMMIT_HASH = "79761e2a-experimental"
+
+ASSET_SHA256 = {
+  "macOS-arm64-static-debug.zip"         => "036fece3a4f442134820768de69403cb13a9a63a18f48e2ea62b7613c934af4f",
+  "macOS-arm64-static-release.zip"       => "4437b7079984afba57bd40f855ed6686535d8d8ee34a42c9fa9e2f623184176f",
+  "macOS-x64-static-debug.zip"           => "3e04c97c1ea3f3d8fb4b25b789dc656fb9ce5684edfe4fb8881d080cb5370149",
+  "macOS-x64-static-release.zip"         => "54155649543f14bb665709293fddc79c9ab9bb4645ab00f6d4e84389189bdf02",
+  "Ubuntu-arm64-static-debug.zip"        => "f1597d85dad5e43940cadfdf9fbd08a380f6a616e4e1ac9054c53b7e1baeeb07",
+  "Ubuntu-arm64-static-release.zip"      => "0d3a5b9959154dd00c4704ecfae56f6d5e0ea0803ac0baa74decc8435957fa60",
+  "Ubuntu-x64-static-debug.zip"          => "cb09e2fde23c62fab0108173250ef275e108945c9678dc4a4ab85cc36ae8e9ca",
+  "Ubuntu-x64-static-release.zip"        => "f2f9c7b08a792c3a7c2878ec550b99211bea3d769076b86f7ea29de27f2f71fa",
+  "Windows-x64-mingw-static-debug.zip"   => "60c6602d1efb64ff1c9e89f59ce91c1692d3331516b8245a72a4b0501e2cf9b6",
+  "Windows-x64-mingw-static-release.zip" => "4363f756109e3b921247ba44c66c06843da34887a1a22b33ae12cb36f54e6768",
+  "Windows-x64-msvc-static-debug.zip"    => "a118786addcaf2eba09268802d7da2ea79619491b7ca8b255451fc38888bcdc3",
+  "Windows-x64-msvc-static-release.zip"  => "70164632292b793000191612ecdf40c1ac119ba13e9fa220b43b59c489ec6209",
+  "Windows-x64-ucrt-static-debug.zip"    => "2318449e6fdc85447e30774bd97c6d6f55abba740a43c95bf03e30b59190bcb1",
+  "Windows-x64-ucrt-static-release.zip"  => "c53051cf32368e72a88c0c5f7a8b525f6e1ae76835d79985d6160a86c6923a19",
+  "Windows-x86-msvc-static-debug.zip"    => "e98f7216df5f6e9dd32c6be11aa7c06f8f3c7d4e60e961092e18e0908f21f651",
+  "Windows-x86-msvc-static-release.zip"  => "610308f3a0df4b15e9529497f6532374ef4a2b71dbb2598c761e8878aa0aa3e8",
+}
 
 # Path constants
 PROJECT_DIR    = Dir.current
@@ -48,11 +68,6 @@ PLATFORM_CONFIG = {
     {zip: "Ubuntu-arm64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
     {zip: "Ubuntu-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
-  # Linux ARM 32-bit
-  linux_arm: [
-    {zip: "Ubuntu-arm-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "Ubuntu-arm-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
-  ],
   # Windows MSVC x86_64
   msvc_x64: [
     {zip: "Windows-x64-msvc-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
@@ -86,6 +101,13 @@ def download_file(file_name, url)
   process = Process.run("curl", args, output: STDOUT, error: STDERR)
   unless process.success? && File.exists?(file_name)
     raise "Failed to download #{file_name} from #{url}"
+  end
+
+  asset_name = File.basename(file_name)
+  expected_sha256 = ASSET_SHA256[asset_name]? || raise "No SHA-256 checksum for #{asset_name}"
+  actual_sha256 = Digest::SHA256.new.file(file_name).hexfinal
+  unless actual_sha256 == expected_sha256
+    raise "SHA-256 mismatch for #{asset_name}: expected #{expected_sha256}, got #{actual_sha256}"
   end
 end
 
@@ -226,10 +248,8 @@ begin
     process_platform(PLATFORM_CONFIG[:linux_x64])
   {% elsif flag?(:aarch64) %}
     process_platform(PLATFORM_CONFIG[:linux_arm64])
-  {% elsif flag?(:arm) %}
-    process_platform(PLATFORM_CONFIG[:linux_arm])
   {% else %}
-    {% raise "Unsupported Linux architecture. Supported: x86_64, aarch64, arm" %}
+    {% raise "Unsupported Linux architecture. Supported: x86_64, aarch64" %}
   {% end %}
   {% elsif flag?(:msvc) %}
   {% if flag?(:x86_64) %}
