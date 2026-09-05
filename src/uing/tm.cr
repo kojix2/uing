@@ -83,7 +83,7 @@ module UIng
       pointerof(@cstruct)
     end
 
-    # Convert TM to Time with error handling
+    # Convert TM to Time. Invalid date/time fields raise ArgumentError.
     def to_time : ::Time
       ::Time.local(
         year + 1900, # tm_year is years since 1900
@@ -94,9 +94,12 @@ module UIng
         sec,
         nanosecond: 0
       )
-    rescue
-      # Fallback to current time if conversion fails
-      ::Time.local
+    end
+
+    def to_time? : ::Time?
+      to_time
+    rescue ArgumentError
+      nil
     end
 
     # Delegate to_s to Time for convenient formatting

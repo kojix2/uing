@@ -35,29 +35,16 @@ module UIng
     end
 
     def time : Time
-      return Time.local unless ref_ptr
-
-      begin
-        LibUI.date_time_picker_time(ref_ptr, @tm)
-        @tm.to_time
-      rescue e
-        UIng.handle_callback_error(e, "DateTimePicker time retrieval")
-        Time.local
-      end
+      LibUI.date_time_picker_time(ref_ptr, @tm)
+      @tm.to_time
     end
 
     def time=(time : Time) : Nil
-      return unless ref_ptr
-
-      begin
-        # Update our persistent @tm instance with new time
-        temp_tm = UIng::TM.new(time)
-        LibUI.date_time_picker_set_time(ref_ptr, temp_tm)
-        # Sync @tm with the actual widget state
-        LibUI.date_time_picker_time(ref_ptr, @tm)
-      rescue e
-        UIng.handle_callback_error(e, "DateTimePicker time setting")
-      end
+      # Update our persistent @tm instance with new time
+      temp_tm = UIng::TM.new(time)
+      LibUI.date_time_picker_set_time(ref_ptr, temp_tm)
+      # Sync @tm with the actual widget state
+      LibUI.date_time_picker_time(ref_ptr, @tm)
     end
 
     def on_changed(&block : Time -> Nil) : Nil
