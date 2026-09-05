@@ -56,10 +56,12 @@ module UIng
     str
   end
 
+  @[Experimental]
   def self.on_error(&handler : Exception, String -> Nil) : Nil
     @@callback_mutex.synchronize { @@error_handler = handler }
   end
 
+  @[Experimental]
   def self.on_error(handler : Nil) : Nil
     @@callback_mutex.synchronize { @@error_handler = nil }
   end

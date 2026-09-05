@@ -652,18 +652,6 @@ The following rules apply to specific objects:
 
 Calling `destroy` or `free` makes the corresponding wrapper unavailable for further use.
 
-## Callback Error Handling
-
-Exceptions raised by callbacks are logged to standard error. Applications can install an additional notification policy with `UIng.on_error`. For example, a GUI application may display its own message box after determining that it is safe to do so. This can also help when investigating callback errors.
-
-Pass `nil` to remove the handler.
-
-```crystal
-UIng.on_error do |exception, context|
-  STDERR.puts "#{context}: #{exception.message}"
-end
-```
-
 ## Limitations
 
 libui-ng is cross-platform, but comes with some limitations:
