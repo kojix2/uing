@@ -79,14 +79,9 @@ crystal run examples/gallery/control_gallery.cr
 
 ### Windows MSVC Setup
 
-The MSVC build of Crystal requires Visual Studio Build Tools and a Windows SDK;
-see [Crystal's Windows installation guide](https://crystal-lang.org/install/on_windows/)
-for the prerequisites. A regular Command Prompt or PowerShell session does not
-configure the MSVC toolchain. Open **x64 Native Tools Command Prompt for Visual
-Studio** or **Developer PowerShell for Visual Studio**, then run the commands
-above from the project directory. See [Microsoft's developer shell
-documentation](https://learn.microsoft.com/en-us/visualstudio/ide/reference/command-prompt-powershell?view=visualstudio)
-for instructions.
+The MSVC build requires [Visual Studio Build Tools and a Windows SDK](https://crystal-lang.org/install/on_windows/).
+Run the commands above in [x64 Native Tools Command Prompt or Developer PowerShell for Visual Studio](https://learn.microsoft.com/en-us/visualstudio/ide/reference/command-prompt-powershell?view=visualstudio),
+because a regular Command Prompt or PowerShell session is not configured for MSVC.
 
 ## Usage
 
