@@ -692,19 +692,18 @@ UIng applies several strategies to ensure safe interoperation between Crystal’
 
 - This approach is used in controls like `Table` and `Area`.
 
-### Use of AI Coding
+### Use of Generative AI
 
-This project was developed with the assistance of generative AI.
+This project is developed with the assistance of generative AI.
 
-In particular, AI was extensively used for:
+AI is used extensively for:
 
 - Creating GitHub Actions workflows for screenshot automation
-- Generating complex example programs
-- Producing patches for libui-ng
+- Creating complex example programs
+- Scanning for and fixing memory-management bugs
+- Developing [libui-ng](https://github.com/kojix2/libui-ng)
 
-While kojix2 enjoys code generation and “Vibe Coding,” UIng is not a library created purely with that approach. In reality, it was built through substantial manual work, iterative design, and human review of AI-generated code.
-
-I also maintain several projects that are based purely on the Vibe Coding style, but I do not consider this library to be one of them.
+UIng was initially built through manual work, iterative design, and line-by-line human review of AI-generated code. In 2026, line-by-line review was discontinued as AI's ability to detect bugs surpassed kojix2's. Human effort now focuses on the project's overall design, visual inspection of the GUI, and finding improvements through real-world use of UIng.
 
 ## Contributing
 
