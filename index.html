@@ -884,7 +884,6 @@ Images are automatically generated and stored in the <code>screenshots</code> br
     </tr>
   </tbody>
 </table>
-<p>Note: The Table API has quirks. For example, you must manually free memory as <a href="https://github.com/kojix2/uing/issues/6">instructed</a> when the program terminates.</p>
 <h3><a id="area" class="anchor" href="#area">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -1128,46 +1127,16 @@ to do so. Pass <code>nil</code> to remove the handler.</p>
 <pre><code class="language-crystal"><span class="t">UIng</span>.on_error <span class="k">do</span> <span class="o">|</span>exception, context<span class="o">|</span>
   <span class="t">STDERR</span>.puts <span class="s">&quot;</span><span class="i">#{</span>context<span class="i">}</span><span class="s">: </span><span class="i">#{</span>exception.message<span class="i">}</span><span class="s">&quot;</span>
 <span class="k">end</span></code></pre>
-<p>Some non-control resources must be freed manually:</p>
+<p>Some non-control resources need explicit ownership handling:</p>
 <ul>
 <li><code>Table::Model</code>: destroy all <code>Table</code> controls using the model first, then call <code>model.free</code>.</li>
 <li><code>Image</code>: call <code>image.free</code> when it is no longer needed. <code>ImageView#image=</code> copies or retains what it needs, but table image values borrow the image, so keep the <code>Image</code> alive while the table may display it.</li>
-<li><code>Table::Selection</code>: selections passed to <code>on_selection_changed</code> are freed automatically after the callback. If you call <code>table.selection</code> manually, free the returned selection when done.</li>
+<li><code>Toolbar</code>, <code>Draw::Path</code>, and <code>Draw::TextLayout</code>: call <code>free</code>; prefer <code>.open</code> where available.</li>
+<li><code>Table::Selection</code>: block and callback forms free it automatically; a direct <code>table.selection</code> result must be freed. Do not free <code>Table::Selection.new(rows)</code>.</li>
+<li><code>Table::Value</code> returned from <code>cell_value</code> transfers automatically. Values passed to <code>set_cell_value</code>, attributes yielded by <code>for_each_attribute</code>, and draw contexts are borrowed only for that callback.</li>
+<li>Other objects exposing <code>free</code>, such as <code>AttributedString</code>, <code>Attribute</code>, and <code>OpenTypeFeatures</code>, may be released early. <code>set_attribute</code> takes ownership of its <code>Attribute</code>.</li>
 </ul>
 <p>After <code>destroy</code> or <code>free</code>, do not use the wrapper again.</p>
-<p>Example cleanup patterns:</p>
-<pre><code class="language-crystal"><span class="c"># Reuse a child by detaching it first.</span>
-left <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">:vertical</span>)
-right <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">:vertical</span>)
-button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Move me&quot;</span>)
-
-left.append(button)
-left.delete(button)  <span class="c"># button is detached, not destroyed</span>
-right.append(button)</code></pre>
-<pre><code class="language-crystal"><span class="c"># Remove a child permanently.</span>
-box <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">:vertical</span>)
-button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;Delete me&quot;</span>)
-
-box.append(button)
-box.delete(button)
-button.destroy</code></pre>
-<pre><code class="language-crystal"><span class="c"># Table models must outlive tables that use them.</span>
-handler <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Table</span><span class="t">::</span><span class="t">Model</span><span class="t">::</span><span class="t">Handler</span>.new
-model <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Table</span><span class="t">::</span><span class="t">Model</span>.new(handler)
-table <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Table</span>.new(model)
-
-<span class="c"># ... use table ...</span>
-
-table.destroy
-model.free</code></pre>
-<pre><code class="language-crystal"><span class="c"># Images can be freed after ImageView receives them.</span>
-image <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Image</span>.new(<span class="n">16</span>, <span class="n">16</span>)
-pixels <span class="o">=</span> <span class="t">Bytes</span>.new(<span class="n">16</span> <span class="o">*</span> <span class="n">16</span> <span class="o">*</span> <span class="n">4</span>, <span class="n">0_u8</span>)
-image.append(pixels.to_unsafe.<span class="k">as</span>(<span class="t">Pointer</span>(<span class="t">Void</span>)), <span class="n">16</span>, <span class="n">16</span>, <span class="n">16</span> <span class="o">*</span> <span class="n">4</span>)
-
-image_view <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">ImageView</span>.new
-image_view.image <span class="o">=</span> image
-image.free</code></pre>
 <h2><a id="limitations" class="anchor" href="#limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -1241,16 +1210,16 @@ Providing a full-featured GUI library is not the main scope of this project.</p>
 <p>UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:</p>
 <ul>
 <li>
-<p>Callback Protection: Most callbacks are stored as instance variables of their controls, preventing them from being collected by the GC. Closures are additionally protected using <code>::Box.box()</code>, allowing Crystal blocks that capture external variables to be safely used as C callbacks.</p>
+<p>Control Lifetime: A registry keeps wrappers alive until native destruction; parent references mirror the native control tree.</p>
 </li>
 <li>
-<p>Reference Chains: Controls are passed to parent containers (e.g., <code>Window -&gt; Box -&gt; Button</code>), ensuring that children remain referenced as long as the parent exists. Root components such as <code>Window</code> and <code>Menu</code> are stored as class variables to avoid premature collection.</p>
+<p>Callback Protection: Callbacks and boxed closures remain referenced for as long as native code may invoke them.</p>
 </li>
 <li>
 <p>Extended Handler Structures: For complex controls like <code>Area</code> and <code>Table</code>, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.</p>
 </li>
 <li>
-<p>Resource Management rules are defined in <a href="#memory-management-policy">Memory Management Policy</a>. In short, UIng prioritizes explicit ownership and explicit release (<code>destroy</code> / <code>free</code>), while RAII-style APIs are provided where possible.</p>
+<p>Borrowed Lifetimes: Callback-only wrappers are invalidated on return. Other rules are defined in <a href="#memory-management-policy">Memory Management Policy</a>.</p>
 </li>
 </ul>
 <h3><a id="closures-in-low-level-contexts" class="anchor" href="#closures-in-low-level-contexts">
