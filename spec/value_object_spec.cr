@@ -20,8 +20,8 @@ describe "public value objects" do
   end
 
   it "keeps Table::Params model and row-color fields synchronized" do
-    first = UIng::Table::Model.new(Pointer(UIng::LibUI::TableModel).new(0x210_u64))
-    second = UIng::Table::Model.new(Pointer(UIng::LibUI::TableModel).new(0x220_u64))
+    first = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x210_u64))
+    second = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x220_u64))
     params = UIng::Table::Params.new(first, 3)
 
     params.model.should be(first)

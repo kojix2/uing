@@ -49,7 +49,7 @@ end
 private class ReleasedLifetimeSafetyAttribute < UIng::Area::Attribute
   def initialize
     super(Pointer(UIng::LibUI::Attribute).null)
-    self.released = true
+    @released = true
   end
 end
 
@@ -277,18 +277,38 @@ describe "lifetime safety" do
     model.native_freed?.should be_true
   end
 
-  it "allows model free immediately after its Table becomes DestroyPending" do
+  it "defers native model free until its DestroyPending Table is destroyed" do
     model = LifetimeSafetyModel.new
     table = LifetimeSafetyTable.new(model)
 
     table.destroy
     model.free
 
-    model.native_freed?.should be_true
+    model.native_freed?.should be_false
     model.tracked_table_count.should eq(1)
     expect_raises(Exception, /already been released/) { model.to_unsafe }
 
     table.release_for_spec
+    model.native_freed?.should be_true
+    model.tracked_table_count.should eq(0)
+  end
+
+  it "defers native model free until all DestroyPending Tables are destroyed" do
+    model = LifetimeSafetyModel.new
+    first = LifetimeSafetyTable.new(model)
+    second = LifetimeSafetyTable.new(model)
+
+    first.destroy
+    second.destroy
+    model.free
+    model.free
+
+    first.release_for_spec
+    model.native_freed?.should be_false
+    model.tracked_table_count.should eq(1)
+
+    second.release_for_spec
+    model.native_freed?.should be_true
     model.tracked_table_count.should eq(0)
   end
 

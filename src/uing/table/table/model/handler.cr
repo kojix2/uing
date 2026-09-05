@@ -215,6 +215,11 @@ module UIng
           pointerof(@extended_handler).as(LibUI::TableModelHandler*)
         end
 
+        protected def sealed_column_types : Array(Value::Type)
+          seal_schema
+          @column_types.not_nil!
+        end
+
         private def seal_schema : Nil
           return if @column_types
 

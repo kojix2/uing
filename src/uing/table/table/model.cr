@@ -18,18 +18,29 @@ module UIng
   #   model.free     # Then free model
   class Table < Control
     class Model
-      @released : Bool = false
+      @free_requested : Bool = false
+      @native_freed : Bool = false
       @tables = Set(Table).new
+      @column_types : Array(Value::Type)?
 
       # Store Table::Model::Handler reference to prevent GC collection
       # IMPORTANT: This prevents GC of handler while model is alive
       @model_handler_ref : Handler?
 
-      def initialize(@ref_ptr : Pointer(LibUI::TableModel))
+      protected def initialize(@ref_ptr : Pointer(LibUI::TableModel))
+        @column_types = nil
+      end
+
+      # Wraps a native model without a Crystal-side schema. Table column
+      # validation is intentionally unavailable for models created this way.
+      def self.unsafe_wrap(ref_ptr : Pointer(LibUI::TableModel)) : Model
+        new(ref_ptr)
       end
 
       def initialize(model_handler : Handler)
-        @ref_ptr = LibUI.new_table_model(model_handler.to_unsafe)
+        handler_ptr = model_handler.to_unsafe
+        @column_types = model_handler.sealed_column_types
+        @ref_ptr = LibUI.new_table_model(handler_ptr)
         @model_handler_ref = model_handler
       end
 
@@ -37,15 +48,12 @@ module UIng
       # Tables may be DestroyPending; libui-ng defers the native model free until
       # those table destructions have completed. An Alive Table still rejects it.
       def free : Nil
-        return if @released
+        return if @free_requested
         if @tables.any? { |table| !table.released? }
           raise "Table::Model cannot be freed while it is still used by a Table"
         end
-        free_native
-        @released = true
-        # If destruction is deferred, keep the handler alive until the final
-        # Table destroyed notification removes it from @tables.
-        @model_handler_ref = nil if @tables.empty?
+        @free_requested = true
+        finish_free if @tables.empty?
       end
 
       # Internal lifetime bookkeeping used by Table. Keeping the wrappers here
@@ -57,15 +65,47 @@ module UIng
 
       protected def unregister(table : Table) : Nil
         @tables.delete(table)
-        @model_handler_ref = nil if @released && @tables.empty?
+        finish_free if @free_requested && @tables.empty?
       end
 
       protected def free_native : Nil
         LibUI.free_table_model(@ref_ptr)
       end
 
+      protected def validate_data_column(column : Int32, expected_type : Value::Type, role : String) : Nil
+        validate_column(column, expected_type, role)
+      end
+
+      protected def validate_state_column(column : Int32, role : String) : Nil
+        return if column == ModelColumn::Never.value || column == ModelColumn::Always.value
+        validate_column(column, Value::Type::Int, role)
+      end
+
+      protected def validate_optional_color_column(column : Int32, role : String) : Nil
+        return if column == -1
+        validate_column(column, Value::Type::Color, role)
+      end
+
       private def check_available : Nil
-        raise "Table::Model has already been released" if @released
+        raise "Table::Model has already been released" if @free_requested
+      end
+
+      private def finish_free : Nil
+        return if @native_freed
+        free_native
+        @native_freed = true
+        @model_handler_ref = nil
+      end
+
+      private def validate_column(column : Int32, expected_type : Value::Type, role : String) : Nil
+        column_types = @column_types || return
+        unless 0 <= column < column_types.size
+          raise ArgumentError.new("#{role} model column #{column} is out of range for #{column_types.size} columns")
+        end
+
+        actual_type = column_types[column]
+        return if actual_type == expected_type
+        raise ArgumentError.new("#{role} model column #{column} type mismatch: expected #{expected_type}, got #{actual_type}")
       end
 
       def row_inserted(new_index : Int32) : Nil

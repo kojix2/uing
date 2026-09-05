@@ -16,6 +16,7 @@ module UIng
 
     # IMPORTANT: This method accepts Table::Model instead of Table::Params
     def initialize(model : Model, row_background_color_model_column : LibC::Int = -1)
+      model.validate_optional_color_column(row_background_color_model_column, "row background color")
       table_params = Params.new(model, row_background_color_model_column)
       @ref_ptr = LibUI.new_table(table_params)
       @table_model_ref = model
@@ -125,58 +126,70 @@ module UIng
     # `editable` can be `:never`, `:always`, or a model column whose values
     # control editability for each row.
     def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      validate_text_column(text_model_column, editable)
       LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), nil)
     end
 
     def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      validate_text_column(text_model_column, editable, table_text_column_optional_params)
       LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), table_text_column_optional_params)
     end
 
     def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
       table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
-      LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), table_text_column_optional_params)
+      append_text_column(name, text_model_column, editable, table_text_column_optional_params)
     end
 
     def append_image_column(name : String, image_model_column : Int32) : Nil
+      model.validate_data_column(image_model_column, Value::Type::Image, "image")
       LibUI.table_append_image_column(ref_ptr, name, image_model_column)
     end
 
     def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      validate_image_text_column(image_model_column, text_model_column, editable)
       LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), nil)
     end
 
     def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      validate_image_text_column(image_model_column, text_model_column, editable, table_text_column_optional_params)
       LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), table_text_column_optional_params)
     end
 
     def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
       table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
-      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), table_text_column_optional_params)
+      append_image_text_column(name, image_model_column, text_model_column, editable, table_text_column_optional_params)
     end
 
     def append_checkbox_column(name : String, checkbox_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      model.validate_data_column(checkbox_model_column, Value::Type::Int, "checkbox")
+      model.validate_state_column(model_column(editable), "checkbox editability")
       LibUI.table_append_checkbox_column(ref_ptr, name, checkbox_model_column, model_column(editable))
     end
 
     def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn) : Nil
+      validate_checkbox_text_column(checkbox_model_column, checkbox_editable, text_model_column, text_editable)
       LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), nil)
     end
 
     def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      validate_checkbox_text_column(checkbox_model_column, checkbox_editable, text_model_column, text_editable, table_text_column_optional_params)
       LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), table_text_column_optional_params)
     end
 
     def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
       table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
-      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), table_text_column_optional_params)
+      append_checkbox_text_column(name, checkbox_model_column, checkbox_editable, text_model_column, text_editable, table_text_column_optional_params)
     end
 
     def append_progress_bar_column(name : String, progress_model_column : Int32) : Nil
+      model.validate_data_column(progress_model_column, Value::Type::Int, "progress")
       LibUI.table_append_progress_bar_column(ref_ptr, name, progress_model_column)
     end
 
     # `clickable` follows the same rules as column editability.
     def append_button_column(name : String, button_model_column : Int32, clickable : Int32 | ModelColumn) : Nil
+      model.validate_data_column(button_model_column, Value::Type::String, "button")
+      model.validate_state_column(model_column(clickable), "button clickability")
       LibUI.table_append_button_column(ref_ptr, name, button_model_column, model_column(clickable))
     end
 
@@ -230,6 +243,33 @@ module UIng
 
     private def model_column(column : Int32 | ModelColumn) : Int32
       column.is_a?(ModelColumn) ? column.value : column
+    end
+
+    private def model : Model
+      @table_model_ref || raise "Table model is no longer available"
+    end
+
+    private def validate_text_column(text_column : Int32, editable : Int32 | ModelColumn, params : TextColumnOptionalParams? = nil) : Nil
+      model.validate_data_column(text_column, Value::Type::String, "text")
+      model.validate_state_column(model_column(editable), "text editability")
+      validate_text_params(params)
+    end
+
+    private def validate_image_text_column(image_column : Int32, text_column : Int32, editable : Int32 | ModelColumn, params : TextColumnOptionalParams? = nil) : Nil
+      model.validate_data_column(image_column, Value::Type::Image, "image")
+      validate_text_column(text_column, editable, params)
+    end
+
+    private def validate_checkbox_text_column(checkbox_column : Int32, checkbox_editable : Int32 | ModelColumn, text_column : Int32, text_editable : Int32 | ModelColumn, params : TextColumnOptionalParams? = nil) : Nil
+      model.validate_data_column(checkbox_column, Value::Type::Int, "checkbox")
+      model.validate_state_column(model_column(checkbox_editable), "checkbox editability")
+      validate_text_column(text_column, text_editable, params)
+    end
+
+    private def validate_text_params(params : TextColumnOptionalParams?) : Nil
+      params.try do |value|
+        model.validate_optional_color_column(value.color_model_column, "text color")
+      end
     end
   end
 end
