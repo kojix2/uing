@@ -79,11 +79,14 @@ crystal run examples/gallery/control_gallery.cr
 
 ### Windows MSVC Setup
 
-For Windows users using MSVC, use Developer Command Prompt or add Windows Kits path:
-
-```powershell
-$env:Path += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
-```
+The MSVC build of Crystal requires Visual Studio Build Tools and a Windows SDK;
+see [Crystal's Windows installation guide](https://crystal-lang.org/install/on_windows/)
+for the prerequisites. A regular Command Prompt or PowerShell session does not
+configure the MSVC toolchain. Open **x64 Native Tools Command Prompt for Visual
+Studio** or **Developer PowerShell for Visual Studio**, then run the commands
+above from the project directory. See [Microsoft's developer shell
+documentation](https://learn.microsoft.com/en-us/visualstudio/ide/reference/command-prompt-powershell?view=visualstudio)
+for instructions.
 
 ## Usage
 
