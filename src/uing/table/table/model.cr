@@ -29,7 +29,7 @@ module UIng
       end
 
       def initialize(model_handler : Handler)
-        @ref_ptr = LibUI.new_table_model(model_handler)
+        @ref_ptr = LibUI.new_table_model(model_handler.to_unsafe)
         @model_handler_ref = model_handler
       end
 

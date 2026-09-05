@@ -82,6 +82,7 @@ describe UIng::Table::Model::Handler do
 
   it "returns NULL when the cell-value callback returns nil" do
     handler = UIng::Table::Model::Handler.new
+    handler.num_columns { 1 }
     handler.column_type { |_column| UIng::Table::Value::Type::Color }
     handler.cell_value { |_row, _column| nil }
 
@@ -101,6 +102,7 @@ describe UIng::Table::Model::Handler do
       UIng::Table::Value.new(ptr, borrowed: false)
     end.to_a
     handler = UIng::Table::Model::Handler.new
+    handler.num_columns { types.size }
     handler.column_type { |column| types[column] }
     handler.cell_value { |_row, column| values[column] }
 
@@ -115,6 +117,7 @@ describe UIng::Table::Model::Handler do
     calls = 0
     declared_type = UIng::Table::Value::Type::Int
     handler = UIng::Table::Model::Handler.new
+    handler.num_columns { 1 }
     handler.column_type do |_column|
       calls += 1
       declared_type
@@ -125,8 +128,22 @@ describe UIng::Table::Model::Handler do
     call_column_type(handler, 0).should eq(UIng::Table::Value::Type::Int)
     calls.should eq(1)
 
-    expect_raises(Exception, /Cannot change table column types/) do
+    expect_raises(Exception, /Cannot change table schema/) do
       handler.column_type { |_column| UIng::Table::Value::Type::Color }
     end
+    expect_raises(Exception, /Cannot change table schema/) do
+      handler.num_columns { 2 }
+    end
+  end
+
+  it "rejects invalid schemas before exposing the native handler" do
+    negative = UIng::Table::Model::Handler.new
+    negative.num_columns { -1 }
+    expect_raises(ArgumentError, /column count cannot be negative/) { negative.to_unsafe }
+
+    failing = UIng::Table::Model::Handler.new
+    failing.num_columns { 1 }
+    failing.column_type { |_column| raise "column type failed" }
+    expect_raises(Exception, /column type failed/) { failing.to_unsafe }
   end
 end
