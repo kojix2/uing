@@ -140,6 +140,7 @@ describe "lifetime safety" do
     expect_raises(Exception, /already been released/) { selection.num_rows }
     expect_raises(Exception, /already been released/) { selection.rows }
     expect_raises(Exception, /already been released/) { selection.rows_ptr }
+    expect_raises(Exception, /already been released/) { selection.to_unsafe }
   end
 
   it "rejects every Attribute operation after free" do

@@ -78,6 +78,7 @@ module UIng
       end
 
       def to_unsafe
+        check_available
         @ptr
       end
 
