@@ -606,6 +606,17 @@ UIng.on_should_quit do
 end
 ```
 
+Exceptions raised by callbacks are logged to standard error. Applications can
+install an additional notification policy with `UIng.on_error`; for example,
+GUI applications may show their own message box after deciding that it is safe
+to do so. Pass `nil` to remove the handler.
+
+```crystal
+UIng.on_error do |exception, context|
+  STDERR.puts "#{context}: #{exception.message}"
+end
+```
+
 Some non-control resources must be freed manually:
 
 - `Table::Model`: destroy all `Table` controls using the model first, then call `model.free`.

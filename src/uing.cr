@@ -8,8 +8,14 @@ require "./uing/grid/*"
 require "./uing/table/*"
 
 module UIng
+  alias ErrorHandler = Proc(Exception, String, Nil)
+
   # Mutex for thread-safe access to callbacks
   @@callback_mutex = Mutex.new
+
+  # Optional application-defined callback error policy. Errors are always
+  # logged; UI notification is left to the application.
+  @@error_handler : ErrorHandler?
 
   # uiInitOptions is not used (but it is required)
   # See https://github.com/libui-ng/libui-ng/issues/208
@@ -50,7 +56,16 @@ module UIng
     str
   end
 
-  # Handle callback errors by printing the error message and backtrace
+  def self.on_error(&handler : Exception, String -> Nil) : Nil
+    @@callback_mutex.synchronize { @@error_handler = handler }
+  end
+
+  def self.on_error(handler : Nil) : Nil
+    @@callback_mutex.synchronize { @@error_handler = nil }
+  end
+
+  # Handle callback errors by printing the error message and backtrace, then
+  # invoking the application-defined policy when one has been configured.
   def self.handle_callback_error(ex : Exception, ctx : String = "callback")
     # As UIng is a UI library, applications may not have standard output available
     # Use Crystal's system error output to ensure error messages are properly logged
@@ -58,8 +73,15 @@ module UIng
     if backtrace = ex.backtrace?
       backtrace.each { |frame| Crystal::System.print_error "  from %s\n", frame }
     end
-    # Show error message in a message box (system-level errors)
-    UIng.msg_box_error("Error in #{ctx}", ex.message.to_s)
+
+    handler = @@callback_mutex.synchronize { @@error_handler }
+    return unless handler
+
+    begin
+      handler.call(ex, ctx)
+    rescue handler_error
+      Crystal::System.print_error "error handler failed: %s\n", handler_error.message
+    end
   end
 
   def self.init : Nil
