@@ -35,14 +35,17 @@ module UIng
         @num_rows_box : Pointer(Void)
         @cell_value_box : Pointer(Void)
         @set_cell_value_box : Pointer(Void)
+        @column_types : Hash(LibC::Int, Value::Type)
 
         def initialize
           # Initialize instance variables
           @num_columns_box = Pointer(Void).null
-          @column_type_box = Pointer(Void).null
           @num_rows_box = Pointer(Void).null
           @cell_value_box = Pointer(Void).null
           @set_cell_value_box = Pointer(Void).null
+          @column_types = Hash(LibC::Int, Value::Type).new
+          column_type_callback = nil.as(Proc(LibC::Int, Value::Type)?)
+          @column_type_box = ::Box.box({@column_types, column_type_callback})
 
           # Create extended handler with static callback functions
           @extended_handler = uninitialized LibUI::TableModelHandlerExtended
@@ -66,17 +69,22 @@ module UIng
               end
             },
             column_type: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, column : LibC::Int) {
-              begin
-                extended = mh.as(LibUI::TableModelHandlerExtended*)
-                if !extended.value.column_type_box.null?
-                  callback = ::Box(Proc(LibC::Int, Value::Type)).unbox(extended.value.column_type_box)
-                  callback.call(column)
-                else
-                  Value::Type::String
+              extended = mh.as(LibUI::TableModelHandlerExtended*)
+              state = ::Box(Tuple(Hash(LibC::Int, Value::Type), Proc(LibC::Int, Value::Type)?)).unbox(extended.value.column_type_box)
+              column_types, callback = state
+              if type = column_types[column]?
+                type
+              else
+                type = Value::Type::String
+                begin
+                  if callback
+                    type = callback.call(column)
+                  end
+                rescue e
+                  UIng.handle_callback_error(e, "Table::Model::Handler column_type")
                 end
-              rescue e
-                UIng.handle_callback_error(e, "Table::Model::Handler column_type")
-                Value::Type::String
+                column_types[column] = type
+                type
               end
             },
             num_rows: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*) {
@@ -94,22 +102,43 @@ module UIng
                 0_i32
               end
             },
-            cell_value: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
-              begin
-                extended = mh.as(LibUI::TableModelHandlerExtended*)
+            cell_value: ->(mh : LibUI::TableModelHandler*, model : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
+              extended = mh.as(LibUI::TableModelHandlerExtended*)
+              state = ::Box(Tuple(Hash(LibC::Int, Value::Type), Proc(LibC::Int, Value::Type)?)).unbox(extended.value.column_type_box)
+              column_types = state[0]
+              expected_type = column_types[column]? || extended.value.base_handler.column_type.call(mh, model, column)
+
+              value_ptr = begin
                 if !extended.value.cell_value_box.null?
                   callback = ::Box(Proc(LibC::Int, LibC::Int, Value?)).unbox(extended.value.cell_value_box)
                   if result = callback.call(row, column)
+                    actual_type = result.type
+                    if actual_type != expected_type
+                      result.free
+                      raise "Table cell value type mismatch for column #{column}: expected #{expected_type}, got #{actual_type}"
+                    end
                     result.transfer_to_libui
-                  else
+                  elsif expected_type.color?
                     Pointer(LibUI::TableValue).null
+                  else
+                    raise "Table cell value for column #{column} cannot be nil for type #{expected_type}"
                   end
-                else
-                  LibUI.new_table_value_string("")
                 end
               rescue e
                 UIng.handle_callback_error(e, "Table::Model::Handler cell_value")
-                LibUI.new_table_value_string("")
+                nil
+              end
+
+              if value_ptr
+                value_ptr
+              else
+                case expected_type
+                when .string? then LibUI.new_table_value_string("")
+                when .image?  then LibUI.new_table_value_image(Pointer(LibUI::Image).null)
+                when .int?    then LibUI.new_table_value_int(0)
+                when .color?  then Pointer(LibUI::TableValue).null
+                else               Pointer(LibUI::TableValue).null
+                end
               end
             },
             set_cell_value: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int, value : Pointer(UIng::LibUI::TableValue)) {
@@ -128,7 +157,7 @@ module UIng
 
           # Initialize the box pointers to null in the extended handler
           @extended_handler.num_columns_box = Pointer(Void).null
-          @extended_handler.column_type_box = Pointer(Void).null
+          @extended_handler.column_type_box = @column_type_box
           @extended_handler.num_rows_box = Pointer(Void).null
           @extended_handler.cell_value_box = Pointer(Void).null
           @extended_handler.set_cell_value_box = Pointer(Void).null
@@ -143,7 +172,10 @@ module UIng
         end
 
         def column_type(&block : LibC::Int -> Value::Type)
-          @column_type_box = ::Box.box(block)
+          unless @column_types.empty?
+            raise "Cannot change table column types after they have been read"
+          end
+          @column_type_box = ::Box.box({@column_types, block})
           @extended_handler.column_type_box = @column_type_box
         end
 
