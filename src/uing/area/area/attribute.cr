@@ -21,6 +21,10 @@ module UIng
         Attribute.new(ref_ptr, borrowed: true)
       end
 
+      protected def invalidate_borrow : Nil
+        @released = true if @borrowed
+      end
+
       def self.new_family(family : String) : Attribute
         ref_ptr = LibUI.new_family_attribute(family)
         Attribute.new(ref_ptr)
@@ -131,7 +135,8 @@ module UIng
       def features : OpenTypeFeatures
         check_available
         ref_ptr = LibUI.attribute_features(@ref_ptr)
-        OpenTypeFeatures.new(ref_ptr, borrowed: true)
+        # Return an owned clone so it remains valid independently of this Attribute.
+        OpenTypeFeatures.new(LibUI.open_type_features_clone(ref_ptr))
       end
 
       def to_unsafe

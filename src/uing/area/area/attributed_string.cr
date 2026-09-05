@@ -73,6 +73,7 @@ module UIng
         attribute.released = true
       end
 
+      # The yielded Attribute is borrowed and only valid until the block returns.
       # Return value: 0 = Continue, 1 = Stop (follows LibUI's uiForEach convention)
       def for_each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> LibC::Int) : Nil
         check_available
@@ -86,8 +87,12 @@ module UIng
                 callback = ::Box(typeof(block)).unbox(data)
                 # Wrap as borrowed - libui owns this attribute, we must not free it
                 attribute = Area::Attribute.borrowed(attr)
-                # Return block's result directly to LibUI (0 or 1)
-                callback.call(attribute, start, end_)
+                begin
+                  # Return block's result directly to LibUI (0 or 1)
+                  callback.call(attribute, start, end_)
+                ensure
+                  attribute.invalidate_borrow
+                end
               rescue e
                 UIng.handle_callback_error(e, "AttributedString for_each_attribute")
                 1_i32 # uiForEachStop

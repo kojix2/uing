@@ -81,6 +81,16 @@ private class ReleasedLifetimeSafetyAttribute < UIng::Area::Attribute
   end
 end
 
+private class BorrowedLifetimeSafetyAttribute < UIng::Area::Attribute
+  def initialize
+    super(Pointer(UIng::LibUI::Attribute).null, borrowed: true)
+  end
+
+  def invalidate_after_callback : Nil
+    invalidate_borrow
+  end
+end
+
 private class ReleasedLifetimeSafetyAttributedString < UIng::Area::AttributedString
   def initialize
     super(Pointer(UIng::LibUI::AttributedString).null)
@@ -156,6 +166,13 @@ describe "lifetime safety" do
     expect_raises(Exception, /already been released/) { attribute.underline }
     expect_raises(Exception, /already been released/) { attribute.underline_color }
     expect_raises(Exception, /already been released/) { attribute.features }
+    expect_raises(Exception, /already been released/) { attribute.to_unsafe }
+  end
+
+  it "rejects a borrowed Attribute after its callback ends" do
+    attribute = BorrowedLifetimeSafetyAttribute.new
+    attribute.invalidate_after_callback
+
     expect_raises(Exception, /already been released/) { attribute.to_unsafe }
   end
 
