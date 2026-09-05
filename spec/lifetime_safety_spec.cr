@@ -1,33 +1,5 @@
 require "./spec_helper"
 
-# Replace the two native lifecycle calls in this spec process so the block
-# overload can be exercised without opening a platform UI session.
-module UIng
-  @@lifetime_safety_init_calls = 0
-  @@lifetime_safety_uninit_calls = 0
-
-  def self.init : Nil
-    @@lifetime_safety_init_calls += 1
-  end
-
-  def self.uninit : Nil
-    @@lifetime_safety_uninit_calls += 1
-  end
-
-  def self.reset_lifetime_safety_init_calls : Nil
-    @@lifetime_safety_init_calls = 0
-    @@lifetime_safety_uninit_calls = 0
-  end
-
-  def self.lifetime_safety_init_calls : Int32
-    @@lifetime_safety_init_calls
-  end
-
-  def self.lifetime_safety_uninit_calls : Int32
-    @@lifetime_safety_uninit_calls
-  end
-end
-
 private class LifetimeSafetyMenuItem < UIng::MenuItem
   getter? callback_was_retained_when_cleared = false
 
@@ -260,14 +232,12 @@ describe "lifetime safety" do
   end
 
   it "uninitializes UIng when its init block raises" do
-    UIng.reset_lifetime_safety_init_calls
+    output = IO::Memory.new
+    error = IO::Memory.new
+    fixture = File.join(__DIR__, "fixtures", "init_block_cleanup.cr")
+    status = Process.run(ENV["CRYSTAL"]? || "crystal", ["run", fixture], output: output, error: error)
 
-    expect_raises(Exception, "boom") do
-      UIng.init { raise "boom" }
-    end
-
-    UIng.lifetime_safety_init_calls.should eq(1)
-    UIng.lifetime_safety_uninit_calls.should eq(1)
+    status.success?.should be_true, "#{output}\n#{error}"
   end
 
   it "clears the native MenuItem callback before releasing its callback box" do
