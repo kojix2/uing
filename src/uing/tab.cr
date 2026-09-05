@@ -34,6 +34,7 @@ module UIng
     end
 
     def insert_at(name : String, index : Int32, control, margined : Bool = false) : Nil
+      check_insert_index(index)
       control.check_can_move
       LibUI.tab_insert_at(ref_ptr, name, index, UIng.to_control(control))
       @children_refs.insert(index, control)
@@ -42,10 +43,7 @@ module UIng
     end
 
     def delete(index : Int32) : Nil
-      if index < 0 || index >= @children_refs.size
-        raise IndexError.new("Index out of bounds")
-      end
-
+      check_page_index(index)
       child = @children_refs[index]
       delete_native_child(index)
       @children_refs.delete_at(index)
@@ -69,10 +67,12 @@ module UIng
     end
 
     def margined?(index : Int32) : Bool
+      check_page_index(index)
       LibUI.tab_margined(ref_ptr, index)
     end
 
     def set_margined(index : Int32, margined : Bool) : Nil
+      check_page_index(index)
       LibUI.tab_set_margined(ref_ptr, index, margined)
     end
 
@@ -108,6 +108,18 @@ module UIng
 
     def to_unsafe
       ref_ptr
+    end
+
+    private def check_insert_index(index : Int32) : Nil
+      if index < 0 || index > @children_refs.size
+        raise IndexError.new("Index out of bounds")
+      end
+    end
+
+    private def check_page_index(index : Int32) : Nil
+      if index < 0 || index >= @children_refs.size
+        raise IndexError.new("Index out of bounds")
+      end
     end
   end
 end
