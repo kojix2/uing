@@ -1080,8 +1080,15 @@ Images are automatically generated and stored in the <code>screenshots</code> br
     <use href="#octicon-link"/>
   </svg>
 </a>Memory Management Policy</h2>
-<p>UIng wraps libui-ng, a C library with explicit ownership rules. Crystal's GC keeps wrapper objects alive, but it does not decide when native widgets are destroyed. Use <code>destroy</code> for controls and <code>free</code> for standalone native resources.</p>
-<p>The main rule is simple: a parent control owns its children. Destroying a parent destroys the native children too, and UIng marks the child wrappers as destroyed. Do not call <code>destroy</code> on a child while it still belongs to a parent.</p>
+<p>Some UIng objects must be cleaned up manually when they are no longer needed. Use <code>destroy</code> for controls and <code>free</code> for some other resources, such as images.</p>
+<p>This section explains when and how to clean up UIng objects.</p>
+<h3><a id="parent-and-child-controls" class="anchor" href="#parent-and-child-controls">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Parent and Child Controls</h3>
+<p>Some UIng controls can contain other controls. For example, a <code>Window</code> can contain a <code>Box</code>, and a <code>Box</code> can contain controls such as <code>Button</code>. The containing control is the parent, and a control inside it is a child.</p>
+<p>Destroying a parent automatically destroys all of its children. Normally, you only need to destroy the parent rather than each child individually.</p>
 <pre><code class="language-crystal">window <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Window</span>.new(<span class="s">&quot;App&quot;</span>, <span class="n">400</span>, <span class="n">300</span>)
 box <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">:vertical</span>)
 button <span class="o">=</span> <span class="t">UIng</span><span class="t">::</span><span class="t">Button</span>.new(<span class="s">&quot;OK&quot;</span>)
@@ -1090,26 +1097,41 @@ box.append(button)
 window.child <span class="o">=</span> box
 
 window.destroy <span class="c"># also destroys box and button</span></code></pre>
-<p>If you want to reuse a child, detach it first:</p>
+<p>UIng also marks wrappers for those children as destroyed, so they can no longer be used.</p>
+<p>To reuse a child elsewhere, detach it before destroying its parent:</p>
 <pre><code class="language-crystal">button.detach <span class="c"># still alive</span>
 other_box.append(button)</code></pre>
-<p>Container behavior:</p>
+<p>To destroy a child individually, detach it from its parent first and then call <code>destroy</code>:</p>
+<pre><code class="language-crystal">button.detach
+button.destroy</code></pre>
+<p>Calling <code>destroy</code> on a child that is still attached raises an exception and leaves the child intact.</p>
+<p>The following methods add, remove, or replace children in each type of parent:</p>
 <ul>
 <li><code>Window</code> and <code>Group</code> have one child. Assigning <code>nil</code> or a new child detaches the old child without destroying it. Destroying the <code>Window</code> or <code>Group</code> destroys its current child.</li>
 <li><code>Box</code>, <code>Form</code>, <code>Tab</code>, and <code>Grid</code> support <code>delete(child)</code>; the first three also support <code>delete(index)</code>.</li>
-<li>Controls with no parent can be destroyed directly with <code>destroy</code>.</li>
+<li>A control that has no parent can be destroyed directly with <code>destroy</code>.</li>
 </ul>
-<p>Window closing has one special rule. In <code>Window#on_closing</code>, return <code>true</code> to let libui-ng destroy the native window, or <code>false</code> to keep it open. Do not call <code>window.destroy</code> inside that callback. Menu callbacks receive <code>Window?</code> because macOS can invoke them without an active window.</p>
+<h3><a id="closing-an-application-or-window" class="anchor" href="#closing-an-application-or-window">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Closing an Application or Window</h3>
+<p>Most controls are placed under a top-level window. Destroying that window automatically destroys its children, so you do not need to call <code>destroy</code> on each control individually.</p>
+<p><code>UIng.quit</code> stops the event loop; it does not destroy windows. <code>UIng.uninit</code> shuts down the UI system and cleans up its internal resources, but it does not destroy windows created by the application. Destroy all top-level windows before calling <code>UIng.uninit</code>.</p>
+<p><code>Window#on_closing</code> is called mainly when the user clicks a window's close button. For a simple application with one window, this callback is usually enough to handle shutdown.</p>
+<p>Return <code>true</code> from <code>Window#on_closing</code> to close and destroy the window, or <code>false</code> to keep it open. When the callback returns <code>true</code>, libui-ng destroys the window. The callback therefore only needs to call <code>UIng.quit</code> and return <code>true</code>:</p>
 <pre><code class="language-crystal">window.on_closing <span class="k">do</span>
   <span class="t">UIng</span>.quit
   <span class="n">true</span>
 <span class="k">end</span></code></pre>
-<p><code>on_should_quit</code> does not destroy windows for you. If your app exits from there, explicitly destroy any windows you created.</p>
-<p>Recommended shutdown pattern when both callbacks are used:</p>
+<p>There is no need to call <code>window.destroy</code> as well on this exit path.</p>
+<p><code>UIng.on_should_quit</code> handles requests to quit the entire application, such as choosing Quit from a menu. It is separate from <code>Window#on_closing</code>, which handles a window's close button.</p>
+<p>When exiting from <code>UIng.on_should_quit</code>, destroy every top-level window created by the application. The callback does not destroy them automatically.</p>
+<p>When using both callbacks, follow this pattern:</p>
 <ul>
-<li><code>Window#on_closing</code>: call <code>UIng.quit</code> and return <code>true</code>; do not call <code>window.destroy</code> there.</li>
-<li><code>UIng.on_should_quit</code>: explicitly destroy top-level windows, then return <code>true</code>.</li>
-<li>To avoid double-destroy in mixed exit paths, guard with <code>released?</code>.</li>
+<li>In <code>Window#on_closing</code>, call <code>UIng.quit</code> and return <code>true</code>; libui-ng handles destruction of the window.</li>
+<li>In <code>UIng.on_should_quit</code>, explicitly destroy every top-level window and then return <code>true</code>.</li>
+<li>Use <code>released?</code> to avoid destroying the same window twice.</li>
 </ul>
 <pre><code class="language-crystal">window.on_closing <span class="k">do</span>
   <span class="t">UIng</span>.quit
@@ -1120,23 +1142,39 @@ other_box.append(button)</code></pre>
   window.destroy <span class="k">unless</span> window.released?
   <span class="n">true</span>
 <span class="k">end</span></code></pre>
-<p>Exceptions raised by callbacks are logged to standard error. Applications can
-install an additional notification policy with <code>UIng.on_error</code>; for example,
-GUI applications may show their own message box after deciding that it is safe
-to do so. Pass <code>nil</code> to remove the handler.</p>
+<h3><a id="cleanup-rules-for-other-objects" class="anchor" href="#cleanup-rules-for-other-objects">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Cleanup Rules for Other Objects</h3>
+<p>For objects that are not controls, the cleanup method depends on how the object was obtained:</p>
+<ul>
+<li>An object obtained directly from <code>.new</code> or as a method result usually needs to be freed after use.</li>
+<li>An object used through <code>.open</code> or a block form is freed automatically when the block ends.</li>
+<li>An object passed to a callback is usually valid only until that callback returns. UIng handles its cleanup.</li>
+</ul>
+<p>The following rules apply to specific objects:</p>
+<ul>
+<li><code>Table::Model</code>: destroy all <code>Table</code> controls using the model first, then call <code>model.free</code>.</li>
+<li><code>Image</code>: call <code>image.free</code> when the image is no longer needed. An image can be freed after passing it to <code>ImageView#image=</code>, but must remain alive while a table or <code>Toolbar</code> is using it.</li>
+<li><code>Toolbar</code>: detach it from its window before calling <code>free</code>.</li>
+<li><code>Draw::Path</code>, <code>Draw::TextLayout</code>, and <code>AttributedString</code>: prefer <code>.open</code> where available so that the object is freed automatically when the block ends.</li>
+<li><code>Table::Selection</code>: block and callback forms free the selection automatically. A direct <code>table.selection</code> result must be freed after use. <code>Table::Selection.new(rows)</code> is managed by Crystal's GC.</li>
+<li><code>Table::Value</code>: a value returned from <code>cell_value</code> is then managed by libui-ng. A value passed to <code>set_cell_value</code> is valid only until that callback returns.</li>
+<li><code>Attribute</code>: after it is passed to <code>set_attribute</code>, the receiving <code>AttributedString</code> manages it. An attribute yielded by <code>for_each_attribute</code> is valid only for that block.</li>
+<li>Draw contexts are valid only during the draw callback.</li>
+</ul>
+<p>Calling <code>destroy</code> or <code>free</code> makes the corresponding wrapper unavailable for further use.</p>
+<h2><a id="callback-error-handling" class="anchor" href="#callback-error-handling">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Callback Error Handling</h2>
+<p>Exceptions raised by callbacks are logged to standard error. Applications can install an additional notification policy with <code>UIng.on_error</code>. For example, a GUI application may display its own message box after determining that it is safe to do so. This can also help when investigating callback errors.</p>
+<p>Pass <code>nil</code> to remove the handler.</p>
 <pre><code class="language-crystal"><span class="t">UIng</span>.on_error <span class="k">do</span> <span class="o">|</span>exception, context<span class="o">|</span>
   <span class="t">STDERR</span>.puts <span class="s">&quot;</span><span class="i">#{</span>context<span class="i">}</span><span class="s">: </span><span class="i">#{</span>exception.message<span class="i">}</span><span class="s">&quot;</span>
 <span class="k">end</span></code></pre>
-<p>Some non-control resources need explicit ownership handling:</p>
-<ul>
-<li><code>Table::Model</code>: destroy all <code>Table</code> controls using the model first, then call <code>model.free</code>.</li>
-<li><code>Image</code>: call <code>image.free</code> when it is no longer needed. <code>ImageView#image=</code> copies or retains what it needs, but table image values borrow the image, so keep the <code>Image</code> alive while the table may display it.</li>
-<li><code>Toolbar</code>, <code>Draw::Path</code>, and <code>Draw::TextLayout</code>: call <code>free</code>; prefer <code>.open</code> where available.</li>
-<li><code>Table::Selection</code>: block and callback forms free it automatically; a direct <code>table.selection</code> result must be freed. Do not free <code>Table::Selection.new(rows)</code>.</li>
-<li><code>Table::Value</code> returned from <code>cell_value</code> transfers automatically. Values passed to <code>set_cell_value</code>, attributes yielded by <code>for_each_attribute</code>, and draw contexts are borrowed only for that callback.</li>
-<li>Other objects exposing <code>free</code>, such as <code>AttributedString</code>, <code>Attribute</code>, and <code>OpenTypeFeatures</code>, may be released early. <code>set_attribute</code> takes ownership of its <code>Attribute</code>.</li>
-</ul>
-<p>After <code>destroy</code> or <code>free</code>, do not use the wrapper again.</p>
 <h2><a id="limitations" class="anchor" href="#limitations">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
