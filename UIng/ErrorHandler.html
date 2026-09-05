@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="uing">
-  <title>UIng::Box - uing main</title>
+  <title>UIng::ErrorHandler - uing main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -227,7 +227,7 @@
       
     </li>
   
-  <li class=" current" data-id="uing/UIng/Box" data-name="uing::box">
+  <li class=" " data-id="uing/UIng/Box" data-name="uing::box">
       <a href="../UIng/Box.html">Box</a>
       
     </li>
@@ -272,7 +272,7 @@
       
     </li>
   
-  <li class=" " data-id="uing/UIng/ErrorHandler" data-name="uing::errorhandler">
+  <li class=" current" data-id="uing/UIng/ErrorHandler" data-name="uing::errorhandler">
       <a href="../UIng/ErrorHandler.html">ErrorHandler</a>
       
     </li>
@@ -522,18 +522,26 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> UIng::<wbr>Box
+    alias
+  </span> UIng::<wbr>ErrorHandler
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../UIng/Box.html">UIng::Box</a></li><li class="superclass"><a href="../UIng/Control.html">UIng::Control</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
 
 
+  <h2>
+    <a id="alias-definition" class="anchor" href="#alias-definition">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Alias Definition
+  </h2>
+  <code>Exception, String -> Nil</code>
 
 
 
@@ -558,8 +566,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L11" target="_blank">
-        uing/box.cr
+      <a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing.cr#L11" target="_blank">
+        uing.cr
       </a>
     
     <br/>
@@ -570,467 +578,25 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28%2Aargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, &)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method" class="signature"><strong>.new</strong>(*args, **kwargs, &)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28orientation%3ASymbol%2Cpadded%3ABool%3Dfalse%29-class-method" class="signature"><strong>.new</strong>(orientation : Symbol, padded : Bool = <span class="n">false</span>)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#append%28control%2Cstretchy%3ABool%3Dfalse%29%3ANil-instance-method" class="signature"><strong>#append</strong>(control, stretchy : Bool = <span class="n">false</span>) : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#append%28stretchy%3ABool%3Dfalse%2C%26block%3A-%3EControl%29%3ANil-instance-method" class="signature"><strong>#append</strong>(stretchy : Bool = <span class="n">false</span>, &block :  -> Control) : Nil</a>
-        
-          <div class="summary"><p>For DSL style</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#delete%28child%3AControl%29-instance-method" class="signature"><strong>#delete</strong>(child : Control)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#delete%28index%3AInt32%29%3ANil-instance-method" class="signature"><strong>#delete</strong>(index : Int32) : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#num_children%3AInt32-instance-method" class="signature"><strong>#num_children</strong> : Int32</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#padded%3D%28padded%3ABool%29%3ANil-instance-method" class="signature"><strong>#padded=</strong>(padded : Bool) : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#padded%3F%3ABool-instance-method" class="signature"><strong>#padded?</strong> : Bool</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#to_unsafe-instance-method" class="signature"><strong>#to_unsafe</strong></a>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
     
-      
-
-  <h3>Instance methods inherited from class <code><a href="../UIng/Control.html">UIng::Control</a></code></h3>
-  
-  
-    <a href="../UIng/Control.html#__parent__-instance-method" class="tooltip">
-      <span>__parent__</span>
-    __parent__</a>, 
-    
-  
-    <a href="../UIng/Control.html#__set_parent__%28parent%29%3ANil-instance-method" class="tooltip">
-      <span>__set_parent__(parent) : Nil</span>
-    __set_parent__</a>, 
-    
-  
-    <a href="../UIng/Control.html#delete%28child%3AControl%29-instance-method" class="tooltip">
-      <span>delete(child : Control)</span>
-    delete</a>, 
-    
-  
-    <a href="../UIng/Control.html#destroy%3ANil-instance-method" class="tooltip">
-      <span>destroy : Nil</span>
-    destroy</a>, 
-    
-  
-    <a href="../UIng/Control.html#detach%3Aself-instance-method" class="tooltip">
-      <span>detach : <span class="k">self</span></span>
-    detach</a>, 
-    
-  
-    <a href="../UIng/Control.html#disable%3ANil-instance-method" class="tooltip">
-      <span>disable : Nil</span>
-    disable</a>, 
-    
-  
-    <a href="../UIng/Control.html#enable%3ANil-instance-method" class="tooltip">
-      <span>enable : Nil</span>
-    enable</a>, 
-    
-  
-    <a href="../UIng/Control.html#enabled%3F%3ABool-instance-method" class="tooltip">
-      <span>enabled? : Bool</span>
-    enabled?</a>, 
-    
-  
-    <a href="../UIng/Control.html#enabled_to_user%3F%3ABool-instance-method" class="tooltip">
-      <span>enabled_to_user? : Bool</span>
-    enabled_to_user?</a>, 
-    
-  
-    <a href="../UIng/Control.html#finalize-instance-method" class="tooltip">
-      <span>finalize</span>
-    finalize</a>, 
-    
-  
-    <a href="../UIng/Control.html#handle-instance-method" class="tooltip">
-      <span>handle</span>
-    handle</a>, 
-    
-  
-    <a href="../UIng/Control.html#hide%3ANil-instance-method" class="tooltip">
-      <span>hide : Nil</span>
-    hide</a>, 
-    
-  
-    <a href="../UIng/Control.html#parent%3AControl%7CNil-instance-method" class="tooltip">
-      <span>parent : Control | Nil</span>
-    parent</a>, 
-    
-  
-    <a href="../UIng/Control.html#released%3F%3ABool-instance-method" class="tooltip">
-      <span>released? : Bool</span>
-    released?</a>, 
-    
-  
-    <a href="../UIng/Control.html#show%3ANil-instance-method" class="tooltip">
-      <span>show : Nil</span>
-    show</a>, 
-    
-  
-    <a href="../UIng/Control.html#to_unsafe-instance-method" class="tooltip">
-      <span>to_unsafe</span>
-    to_unsafe</a>, 
-    
-  
-    <a href="../UIng/Control.html#toplevel%3F%3ABool-instance-method" class="tooltip">
-      <span>toplevel? : Bool</span>
-    toplevel?</a>, 
-    
-  
-    <a href="../UIng/Control.html#verify_set_parent%28parent%29%3ANil-instance-method" class="tooltip">
-      <span>verify_set_parent(parent) : Nil</span>
-    verify_set_parent</a>, 
-    
-  
-    <a href="../UIng/Control.html#visible%3F%3ABool-instance-method" class="tooltip">
-      <span>visible? : Bool</span>
-    visible?</a>
-    
-  
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-  <h3>Macros inherited from module <code>UIng::BlockConstructor</code></h3>
-  
-  
-    <a href="../UIng/BlockConstructor.html#block_constructor-macro" class="tooltip">
-      <span>block_constructor</span>
-    block_constructor</a>
-    
-  
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(*args,&amp;)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(*args, &)
-
-        <a class="method-permalink" href="#new%28%2Aargs%2C%26%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L12" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(*args,**kwargs,&amp;)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(*args, **kwargs, &)
-
-        <a class="method-permalink" href="#new%28%2Aargs%2C%2A%2Akwargs%2C%26%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L12" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(orientation:Symbol,padded:Bool=false)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(orientation : Symbol, padded : Bool = <span class="n">false</span>)
-
-        <a class="method-permalink" href="#new%28orientation%3ASymbol%2Cpadded%3ABool%3Dfalse%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L17" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="append(control,stretchy:Bool=false):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>append</strong>(control, stretchy : Bool = <span class="n">false</span>) : Nil
-
-        <a class="method-permalink" href="#append%28control%2Cstretchy%3ABool%3Dfalse%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L42" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="append(stretchy:Bool=false,&amp;block:-&gt;Control):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>append</strong>(stretchy : Bool = <span class="n">false</span>, &block :  -> <a href="../UIng/Control.html">Control</a>) : Nil
-
-        <a class="method-permalink" href="#append%28stretchy%3ABool%3Dfalse%2C%26block%3A-%3EControl%29%3ANil-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>For DSL style</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L50" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="delete(child:Control)-instance-method">
-      <div class="signature">
-        
-        def <strong>delete</strong>(child : <a href="../UIng/Control.html">Control</a>)
-
-        <a class="method-permalink" href="#delete%28child%3AControl%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L34" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="delete(index:Int32):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>delete</strong>(index : Int32) : Nil
-
-        <a class="method-permalink" href="#delete%28index%3AInt32%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L59" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="num_children:Int32-instance-method">
-      <div class="signature">
-        
-        def <strong>num_children</strong> : Int32
-
-        <a class="method-permalink" href="#num_children%3AInt32-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L55" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="padded=(padded:Bool):Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>padded=</strong>(padded : Bool) : Nil
-
-        <a class="method-permalink" href="#padded%3D%28padded%3ABool%29%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L78" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="padded?:Bool-instance-method">
-      <div class="signature">
-        
-        def <strong>padded?</strong> : Bool
-
-        <a class="method-permalink" href="#padded%3F%3ABool-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L74" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="to_unsafe-instance-method">
-      <div class="signature">
-        
-        def <strong>to_unsafe</strong>
-
-        <a class="method-permalink" href="#to_unsafe-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/box.cr#L82" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
 
 </div>

@@ -272,6 +272,11 @@
       
     </li>
   
+  <li class=" " data-id="uing/UIng/ErrorHandler" data-name="uing::errorhandler">
+      <a href="../UIng/ErrorHandler.html">ErrorHandler</a>
+      
+    </li>
+  
   <li class=" " data-id="uing/UIng/FontButton" data-name="uing::fontbutton">
       <a href="../UIng/FontButton.html">FontButton</a>
       
@@ -553,7 +558,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/image.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L2" target="_blank">
         uing/image.cr
       </a>
     
@@ -604,7 +609,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#append%28pixels%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append</strong>(pixels, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil</a>
+        <a href="#append%28pixels%3ABytes%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append</strong>(pixels : Bytes, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#append%28pixels%3APointer%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method" class="signature"><strong>#append</strong>(pixels : Pointer, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil</a>
+        
+          <div class="summary"><p>The caller is responsible for ensuring that the pointer references at least <code>byte_stride * pixel_height</code> readable bytes.</p></div>
         
       </li>
     
@@ -673,7 +685,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/image.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -689,7 +701,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/image.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -710,18 +722,40 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="append(pixels,pixel_width:Int32,pixel_height:Int32,byte_stride:Int32):Nil-instance-method">
+    <div class="entry-detail" id="append(pixels:Bytes,pixel_width:Int32,pixel_height:Int32,byte_stride:Int32):Nil-instance-method">
       <div class="signature">
         
-        def <strong>append</strong>(pixels, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil
+        def <strong>append</strong>(pixels : Bytes, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil
 
-        <a class="method-permalink" href="#append%28pixels%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#append%28pixels%3ABytes%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/image.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="append(pixels:Pointer,pixel_width:Int32,pixel_height:Int32,byte_stride:Int32):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>append</strong>(pixels : Pointer, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil
+
+        <a class="method-permalink" href="#append%28pixels%3APointer%2Cpixel_width%3AInt32%2Cpixel_height%3AInt32%2Cbyte_stride%3AInt32%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>The caller is responsible for ensuring that the pointer references at least
+<code>byte_stride * pixel_height</code> readable bytes.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -737,7 +771,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/image.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -753,7 +787,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/image.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/image.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>

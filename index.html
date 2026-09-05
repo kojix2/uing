@@ -272,6 +272,11 @@
       
     </li>
   
+  <li class=" " data-id="uing/UIng/ErrorHandler" data-name="uing::errorhandler">
+      <a href="UIng/ErrorHandler.html">ErrorHandler</a>
+      
+    </li>
+  
   <li class=" " data-id="uing/UIng/FontButton" data-name="uing::fontbutton">
       <a href="UIng/FontButton.html">FontButton</a>
       
@@ -1114,6 +1119,13 @@ other_box.append(button)</code></pre>
 <span class="t">UIng</span>.on_should_quit <span class="k">do</span>
   window.destroy <span class="k">unless</span> window.released?
   <span class="n">true</span>
+<span class="k">end</span></code></pre>
+<p>Exceptions raised by callbacks are logged to standard error. Applications can
+install an additional notification policy with <code>UIng.on_error</code>; for example,
+GUI applications may show their own message box after deciding that it is safe
+to do so. Pass <code>nil</code> to remove the handler.</p>
+<pre><code class="language-crystal"><span class="t">UIng</span>.on_error <span class="k">do</span> <span class="o">|</span>exception, context<span class="o">|</span>
+  <span class="t">STDERR</span>.puts <span class="s">&quot;</span><span class="i">#{</span>context<span class="i">}</span><span class="s">: </span><span class="i">#{</span>exception.message<span class="i">}</span><span class="s">&quot;</span>
 <span class="k">end</span></code></pre>
 <p>Some non-control resources must be freed manually:</p>
 <ul>

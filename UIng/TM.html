@@ -272,6 +272,11 @@
       
     </li>
   
+  <li class=" " data-id="uing/UIng/ErrorHandler" data-name="uing::errorhandler">
+      <a href="../UIng/ErrorHandler.html">ErrorHandler</a>
+      
+    </li>
+  
   <li class=" " data-id="uing/UIng/FontButton" data-name="uing::fontbutton">
       <a href="../UIng/FontButton.html">FontButton</a>
       
@@ -553,7 +558,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L8" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L8" target="_blank">
         uing/tm.cr
       </a>
     
@@ -649,7 +654,12 @@
       <li class="entry-summary">
         <a href="#to_time%3ATime-instance-method" class="signature"><strong>#to_time</strong> : Time</a>
         
-          <div class="summary"><p>Convert TM to Time with error handling</p></div>
+          <div class="summary"><p>Convert TM to Time.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_time%3F%3ATime%7CNil-instance-method" class="signature"><strong>#to_time?</strong> : Time | Nil</a>
         
       </li>
     
@@ -723,7 +733,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -744,7 +754,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -774,7 +784,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L80" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -802,7 +812,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -823,7 +833,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -839,7 +849,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L107" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L110" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -871,7 +881,7 @@ which includes its class name and its object address.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L111" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L114" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -886,13 +896,29 @@ which includes its class name and its object address.</p>
       
         <div class="doc">
           
-          <p>Convert TM to Time with error handling</p>
+          <p>Convert TM to Time. Invalid date/time fields raise ArgumentError.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L87" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_time?:Time|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>to_time?</strong> : Time | Nil
+
+        <a class="method-permalink" href="#to_time%3F%3ATime%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -908,7 +934,7 @@ which includes its class name and its object address.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -924,7 +950,7 @@ which includes its class name and its object address.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -940,7 +966,7 @@ which includes its class name and its object address.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/dd0ed05ef3e98144bc078248f4acbfcb647cd19f/src/uing/tm.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/02f23674c69b7f889189d4e85d14d7fcf6eaabfa/src/uing/tm.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
