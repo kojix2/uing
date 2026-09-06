@@ -254,9 +254,9 @@ handler.key_event do |sender_area, key_event|
   key_data = key_event
   handled = false
 
-  if key_data.up == 0 # Key pressed (not released)
+  unless key_data.up? # Key pressed (not released)
     case key_data.key
-    when 'c'.ord, 'C'.ord
+    when 'c', 'C'
       RandomLines.clear_lines
       sender_area.queue_redraw_all
       handled = true

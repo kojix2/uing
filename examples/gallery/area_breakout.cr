@@ -352,8 +352,8 @@ class BreakoutGame
     end
   end
 
-  def handle_key_input(key : Char, up : Int32)
-    return if up != 0
+  def handle_key_input(key : Char, up : Bool)
+    return if up
 
     case key
     when ' '
@@ -372,8 +372,8 @@ class BreakoutGame
     end
   end
 
-  def handle_extended_key(ext_key : UIng::Area::ExtKey, up : Int32)
-    return if up != 0
+  def handle_extended_key(ext_key : UIng::Area::ExtKey, up : Bool)
+    return if up
     case ext_key
     when UIng::Area::ExtKey::Left
       @paddle.move_left(@screen_width)
@@ -493,11 +493,11 @@ HANDLER.mouse_event do |area, event|
 end
 
 HANDLER.key_event do |area, event|
-  if event.key != '\0'
-    GAME.handle_key_input(event.key, event.up)
+  if key = event.key
+    GAME.handle_key_input(key, event.up?)
   end
-  if event.ext_key != UIng::Area::ExtKey::N0
-    GAME.handle_extended_key(event.ext_key, event.up)
+  if ext_key = event.ext_key
+    GAME.handle_extended_key(ext_key, event.up?)
   end
   area.queue_redraw_all
   true

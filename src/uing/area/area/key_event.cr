@@ -6,12 +6,14 @@ module UIng
         @cstruct = ref_ptr.value
       end
 
-      def key : Char
-        @cstruct.key.chr
+      def key : Char?
+        value = @cstruct.key
+        value == 0 ? nil : value.chr
       end
 
-      def ext_key : ExtKey
-        @cstruct.ext_key
+      def ext_key : ExtKey?
+        value = @cstruct.ext_key
+        value.value == 0 ? nil : value
       end
 
       def modifier : Modifiers
@@ -22,8 +24,8 @@ module UIng
         @cstruct.modifiers
       end
 
-      def up : Int32
-        @cstruct.up
+      def up? : Bool
+        @cstruct.up != 0
       end
 
       def to_unsafe

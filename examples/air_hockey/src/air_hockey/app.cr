@@ -62,7 +62,7 @@ module AirHockey
       end
 
       @handler.key_event do |area, event|
-        if event.up == 0
+        unless event.up?
           Log.info("key event: key=#{event.key.inspect}, ext_key=#{event.ext_key}")
           AirHockey.handle_key(@game, event)
         end

@@ -721,9 +721,9 @@ def setup_handlers_3d
   end
 
   HANDLER3D.key_event do |area, event|
-    if event.up == 0 # Key down
+    unless event.up? # Key down
       case event.key
-      when ' '.ord # Space key - reset
+      when ' ' # Space key - reset
         SIMULATION3D.reset_boids
         STATUS_LABEL3D.text = "Reset #{SIMULATION3D.boids.size} boids"
         area.queue_redraw_all
