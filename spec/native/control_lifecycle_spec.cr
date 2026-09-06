@@ -349,7 +349,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
       UIng.main_steps
       UIng.queue_main do
-        windows.each { |window| window.child = nil }
+        windows.each(&.child=(nil))
         tables.each(&.destroy)
         windows.each(&.destroy)
         destroy_was_requested = true

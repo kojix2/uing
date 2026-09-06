@@ -217,11 +217,11 @@ module UIng
 
         protected def sealed_column_types : Array(Value::Type)
           seal_schema
-          @column_types.not_nil!
         end
 
-        private def seal_schema : Nil
-          return if @column_types
+        private def seal_schema : Array(Value::Type)
+          column_types = @column_types
+          return column_types unless column_types.nil?
 
           num_columns = @num_columns_callback.try(&.call) || 0
           raise ArgumentError.new("Table model column count cannot be negative") if num_columns < 0
@@ -236,6 +236,7 @@ module UIng
           @column_type_box = ::Box.box(column_types)
           @extended_handler.num_columns_box = @num_columns_box
           @extended_handler.column_type_box = @column_type_box
+          column_types
         end
       end
     end
