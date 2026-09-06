@@ -1161,7 +1161,7 @@ button.destroy</code></pre>
 <li><code>Draw::Path</code>, <code>Draw::TextLayout</code>, and <code>AttributedString</code>: prefer <code>.open</code> where available so that the object is freed automatically when the block ends.</li>
 <li><code>Table::Selection</code>: block and callback forms free the selection automatically. A direct <code>table.selection</code> result must be freed after use. <code>Table::Selection.new(rows)</code> is managed by Crystal's GC.</li>
 <li><code>Table::Value</code>: a value returned from <code>cell_value</code> is then managed by libui-ng. A value passed to <code>set_cell_value</code> is valid only until that callback returns.</li>
-<li><code>Attribute</code>: after it is passed to <code>set_attribute</code>, the receiving <code>AttributedString</code> manages it. An attribute yielded by <code>for_each_attribute</code> is valid only for that block.</li>
+<li><code>Attribute</code>: after it is passed to <code>set_attribute</code>, the receiving <code>AttributedString</code> manages it. An attribute yielded by <code>each_attribute</code> or <code>each_attribute_while</code> is valid only for that block.</li>
 <li><code>OpenTypeFeatures</code> and <code>AttributedString</code> may be read or enumerated recursively during enumeration, but cannot be freed or structurally modified until enumeration finishes.</li>
 <li>Draw contexts are valid only during the draw callback.</li>
 </ul>
