@@ -36,9 +36,9 @@ module UIng
       LibUI.radio_buttons_set_selected(ref_ptr, index || -1)
     end
 
-    def on_selected(&block : Int32? -> Nil) : Nil
+    def on_selected(&block : Int32 -> Nil) : Nil
       wrapper = -> : Nil {
-        idx = selected
+        idx = selected || raise "RadioButtons selection callback fired without a selection"
         block.call(idx)
       }
       @on_selected_box = ::Box.box(wrapper)
