@@ -1,10 +1,7 @@
 require "compress/zip"
+require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
-
-{% unless flag?(:windows) %}
-  require "digest/sha256"
-{% end %}
 
 COMMIT_HASH = "79761e2a-experimental"
 
@@ -99,19 +96,7 @@ def url_for_libui_ng_nightly(file_name)
 end
 
 def sha256_file(file_name)
-  {% if flag?(:windows) %}
-    output = IO::Memory.new
-    process = Process.run("certutil", ["-hashfile", file_name, "SHA256"], output: output, error: STDERR)
-    raise "Failed to calculate SHA-256 for #{file_name}" unless process.success?
-
-    output.to_s.each_line do |line|
-      digest = line.gsub(/\s/, "")
-      return digest.downcase if digest.matches?(/\A[0-9a-fA-F]{64}\z/)
-    end
-    raise "Failed to read SHA-256 for #{file_name}"
-  {% else %}
-    Digest::SHA256.new.file(file_name).hexfinal
-  {% end %}
+  Digest::SHA256.new.file(file_name).hexfinal
 end
 
 def download_file(file_name, url)
