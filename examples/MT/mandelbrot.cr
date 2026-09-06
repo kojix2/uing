@@ -188,7 +188,7 @@ class MandelbrotRenderer
       @center_x,
       @center_y,
       @scale,
-      @palette_combobox.selected
+      @palette_combobox.selected || 0
     )
 
     tiles = build_tiles

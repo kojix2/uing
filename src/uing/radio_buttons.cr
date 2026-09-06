@@ -27,15 +27,16 @@ module UIng
       LibUI.radio_buttons_append(ref_ptr, text)
     end
 
-    def selected : Int32
-      LibUI.radio_buttons_selected(ref_ptr)
+    def selected : Int32?
+      index = LibUI.radio_buttons_selected(ref_ptr)
+      index < 0 ? nil : index
     end
 
-    def selected=(index : Int32) : Nil
-      LibUI.radio_buttons_set_selected(ref_ptr, index)
+    def selected=(index : Int32?) : Nil
+      LibUI.radio_buttons_set_selected(ref_ptr, index || -1)
     end
 
-    def on_selected(&block : Int32 -> Nil) : Nil
+    def on_selected(&block : Int32? -> Nil) : Nil
       wrapper = -> : Nil {
         idx = selected
         block.call(idx)

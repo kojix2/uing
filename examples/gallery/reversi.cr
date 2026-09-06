@@ -430,6 +430,7 @@ class ReversiUI
     @color_selector.on_selected do |idx|
       # Ignore changes after color is locked (first move started)
       next if @color_locked
+      next unless idx
       @game.human_color = (idx == 0) ? Reversi::Cell::Black : Reversi::Cell::White
       update_status
       # If human chooses White before any move, AI should start immediately and color locks

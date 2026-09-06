@@ -43,15 +43,16 @@ module UIng
       LibUI.combobox_num_items(ref_ptr)
     end
 
-    def selected : Int32
-      LibUI.combobox_selected(ref_ptr)
+    def selected : Int32?
+      index = LibUI.combobox_selected(ref_ptr)
+      index < 0 ? nil : index
     end
 
-    def selected=(index : Int32) : Nil
-      LibUI.combobox_set_selected(ref_ptr, index)
+    def selected=(index : Int32?) : Nil
+      LibUI.combobox_set_selected(ref_ptr, index || -1)
     end
 
-    def on_selected(&block : Int32 -> Nil) : Nil
+    def on_selected(&block : Int32? -> Nil) : Nil
       wrapper = -> : Nil {
         idx = selected
         block.call(idx)
