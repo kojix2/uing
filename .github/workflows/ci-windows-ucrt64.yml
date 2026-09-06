@@ -20,6 +20,7 @@ jobs:
           install: >-
             mingw-w64-ucrt-x86_64-crystal
             mingw-w64-ucrt-x86_64-shards
+            mingw-w64-ucrt-x86_64-pkgconf
             git
 
       - name: Install dependencies
