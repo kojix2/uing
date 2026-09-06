@@ -549,12 +549,6 @@ Some UIng objects must be cleaned up manually when they are no longer needed. Us
 
 This section explains when and how to clean up UIng objects.
 
-### API Compatibility Notes
-
-- OpenType feature values use `UInt32`, matching libui-ng. `OpenTypeFeatures#add`, `#get`, and `#for_each` no longer expose these values as `Int32`; a missing tag returns `{false, 0_u32}`.
-- Native table-model pointers must be wrapped explicitly with `Table::Model.unsafe_wrap(pointer)`. Models created from a `Table::Model::Handler` retain their sealed column schema and validate display, editability, and color columns before calling libui-ng.
-- `Table::Value#borrowed?` and `Attribute#released?` are read-only lifetime indicators. Ownership transitions are managed internally.
-
 ### Parent and Child Controls
 
 Some UIng controls can contain other controls. For example, a `Window` can contain a `Box`, and a `Box` can contain controls such as `Button`. The containing control is the parent, and a control inside it is a child.

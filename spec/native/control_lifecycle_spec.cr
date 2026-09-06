@@ -121,12 +121,12 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
     it "round-trips the full UInt32 range through OpenType features" do
       features = UIng::OpenTypeFeatures.new
-      features.get("liga").should eq({false, 0_u32})
+      features.get("liga").should be_nil
 
       features.add("liga", 0_u32)
       features.add("kern", UInt32::MAX)
-      features.get("liga").should eq({true, 0_u32})
-      features.get("kern").should eq({true, UInt32::MAX})
+      features.get("liga").should eq(0_u32)
+      features.get("kern").should eq(UInt32::MAX)
 
       values = {} of String => UInt32
       features.for_each { |tag, value| values[tag] = value }
@@ -176,7 +176,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         0.2, 0.4, 0.6, 1.0,
       })
       cloned_features = features_attribute.features
-      cloned_features.get("liga").should eq({true, 3_u32})
+      cloned_features.get("liga").should eq(3_u32)
 
       expect_raises(TypeCastError, /expected String, got Int/) { int_value.string }
       expect_raises(TypeCastError, /expected Family, got Size/) { size_attribute.family }
@@ -215,7 +215,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       visits.should eq(1)
       errors.size.should eq(1)
       errors.first.message.to_s.should contain("being enumerated")
-      features.get("liga").should eq({true, 1_u32})
+      features.get("liga").should eq(1_u32)
 
       nested_visits = 0
       features.for_each do |_outer_tag, _outer_value|

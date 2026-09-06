@@ -42,12 +42,12 @@ module UIng
       LibUI.open_type_features_remove(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3])
     end
 
-    def get(tag : String) : {Bool, UInt32}
+    def get(tag : String) : UInt32?
       check_available
       bytes = tag_bytes(tag)
       result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
-      return {false, 0_u32} if result == 0
-      {true, value}
+      return if result == 0
+      value
     end
 
     def for_each(&callback : (String, UInt32) -> _) : Nil
