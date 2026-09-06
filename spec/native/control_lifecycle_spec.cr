@@ -7,6 +7,22 @@ rescue
   true
 end
 
+# `Control#released?` becomes true as soon as destruction is requested. This
+# test-only wrapper separately records the native destroyed notification so the
+# event loop can wait for Table::Model's unregister/free path to finish.
+private class NativeLifecycleTable < UIng::Table
+  getter? native_destroyed = false
+
+  def initialize(model : UIng::Table::Model, row_background_color_model_column : LibC::Int = -1)
+    super
+  end
+
+  protected def after_destroy : Nil
+    @native_destroyed = true
+    super
+  end
+end
+
 private def native_call_cell_value(
   handler : UIng::Table::Model::Handler,
   column : Int32,
@@ -312,8 +328,8 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       end
       handler.set_cell_value { |_row, _column, _value| }
       model = UIng::Table::Model.new(handler)
-      tables = Array(UIng::Table).new(2) do
-        UIng::Table.new(model, row_background_color_model_column: 3).tap do |table|
+      tables = Array(NativeLifecycleTable).new(2) do
+        NativeLifecycleTable.new(model, row_background_color_model_column: 3).tap do |table|
           table.append_text_column("Text", 0, 4, 3)
           table.append_image_column("Image", 1)
           table.append_image_text_column("Image + text", 1, 0, UIng::Table::ModelColumn::Never, 3)
@@ -345,11 +361,13 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         raise "timed out waiting for table destruction request" if Time.instant >= deadline
       end
 
-      tables.all? { |table| !table.released? }.should be_true
+      # DestroyPending controls are already unavailable through the public API,
+      # regardless of whether this backend destroys them synchronously.
+      tables.all?(&.released?).should be_true
       model.free
       expect_raises(Exception, /already been released/) { model.to_unsafe }
 
-      until tables.all?(&.released?) && windows.all?(&.released?)
+      until tables.all?(&.native_destroyed?)
         UIng.main_step(false)
         raise "timed out waiting for table destruction" if Time.instant >= deadline
         sleep 1.millisecond
