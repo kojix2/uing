@@ -1155,13 +1155,14 @@ button.destroy</code></pre>
 </ul>
 <p>The following rules apply to specific objects:</p>
 <ul>
-<li><code>Table::Model</code>: destroy all <code>Table</code> controls using the model first, then call <code>model.free</code>.</li>
+<li><code>Table::Model</code>: request destruction of all <code>Table</code> controls using the model before calling <code>model.free</code>. If native destruction is still pending, the model becomes unavailable immediately and its native resource is freed after the last Table destruction completes.</li>
 <li><code>Image</code>: call <code>image.free</code> when the image is no longer needed. An image can be freed after passing it to <code>ImageView#image=</code>, but must remain alive while a table or <code>Toolbar</code> is using it.</li>
 <li><code>Toolbar</code>: detach it from its window before calling <code>free</code>.</li>
 <li><code>Draw::Path</code>, <code>Draw::TextLayout</code>, and <code>AttributedString</code>: prefer <code>.open</code> where available so that the object is freed automatically when the block ends.</li>
 <li><code>Table::Selection</code>: block and callback forms free the selection automatically. A direct <code>table.selection</code> result must be freed after use. <code>Table::Selection.new(rows)</code> is managed by Crystal's GC.</li>
 <li><code>Table::Value</code>: a value returned from <code>cell_value</code> is then managed by libui-ng. A value passed to <code>set_cell_value</code> is valid only until that callback returns.</li>
 <li><code>Attribute</code>: after it is passed to <code>set_attribute</code>, the receiving <code>AttributedString</code> manages it. An attribute yielded by <code>for_each_attribute</code> is valid only for that block.</li>
+<li><code>OpenTypeFeatures</code> and <code>AttributedString</code> may be read or enumerated recursively during enumeration, but cannot be freed or structurally modified until enumeration finishes.</li>
 <li>Draw contexts are valid only during the draw callback.</li>
 </ul>
 <p>Calling <code>destroy</code> or <code>free</code> makes the corresponding wrapper unavailable for further use.</p>

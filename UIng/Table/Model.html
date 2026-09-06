@@ -558,14 +558,14 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L20" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L20" target="_blank">
         uing/table/table/model.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model/handler.cr#L31" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model/handler.cr#L31" target="_blank">
         uing/table/table/model/handler.cr
       </a>
     
@@ -588,12 +588,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29-class-method" class="signature"><strong>.new</strong>(ref_ptr : Pointer(LibUI::TableModel))</a>
+        <a href="#new%28model_handler%3AHandler%29-class-method" class="signature"><strong>.new</strong>(model_handler : Handler)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28model_handler%3AHandler%29-class-method" class="signature"><strong>.new</strong>(model_handler : Handler)</a>
+        <a href="#unsafe_wrap%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29%3AModel-class-method" class="signature"><strong>.unsafe_wrap</strong>(ref_ptr : Pointer(LibUI::TableModel)) : Model</a>
+        
+          <div class="summary"><p>Wraps a native model without a Crystal-side schema.</p></div>
         
       </li>
     
@@ -686,22 +688,6 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(ref_ptr:Pointer(LibUI::TableModel))-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(ref_ptr : Pointer(LibUI::TableModel))
-
-        <a class="method-permalink" href="#new%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L28" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
     <div class="entry-detail" id="new(model_handler:Handler)-class-method">
       <div class="signature">
         
@@ -713,7 +699,29 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L40" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unsafe_wrap(ref_ptr:Pointer(LibUI::TableModel)):Model-class-method">
+      <div class="signature">
+        
+        def self.<strong>unsafe_wrap</strong>(ref_ptr : Pointer(LibUI::TableModel)) : <a href="../../UIng/Table/Model.html">Model</a>
+
+        <a class="method-permalink" href="#unsafe_wrap%28ref_ptr%3APointer%28LibUI%3A%3ATableModel%29%29%3AModel-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Wraps a native model without a Crystal-side schema. Table column
+validation is intentionally unavailable for models created this way.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -752,7 +760,7 @@ those table destructions have completed. An Alive Table still rejects it.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -768,7 +776,7 @@ those table destructions have completed. An Alive Table still rejects it.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L76" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L116" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -784,7 +792,7 @@ those table destructions have completed. An Alive Table still rejects it.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L81" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -800,7 +808,7 @@ those table destructions have completed. An Alive Table still rejects it.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -816,7 +824,7 @@ those table destructions have completed. An Alive Table still rejects it.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/6fe39ff6a94b973dc8f9e3f6e2cba38f471b4c6e/src/uing/table/table/model.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/0d0468484a50acd5e752821562f93fd6544c00cf/src/uing/table/table/model.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
