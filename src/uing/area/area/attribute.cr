@@ -16,7 +16,7 @@ module UIng
       end
 
       # Internal: Create a borrowed Attribute wrapper for libui-owned pointers.
-      # Used by for_each_attribute where libui retains ownership.
+      # Used by each_attribute where libui retains ownership.
       protected def self.borrowed(ref_ptr : Pointer(LibUI::Attribute)) : Attribute
         Attribute.new(ref_ptr, borrowed: true)
       end

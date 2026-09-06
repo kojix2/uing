@@ -647,7 +647,7 @@ The following rules apply to specific objects:
 - `Draw::Path`, `Draw::TextLayout`, and `AttributedString`: prefer `.open` where available so that the object is freed automatically when the block ends.
 - `Table::Selection`: block and callback forms free the selection automatically. A direct `table.selection` result must be freed after use. `Table::Selection.new(rows)` is managed by Crystal's GC.
 - `Table::Value`: a value returned from `cell_value` is then managed by libui-ng. A value passed to `set_cell_value` is valid only until that callback returns.
-- `Attribute`: after it is passed to `set_attribute`, the receiving `AttributedString` manages it. An attribute yielded by `for_each_attribute` is valid only for that block.
+- `Attribute`: after it is passed to `set_attribute`, the receiving `AttributedString` manages it. An attribute yielded by `each_attribute` or `each_attribute_while` is valid only for that block.
 - `OpenTypeFeatures` and `AttributedString` may be read or enumerated recursively during enumeration, but cannot be freed or structurally modified until enumeration finishes.
 - Draw contexts are valid only during the draw callback.
 

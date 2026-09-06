@@ -203,7 +203,7 @@ describe "lifetime safety" do
     expect_raises(Exception, /already been released/) { string.delete(0, 0) }
     expect_raises(Exception, /already been released/) { string.set_attribute(attribute, 0, 0) }
     expect_raises(Exception, /already been released/) do
-      string.for_each_attribute { |_attribute, _start, _end| 0_i32 }
+      string.each_attribute { |_attribute, _start, _end| }
     end
     expect_raises(Exception, /already been released/) { string.num_graphemes }
     expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }

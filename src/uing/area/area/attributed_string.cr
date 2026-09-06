@@ -7,7 +7,7 @@ module UIng
 
       @released : Bool = false
       @enumeration_depth : Int32 = 0
-      @for_each_attribute_boxes = [] of Pointer(Void)
+      @each_attribute_boxes = [] of Pointer(Void)
 
       def initialize(@ref_ptr : Pointer(LibUI::AttributedString))
       end
@@ -80,12 +80,20 @@ module UIng
         attribute.transfer_to_attributed_string
       end
 
-      # The yielded Attribute is borrowed and only valid until the block returns.
-      # Return value: 0 = Continue, 1 = Stop (follows LibUI's uiForEach convention)
-      def for_each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> LibC::Int) : Nil
+      # Each yielded Attribute is borrowed and only valid until the block returns.
+      def each_attribute(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> _) : Nil
+        each_attribute_while do |attribute, start, end_|
+          block.call(attribute, start, end_)
+          true
+        end
+      end
+
+      # Enumerates attributes while the block returns true. Returning false
+      # stops enumeration after the current attribute.
+      def each_attribute_while(&block : (Attribute, LibC::SizeT, LibC::SizeT) -> Bool) : Nil
         check_available
-        for_each_attribute_box = ::Box.box(block)
-        @for_each_attribute_boxes << for_each_attribute_box
+        each_attribute_box = ::Box.box(block)
+        @each_attribute_boxes << each_attribute_box
         @enumeration_depth += 1
 
         begin
@@ -96,21 +104,20 @@ module UIng
                 # Wrap as borrowed - libui owns this attribute, we must not free it
                 attribute = Area::Attribute.borrowed(attr)
                 begin
-                  # Return block's result directly to LibUI (0 or 1)
-                  callback.call(attribute, start, end_)
+                  callback.call(attribute, start, end_) ? 0_i32 : 1_i32
                 ensure
                   attribute.invalidate_borrow
                 end
               rescue e
-                UIng.handle_callback_error(e, "AttributedString for_each_attribute")
+                UIng.handle_callback_error(e, "AttributedString each_attribute")
                 1_i32 # uiForEachStop
               end
             end,
-            for_each_attribute_box
+            each_attribute_box
           )
         ensure
           @enumeration_depth -= 1
-          @for_each_attribute_boxes.pop
+          @each_attribute_boxes.pop
         end
       end
 

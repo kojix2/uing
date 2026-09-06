@@ -258,10 +258,9 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       UIng.on_error { |error, _context| errors << error }
 
       visits = 0
-      string.for_each_attribute do |_attribute, _start, _end|
+      string.each_attribute do |_attribute, _start, _end|
         visits += 1
         string.append_unattributed("x")
-        0_i32
       end
 
       visits.should eq(1)
@@ -270,14 +269,19 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       string.string.should eq("abcd")
 
       nested_visits = 0
-      string.for_each_attribute do |_outer_attribute, _outer_start, _outer_end|
-        string.for_each_attribute do |_inner_attribute, _inner_start, _inner_end|
+      string.each_attribute do |_outer_attribute, _outer_start, _outer_end|
+        string.each_attribute do |_inner_attribute, _inner_start, _inner_end|
           nested_visits += 1
-          0_i32
         end
-        0_i32
       end
       nested_visits.should eq(4)
+
+      limited_visits = 0
+      string.each_attribute_while do |_attribute, _start, _end|
+        limited_visits += 1
+        false
+      end
+      limited_visits.should eq(1)
     ensure
       UIng.on_error(nil)
       string.try &.free
