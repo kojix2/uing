@@ -60,6 +60,13 @@ private class FailingCleanupBlockControl < LifetimeControl
   end
 end
 
+private class RaisingAfterDestroyControl < LifetimeControl
+  protected def after_destroy : Nil
+    super
+    raise "after_destroy failed"
+  end
+end
+
 private class LifetimeContainer < LifetimeControl
   @child : UIng::Control?
 
@@ -187,6 +194,28 @@ describe UIng::Control do
 
     UIng.native_control_destroyed_for_spec(ptr)
     UIng.registered_control_for_spec(ptr).should be_nil
+  end
+
+  it "contains after_destroy errors after completing lifecycle cleanup" do
+    address = 0x10C_u64
+    parent = LifetimeContainer.new
+    control = RaisingAfterDestroyControl.new(address, register: true)
+    parent.adopt_child(control)
+    ptr = Pointer(UIng::LibUI::Button).new(address)
+    callback_errors = [] of {Exception, String}
+    UIng.on_error { |error, context| callback_errors << {error, context} }
+
+    UIng.native_control_destroyed_for_spec(ptr)
+
+    control.cleaned_up?.should be_true
+    control.state_name.should eq("Destroyed")
+    control.parent.should be_nil
+    UIng.registered_control_for_spec(ptr).should be_nil
+    callback_errors.size.should eq(1)
+    callback_errors[0][0].message.should eq("after_destroy failed")
+    callback_errors[0][1].should contain("after_destroy")
+  ensure
+    UIng.on_error(nil)
   end
 
   it "rejects a second wrapper for the same native pointer" do

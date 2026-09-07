@@ -37,7 +37,13 @@ module UIng
 
     def self.native_destroyed(native_ptr : Pointer(T)) : Nil forall T
       control = @@mutex.synchronize { @@controls.delete(native_ptr.address) }
-      control.try &.mark_destroyed_from_native
+      return unless control
+
+      begin
+        control.mark_destroyed_from_native
+      rescue error
+        UIng.handle_callback_error(error, "Control after_destroy")
+      end
     end
   end
 end

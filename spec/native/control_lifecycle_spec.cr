@@ -38,6 +38,24 @@ private class NativeLifecycleWindow < UIng::Window
   end
 end
 
+private class NativeFailingAfterDestroyButton < UIng::Button
+  getter? after_destroy_called = false
+
+  def initialize
+    super("Failing after_destroy")
+  end
+
+  def state_name : String
+    lifecycle_state.to_s
+  end
+
+  protected def after_destroy : Nil
+    super
+    @after_destroy_called = true
+    raise "native after_destroy failed"
+  end
+end
+
 private def native_call_cell_value(
   handler : UIng::Table::Model::Handler,
   column : Int32,
@@ -131,6 +149,28 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
       window.try(&.released?).should be_true
       child.try(&.released?).should be_true
+    end
+
+    it "contains after_destroy exceptions at the native destruction boundary" do
+      button = NativeFailingAfterDestroyButton.new
+      callback_errors = [] of {Exception, String}
+      UIng.on_error { |error, context| callback_errors << {error, context} }
+
+      button.destroy
+
+      deadline = Time.instant + 5.seconds
+      until button.state_name == "Destroyed"
+        UIng.main_step(false)
+        raise "timed out waiting for native destruction" if Time.instant >= deadline
+      end
+
+      button.after_destroy_called?.should be_true
+      button.parent.should be_nil
+      callback_errors.size.should eq(1)
+      callback_errors[0][0].message.should eq("native after_destroy failed")
+      callback_errors[0][1].should contain("after_destroy")
+    ensure
+      UIng.on_error(nil)
     end
 
     it "allows checked state only on toggle ToolbarItems" do
