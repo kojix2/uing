@@ -149,6 +149,29 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       toolbar.try &.free
     end
 
+    it "validates AttributedString boundaries without transferring invalid attributes" do
+      string = UIng::Area::AttributedString.new("Aé🙂B")
+      attribute = UIng::Area::Attribute.new_color(1.0, 0.0, 0.0, 1.0)
+
+      expect_raises(ArgumentError, /insertion position is not on a UTF-8/) do
+        string.insert_at_unattributed("x", 2)
+      end
+      expect_raises(ArgumentError, /deletion range is out of bounds/) { string.delete(0, 9) }
+      expect_raises(ArgumentError, /attribute range start is not on a UTF-8/) do
+        string.set_attribute(attribute, 2, 3)
+      end
+      attribute.released?.should be_false
+
+      string.byte_index_to_grapheme(3).should eq(2)
+      string.grapheme_to_byte_index(3).should eq(7)
+      expect_raises(ArgumentError, /grapheme index is out of bounds/) do
+        string.grapheme_to_byte_index(5)
+      end
+    ensure
+      attribute.try &.free
+      string.try &.free
+    end
+
     it "uses a type-correct fallback for every table column after callback failure" do
       types = UIng::Table::Value::Type.values
       errors = [] of Exception
