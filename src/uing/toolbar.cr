@@ -25,7 +25,7 @@ module UIng
     def append_button(text : String, icon : Image? = nil) : ToolbarItem
       check_mutable
       retain(icon)
-      item = ToolbarItem.new(self, LibUI.toolbar_append_button(ref_ptr, text, image_pointer(icon)))
+      item = ToolbarItem.new(self, LibUI.toolbar_append_button(ref_ptr, text, image_pointer(icon)), toggle: false)
       @items << item
       item
     end
@@ -33,7 +33,7 @@ module UIng
     def append_toggle_button(text : String, icon : Image? = nil) : ToolbarItem
       check_mutable
       retain(icon)
-      item = ToolbarItem.new(self, LibUI.toolbar_append_toggle_button(ref_ptr, text, image_pointer(icon)))
+      item = ToolbarItem.new(self, LibUI.toolbar_append_toggle_button(ref_ptr, text, image_pointer(icon)), toggle: true)
       @items << item
       item
     end
@@ -133,10 +133,16 @@ module UIng
 
   # A borrowed item owned by a Toolbar.
   class ToolbarItem
+    private enum Kind
+      Button
+      Toggle
+    end
+
     @released = false
     @on_clicked_box : Pointer(Void)?
 
-    protected def initialize(@toolbar : Toolbar, @ref_ptr : Pointer(LibUI::ToolbarItem))
+    protected def initialize(@toolbar : Toolbar, @ref_ptr : Pointer(LibUI::ToolbarItem), toggle : Bool = false)
+      @kind = toggle ? Kind::Toggle : Kind::Button
     end
 
     def text : String?
@@ -177,11 +183,15 @@ module UIng
     end
 
     def checked? : Bool
-      LibUI.toolbar_item_checked(ref_ptr) != 0
+      item = ref_ptr
+      check_toggle_item
+      LibUI.toolbar_item_checked(item) != 0
     end
 
     def checked=(checked : Bool) : Nil
-      LibUI.toolbar_item_set_checked(ref_ptr, checked ? 1 : 0)
+      item = ref_ptr
+      check_toggle_item
+      LibUI.toolbar_item_set_checked(item, checked ? 1 : 0)
     end
 
     def on_clicked(&block : ToolbarItem -> Nil) : Nil
@@ -217,6 +227,11 @@ module UIng
       raise "ToolbarItem has already been released" if @released
       @toolbar.to_unsafe
       @ref_ptr
+    end
+
+    private def check_toggle_item : Nil
+      return if @kind.toggle?
+      raise ArgumentError.new("checked state is only available for toggle ToolbarItems")
     end
   end
 end

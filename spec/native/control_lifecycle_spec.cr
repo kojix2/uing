@@ -133,6 +133,22 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       child.try(&.released?).should be_true
     end
 
+    it "allows checked state only on toggle ToolbarItems" do
+      toolbar = UIng::Toolbar.new
+      button = toolbar.append_button("Action")
+      toggle = toolbar.append_toggle_button("Enabled")
+
+      expect_raises(ArgumentError, /only available for toggle ToolbarItems/) { button.checked? }
+      expect_raises(ArgumentError, /only available for toggle ToolbarItems/) { button.checked = true }
+
+      toggle.checked = true
+      toggle.checked?.should be_true
+      toggle.checked = false
+      toggle.checked?.should be_false
+    ensure
+      toolbar.try &.free
+    end
+
     it "uses a type-correct fallback for every table column after callback failure" do
       types = UIng::Table::Value::Type.values
       errors = [] of Exception
