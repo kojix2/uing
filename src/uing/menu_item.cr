@@ -1,16 +1,44 @@
 module UIng
   class MenuItem
+    private enum Kind
+      Regular
+      Check
+      Quit
+      Preferences
+      About
+    end
+
     @released : Bool = false
 
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 
     def initialize(@ref_ptr : Pointer(LibUI::MenuItem))
+      @kind = Kind::Regular
     end
 
-    def destroy
+    private def initialize(@ref_ptr : Pointer(LibUI::MenuItem), @kind : Kind)
+    end
+
+    # :nodoc:
+    def self.__new_for_menu__(ref_ptr : Pointer(LibUI::MenuItem), kind : Symbol) : MenuItem
+      item_kind = case kind
+                  when :regular     then Kind::Regular
+                  when :check       then Kind::Check
+                  when :quit        then Kind::Quit
+                  when :preferences then Kind::Preferences
+                  when :about       then Kind::About
+                  else
+                    raise ArgumentError.new("Unknown menu item kind: #{kind}")
+                  end
+      new(ref_ptr, item_kind)
+    end
+
+    # Invalidates this wrapper and releases its callback. Menu items are owned
+    # by libui-ng, so this does not remove the native item from its menu.
+    def destroy : Nil
       return if @released
-      clear_native_callback
+      clear_native_callback if @on_clicked_box
       @on_clicked_box = nil
       @released = true
     end
@@ -47,6 +75,9 @@ module UIng
 
     def on_clicked(&block : UIng::Window? -> Nil) : Nil
       check_available
+      if @kind.quit?
+        raise ArgumentError.new("Quit menu items use UIng.on_should_quit and cannot have an on_clicked callback")
+      end
       # Convert to the internal callback format that matches LibUI expectation
       callback2 = ->(w : Pointer(LibUI::Window)) : Nil {
         block.call(window_from_native(w))

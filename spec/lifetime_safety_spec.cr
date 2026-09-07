@@ -2,17 +2,19 @@ require "./spec_helper"
 
 private class LifetimeSafetyMenuItem < UIng::MenuItem
   getter? callback_was_retained_when_cleared = false
+  getter callback_clear_count = 0
 
   def callback_retained? : Bool
     !@on_clicked_box.nil?
   end
 
-  def initialize
+  def initialize(callback_registered : Bool = true)
     super(Pointer(UIng::LibUI::MenuItem).null)
-    @on_clicked_box = Pointer(Void).new(1_u64)
+    @on_clicked_box = Pointer(Void).new(1_u64) if callback_registered
   end
 
   private def clear_native_callback : Nil
+    @callback_clear_count += 1
     @callback_was_retained_when_cleared = !@on_clicked_box.nil?
   end
 end
@@ -246,6 +248,26 @@ describe "lifetime safety" do
     item.destroy
 
     item.callback_was_retained_when_cleared?.should be_true
+  end
+
+  it "does not touch the native callback when a MenuItem has no registered callback" do
+    item = LifetimeSafetyMenuItem.new(callback_registered: false)
+
+    item.destroy
+
+    item.callback_clear_count.should eq(0)
+    expect_raises(Exception, /already been released/) { item.to_unsafe }
+  end
+
+  it "rejects callbacks on Quit MenuItems before calling libui-ng" do
+    item = UIng::MenuItem.__new_for_menu__(Pointer(UIng::LibUI::MenuItem).null, :quit)
+
+    expect_raises(ArgumentError, /UIng\.on_should_quit/) do
+      item.on_clicked { |_window| }
+    end
+
+    item.destroy
+    expect_raises(Exception, /already been released/) { item.to_unsafe }
   end
 
   it "invalidates menu wrappers and resets special items after uninit" do

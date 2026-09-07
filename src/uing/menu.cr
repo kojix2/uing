@@ -26,7 +26,7 @@ module UIng
     def append_item(name : String) : MenuItem
       check_available
       ref_ptr = LibUI.menu_append_item(@ref_ptr, name)
-      item = MenuItem.new(ref_ptr)
+      item = MenuItem.__new_for_menu__(ref_ptr, :regular)
       @menu_items << item
       item
     end
@@ -34,7 +34,7 @@ module UIng
     def append_check_item(name : String) : MenuItem
       check_available
       ref_ptr = LibUI.menu_append_check_item(@ref_ptr, name)
-      item = MenuItem.new(ref_ptr)
+      item = MenuItem.__new_for_menu__(ref_ptr, :check)
       @menu_items << item
       item
     end
@@ -49,7 +49,7 @@ module UIng
       check_available
       raise "Quit item already exists" if @@has_quit_item
       ref_ptr = LibUI.menu_append_quit_item(@ref_ptr)
-      item = MenuItem.new(ref_ptr)
+      item = MenuItem.__new_for_menu__(ref_ptr, :quit)
       @menu_items << item
       @@has_quit_item = true
       item
@@ -59,7 +59,7 @@ module UIng
       check_available
       raise "Preferences item already exists" if @@has_preferences_item
       ref_ptr = LibUI.menu_append_preferences_item(@ref_ptr)
-      item = MenuItem.new(ref_ptr)
+      item = MenuItem.__new_for_menu__(ref_ptr, :preferences)
       @menu_items << item
       @@has_preferences_item = true
       item
@@ -69,7 +69,7 @@ module UIng
       check_available
       raise "About item already exists" if @@has_about_item
       ref_ptr = LibUI.menu_append_about_item(@ref_ptr)
-      item = MenuItem.new(ref_ptr)
+      item = MenuItem.__new_for_menu__(ref_ptr, :about)
       @menu_items << item
       @@has_about_item = true
       item

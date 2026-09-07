@@ -82,6 +82,18 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     after_each { UIng.on_error(nil) }
     after_all { UIng.uninit }
 
+    it "releases a Quit MenuItem wrapper without touching its forbidden callback API" do
+      menu = UIng::Menu.new("Application")
+      item = menu.append_quit_item
+
+      expect_raises(ArgumentError, /UIng\.on_should_quit/) do
+        item.on_clicked { |_window| }
+      end
+
+      item.destroy
+      expect_raises(Exception, /already been released/) { item.to_unsafe }
+    end
+
     it "uses a type-correct fallback for every table column after callback failure" do
       types = UIng::Table::Value::Type.values
       errors = [] of Exception
