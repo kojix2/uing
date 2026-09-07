@@ -16,6 +16,9 @@ module UIng
       @on_changed_box = nil
     end
 
+    # Registers a callback that receives a block-scoped FontDescriptor.
+    # Use FontDescriptor#snapshot to retain the selected font after the
+    # callback returns.
     def on_changed(&block : FontDescriptor -> Nil) : Nil
       wrapper = -> : Nil {
         font_descriptor = FontDescriptor.new
@@ -43,6 +46,8 @@ module UIng
       end
     end
 
+    # Yields the selected font as a block-scoped FontDescriptor.
+    # Use FontDescriptor#snapshot to retain its values after the block returns.
     def font(&block : FontDescriptor -> Nil)
       font_descriptor = FontDescriptor.new
       font(font_descriptor)
@@ -60,7 +65,7 @@ module UIng
     end
 
     def free_font(font_descriptor : FontDescriptor) : Nil
-      font_descriptor.free_font_button_font
+      font_descriptor.free
     end
 
     def to_unsafe

@@ -115,6 +115,27 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     after_each { UIng.on_error(nil) }
     after_all { UIng.uninit }
 
+    it "expires FontButton descriptors while preserving snapshots" do
+      button = UIng::FontButton.new
+      borrowed = nil
+      saved = nil
+
+      button.font do |descriptor|
+        borrowed = descriptor
+        saved = descriptor.snapshot
+      end
+
+      expired = borrowed.not_nil!
+      snapshot = saved.not_nil!
+      expired.released?.should be_true
+      expect_raises(Exception, /already been released/) { expired.family }
+      snapshot.family.empty?.should be_false
+      snapshot.size.should be > 0
+    ensure
+      saved.try &.free
+      button.try &.destroy
+    end
+
     it "releases a Quit MenuItem wrapper without touching its forbidden callback API" do
       menu = UIng::Menu.new("Application")
       item = menu.append_quit_item

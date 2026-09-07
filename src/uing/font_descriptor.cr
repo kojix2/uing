@@ -1,15 +1,13 @@
 module UIng
+  # Describes a font and owns its family name until #free is called.
+  #
+  # Descriptors yielded by FontButton callbacks and block methods are valid
+  # only for the duration of the block. Use #snapshot to retain their values.
   class FontDescriptor
-    private enum FamilyOwnership
-      None
-      ControlFont
-      FontButton
-    end
-
     # Store reference to family string to prevent garbage collection
     @family_string : String = ""
-    @family_ownership = FamilyOwnership::None
-    @released = false
+    @native_family = false
+    getter? released = false
 
     def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
     end
@@ -29,6 +27,7 @@ module UIng
 
     # Auto convert to and from String
     def family
+      check_available
       if @cstruct.family.null?
         ""
       else
@@ -38,58 +37,77 @@ module UIng
     end
 
     def family=(value : String)
+      check_available
       release_family
       @family_string = value
-      @family_ownership = FamilyOwnership::None
-      @released = false
       @cstruct.family = @family_string.to_unsafe
     end
 
     def size
+      check_available
       @cstruct.size
     end
 
     def size=(value)
+      check_available
       @cstruct.size = value
     end
 
     def weight
+      check_available
       @cstruct.weight
     end
 
     def weight=(value)
+      check_available
       @cstruct.weight = value
     end
 
     def italic
+      check_available
       @cstruct.italic
     end
 
     def italic=(value)
+      check_available
       @cstruct.italic = value
     end
 
     def stretch
+      check_available
       @cstruct.stretch
     end
 
     def stretch=(value)
+      check_available
       @cstruct.stretch = value
+    end
+
+    # Returns an independently owned copy that remains valid after a borrowed
+    # FontButton callback or block descriptor expires.
+    def snapshot : FontDescriptor
+      check_available
+      copy = FontDescriptor.new
+      copy.family = family
+      copy.size = size
+      copy.weight = weight
+      copy.italic = italic
+      copy.stretch = stretch
+      copy
     end
 
     def free : Nil
       return if @released
       release_family
-      @cstruct.family = Pointer(UInt8).null
       @released = true
     end
 
     def load_control_font : Nil
       release_family
-      LibUI.load_control_font(to_unsafe)
-      @family_string = ""
-      @family_ownership = FamilyOwnership::ControlFont
       @released = false
+      LibUI.load_control_font(cstruct_pointer)
+      @family_string = ""
+      @native_family = true
     end
 
     def prepare_for_font_button_font : Nil
@@ -99,22 +117,18 @@ module UIng
 
     def font_button_font_loaded : Nil
       @family_string = ""
-      @family_ownership = FamilyOwnership::FontButton
+      @native_family = true
       @released = false
     end
 
+    # Compatibility alias for #free.
     def free_font_button_font : Nil
-      return if @released
-      if @family_ownership == FamilyOwnership::FontButton
-        LibUI.free_font_button_font(to_unsafe)
-        @cstruct.family = Pointer(UInt8).null
-        @family_ownership = FamilyOwnership::None
-      end
-      @released = true
+      free
     end
 
     def to_unsafe
-      pointerof(@cstruct)
+      check_available
+      cstruct_pointer
     end
 
     def finalize
@@ -124,17 +138,19 @@ module UIng
     private def release_family : Nil
       return if @released
 
-      case @family_ownership
-      in FamilyOwnership::None
-        return
-      in FamilyOwnership::ControlFont
-        LibUI.free_font_descriptor(to_unsafe)
-      in FamilyOwnership::FontButton
-        LibUI.free_font_button_font(to_unsafe)
-      end
+      LibUI.free_font_descriptor(cstruct_pointer) if @native_family
 
       @cstruct.family = Pointer(UInt8).null
-      @family_ownership = FamilyOwnership::None
+      @family_string = ""
+      @native_family = false
+    end
+
+    private def check_available : Nil
+      raise "FontDescriptor has already been released" if @released
+    end
+
+    private def cstruct_pointer
+      pointerof(@cstruct)
     end
   end
 end
