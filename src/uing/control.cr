@@ -77,6 +77,15 @@ module UIng
     protected def after_destroy : Nil
     end
 
+    # A Control created by a block constructor must not remain registered when
+    # configuration of that instance fails. Detach first because libui-ng does
+    # not allow an attached child control to be destroyed directly.
+    protected def __block_constructor_failed__ : Nil
+      return if released?
+      detach
+      destroy
+    end
+
     protected def mark_destroyed_from_native : Nil
       return if @state.destroyed?
       @state = State::Destroyed

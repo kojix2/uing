@@ -23,6 +23,21 @@ private class NativeLifecycleTable < UIng::Table
   end
 end
 
+private class NativeLifecycleWindow < UIng::Window
+  block_constructor
+
+  getter? native_destroyed = false
+
+  def initialize(title, width, height)
+    super(title, width, height)
+  end
+
+  protected def after_destroy : Nil
+    @native_destroyed = true
+    super
+  end
+end
+
 private def native_call_cell_value(
   handler : UIng::Table::Model::Handler,
   column : Int32,
@@ -92,6 +107,30 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
       item.destroy
       expect_raises(Exception, /already been released/) { item.to_unsafe }
+    end
+
+    it "destroys a native Control tree when block construction raises" do
+      window : NativeLifecycleWindow? = nil
+      child : UIng::Button? = nil
+
+      expect_raises(Exception, "construction failed") do
+        NativeLifecycleWindow.new("Construction failure", 320, 200) do |candidate|
+          window = candidate
+          child = UIng::Button.new("Child")
+          candidate.child = child
+          raise "construction failed"
+        end
+      end
+
+      deadline = Time.instant + 5.seconds
+      until window.try(&.native_destroyed?)
+        UIng.main_step(false)
+        raise "timed out waiting for failed construction cleanup" if Time.instant >= deadline
+        sleep 1.millisecond
+      end
+
+      window.try(&.released?).should be_true
+      child.try(&.released?).should be_true
     end
 
     it "uses a type-correct fallback for every table column after callback failure" do

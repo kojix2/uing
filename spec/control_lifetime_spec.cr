@@ -40,6 +40,26 @@ private class LifetimeControl < UIng::Control
   end
 end
 
+private class BlockConstructedLifetimeControl < LifetimeControl
+  block_constructor
+end
+
+private class KeywordBlockConstructedLifetimeControl < LifetimeControl
+  block_constructor
+
+  def initialize(*, address : UInt64 = 0_u64)
+    super(address)
+  end
+end
+
+private class FailingCleanupBlockControl < LifetimeControl
+  block_constructor
+
+  protected def __block_constructor_failed__ : Nil
+    raise "cleanup failed"
+  end
+end
+
 private class LifetimeContainer < LifetimeControl
   @child : UIng::Control?
 
@@ -50,6 +70,10 @@ private class LifetimeContainer < LifetimeControl
   def adopt_child(child : LifetimeControl) : Nil
     @child = child
     child.adopt(self)
+  end
+
+  def contains?(child : UIng::Control) : Bool
+    @child.same?(child)
   end
 
   def delete(child : UIng::Control)
@@ -102,6 +126,57 @@ private class RegistryMenuItem < UIng::MenuItem
 end
 
 describe UIng::Control do
+  it "detaches and destroys a Control when block construction raises" do
+    parent = LifetimeContainer.new
+    constructed : BlockConstructedLifetimeControl? = nil
+    original_error = Exception.new("construction failed")
+
+    error = expect_raises(Exception, "construction failed") do
+      BlockConstructedLifetimeControl.new do |control|
+        constructed = control
+        parent.adopt_child(control)
+        raise original_error
+      end
+    end
+
+    error.same?(original_error).should be_true
+    control = constructed || raise "block did not yield its Control"
+    control.released?.should be_true
+    control.parent.should be_nil
+    parent.contains?(control).should be_false
+  end
+
+  it "cleans up a Control created with keyword arguments" do
+    constructed : KeywordBlockConstructedLifetimeControl? = nil
+
+    expect_raises(Exception, "construction failed") do
+      KeywordBlockConstructedLifetimeControl.new(address: 0x110_u64) do |control|
+        constructed = control
+        raise "construction failed"
+      end
+    end
+
+    constructed.try(&.released?).should be_true
+  end
+
+  it "preserves the construction error when cleanup also raises" do
+    callback_errors = [] of {Exception, String}
+    UIng.on_error { |error, context| callback_errors << {error, context} }
+
+    error = expect_raises(Exception, "construction failed") do
+      FailingCleanupBlockControl.new do
+        raise "construction failed"
+      end
+    end
+
+    error.message.should eq("construction failed")
+    callback_errors.size.should eq(1)
+    callback_errors[0][0].message.should eq("cleanup failed")
+    callback_errors[0][1].should contain("block construction cleanup")
+  ensure
+    UIng.on_error(nil)
+  end
+
   it "keeps the same wrapper identity for repeated native pointer lookups" do
     address = 0x101_u64
     control = LifetimeControl.new(address, register: true)
