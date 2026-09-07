@@ -533,6 +533,22 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>A native picker for local calendar and clock fields.</p>
+<p><code>Time</code> values are treated as wall-clock values: the setter copies their
+displayed date and time fields without converting them to another time
+zone. Values returned by the getter and callbacks use
+<code>Time::Location.local</code>. The original instant, offset, and location therefore
+do not round-trip when they differ from the local time zone.</p>
+
 
 
 
@@ -558,7 +574,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L4" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L11" target="_blank">
         uing/date_time_picker.cr
       </a>
     
@@ -621,15 +637,21 @@
       <li class="entry-summary">
         <a href="#on_changed%28%26block%3ATime-%3ENil%29%3ANil-instance-method" class="signature"><strong>#on_changed</strong>(&block : Time -> Nil) : Nil</a>
         
+          <div class="summary"><p>Invokes the block with the displayed wall-clock value in <code>Time::Location.local</code>.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#time%3ATime-instance-method" class="signature"><strong>#time</strong> : Time</a>
         
+          <div class="summary"><p>Returns the displayed wall-clock value in <code>Time::Location.local</code>.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#time%3D%28time%3ATime%29%3ANil-instance-method" class="signature"><strong>#time=</strong>(time : Time) : Nil</a>
+        
+          <div class="summary"><p>Sets the displayed wall-clock fields from <em>time</em> without time-zone conversion.</p></div>
         
       </li>
     
@@ -827,7 +849,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -843,7 +865,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -859,7 +881,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -875,7 +897,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -904,10 +926,16 @@
         <a class="method-permalink" href="#on_changed%28%26block%3ATime-%3ENil%29%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Invokes the block with the displayed wall-clock value in
+<code>Time::Location.local</code>.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L50" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -920,10 +948,15 @@
         <a class="method-permalink" href="#time%3ATime-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns the displayed wall-clock value in <code>Time::Location.local</code>.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -936,10 +969,16 @@
         <a class="method-permalink" href="#time%3D%28time%3ATime%29%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Sets the displayed wall-clock fields from <em>time</em> without time-zone
+conversion.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L52" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -955,7 +994,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/ff2bc7fd0c8298e442296c4114d375dce9e2e0ff/src/uing/date_time_picker.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/8050f6a83cdceb17e13126ac1875974170daef4d/src/uing/date_time_picker.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
