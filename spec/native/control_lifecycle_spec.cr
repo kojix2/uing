@@ -152,6 +152,16 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       Time::Location.local = previous_location if previous_location
     end
 
+    it "exposes control handles as pointers through the uintptr_t FFI" do
+      button = UIng::Button.new("Native handle")
+
+      handle = button.handle
+      handle.should be_a(Pointer(Void))
+      handle.null?.should be_false
+    ensure
+      button.try &.destroy
+    end
+
     it "destroys a native Control tree when block construction raises" do
       window : NativeLifecycleWindow? = nil
       child : UIng::Button? = nil

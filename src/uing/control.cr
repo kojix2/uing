@@ -130,9 +130,9 @@ module UIng
       self
     end
 
-    def handle
+    def handle : Pointer(Void)
       check_available
-      LibUI.control_handle(UIng.to_control(@ref_ptr))
+      Pointer(Void).new(LibUI.control_handle(UIng.to_control(@ref_ptr)).to_u64)
     end
 
     # native libui function

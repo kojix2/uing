@@ -64,9 +64,17 @@ module UIng
   {% end %}
   @[Link("ui")]
   lib LibUI
+    {% if flag?(:bits64) %}
+      alias UIntPtr = UInt64
+    {% else %}
+      alias UIntPtr = UInt32
+    {% end %}
+    alias ForEach = UInt32
+
     PI                    = 3.14159265358979323846264338327950288419716939937510582097494459
     DRAWDEFAULTMITERLIMIT =                                                             10.0
 
+    fun version = uiVersion : Pointer(LibC::Char)
     fun init = uiInit(options : Pointer(InitOptions)) : Pointer(LibC::Char)
     fun uninit = uiUninit
     fun free_init_error = uiFreeInitError(err : Pointer(LibC::Char))
@@ -81,7 +89,7 @@ module UIng
     # Control is a struct
     fun control_destroy = uiControlDestroy(c : Pointer(Control))
     fun control_on_destroyed = uiControlOnDestroyed(c : Pointer(Control), f : (Pointer(Control), Pointer(Void) -> Void), data : Pointer(Void))
-    fun control_handle = uiControlHandle(c : Pointer(Control)) : Pointer(Void)
+    fun control_handle = uiControlHandle(c : Pointer(Control)) : UIntPtr
     fun control_parent = uiControlParent(c : Pointer(Control)) : Pointer(Control)
     fun control_set_parent = uiControlSetParent(c : Pointer(Control), parent : Pointer(Control))
     fun control_toplevel = uiControlToplevel(c : Pointer(Control)) : LibC::Int
@@ -91,7 +99,7 @@ module UIng
     fun control_enabled = uiControlEnabled(c : Pointer(Control)) : LibC::Int
     fun control_enable = uiControlEnable(c : Pointer(Control))
     fun control_disable = uiControlDisable(c : Pointer(Control))
-    fun alloc_control = uiAllocControl(n : LibC::SizeT, o_ssig : LibC::Int, typesig : LibC::Int, typenamestr : Pointer(LibC::Char)) : Pointer(Control)
+    fun alloc_control = uiAllocControl(n : LibC::SizeT, o_ssig : UInt32, typesig : UInt32, typenamestr : Pointer(LibC::Char)) : Pointer(Control)
     fun free_control = uiFreeControl(c : Pointer(Control))
     fun control_verify_set_parent = uiControlVerifySetParent(c : Pointer(Control), parent : Pointer(Control))
     fun control_enabled_to_user = uiControlEnabledToUser(c : Pointer(Control)) : LibC::Int
@@ -221,7 +229,7 @@ module UIng
     fun combobox_selected = uiComboboxSelected(c : Pointer(Combobox)) : LibC::Int
     fun combobox_set_selected = uiComboboxSetSelected(c : Pointer(Combobox), index : LibC::Int)
     fun combobox_on_selected = uiComboboxOnSelected(c : Pointer(Combobox), f : (Pointer(Combobox), Pointer(Void) -> Void), data : Pointer(Void))
-    fun new_combobox = uiNewCombobox : Pointer(Void)
+    fun new_combobox = uiNewCombobox : Pointer(Combobox)
     alias EditableCombobox = Void
     fun editable_combobox_append = uiEditableComboboxAppend(c : Pointer(EditableCombobox), text : Pointer(LibC::Char))
     fun editable_combobox_text = uiEditableComboboxText(c : Pointer(EditableCombobox)) : Pointer(LibC::Char)
@@ -233,7 +241,7 @@ module UIng
     fun radio_buttons_selected = uiRadioButtonsSelected(r : Pointer(RadioButtons)) : LibC::Int
     fun radio_buttons_set_selected = uiRadioButtonsSetSelected(r : Pointer(RadioButtons), index : LibC::Int)
     fun radio_buttons_on_selected = uiRadioButtonsOnSelected(r : Pointer(RadioButtons), f : (Pointer(RadioButtons), Pointer(Void) -> Void), data : Pointer(Void))
-    fun new_radio_buttons = uiNewRadioButtons : Pointer(Void)
+    fun new_radio_buttons = uiNewRadioButtons : Pointer(RadioButtons)
     alias DateTimePicker = Void
     fun date_time_picker_time = uiDateTimePickerTime(d : Pointer(DateTimePicker), time : Pointer(Tm))
     alias Tm = TM
@@ -342,7 +350,7 @@ module UIng
     fun open_type_features_add = uiOpenTypeFeaturesAdd(otf : Pointer(OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32)
     fun open_type_features_remove = uiOpenTypeFeaturesRemove(otf : Pointer(OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char)
     fun open_type_features_get = uiOpenTypeFeaturesGet(otf : Pointer(OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : Pointer(UInt32)) : LibC::Int
-    fun open_type_features_for_each = uiOpenTypeFeaturesForEach(otf : Pointer(OpenTypeFeatures), f : (Pointer(OpenTypeFeatures), LibC::Char, LibC::Char, LibC::Char, LibC::Char, UInt32, Pointer(Void)) -> LibC::Int, data : Pointer(Void))
+    fun open_type_features_for_each = uiOpenTypeFeaturesForEach(otf : Pointer(OpenTypeFeatures), f : (Pointer(OpenTypeFeatures), LibC::Char, LibC::Char, LibC::Char, LibC::Char, UInt32, Pointer(Void)) -> ForEach, data : Pointer(Void))
     fun new_features_attribute = uiNewFeaturesAttribute(otf : Pointer(OpenTypeFeatures)) : Pointer(Attribute)
     fun attribute_features = uiAttributeFeatures(a : Pointer(Attribute)) : Pointer(OpenTypeFeatures)
     alias AttributedString = Void
@@ -354,7 +362,7 @@ module UIng
     fun attributed_string_insert_at_unattributed = uiAttributedStringInsertAtUnattributed(s : Pointer(AttributedString), str : Pointer(LibC::Char), at : LibC::SizeT)
     fun attributed_string_delete = uiAttributedStringDelete(s : Pointer(AttributedString), start : LibC::SizeT, _end : LibC::SizeT)
     fun attributed_string_set_attribute = uiAttributedStringSetAttribute(s : Pointer(AttributedString), a : Pointer(Attribute), start : LibC::SizeT, _end : LibC::SizeT)
-    fun attributed_string_for_each_attribute = uiAttributedStringForEachAttribute(s : Pointer(AttributedString), f : (Pointer(AttributedString), Pointer(Attribute), LibC::SizeT, LibC::SizeT, Pointer(Void) -> LibC::Int), data : Pointer(Void))
+    fun attributed_string_for_each_attribute = uiAttributedStringForEachAttribute(s : Pointer(AttributedString), f : (Pointer(AttributedString), Pointer(Attribute), LibC::SizeT, LibC::SizeT, Pointer(Void) -> ForEach), data : Pointer(Void))
     fun attributed_string_num_graphemes = uiAttributedStringNumGraphemes(s : Pointer(AttributedString)) : LibC::SizeT
     fun attributed_string_byte_index_to_grapheme = uiAttributedStringByteIndexToGrapheme(s : Pointer(AttributedString), pos : LibC::SizeT) : LibC::SizeT
     fun attributed_string_grapheme_to_byte_index = uiAttributedStringGraphemeToByteIndex(s : Pointer(AttributedString), pos : LibC::SizeT) : LibC::SizeT

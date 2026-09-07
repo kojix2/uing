@@ -56,15 +56,15 @@ module UIng
       @for_each_boxes << boxed_callback
       @enumeration_depth += 1
 
-      proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibC::Int do
+      proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibUI::ForEach do
         begin
           data_as_callback = ::Box(typeof(callback)).unbox(data)
           tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
           data_as_callback.call(tag, value)
-          0_i32 # uiForEachContinue
+          0_u32 # uiForEachContinue
         rescue e
           UIng.handle_callback_error(e, "OpenTypeFeatures for_each")
-          1_i32 # uiForEachStop
+          1_u32 # uiForEachStop
         end
       end
 

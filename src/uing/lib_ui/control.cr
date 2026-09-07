@@ -5,7 +5,7 @@ module UIng
       os_signature : UInt32
       type_signature : UInt32
       destroy : (Pointer(Control) -> Void)
-      handle : (Pointer(Control) -> Pointer(Void))
+      handle : (Pointer(Control) -> UIntPtr)
       parent : (Pointer(Control) -> Pointer(Control))
       set_parent : (Pointer(Control), Pointer(Control) -> Void)
       toplevel : (Pointer(Control) -> LibC::Int)

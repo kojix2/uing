@@ -107,13 +107,13 @@ module UIng
                 # Wrap as borrowed - libui owns this attribute, we must not free it
                 attribute = Area::Attribute.borrowed(attr)
                 begin
-                  callback.call(attribute, start, end_) ? 0_i32 : 1_i32
+                  callback.call(attribute, start, end_) ? 0_u32 : 1_u32
                 ensure
                   attribute.invalidate_borrow
                 end
               rescue e
                 UIng.handle_callback_error(e, "AttributedString each_attribute")
-                1_i32 # uiForEachStop
+                1_u32 # uiForEachStop
               end
             end,
             each_attribute_box

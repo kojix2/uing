@@ -10,6 +10,12 @@ require "./uing/table/*"
 module UIng
   alias ErrorHandler = Proc(Exception, String, Nil)
 
+  # Returns the build identifier reported by the linked libui-ng library.
+  # This is diagnostic information, not a complete ABI compatibility check.
+  def self.libui_version : String
+    String.new(LibUI.version)
+  end
+
   # Mutex for thread-safe access to callbacks
   @@callback_mutex = Mutex.new
 
