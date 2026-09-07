@@ -533,6 +533,19 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Describes a font and owns its family name until #free is called.</p>
+<p>Descriptors yielded by FontButton callbacks and block methods are valid
+only for the duration of the block. Use #snapshot to retain their values.</p>
+
 
 
 
@@ -558,7 +571,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L2" target="_blank">
+      <a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L6" target="_blank">
         uing/font_descriptor.cr
       </a>
     
@@ -638,6 +651,8 @@
       <li class="entry-summary">
         <a href="#free_font_button_font%3ANil-instance-method" class="signature"><strong>#free_font_button_font</strong> : Nil</a>
         
+          <div class="summary"><p>Compatibility alias for #free.</p></div>
+        
       </li>
     
       <li class="entry-summary">
@@ -661,12 +676,24 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#released%3F%3ABool-instance-method" class="signature"><strong>#released?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#size-instance-method" class="signature"><strong>#size</strong></a>
         
       </li>
     
       <li class="entry-summary">
         <a href="#size%3D%28value%29-instance-method" class="signature"><strong>#size=</strong>(value)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#snapshot%3AFontDescriptor-instance-method" class="signature"><strong>#snapshot</strong> : FontDescriptor</a>
+        
+          <div class="summary"><p>Returns an independently owned copy that remains valid after a borrowed FontButton callback or block descriptor expires.</p></div>
         
       </li>
     
@@ -750,7 +777,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -766,7 +793,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -803,7 +830,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -819,7 +846,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -835,7 +862,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L120" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L134" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -851,7 +878,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L100" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L118" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -867,7 +894,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -880,10 +907,15 @@
         <a class="method-permalink" href="#free_font_button_font%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Compatibility alias for #free.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L106" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L125" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -899,7 +931,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -915,7 +947,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -931,7 +963,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -947,7 +979,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L95" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L113" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="released?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>released?</strong> : Bool
+
+        <a class="method-permalink" href="#released%3F%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -963,7 +1011,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L48" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -979,7 +1027,29 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L52" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L51" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="snapshot:FontDescriptor-instance-method">
+      <div class="signature">
+        
+        def <strong>snapshot</strong> : <a href="../UIng/FontDescriptor.html">FontDescriptor</a>
+
+        <a class="method-permalink" href="#snapshot%3AFontDescriptor-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns an independently owned copy that remains valid after a borrowed
+FontButton callback or block descriptor expires.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -995,7 +1065,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L76" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1011,7 +1081,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L76" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1027,7 +1097,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L116" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1043,7 +1113,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1059,7 +1129,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/uing/blob/408f3713039c590f2c091935913d3cc9ae7f6dc8/src/uing/font_descriptor.cr#L60" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/uing/blob/770d6f3cd17f8249ecfaaa3ad3682c5023005a5b/src/uing/font_descriptor.cr#L61" target="_blank">View source</a>]
         
       </div>
     </div>
