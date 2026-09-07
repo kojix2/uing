@@ -1,6 +1,24 @@
 require "./spec_helper"
 
 describe "Area drawing values" do
+  it "rejects non-finite image drawing geometry before calling libui-ng" do
+    context = UIng::Area::Draw::Context.new(Pointer(UIng::LibUI::DrawContext).null)
+    image = UIng::Image.new(Pointer(UIng::LibUI::Image).null)
+
+    expect_raises(ArgumentError, /draw x must be finite/) do
+      context.draw_image(image, Float64::NAN, 0, 1, 1)
+    end
+    expect_raises(ArgumentError, /draw y must be finite/) do
+      context.draw_image(image, 0, Float64::INFINITY, 1, 1)
+    end
+    expect_raises(ArgumentError, /draw width must be finite and positive/) do
+      context.draw_image(image, 0, 0, Float64::INFINITY, 1)
+    end
+    expect_raises(ArgumentError, /draw height must be finite and positive/) do
+      context.draw_image(image, 0, 0, 1, 0)
+    end
+  end
+
   it "keeps an independent native gradient-stop buffer" do
     stop = UIng::Area::Draw::Brush::GradientStop.new(pos: 0.25, r: 0.5, g: 0.6, b: 0.7, a: 0.8)
     brush = UIng::Area::Draw::Brush.new(UIng::Area::Draw::Brush::Type::LinearGradient, stops: [stop])

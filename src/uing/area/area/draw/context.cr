@@ -145,15 +145,31 @@ module UIng
         end
 
         def draw_image(img : UIng::Image, x : Number, y : Number, width : Number, height : Number) : Nil
-          raise ArgumentError.new("Width must be positive") if width <= 0
-          raise ArgumentError.new("Height must be positive") if height <= 0
+          draw_x = checked_finite_draw_value(x, "x")
+          draw_y = checked_finite_draw_value(y, "y")
+          draw_width = checked_positive_draw_dimension(width, "width")
+          draw_height = checked_positive_draw_dimension(height, "height")
 
-          LibUI.draw_image(to_unsafe, img.to_unsafe, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
+          LibUI.draw_image(to_unsafe, img.to_unsafe, draw_x, draw_y, draw_width, draw_height)
         end
 
         def to_unsafe
           @callback_scope.try &.check_available
           @ref_ptr
+        end
+
+        private def checked_finite_draw_value(value : Number, name : String) : Float64
+          converted = value.to_f64
+          raise ArgumentError.new("image draw #{name} must be finite") unless converted.finite?
+          converted
+        end
+
+        private def checked_positive_draw_dimension(value : Number, name : String) : Float64
+          converted = value.to_f64
+          unless converted.finite? && converted > 0
+            raise ArgumentError.new("image draw #{name} must be finite and positive")
+          end
+          converted
         end
       end
     end

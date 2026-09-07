@@ -163,7 +163,12 @@ module UIng
     end, boxed_data)
   end
 
-  def self.timer(sender, &callback : -> LibC::Int) : Nil
+  def self.timer(sender : Int, &callback : -> LibC::Int) : Nil
+    unless sender > 0 && sender <= Int32::MAX
+      raise ArgumentError.new("timer interval must be between 1 and Int32::MAX milliseconds")
+    end
+    milliseconds = sender.to_i32
+
     boxed_data = ::Box.box(callback)
     # Store in global array to prevent GC collection during callback execution
     # NOTE: Timer callback removal behavior is not standardized in LibUI
@@ -171,7 +176,7 @@ module UIng
     @@callback_mutex.synchronize do
       @@timer_callback_boxes << boxed_data
     end
-    LibUI.timer(sender, ->(data) : LibC::Int do
+    LibUI.timer(milliseconds, ->(data) : LibC::Int do
       begin
         data_as_callback = ::Box(typeof(callback)).unbox(data)
         result = data_as_callback.call
