@@ -34,8 +34,10 @@ describe UIng::Area::AttributedString do
     expect_raises(ArgumentError, /insertion position is out of bounds/) do
       string.insert_at_unattributed("x", 9)
     end
-    expect_raises(ArgumentError, /insertion position is not on a UTF-8 codepoint boundary/) do
-      string.insert_at_unattributed("x", 2)
+    [2, 4, 5, 6].each do |position|
+      expect_raises(ArgumentError, /insertion position is not on a UTF-8 codepoint boundary/) do
+        string.insert_at_unattributed("x", LibC::SizeT.new(position))
+      end
     end
   end
 
@@ -63,6 +65,10 @@ describe UIng::Area::AttributedString do
     string = BoundaryAttributedString.new("Aé🙂B")
 
     expect_raises(ArgumentError, /byte index is out of bounds/) { string.byte_index_to_grapheme(9) }
-    expect_raises(ArgumentError, /byte index is not on a UTF-8/) { string.byte_index_to_grapheme(2) }
+    [2, 4, 5, 6].each do |position|
+      expect_raises(ArgumentError, /byte index is not on a UTF-8/) do
+        string.byte_index_to_grapheme(LibC::SizeT.new(position))
+      end
+    end
   end
 end

@@ -151,10 +151,19 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
     it "validates AttributedString boundaries without transferring invalid attributes" do
       string = UIng::Area::AttributedString.new("Aé🙂B")
+      empty_string = UIng::Area::AttributedString.new("")
       attribute = UIng::Area::Attribute.new_color(1.0, 0.0, 0.0, 1.0)
 
-      expect_raises(ArgumentError, /insertion position is not on a UTF-8/) do
-        string.insert_at_unattributed("x", 2)
+      {0 => 0, 1 => 1, 3 => 2, 7 => 3, 8 => 4}.each do |byte_index, grapheme_index|
+        string.byte_index_to_grapheme(LibC::SizeT.new(byte_index)).should eq(LibC::SizeT.new(grapheme_index))
+      end
+      {0 => 0, 1 => 1, 2 => 3, 3 => 7, 4 => 8}.each do |grapheme_index, byte_index|
+        string.grapheme_to_byte_index(LibC::SizeT.new(grapheme_index)).should eq(LibC::SizeT.new(byte_index))
+      end
+      [2, 4, 5, 6].each do |position|
+        expect_raises(ArgumentError, /insertion position is not on a UTF-8/) do
+          string.insert_at_unattributed("x", LibC::SizeT.new(position))
+        end
       end
       expect_raises(ArgumentError, /deletion range is out of bounds/) { string.delete(0, 9) }
       expect_raises(ArgumentError, /attribute range start is not on a UTF-8/) do
@@ -162,13 +171,22 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       end
       attribute.released?.should be_false
 
-      string.byte_index_to_grapheme(3).should eq(2)
-      string.grapheme_to_byte_index(3).should eq(7)
       expect_raises(ArgumentError, /grapheme index is out of bounds/) do
         string.grapheme_to_byte_index(5)
       end
+
+      empty_string.byte_index_to_grapheme(0).should eq(0)
+      empty_string.grapheme_to_byte_index(0).should eq(0)
+
+      string.insert_at_unattributed("-", 3)
+      string.string.should eq("Aé-🙂B")
+      string.delete(4, 8)
+      string.string.should eq("Aé-B")
+      string.set_attribute(attribute, 1, 3)
+      attribute.released?.should be_true
     ensure
       attribute.try &.free
+      empty_string.try &.free
       string.try &.free
     end
 
