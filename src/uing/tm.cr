@@ -20,7 +20,8 @@ module UIng
       {% end %}
     end
 
-    # Overloaded constructor: Convert Time to TM
+    # Copies the calendar and clock fields from *time*. This does not convert
+    # the value to the process-local time zone.
     def initialize(time : ::Time)
       @cstruct = LibUI::TM.new
       {% unless flag?(:windows) %}
@@ -83,7 +84,9 @@ module UIng
       pointerof(@cstruct)
     end
 
-    # Convert TM to Time. Invalid date/time fields raise ArgumentError.
+    # Converts the calendar and clock fields to a value in
+    # `Time::Location.local`. Stored offset and zone fields are not used.
+    # Invalid date/time fields raise `ArgumentError`.
     def to_time : ::Time
       ::Time.local(
         year + 1900, # tm_year is years since 1900

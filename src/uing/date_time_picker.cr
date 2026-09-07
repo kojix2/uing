@@ -1,6 +1,13 @@
 require "./control"
 
 module UIng
+  # A native picker for local calendar and clock fields.
+  #
+  # `Time` values are treated as wall-clock values: the setter copies their
+  # displayed date and time fields without converting them to another time
+  # zone. Values returned by the getter and callbacks use
+  # `Time::Location.local`. The original instant, offset, and location therefore
+  # do not round-trip when they differ from the local time zone.
   class DateTimePicker < Control
     block_constructor
 
@@ -34,11 +41,14 @@ module UIng
       @on_changed_box = nil
     end
 
+    # Returns the displayed wall-clock value in `Time::Location.local`.
     def time : Time
       LibUI.date_time_picker_time(ref_ptr, @tm)
       @tm.to_time
     end
 
+    # Sets the displayed wall-clock fields from *time* without time-zone
+    # conversion.
     def time=(time : Time) : Nil
       # Update our persistent @tm instance with new time
       temp_tm = UIng::TM.new(time)
@@ -47,6 +57,8 @@ module UIng
       LibUI.date_time_picker_time(ref_ptr, @tm)
     end
 
+    # Invokes the block with the displayed wall-clock value in
+    # `Time::Location.local`.
     def on_changed(&block : Time -> Nil) : Nil
       wrapper = -> : Nil {
         LibUI.date_time_picker_time(ref_ptr, @tm)
