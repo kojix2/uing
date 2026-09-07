@@ -3,25 +3,25 @@ require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
 
-COMMIT_HASH = "79761e2a-experimental"
+COMMIT_HASH = "b39c3b9b-experimental"
 
 ASSET_SHA256 = {
-  "macOS-arm64-static-debug.zip"         => "036fece3a4f442134820768de69403cb13a9a63a18f48e2ea62b7613c934af4f",
-  "macOS-arm64-static-release.zip"       => "4437b7079984afba57bd40f855ed6686535d8d8ee34a42c9fa9e2f623184176f",
-  "macOS-x64-static-debug.zip"           => "3e04c97c1ea3f3d8fb4b25b789dc656fb9ce5684edfe4fb8881d080cb5370149",
-  "macOS-x64-static-release.zip"         => "54155649543f14bb665709293fddc79c9ab9bb4645ab00f6d4e84389189bdf02",
-  "Ubuntu-arm64-static-debug.zip"        => "f1597d85dad5e43940cadfdf9fbd08a380f6a616e4e1ac9054c53b7e1baeeb07",
-  "Ubuntu-arm64-static-release.zip"      => "0d3a5b9959154dd00c4704ecfae56f6d5e0ea0803ac0baa74decc8435957fa60",
-  "Ubuntu-x64-static-debug.zip"          => "cb09e2fde23c62fab0108173250ef275e108945c9678dc4a4ab85cc36ae8e9ca",
-  "Ubuntu-x64-static-release.zip"        => "f2f9c7b08a792c3a7c2878ec550b99211bea3d769076b86f7ea29de27f2f71fa",
-  "Windows-x64-mingw-static-debug.zip"   => "60c6602d1efb64ff1c9e89f59ce91c1692d3331516b8245a72a4b0501e2cf9b6",
-  "Windows-x64-mingw-static-release.zip" => "4363f756109e3b921247ba44c66c06843da34887a1a22b33ae12cb36f54e6768",
-  "Windows-x64-msvc-static-debug.zip"    => "a118786addcaf2eba09268802d7da2ea79619491b7ca8b255451fc38888bcdc3",
-  "Windows-x64-msvc-static-release.zip"  => "70164632292b793000191612ecdf40c1ac119ba13e9fa220b43b59c489ec6209",
-  "Windows-x64-ucrt-static-debug.zip"    => "2318449e6fdc85447e30774bd97c6d6f55abba740a43c95bf03e30b59190bcb1",
-  "Windows-x64-ucrt-static-release.zip"  => "c53051cf32368e72a88c0c5f7a8b525f6e1ae76835d79985d6160a86c6923a19",
-  "Windows-x86-msvc-static-debug.zip"    => "e98f7216df5f6e9dd32c6be11aa7c06f8f3c7d4e60e961092e18e0908f21f651",
-  "Windows-x86-msvc-static-release.zip"  => "610308f3a0df4b15e9529497f6532374ef4a2b71dbb2598c761e8878aa0aa3e8",
+  "macOS-arm64-static-debug.zip"         => "0977c3e62640a3bfc7630784108ab5e18b2962182cb3818147c2b5420eec8bae",
+  "macOS-arm64-static-release.zip"       => "59a78708df2210f5e3d673dba666bf7994db2249224a8af777a813a70fd5a949",
+  "macOS-x64-static-debug.zip"           => "9b7fa882528a868c3db9043bfcfe7549c8edc39e42da18165d1604d6108458ec",
+  "macOS-x64-static-release.zip"         => "f37a3c15c038a966e64650819218291b1172a465f6c73e534241c6b4449f49a0",
+  "Ubuntu-arm64-static-debug.zip"        => "5d221b83d97e1d67dec4ea591d2132933bf29c8b88932dc04bbfe41e8cd0dc17",
+  "Ubuntu-arm64-static-release.zip"      => "70bd608c4f4b4c40ca87d1ccd429c87dfb5a553e5a7fd0af26f86fdd70ae7d68",
+  "Ubuntu-x64-static-debug.zip"          => "a50fdaa0bf4a46bd360e791ca679813915cac154b978240d494c9ee5549215c1",
+  "Ubuntu-x64-static-release.zip"        => "6dbefabe04d09e2c6d18f3fbdef012482bf0c05655db383a8c384d65fe35d0b6",
+  "Windows-x64-mingw-static-debug.zip"   => "e42d6394466288dc361ce669ffa7e361284a7247a32d99d2f8a0e01d1909bee8",
+  "Windows-x64-mingw-static-release.zip" => "5fa44a7735e1b05eca4c311e324f9580b1dac4d94e2108e11dbd60010ae396c9",
+  "Windows-x64-msvc-static-debug.zip"    => "d5868619dd1d3224c0d03bc730ac5f5cc8ce47de3d8927aa395cf8fa8e473b48",
+  "Windows-x64-msvc-static-release.zip"  => "ee7c7d9f3e82455029cc5010db928e9eea0db8c44c59ec1cea9ecdf00532b313",
+  "Windows-x64-ucrt-static-debug.zip"    => "974facbd91e75bf2049b06359c7d3b2ebea2b2e333cc6669f748f13aac333c7b",
+  "Windows-x64-ucrt-static-release.zip"  => "1be821caad0e0a87e60416bfb822d7550288fc605a9b7c84e700ff9836f56d08",
+  "Windows-x86-msvc-static-debug.zip"    => "b10c32f63fcd35ab2f8c940dc9c2f8eab5c044632dabdb0abaa5db355c320cc3",
+  "Windows-x86-msvc-static-release.zip"  => "1b16a6edb96caf556ae35734a1ad39a97bd78ef32039374c67081f16dd5d190c",
 }
 
 # Path constants
