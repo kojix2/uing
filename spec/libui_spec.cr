@@ -2,7 +2,7 @@ require "./spec_helper"
 
 describe UIng do
   it "reports the linked libui-ng version" do
-    UIng.libui_version.should match(/\A(?:commit-[0-9a-f]+(?:-experimental)?|[0-9a-f]+|unknown)\z/)
+    UIng.libui_version.should match(/\A(?:(?:commit-[0-9a-f]+(?:-experimental)?|[0-9a-f]+)(?:-dirty)?|unknown)\z/)
   end
 
   it "uses pointer-sized and unsigned enum FFI types" do
