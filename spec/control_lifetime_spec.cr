@@ -170,9 +170,11 @@ describe UIng::Control do
     callback_errors = [] of {Exception, String}
     UIng.on_error { |error, context| callback_errors << {error, context} }
 
-    error = expect_raises(Exception, "construction failed") do
-      FailingCleanupBlockControl.new do
-        raise "construction failed"
+    error = UIng.expect_callback_error_log("cleanup failed", "FailingCleanupBlockControl block construction cleanup") do
+      expect_raises(Exception, "construction failed") do
+        FailingCleanupBlockControl.new do
+          raise "construction failed"
+        end
       end
     end
 
@@ -205,7 +207,9 @@ describe UIng::Control do
     callback_errors = [] of {Exception, String}
     UIng.on_error { |error, context| callback_errors << {error, context} }
 
-    UIng.native_control_destroyed_for_spec(ptr)
+    UIng.expect_callback_error_log("after_destroy failed", "Control after_destroy") do
+      UIng.native_control_destroyed_for_spec(ptr)
+    end
 
     control.cleaned_up?.should be_true
     control.state_name.should eq("Destroyed")

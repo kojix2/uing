@@ -198,9 +198,5 @@ module UIng
     end
 
     abstract def to_unsafe
-
-    def finalize
-      @state = State::Destroyed
-    end
   end
 end

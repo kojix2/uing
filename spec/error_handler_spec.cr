@@ -12,7 +12,9 @@ describe "callback error handling" do
     end
 
     begin
-      UIng.handle_callback_error(error, "test callback")
+      UIng.expect_callback_error_log("boom", "test callback") do
+        UIng.handle_callback_error(error, "test callback")
+      end
     ensure
       UIng.on_error(nil)
     end

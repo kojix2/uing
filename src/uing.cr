@@ -75,12 +75,7 @@ module UIng
   # Handle callback errors by printing the error message and backtrace, then
   # invoking the application-defined policy when one has been configured.
   def self.handle_callback_error(ex : Exception, ctx : String = "callback")
-    # As UIng is a UI library, applications may not have standard output available
-    # Use Crystal's system error output to ensure error messages are properly logged
-    Crystal::System.print_error "%s error: %s\n", ctx, ex.message
-    if backtrace = ex.backtrace?
-      backtrace.each { |frame| Crystal::System.print_error "  from %s\n", frame }
-    end
+    report_callback_error(ex, ctx)
 
     handler = @@callback_mutex.synchronize { @@error_handler }
     return unless handler
@@ -89,6 +84,15 @@ module UIng
       handler.call(ex, ctx)
     rescue error
       Crystal::System.print_error "error handler failed: %s\n", error.message
+    end
+  end
+
+  private def self.report_callback_error(ex : Exception, ctx : String) : Nil
+    # As UIng is a UI library, applications may not have standard output available
+    # Use Crystal's system error output to ensure error messages are properly logged
+    Crystal::System.print_error "%s error: %s\n", ctx, ex.message
+    if backtrace = ex.backtrace?
+      backtrace.each { |frame| Crystal::System.print_error "  from %s\n", frame }
     end
   end
 
