@@ -3,36 +3,35 @@ require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
 
-COMMIT_HASH = "e497003b-experimental"
+COMMIT_HASH = "6ce0650d-experimental"
 
 ASSET_SHA256 = {
-  "macOS-arm64-static-debug.zip"         => "ee6fc00eec149e53401287dd5dedee8c6f0fde605035aba569ea98cb1d24dc5f",
-  "macOS-arm64-static-release.zip"       => "5ea2ee09877f24cbce1676a863ecb58c0a872d31f584e7b30604afe493ddfc51",
-  "macOS-x64-static-debug.zip"           => "d022944c850b5d3bb9015f605b30687a28be1c3767c1a461a5f66afec3710805",
-  "macOS-x64-static-release.zip"         => "3c8637e1c960eb27f63d8701093600c2436fc493d255bfbd344c6bf43ed9bcc9",
-  "Ubuntu-arm64-static-debug.zip"        => "cd3dff24e7981bd57a2f80a0753d495528cf226c7f5494449ad83a6666764394",
-  "Ubuntu-arm64-static-release.zip"      => "990ef51bea23e9b49a15c4673ae03ba507f76cbfdfaa7a06a38bdf626459840f",
-  "Ubuntu-x64-static-debug.zip"          => "9bc4108834141edbaac79492d03708f63a5b8ee9431330936852cd0e19ef86cf",
-  "Ubuntu-x64-static-release.zip"        => "a88dbc713af036ec838846961ad827ede3bf93ac2e03fbeb0c2bbd6b143e2bfb",
-  "Windows-x64-mingw-static-debug.zip"   => "fdab087060495667bed098e48915836499d246cffc82c5308578f43585f0b4ae",
-  "Windows-x64-mingw-static-release.zip" => "b84e4ac4faeb5364cd5a6c0de20f7e33b4d62dc13aa20c1f8396ec26489a541b",
-  "Windows-x64-msvc-static-debug.zip"    => "0e4d666264c4428726edb2e1b7869b30c9cf241dc483a514a04b391bb5823506",
-  "Windows-x64-msvc-static-release.zip"  => "cfd217f727503b1876459f6371f25460ed371270c896865f706ec88f0bd748d9",
-  "Windows-x64-ucrt-static-debug.zip"    => "4ccaca5ca0ffc0be4ff7b8ef1fae2cf5577e4e41db09c6c7e65affc1657b286a",
-  "Windows-x64-ucrt-static-release.zip"  => "685719f9232a1a6610d2cd9eef457a5c3f89ceda17214e7f5c54fd08b174bf39",
-  "Windows-x86-msvc-static-debug.zip"    => "f88be8609502d99fb3bd6950293f142abadb93911d5710c9561384bc2af75756",
-  "Windows-x86-msvc-static-release.zip"  => "50279c07878cdb41168952e9e76ea77d4bf40662115d85e705ca431d98efc255",
+  "libui-ng-macos-arm64-static-debug.zip"         => "9b0411a617cfeeacda57103d9a5f4df02eb6a9c9b6aea57ab9931c0e2a29b3ce",
+  "libui-ng-macos-arm64-static-release.zip"       => "ac861ead956a1c7c337a5f0fcbb7b2fb30f052c6de076ce7e32e66f064b45d39",
+  "libui-ng-macos-x64-static-debug.zip"           => "8104c2230de1686ae2b7c0972bc0421313353fa3b7c635897ddca199292adae2",
+  "libui-ng-macos-x64-static-release.zip"         => "da1114d471ae8b65789141e72994cdd9d0722816221c79efa8954b86caafc348",
+  "libui-ng-ubuntu-arm64-static-debug.zip"        => "6f00191f07b09cf117baa0a3b58a888df981d301f08b2b2dd3f543b45e6b1fc0",
+  "libui-ng-ubuntu-arm64-static-release.zip"      => "ad535ac8f90593621c95d653521c9db4770c5d962765438fc93ed756ab2567e9",
+  "libui-ng-ubuntu-x64-static-debug.zip"          => "82537dc18cec1d86f206fd7f88543459bc6097c52ec9d712aead537e9c13322e",
+  "libui-ng-ubuntu-x64-static-release.zip"        => "dc83e3d5e015e5c7234d349f6e2b3cc346c2b37fe81026784faf1d385a9ce779",
+  "libui-ng-windows-x64-mingw-static-debug.zip"   => "fa466e56c3cb294532f5d8f55a018f64c59264f97b1ba7547029ce7eca9e145b",
+  "libui-ng-windows-x64-mingw-static-release.zip" => "d53013099bdcf2274591d6c49c10622873cdd10e84343ee7bce7124f1131fb4e",
+  "libui-ng-windows-x64-msvc-static-debug.zip"    => "ead6594046ff7aee5475314ef3c2633dedcd4f1c0f908974f051ac6c1bff3c68",
+  "libui-ng-windows-x64-msvc-static-release.zip"  => "280bd23af024d2b5f0829c4f7aee5d470ceac7032701f7fc873c1675f9875712",
+  "libui-ng-windows-x64-ucrt-static-debug.zip"    => "702d0cdc896f9b6c945203185939fb993c5c0a9dc9c265545f18a8238a68296e",
+  "libui-ng-windows-x64-ucrt-static-release.zip"  => "740f3570093b9e4d40793177aed437a5f6de0ee27aa62c980bcd2036986dee88",
+  "libui-ng-windows-x86-msvc-static-debug.zip"    => "fd4dbf6be7744820e96d7287eb66824f74f9cd028743b57da34a9bf9c8175113",
+  "libui-ng-windows-x86-msvc-static-release.zip"  => "a8a09f7a84bfa37bc538a65ba45806d8e91bb0498bc8bdc77e55daa2ccc21759",
 }
 
 # Path constants
-PROJECT_DIR    = Dir.current
-WORK_DIR       = File.tempname("uing-libui")
-BUILD_DIR      = File.join(WORK_DIR, "builddir")
-MESON_OUT_DIR  = "#{BUILD_DIR}/meson-out"
-LIBUI_SOURCE   = "#{MESON_OUT_DIR}/libui.a"
-PDB_SOURCE_DIR = "#{MESON_OUT_DIR}/libui.a.p"
-DEBUG_DIR      = File.join(PROJECT_DIR, "libui/debug")
-PDB_DEST_DIR   = "#{DEBUG_DIR}/libui.a.p"
+PROJECT_DIR       = Dir.current
+WORK_DIR          = File.tempname("uing-libui")
+SDK_LIB_DIR       = File.join(WORK_DIR, "lib")
+LIBUI_SOURCE      = File.join(SDK_LIB_DIR, "libui.a")
+MSVC_LIBUI_SOURCE = File.join(SDK_LIB_DIR, "libui.lib")
+PDB_SOURCE        = File.join(SDK_LIB_DIR, "libui.pdb")
+DEBUG_DIR         = File.join(PROJECT_DIR, "libui/debug")
 
 Dir.mkdir(WORK_DIR)
 
@@ -50,43 +49,43 @@ end
 PLATFORM_CONFIG = {
   # macOS Intel x86_64
   darwin_x64: [
-    {zip: "macOS-x64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "macOS-x64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
+    {zip: "libui-ng-macos-x64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
+    {zip: "libui-ng-macos-x64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
   # macOS Apple Silicon ARM64
   darwin_arm64: [
-    {zip: "macOS-arm64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "macOS-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
+    {zip: "libui-ng-macos-arm64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
+    {zip: "libui-ng-macos-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
   # Linux x86_64
   linux_x64: [
-    {zip: "Ubuntu-x64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "Ubuntu-x64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
+    {zip: "libui-ng-ubuntu-x64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
+    {zip: "libui-ng-ubuntu-x64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
   # Linux ARM64
   linux_arm64: [
-    {zip: "Ubuntu-arm64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "Ubuntu-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
+    {zip: "libui-ng-ubuntu-arm64-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
+    {zip: "libui-ng-ubuntu-arm64-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
   # Windows MSVC x86_64
   msvc_x64: [
-    {zip: "Windows-x64-msvc-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
-    {zip: "Windows-x64-msvc-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/ui.lib"), extra_pdb: true},
+    {zip: "libui-ng-windows-x64-msvc-static-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
+    {zip: "libui-ng-windows-x64-msvc-static-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/ui.lib"), extra_pdb: true},
   ],
   # Windows MSVC x86 32-bit
   msvc_x86: [
-    {zip: "Windows-x86-msvc-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
-    {zip: "Windows-x86-msvc-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/ui.lib"), extra_pdb: true},
+    {zip: "libui-ng-windows-x86-msvc-static-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
+    {zip: "libui-ng-windows-x86-msvc-static-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/ui.lib"), extra_pdb: true},
   ],
   # Windows UCRT x86_64
   ucrt_x64: [
-    {zip: "Windows-x64-ucrt-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "Windows-x64-ucrt-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
+    {zip: "libui-ng-windows-x64-ucrt-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
+    {zip: "libui-ng-windows-x64-ucrt-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
   # Windows MinGW x86_64
   mingw_x64: [
-    {zip: "Windows-x64-mingw-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "Windows-x64-mingw-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
+    {zip: "libui-ng-windows-x64-mingw-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
+    {zip: "libui-ng-windows-x64-mingw-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
 }
 
@@ -204,19 +203,15 @@ def download_and_place(zip_name : String, src : String, dest : String)
 end
 
 def process_msvc_pdb_files(entry)
-  FileUtils.rm_rf LIBUI_SOURCE if File.exists?(LIBUI_SOURCE)
-  FileUtils.rm_rf PDB_SOURCE_DIR if Dir.exists?(PDB_SOURCE_DIR)
-  download_libui_ng_nightly([LIBUI_SOURCE, PDB_SOURCE_DIR], entry[:zip])
+  FileUtils.rm_rf entry[:src] if File.exists?(entry[:src])
+  FileUtils.rm_rf PDB_SOURCE if File.exists?(PDB_SOURCE)
+  download_libui_ng_nightly([entry[:src], PDB_SOURCE], entry[:zip])
   FileUtils.mkdir_p File.dirname(entry[:dest])
-  FileUtils.cp LIBUI_SOURCE, entry[:dest]
+  FileUtils.cp entry[:src], entry[:dest]
 
-  # Copy entire libui.a.p/ directory
-  if Dir.exists?(PDB_SOURCE_DIR)
-    FileUtils.cp_r PDB_SOURCE_DIR, DEBUG_DIR
-    # Copy PDB files to the same directory as ui.lib for linker to find them
-    Dir.glob("#{PDB_DEST_DIR}/*.pdb").each do |pdb_file|
-      FileUtils.cp pdb_file, DEBUG_DIR
-    end
+  # Keep the compile PDB next to ui.lib so the MSVC linker can find it.
+  if File.exists?(PDB_SOURCE)
+    FileUtils.cp PDB_SOURCE, DEBUG_DIR
   end
 end
 
