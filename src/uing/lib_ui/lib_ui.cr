@@ -11,17 +11,22 @@ module UIng
     @[Link("Windowscodecs")]
     @[Link("Uuid")]
     @[Link("Winmm")]
-    # Exclude LIBCMT to avoid conflicts with Crystal's MSVC runtime (/MD).
-    @[Link(ldflags: "/NODEFAULTLIB:LIBCMT")]
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
-    {% if flag?(:debug) %}
+    {% if flag?(:debug) && !flag?(:release) %}
       @[Link(ldflags: "/DEBUG")]
-      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug")]
-    {% elsif flag?(:release) %}
-      @[Link(ldflags: "/LTCG")]
-      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release")]
+    {% end %}
+    {% if flag?(:static) %}
+      {% if flag?(:release) || !flag?(:debug) %}
+        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release/mt")]
+      {% else %}
+        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug/mt")]
+      {% end %}
     {% else %}
-      @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release")]
+      {% if flag?(:release) || !flag?(:debug) %}
+        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release/md")]
+      {% else %}
+        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug/md")]
+      {% end %}
     {% end %}
     # @[Link("ui", dll: "libui.dll")]
     @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]

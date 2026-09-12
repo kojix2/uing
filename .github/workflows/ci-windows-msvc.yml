@@ -39,6 +39,13 @@ jobs:
           UING_NATIVE_GUI_TESTS: "1"
         run: crystal spec spec/native
 
+      - name: Verify dynamic and static CRT linking
+        run: |
+          crystal build examples/basic_button_dsl.cr -o "$env:RUNNER_TEMP/basic-button-debug-md.exe"
+          crystal build --static examples/basic_button_dsl.cr -o "$env:RUNNER_TEMP/basic-button-debug-mt.exe"
+          crystal build --release --no-debug examples/basic_button_dsl.cr -o "$env:RUNNER_TEMP/basic-button-release-md.exe"
+          crystal build --release --no-debug --static examples/basic_button_dsl.cr -o "$env:RUNNER_TEMP/basic-button-release-mt.exe"
+
       - name: Build all examples
         run: |
           Get-ChildItem -Path examples -Filter *.cr | ForEach-Object { crystal build $_.FullName }

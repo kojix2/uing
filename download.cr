@@ -3,25 +3,29 @@ require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
 
-COMMIT_HASH = "dcef8242-experimental"
+COMMIT_HASH = "0dfe838c-experimental"
 
 ASSET_SHA256 = {
-  "libui-ng-macos-arm64-static-debug.zip"         => "33fd40efd9b62f373f6f985f4a33bcb80d8e38d9c0c9bbf18bcf8ff0db8d27f0",
-  "libui-ng-macos-arm64-static-release.zip"       => "c39284f890e7aa9b94f021422987000fa2f757bc6c0ccb82c9dbb2c81f26fc71",
-  "libui-ng-macos-x64-static-debug.zip"           => "db68775eec3124c31e5fc2c3bd49522f4d3c4d791bb4d51b4b71fdd97873da78",
-  "libui-ng-macos-x64-static-release.zip"         => "f4699007af3713310c778eda3ecd4c825a68dcfd928cff4dac941782a1a48dd6",
-  "libui-ng-ubuntu-arm64-static-debug.zip"        => "5f49dc53d084773ac7a9a9078d22126d88001f503458b79dda225926ed43ada6",
-  "libui-ng-ubuntu-arm64-static-release.zip"      => "b303ee760ae407dbb88d86caf881922741ae111a3325ec7b5cceec595654f917",
-  "libui-ng-ubuntu-x64-static-debug.zip"          => "c9659941559bc910d86ddba2e749cbbd36e2c2295ff4bee51163e770f5613067",
-  "libui-ng-ubuntu-x64-static-release.zip"        => "8c32b0770f570479fa82368f9319abda9278504ebb83164534325f50eaeac9eb",
-  "libui-ng-windows-x64-mingw-static-debug.zip"   => "5e500989559cb03fb0796a34401e8a23bc8454499cf999dfc2af417e22dd6f11",
-  "libui-ng-windows-x64-mingw-static-release.zip" => "1f24ffc9de4f972acc573e13337d9d770d8ebd9e67872d180eb361ed98a5f121",
-  "libui-ng-windows-x64-msvc-static-debug.zip"    => "9a326825753aa017ce2ee03bb47b93922cc323c35b19f74e996709964238ff8b",
-  "libui-ng-windows-x64-msvc-static-release.zip"  => "8e150e0be52b10293e145ed12e4d86ac01d218e24914281dbfb3ec18c06201c1",
-  "libui-ng-windows-x64-ucrt-static-debug.zip"    => "64ad50dc40c5d522d3908b8513fcad1d96a094f9dbce650a91f2e8e52f97ebe0",
-  "libui-ng-windows-x64-ucrt-static-release.zip"  => "156d868d4401895be8c97b8b7caf491cae1f779f36a5b5febd00775157d23387",
-  "libui-ng-windows-x86-msvc-static-debug.zip"    => "a8d738dd8435cc94f014db6dcc1c3dfa63fd74eb9968dc3d257468940d8394df",
-  "libui-ng-windows-x86-msvc-static-release.zip"  => "bc81139b955672f04a9a9879b1885448f48a0aed3ce3000a1b0c967902f4f8e7",
+  "libui-ng-macos-arm64-static-debug.zip"           => "d98c80c406278c0834eab1be148dc6720785883e3c198792bf520584a63ebe50",
+  "libui-ng-macos-arm64-static-release.zip"         => "55aa76afb3d2b8b6d87cf8ffd6e4285d45fd7ef5ed77d3604670e9ae4c795587",
+  "libui-ng-macos-x64-static-debug.zip"             => "32065ab99c9c2b28f40f0bf3faf4613e2cd0234f8016461214a698a2a75b0f36",
+  "libui-ng-macos-x64-static-release.zip"           => "6e9af05b9a9e56c647f32a03142fc12a0c03b59251bf3889818549ace6f998f9",
+  "libui-ng-ubuntu-arm64-static-debug.zip"          => "a77d277c76a3585e7fd96dea938d02841dbeaf6a9b0af3fcda3fd903bfd4ed97",
+  "libui-ng-ubuntu-arm64-static-release.zip"        => "fd248767cef972400896543f30cdd2c65fc52192a2724d797c68b7b04a6dcd5b",
+  "libui-ng-ubuntu-x64-static-debug.zip"            => "1d1b71322763acb7ba296bc5a8554df411fadbf03b2476a09b1671a778fb0a9b",
+  "libui-ng-ubuntu-x64-static-release.zip"          => "54c0cac2bdbb401d11ee36231aaad621bd52e176d5ac38e4e991fac8e245137c",
+  "libui-ng-windows-x64-mingw-static-debug.zip"     => "85237f6d504d18e687384b9e30b8aea20e4efa13ebea1f9aeddb11237bd5abe5",
+  "libui-ng-windows-x64-mingw-static-release.zip"   => "cb1a560ab6bd2dce0d52b11902e5abade6dfe3c517a8159267146cd5b218eda4",
+  "libui-ng-windows-x64-msvc-static-md-debug.zip"   => "da57b0fcbbe465353769555cee88a0582cdb14ebaf2b91230b26356af3f47e6d",
+  "libui-ng-windows-x64-msvc-static-md-release.zip" => "e352ec678bd59b7efde5127975306e258cfc5572eb4a30f4bc8c897d8b21db61",
+  "libui-ng-windows-x64-msvc-static-mt-debug.zip"   => "71de3ccd1b6b5198f3f3bd54d020c940cdb1e591f7bca23e73db03feaa8ed1d0",
+  "libui-ng-windows-x64-msvc-static-mt-release.zip" => "a5ec2e92b3235f161c767611a0c4febd4833087a64b03813a560ce973b32a28f",
+  "libui-ng-windows-x64-ucrt-static-debug.zip"      => "88fdaa6996fb7d3004049120934b107c57bf457585ab3137f53be3a743200633",
+  "libui-ng-windows-x64-ucrt-static-release.zip"    => "32879007bf6266afbc9b1887268c42959fee700fc9dd3dddf5f21748f50742bd",
+  "libui-ng-windows-x86-msvc-static-md-debug.zip"   => "c74296c83cc902d5dfce2d6b2217520c5cc1391db1ddfd47db945a51cdbaa4ff",
+  "libui-ng-windows-x86-msvc-static-md-release.zip" => "c7f77c5ea0b252828e617b9c29d3e3f35a60b8e00bb79333b46ec51b6e8a8a12",
+  "libui-ng-windows-x86-msvc-static-mt-debug.zip"   => "d9ff116456e5c090492d87c13e5bb3a11cde2125bca29a2dbba8b1aa9843da2b",
+  "libui-ng-windows-x86-msvc-static-mt-release.zip" => "a21383ff290370c099c2159abec4b87cde217b07153d446b13824dce6ad2fcad",
 }
 
 # Path constants
@@ -31,7 +35,6 @@ SDK_LIB_DIR       = File.join(WORK_DIR, "lib")
 LIBUI_SOURCE      = File.join(SDK_LIB_DIR, "libui.a")
 MSVC_LIBUI_SOURCE = File.join(SDK_LIB_DIR, "libui.lib")
 PDB_SOURCE        = File.join(SDK_LIB_DIR, "libui.pdb")
-DEBUG_DIR         = File.join(PROJECT_DIR, "libui/debug")
 
 Dir.mkdir(WORK_DIR)
 
@@ -69,13 +72,17 @@ PLATFORM_CONFIG = {
   ],
   # Windows MSVC x86_64
   msvc_x64: [
-    {zip: "libui-ng-windows-x64-msvc-static-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
-    {zip: "libui-ng-windows-x64-msvc-static-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/ui.lib"), extra_pdb: true},
+    {zip: "libui-ng-windows-x64-msvc-static-md-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/md/ui.lib")},
+    {zip: "libui-ng-windows-x64-msvc-static-md-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/md/ui.lib"), extra_pdb: true},
+    {zip: "libui-ng-windows-x64-msvc-static-mt-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/mt/ui.lib")},
+    {zip: "libui-ng-windows-x64-msvc-static-mt-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/mt/ui.lib"), extra_pdb: true},
   ],
   # Windows MSVC x86 32-bit
   msvc_x86: [
-    {zip: "libui-ng-windows-x86-msvc-static-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/ui.lib")},
-    {zip: "libui-ng-windows-x86-msvc-static-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/ui.lib"), extra_pdb: true},
+    {zip: "libui-ng-windows-x86-msvc-static-md-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/md/ui.lib")},
+    {zip: "libui-ng-windows-x86-msvc-static-md-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/md/ui.lib"), extra_pdb: true},
+    {zip: "libui-ng-windows-x86-msvc-static-mt-release.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/mt/ui.lib")},
+    {zip: "libui-ng-windows-x86-msvc-static-mt-debug.zip", src: MSVC_LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/mt/ui.lib"), extra_pdb: true},
   ],
   # Windows UCRT x86_64
   ucrt_x64: [
@@ -99,6 +106,12 @@ def sha256_file(file_name)
 end
 
 def download_file(file_name, url)
+  asset_name = File.basename(file_name)
+  expected_sha256 = ASSET_SHA256[asset_name]? || raise "No SHA-256 checksum for #{asset_name}"
+  if expected_sha256 == "PENDING_RELEASE"
+    raise "SHA-256 checksum for #{asset_name} is pending the corresponding libui-ng release"
+  end
+
   args = ["-fL", "-o", file_name, url]
   puts "Running: curl #{args.join(" ")}"
   process = Process.run("curl", args, output: STDOUT, error: STDERR)
@@ -106,8 +119,6 @@ def download_file(file_name, url)
     raise "Failed to download #{file_name} from #{url}"
   end
 
-  asset_name = File.basename(file_name)
-  expected_sha256 = ASSET_SHA256[asset_name]? || raise "No SHA-256 checksum for #{asset_name}"
   actual_sha256 = sha256_file(file_name)
   unless actual_sha256 == expected_sha256
     raise "SHA-256 mismatch for #{asset_name}: expected #{expected_sha256}, got #{actual_sha256}"
@@ -211,7 +222,7 @@ def process_msvc_pdb_files(entry)
 
   # Keep the compile PDB next to ui.lib so the MSVC linker can find it.
   if File.exists?(PDB_SOURCE)
-    FileUtils.cp PDB_SOURCE, DEBUG_DIR
+    FileUtils.cp PDB_SOURCE, File.dirname(entry[:dest])
   end
 end
 

@@ -54,6 +54,7 @@ dependencies:
 ```
 
 - The required libui-ng binary is automatically downloaded from [kojix2/libui-ng GitHub Releases](https://github.com/kojix2/libui-ng/releases) via [postinstall](https://github.com/kojix2/uing/blob/main/shard.yml).
+- On Windows MSVC, both `/MD` and `/MT` static libui-ng libraries are downloaded. UIng selects `/MD` for normal Crystal builds and `/MT` when Crystal is built with `--static`.
 - The UIng project is not just a binding; it provides unofficial patched builds of libui-ng for platforms. For more details, see the [README.md](https://github.com/kojix2/libui-ng/blob/main/README.md) and commits on the [`dev` branch](https://github.com/kojix2/libui-ng/commits/dev).
 
 ## Quick Start
