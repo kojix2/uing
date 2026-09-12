@@ -3,25 +3,25 @@ require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
 
-COMMIT_HASH = "6ce0650d-experimental"
+COMMIT_HASH = "dcef8242-experimental"
 
 ASSET_SHA256 = {
-  "libui-ng-macos-arm64-static-debug.zip"         => "9b0411a617cfeeacda57103d9a5f4df02eb6a9c9b6aea57ab9931c0e2a29b3ce",
-  "libui-ng-macos-arm64-static-release.zip"       => "ac861ead956a1c7c337a5f0fcbb7b2fb30f052c6de076ce7e32e66f064b45d39",
-  "libui-ng-macos-x64-static-debug.zip"           => "8104c2230de1686ae2b7c0972bc0421313353fa3b7c635897ddca199292adae2",
-  "libui-ng-macos-x64-static-release.zip"         => "da1114d471ae8b65789141e72994cdd9d0722816221c79efa8954b86caafc348",
-  "libui-ng-ubuntu-arm64-static-debug.zip"        => "6f00191f07b09cf117baa0a3b58a888df981d301f08b2b2dd3f543b45e6b1fc0",
-  "libui-ng-ubuntu-arm64-static-release.zip"      => "ad535ac8f90593621c95d653521c9db4770c5d962765438fc93ed756ab2567e9",
-  "libui-ng-ubuntu-x64-static-debug.zip"          => "82537dc18cec1d86f206fd7f88543459bc6097c52ec9d712aead537e9c13322e",
-  "libui-ng-ubuntu-x64-static-release.zip"        => "dc83e3d5e015e5c7234d349f6e2b3cc346c2b37fe81026784faf1d385a9ce779",
-  "libui-ng-windows-x64-mingw-static-debug.zip"   => "fa466e56c3cb294532f5d8f55a018f64c59264f97b1ba7547029ce7eca9e145b",
-  "libui-ng-windows-x64-mingw-static-release.zip" => "d53013099bdcf2274591d6c49c10622873cdd10e84343ee7bce7124f1131fb4e",
-  "libui-ng-windows-x64-msvc-static-debug.zip"    => "ead6594046ff7aee5475314ef3c2633dedcd4f1c0f908974f051ac6c1bff3c68",
-  "libui-ng-windows-x64-msvc-static-release.zip"  => "280bd23af024d2b5f0829c4f7aee5d470ceac7032701f7fc873c1675f9875712",
-  "libui-ng-windows-x64-ucrt-static-debug.zip"    => "702d0cdc896f9b6c945203185939fb993c5c0a9dc9c265545f18a8238a68296e",
-  "libui-ng-windows-x64-ucrt-static-release.zip"  => "740f3570093b9e4d40793177aed437a5f6de0ee27aa62c980bcd2036986dee88",
-  "libui-ng-windows-x86-msvc-static-debug.zip"    => "fd4dbf6be7744820e96d7287eb66824f74f9cd028743b57da34a9bf9c8175113",
-  "libui-ng-windows-x86-msvc-static-release.zip"  => "a8a09f7a84bfa37bc538a65ba45806d8e91bb0498bc8bdc77e55daa2ccc21759",
+  "libui-ng-macos-arm64-static-debug.zip"         => "33fd40efd9b62f373f6f985f4a33bcb80d8e38d9c0c9bbf18bcf8ff0db8d27f0",
+  "libui-ng-macos-arm64-static-release.zip"       => "c39284f890e7aa9b94f021422987000fa2f757bc6c0ccb82c9dbb2c81f26fc71",
+  "libui-ng-macos-x64-static-debug.zip"           => "db68775eec3124c31e5fc2c3bd49522f4d3c4d791bb4d51b4b71fdd97873da78",
+  "libui-ng-macos-x64-static-release.zip"         => "f4699007af3713310c778eda3ecd4c825a68dcfd928cff4dac941782a1a48dd6",
+  "libui-ng-ubuntu-arm64-static-debug.zip"        => "5f49dc53d084773ac7a9a9078d22126d88001f503458b79dda225926ed43ada6",
+  "libui-ng-ubuntu-arm64-static-release.zip"      => "b303ee760ae407dbb88d86caf881922741ae111a3325ec7b5cceec595654f917",
+  "libui-ng-ubuntu-x64-static-debug.zip"          => "c9659941559bc910d86ddba2e749cbbd36e2c2295ff4bee51163e770f5613067",
+  "libui-ng-ubuntu-x64-static-release.zip"        => "8c32b0770f570479fa82368f9319abda9278504ebb83164534325f50eaeac9eb",
+  "libui-ng-windows-x64-mingw-static-debug.zip"   => "5e500989559cb03fb0796a34401e8a23bc8454499cf999dfc2af417e22dd6f11",
+  "libui-ng-windows-x64-mingw-static-release.zip" => "1f24ffc9de4f972acc573e13337d9d770d8ebd9e67872d180eb361ed98a5f121",
+  "libui-ng-windows-x64-msvc-static-debug.zip"    => "9a326825753aa017ce2ee03bb47b93922cc323c35b19f74e996709964238ff8b",
+  "libui-ng-windows-x64-msvc-static-release.zip"  => "8e150e0be52b10293e145ed12e4d86ac01d218e24914281dbfb3ec18c06201c1",
+  "libui-ng-windows-x64-ucrt-static-debug.zip"    => "64ad50dc40c5d522d3908b8513fcad1d96a094f9dbce650a91f2e8e52f97ebe0",
+  "libui-ng-windows-x64-ucrt-static-release.zip"  => "156d868d4401895be8c97b8b7caf491cae1f779f36a5b5febd00775157d23387",
+  "libui-ng-windows-x86-msvc-static-debug.zip"    => "a8d738dd8435cc94f014db6dcc1c3dfa63fd74eb9968dc3d257468940d8394df",
+  "libui-ng-windows-x86-msvc-static-release.zip"  => "bc81139b955672f04a9a9879b1885448f48a0aed3ce3000a1b0c967902f4f8e7",
 }
 
 # Path constants
