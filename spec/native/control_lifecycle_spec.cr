@@ -125,8 +125,8 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         saved = descriptor.snapshot
       end
 
-      expired = borrowed.not_nil!
-      snapshot = saved.not_nil!
+      expired = borrowed.as(UIng::FontDescriptor)
+      snapshot = saved.as(UIng::FontDescriptor)
       expired.released?.should be_true
       expect_raises(Exception, /already been released/) { expired.family }
       snapshot.family.empty?.should be_false
