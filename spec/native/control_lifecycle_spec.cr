@@ -136,6 +136,32 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       button.try &.destroy
     end
 
+    it "sets and resets a Label font size" do
+      label = UIng::Label.new("Text")
+      default_size = label.font_size
+
+      label.font_size = 18.5
+      label.font_size.should be_close(18.5, 0.000001)
+
+      label.text = "Changed"
+      label.font_size.should be_close(18.5, 0.000001)
+
+      label.reset_font_size
+      label.font_size.should be_close(default_size, 0.000001)
+    ensure
+      label.try &.destroy
+    end
+
+    it "rejects invalid Label font sizes before calling libui-ng" do
+      label = UIng::Label.new("Text")
+
+      [0, -1, Float64::NAN, Float64::INFINITY].each do |size|
+        expect_raises(ArgumentError, /finite and positive/) { label.font_size = size }
+      end
+    ensure
+      label.try &.destroy
+    end
+
     it "releases a Quit MenuItem wrapper without touching its forbidden callback API" do
       menu = UIng::Menu.new("Application")
       item = menu.append_quit_item

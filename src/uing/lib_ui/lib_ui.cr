@@ -185,6 +185,9 @@ module UIng
     alias Label = Void
     fun label_text = uiLabelText(l : Pointer(Label)) : Pointer(LibC::Char)
     fun label_set_text = uiLabelSetText(l : Pointer(Label), text : Pointer(LibC::Char))
+    fun label_font_size = uiLabelFontSize(l : Pointer(Label)) : LibC::Double
+    fun label_set_font_size = uiLabelSetFontSize(l : Pointer(Label), size : LibC::Double)
+    fun label_reset_font_size = uiLabelResetFontSize(l : Pointer(Label))
     fun new_label = uiNewLabel(text : Pointer(LibC::Char)) : Pointer(Label)
     alias Tab = Void
     fun tab_append = uiTabAppend(t : Pointer(Tab), name : Pointer(LibC::Char), c : Pointer(Control))

@@ -18,6 +18,28 @@ module UIng
       LibUI.label_set_text(ref_ptr, text)
     end
 
+    # Returns the font size in typographical points.
+    def font_size : Float64
+      LibUI.label_font_size(ref_ptr)
+    end
+
+    # Sets the font size in typographical points without changing other font
+    # properties.
+    def font_size=(size : Number) : Nil
+      check_available
+      value = size.to_f64
+      unless value.finite? && value > 0
+        raise ArgumentError.new("label font size must be finite and positive")
+      end
+      LibUI.label_set_font_size(ref_ptr, value)
+    end
+
+    # Restores the platform-default font size that was in effect when this
+    # label was created.
+    def reset_font_size : Nil
+      LibUI.label_reset_font_size(ref_ptr)
+    end
+
     def to_unsafe
       ref_ptr
     end

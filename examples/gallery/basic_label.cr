@@ -9,6 +9,7 @@ window.on_closing do
 end
 
 label = UIng::Label.new("This is a label.")
+label.font_size = 24
 
 window.child = label
 window.show
