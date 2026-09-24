@@ -384,7 +384,13 @@ class ControlGalleryApp
     inner.append(button, false)
     inner.append checkbox
 
-    inner.append UIng::Label.new("Label")
+    font_size_box = UIng::Box.new(:horizontal, padded: true)
+    [8, 12, 16].each do |size|
+      label = UIng::Label.new("Label #{size}pt")
+      label.font_size = size
+      font_size_box.append label
+    end
+    inner.append font_size_box
     inner.append UIng::Separator.new(:horizontal)
 
     dp = UIng::DateTimePicker.new(:date) do
