@@ -123,8 +123,8 @@ jobs:
           name: md5checker-windows
           path: examples/md5_checker/dist/*.exe
 
-  build-mingw64:
-    name: Build MinGW64
+  build-ucrt64:
+    name: Build UCRT64
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v7
@@ -133,35 +133,33 @@ jobs:
 
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: true
           install: >-
-            mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-tools-git
-            mingw-w64-x86_64-crystal
-            mingw-w64-x86_64-shards
-            mingw-w64-x86_64-openssl
-            mingw-w64-x86_64-pcre2
+            mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-crystal
+            mingw-w64-ucrt-x86_64-shards
+            mingw-w64-ucrt-x86_64-openssl
+            mingw-w64-ucrt-x86_64-pcre2
+            git
 
       - name: Install dependencies
         shell: msys2 {0}
-        run: |
-          pacman -S --noconfirm git
-          shards install
+        run: shards install
 
-      - name: Build MinGW64 package
+      - name: Build UCRT64 package
         working-directory: examples/md5_checker
         shell: msys2 {0}
         run: |
-          export LIBRARY_PATH=/mingw64/lib:$LIBRARY_PATH
-          export C_INCLUDE_PATH=/mingw64/include:$C_INCLUDE_PATH
-          export CPLUS_INCLUDE_PATH=/mingw64/include:$CPLUS_INCLUDE_PATH
+          export LIBRARY_PATH=/ucrt64/lib:$LIBRARY_PATH
+          export C_INCLUDE_PATH=/ucrt64/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=/ucrt64/include:$CPLUS_INCLUDE_PATH
           shards build --release --no-debug --static --link-flags "-lcrypto -lssl -mwindows"
 
-      - name: Upload MinGW64 artifact
+      - name: Upload UCRT64 artifact
         uses: actions/upload-artifact@v7
         with:
-          name: md5checker-mingw64
+          name: md5checker-ucrt64
           path: examples/md5_checker/bin/md5checker.exe
 
   test-packages:
