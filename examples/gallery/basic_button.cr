@@ -13,6 +13,7 @@ button = UIng::Button.new("Button") do
     window.msg_box("Information", "You clicked the button")
   end
 end
+button.tooltip = "Click to show a message"
 
 window.child = button
 window.show

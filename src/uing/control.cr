@@ -135,6 +135,19 @@ module UIng
       Pointer(Void).new(LibUI.control_handle(UIng.to_control(@ref_ptr)).to_u64)
     end
 
+    # Sets a descriptive tooltip for this control.
+    #
+    # Container tooltips apply only to the container's own surface, not to its
+    # children. For sliders, this temporarily replaces the value tooltip.
+    def tooltip=(tooltip : String) : Nil
+      LibUI.control_set_tooltip(UIng.to_control(ref_ptr), tooltip)
+    end
+
+    # Removes this control's descriptive tooltip.
+    def tooltip=(tooltip : Nil) : Nil
+      LibUI.control_set_tooltip(UIng.to_control(ref_ptr), Pointer(LibC::Char).null)
+    end
+
     # native libui function
     def __parent__
       check_available

@@ -115,6 +115,34 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     after_each { UIng.on_error(nil) }
     after_all { UIng.uninit }
 
+    it "sets and removes descriptive control tooltips" do
+      window = UIng::Window.new("Tooltip spec", 320, 200)
+      box = UIng::Box.new(:vertical)
+      button = UIng::Button.new("Button")
+      slider = UIng::Slider.new(0, 100)
+      box.append(button)
+      box.append(slider)
+      window.child = box
+
+      window.tooltip = "Window tooltip"
+      button.tooltip = "日本語 tooltip\nsecond line"
+      button.tooltip = ""
+      button.tooltip = nil
+
+      slider.has_tool_tip = false
+      slider.tooltip = "Descriptive slider tooltip"
+      slider.has_tool_tip?.should be_false
+      slider.tooltip = nil
+      slider.has_tool_tip?.should be_false
+
+      slider.has_tool_tip = true
+      slider.tooltip = "Replacement tooltip"
+      slider.tooltip = nil
+      slider.has_tool_tip?.should be_true
+    ensure
+      window.try { |control| control.destroy unless control.released? }
+    end
+
     it "expires FontButton descriptors while preserving snapshots" do
       button = UIng::FontButton.new
       borrowed = nil

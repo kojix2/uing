@@ -94,6 +94,7 @@ module UIng
     # Control is a struct
     fun control_destroy = uiControlDestroy(c : Pointer(Control))
     fun control_on_destroyed = uiControlOnDestroyed(c : Pointer(Control), f : (Pointer(Control), Pointer(Void) -> Void), data : Pointer(Void))
+    fun control_set_tooltip = uiControlSetTooltip(c : Pointer(Control), tooltip : Pointer(LibC::Char))
     fun control_handle = uiControlHandle(c : Pointer(Control)) : UIntPtr
     fun control_parent = uiControlParent(c : Pointer(Control)) : Pointer(Control)
     fun control_set_parent = uiControlSetParent(c : Pointer(Control), parent : Pointer(Control))
