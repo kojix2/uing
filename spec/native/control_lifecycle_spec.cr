@@ -115,6 +115,20 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     after_each { UIng.on_error(nil) }
     after_all { UIng.uninit }
 
+    # libui-ng finalizes the application menu when the first Window is created,
+    # so menu coverage must run before any example that constructs a Window.
+    it "releases a Quit MenuItem wrapper without touching its forbidden callback API" do
+      menu = UIng::Menu.new("Application")
+      item = menu.append_quit_item
+
+      expect_raises(ArgumentError, /UIng\.on_should_quit/) do
+        item.on_clicked { |_window| }
+      end
+
+      item.destroy
+      expect_raises(Exception, /already been released/) { item.to_unsafe }
+    end
+
     it "sets and removes descriptive control tooltips" do
       window = UIng::Window.new("Tooltip spec", 320, 200)
       box = UIng::Box.new(:vertical)
@@ -188,18 +202,6 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       end
     ensure
       label.try &.destroy
-    end
-
-    it "releases a Quit MenuItem wrapper without touching its forbidden callback API" do
-      menu = UIng::Menu.new("Application")
-      item = menu.append_quit_item
-
-      expect_raises(ArgumentError, /UIng\.on_should_quit/) do
-        item.on_clicked { |_window| }
-      end
-
-      item.destroy
-      expect_raises(Exception, /already been released/) { item.to_unsafe }
     end
 
     it "treats DateTimePicker values as local wall-clock fields" do
