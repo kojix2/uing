@@ -196,6 +196,26 @@ module UIng
       LibUI.control_disable(UIng.to_control(@ref_ptr))
     end
 
+    # Overrides the minimum size this control requests from its parent.
+    #
+    # Each axis is independent. Pass `-1` to restore its normal minimum-size
+    # calculation, `0` to remove the control's own minimum request, or a
+    # positive value to replace it. This does not fix the control to this size;
+    # its parent may still allocate more space. Top-level controls are not
+    # supported.
+    def set_minimum_size(width : Int32, height : Int32) : Nil
+      if width < -1 || height < -1
+        raise ArgumentError.new("minimum width and height must be at least -1")
+      end
+
+      control = UIng.to_control(ref_ptr)
+      if LibUI.control_toplevel(control) != 0
+        raise ArgumentError.new("minimum size cannot be set on a top-level control")
+      end
+
+      LibUI.control_set_minimum_size(control, width, height)
+    end
+
     def enabled_to_user? : Bool
       check_available
       LibUI.control_enabled_to_user(UIng.to_control(@ref_ptr)) != 0

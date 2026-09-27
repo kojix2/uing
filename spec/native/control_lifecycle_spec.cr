@@ -157,6 +157,28 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       window.try { |control| control.destroy unless control.released? }
     end
 
+    it "sets and resets control minimum sizes" do
+      window = UIng::Window.new("Minimum size spec", 320, 200)
+      box = UIng::Box.new(:vertical)
+      button = UIng::Button.new("Button")
+      box.append(button)
+      window.child = box
+
+      button.set_minimum_size(160, -1)
+      button.set_minimum_size(-1, 48)
+      button.set_minimum_size(0, 0)
+      button.set_minimum_size(-1, -1)
+
+      expect_raises(ArgumentError, /at least -1/) do
+        button.set_minimum_size(-2, 10)
+      end
+      expect_raises(ArgumentError, /top-level/) do
+        window.set_minimum_size(320, 200)
+      end
+    ensure
+      window.try { |control| control.destroy unless control.released? }
+    end
+
     it "expires FontButton descriptors while preserving snapshots" do
       button = UIng::FontButton.new
       borrowed = nil

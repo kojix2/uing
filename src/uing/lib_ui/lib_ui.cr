@@ -105,6 +105,7 @@ module UIng
     fun control_enabled = uiControlEnabled(c : Pointer(Control)) : LibC::Int
     fun control_enable = uiControlEnable(c : Pointer(Control))
     fun control_disable = uiControlDisable(c : Pointer(Control))
+    fun control_set_minimum_size = uiControlSetMinimumSize(c : Pointer(Control), width : LibC::Int, height : LibC::Int)
     fun alloc_control = uiAllocControl(n : LibC::SizeT, o_ssig : UInt32, typesig : UInt32, typenamestr : Pointer(LibC::Char)) : Pointer(Control)
     fun free_control = uiFreeControl(c : Pointer(Control))
     fun control_verify_set_parent = uiControlVerifySetParent(c : Pointer(Control), parent : Pointer(Control))
