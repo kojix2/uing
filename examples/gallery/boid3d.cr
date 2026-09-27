@@ -636,7 +636,7 @@ def create_preferences_window_3d
 
     controls = new_preference_controls_3d
 
-    set_child(
+    self.child = (
       UIng::Box.new(:vertical, padded: true) do
         append(UIng::Label.new("3D Boid Simulation Parameters"), stretchy: false)
         append(
@@ -744,7 +744,7 @@ def create_main_window_3d : UIng::Window
       UIng.quit
       true
     end
-    set_child(vbox)
+    self.child = vbox
     show
   end
 end

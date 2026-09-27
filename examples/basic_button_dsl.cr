@@ -6,7 +6,7 @@ UIng.init do
       UIng.quit
       true
     end
-    set_child do
+    child do
       UIng::Button.new("Click me") do
         on_clicked do
           win.msg_box("Information", "You clicked the button")

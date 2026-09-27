@@ -281,6 +281,41 @@ describe "container lifetime" do
     group.native_child_cleared?.should be_true
   end
 
+  it "supports the Window child block DSL" do
+    window = DetachableWindow.new
+    child = DetachableControl.new
+
+    window.child { child }
+
+    window.child.should be(child)
+    child.parent.should be(window)
+  end
+
+  it "supports the Group child block DSL" do
+    group = DetachableGroup.new
+    child = DetachableControl.new
+
+    group.child { child }
+
+    group.child.should be(child)
+    child.parent.should be(group)
+  end
+
+  it "preserves the set_child compatibility aliases" do
+    window = DetachableWindow.new
+    window_child = DetachableControl.new
+    window.set_child(window_child)
+
+    group = DetachableGroup.new
+    group_child = DetachableControl.new
+    group.set_child { group_child }
+
+    window.child.should be(window_child)
+    window_child.parent.should be(window)
+    group.child.should be(group_child)
+    group_child.parent.should be(group)
+  end
+
   it "detaches a Grid child through uiGridDelete" do
     grid = DetachableGrid.new
     child = DetachableControl.new

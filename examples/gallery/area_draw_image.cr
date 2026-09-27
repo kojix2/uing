@@ -63,7 +63,7 @@ end
 area = UIng::Area.new(area_handler)
 box = UIng::Box.new(:horizontal)
 box.append(area, stretchy: true)
-window.set_child(box)
+window.child = box
 window.show
 
 UIng.main

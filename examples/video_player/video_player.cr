@@ -160,7 +160,7 @@ class VideoPlayerApp
     duration_seconds : Int32,
     seek_max : Int32,
   )
-    seek_slider.set_range(0, seek_max)
+    seek_slider.range = 0..seek_max
     seek_slider.value = current_seconds.clamp(0, seek_max)
     current_time_label.text = format_timestamp(current_seconds)
     duration_label.text = format_timestamp(duration_seconds)

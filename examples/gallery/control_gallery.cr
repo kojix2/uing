@@ -36,7 +36,7 @@ class ControlGalleryApp
         UIng.quit
         true
       end
-      set_child(build_content)
+      self.child = build_content
     end
 
     main_window.toolbar = build_toolbar
@@ -522,7 +522,7 @@ class ControlGalleryApp
         @preferences_window = nil
         true # Allow closing
       end
-      set_child(build_preferences_content)
+      self.child = build_preferences_content
       show
 
       x = main_window.position[0] + main_window.content_size[0] / 2 - content_size[0] / 2

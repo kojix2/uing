@@ -40,12 +40,18 @@ module UIng
       LibUI.slider_set_has_tool_tip(ref_ptr, has_tool_tip ? 1 : 0)
     end
 
-    def set_range(min : Int32, max : Int32) : Nil
-      LibUI.slider_set_range(ref_ptr, min, max)
+    def range=(range : Range(Int32, Int32)) : Nil
+      LibUI.slider_set_range(ref_ptr, range.min, range.max)
     end
 
+    # Compatibility alias for `range=`.
+    def set_range(min : Int32, max : Int32) : Nil
+      self.range = min..max
+    end
+
+    # Compatibility alias for `range=`.
     def set_range(range : Range(Int32, Int32)) : Nil
-      LibUI.slider_set_range(ref_ptr, range.min, range.max)
+      self.range = range
     end
 
     def on_changed(&block : Int32 -> _) : Nil

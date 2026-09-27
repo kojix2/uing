@@ -39,7 +39,7 @@ label = UIng::Label.new(fname)
 vbox.append(image_view, stretchy: true)
 vbox.append(label)
 
-window.set_child(vbox)
+window.child = vbox
 window.show
 
 UIng.main

@@ -56,19 +56,24 @@ module UIng
       @child_ref
     end
 
+    # For DSL style.
+    def child(&block : -> Control)
+      control = block.call
+      self.child = control
+    end
+
     protected def set_native_child(child : Pointer(LibUI::Control)) : Nil
       LibUI.group_set_child(ref_ptr, child)
     end
 
-    # alias for `child=`
+    # Compatibility alias for `child=`.
     def set_child(control) : Nil
       self.child = control
     end
 
-    # For DSL style
+    # Compatibility alias for `child { ... }`.
     def set_child(&block : -> Control)
-      control = block.call
-      self.child = control
+      child(&block)
     end
 
     def margined? : Bool

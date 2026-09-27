@@ -47,7 +47,7 @@ end
 
 {% if flag?(:darwin) %}
   label = UIng::Label.new("The Mac menu bar is at the top of the screen.")
-  Window.set_child(label)
+  Window.child = label
 {% end %}
 
 UIng.main

@@ -88,7 +88,7 @@ module AirHockey
         on_content_size_changed do |width, height|
           Log.info("window content size changed: #{width}x#{height}")
         end
-        set_child(vbox)
+        self.child = vbox
         Log.info("window child set")
         show
       end

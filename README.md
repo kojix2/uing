@@ -102,7 +102,7 @@ button.on_clicked do
   window.msg_box("Info", "Button clicked!")
 end
 
-window.set_child(button)
+window.child = button
 window.show
 
 UIng.main
@@ -117,7 +117,7 @@ require "uing"
 UIng.init do
   UIng::Window.new("Hello World", 300, 200) { |win|
     on_closing { UIng.quit; true }
-    set_child {
+    child {
       UIng::Button.new("Click me") {
         on_clicked {
           win.msg_box("Info", "Button clicked!")
