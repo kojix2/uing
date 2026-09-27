@@ -131,7 +131,6 @@ module UIng
       @child_ref
     end
 
-    # For DSL style.
     def child(&block : -> Control)
       control = block.call
       self.child = control
@@ -141,12 +140,11 @@ module UIng
       LibUI.window_set_child(ref_ptr, child)
     end
 
-    # Compatibility alias for `child=`.
+    # Aliases for `child=` and `child { ... }`.
     def set_child(control : Control) : Nil
       self.child = control
     end
 
-    # Compatibility alias for `child { ... }`.
     def set_child(&block : -> Control)
       child(&block)
     end

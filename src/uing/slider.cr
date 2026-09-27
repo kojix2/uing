@@ -41,15 +41,14 @@ module UIng
     end
 
     def range=(range : Range(Int32, Int32)) : Nil
-      LibUI.slider_set_range(ref_ptr, range.min, range.max)
+      set_native_range(range.min, range.max)
     end
 
-    # Compatibility alias for `range=`.
+    # Aliases for `range=`.
     def set_range(min : Int32, max : Int32) : Nil
-      self.range = min..max
+      set_native_range(min, max)
     end
 
-    # Compatibility alias for `range=`.
     def set_range(range : Range(Int32, Int32)) : Nil
       self.range = range
     end
@@ -100,6 +99,10 @@ module UIng
 
     def to_unsafe
       ref_ptr
+    end
+
+    private def set_native_range(min : Int32, max : Int32) : Nil
+      LibUI.slider_set_range(ref_ptr, min, max)
     end
   end
 end
