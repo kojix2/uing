@@ -628,7 +628,7 @@ end
 
 # Create preferences window for 3D
 def create_preferences_window_3d
-  UIng::Window.new("Preferences", 400, 600, margined: true) do
+  UIng::Window.new("Preferences", 400, 600, margined: true) do |window|
     on_closing do
       STATUS_LABEL3D.text = "Preferences closed"
       true # Allow closing
@@ -636,7 +636,7 @@ def create_preferences_window_3d
 
     controls = new_preference_controls_3d
 
-    self.child = (
+    window.child = (
       UIng::Box.new(:vertical, padded: true) do
         append(UIng::Label.new("3D Boid Simulation Parameters"), stretchy: false)
         append(
@@ -738,13 +738,13 @@ def create_main_window_3d : UIng::Window
   vbox.append(AREA3D, true)
   vbox.append(STATUS_LABEL3D, false)
 
-  UIng::Window.new("Boid 3D Simulation", SIMULATION3D.width.to_i, (SIMULATION3D.height + 50).to_i, menubar: true) do
+  UIng::Window.new("Boid 3D Simulation", SIMULATION3D.width.to_i, (SIMULATION3D.height + 50).to_i, menubar: true) do |window|
     on_closing do
       SIMULATION3D.animation_running = false
       UIng.quit
       true
     end
-    self.child = vbox
+    window.child = vbox
     show
   end
 end

@@ -27,7 +27,7 @@ class ControlGalleryApp
     @table_model = nil
 
     setup_menus
-    @main_window = UIng::Window.new("Control Gallery", 900, 600, menubar: true, margined: true) do
+    @main_window = UIng::Window.new("Control Gallery", 900, 600, menubar: true, margined: true) do |window|
       on_closing do
         puts "Bye Bye"
         close_preferences
@@ -36,7 +36,7 @@ class ControlGalleryApp
         UIng.quit
         true
       end
-      self.child = build_content
+      window.child = build_content
     end
 
     main_window.toolbar = build_toolbar
@@ -522,7 +522,7 @@ class ControlGalleryApp
         @preferences_window = nil
         true # Allow closing
       end
-      self.child = build_preferences_content
+      window.child = build_preferences_content
       show
 
       x = main_window.position[0] + main_window.content_size[0] / 2 - content_size[0] / 2

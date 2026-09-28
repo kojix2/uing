@@ -78,7 +78,7 @@ module AirHockey
       vbox.append(area, stretchy: true)
       Log.info("layout box created")
 
-      window = UIng::Window.new("Air Hockey", @game.screen_width.to_i, @game.screen_height.to_i) do
+      window = UIng::Window.new("Air Hockey", @game.screen_width.to_i, @game.screen_height.to_i) do |window|
         on_closing do
           Log.info("window closing")
           @shutting_down = true
@@ -88,7 +88,7 @@ module AirHockey
         on_content_size_changed do |width, height|
           Log.info("window content size changed: #{width}x#{height}")
         end
-        self.child = vbox
+        window.child = vbox
         Log.info("window child set")
         show
       end
