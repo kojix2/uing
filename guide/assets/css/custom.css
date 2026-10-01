@@ -1,0 +1,10 @@
+/* Nicolino's Blox book template renders the sidebar before the article. */
+.book-layout {
+  grid-template-columns: 16rem minmax(0, 1fr);
+}
+
+@media (max-width: 1023px) {
+  .book-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
