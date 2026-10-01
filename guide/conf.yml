@@ -4,7 +4,7 @@ url: "https://kojix2.github.io"
 url_prefix: "uing"
 footer: "UIng is released under the MIT License"
 
-theme: "default"
+theme: "blox"
 color_scheme: "default"
 
 output: "output/"
