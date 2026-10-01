@@ -25,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Workaround
+        run: sudo apt-get update -y
+
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
         with:
