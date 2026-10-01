@@ -29,7 +29,7 @@ jobs:
         uses: crystal-lang/install-crystal@v1
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Install Crystal dependencies
         run: shards install
