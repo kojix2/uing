@@ -1,5 +1,7 @@
 # Introduction
 
+[日本語](../guide_ja/introduction.html)
+
 UIng is a Crystal binding for
 [libui-ng](https://github.com/kojix2/libui-ng), a portable library for native
 desktop interfaces. It gives Crystal applications access to windows, buttons,

@@ -1,5 +1,7 @@
 # Examples and API Reference
 
+[日本語](../guide_ja/examples-and-api.html)
+
 Use the guide to learn the application structure, then use the API Reference
 for the complete list of public types and methods.
 

@@ -1,5 +1,7 @@
 # Events
 
+[日本語](../guide_ja/events.html)
+
 UIng applications respond to native events with callback blocks. Register
 callbacks while building the interface, before calling `UIng.main`.
 

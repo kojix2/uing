@@ -1,0 +1,12 @@
+[book]
+title = "UIngガイド"
+description = "Crystalとlibui-ngでクロスプラットフォームのネイティブデスクトップアプリケーションを作成します。"
+authors = ["UIng contributors"]
+language = "ja"
+
+[build]
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/kojix2/uing"
+edit-url-template = "https://github.com/kojix2/uing/edit/main/guide/content/books/guide_ja/{path}"

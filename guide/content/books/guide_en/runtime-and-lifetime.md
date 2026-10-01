@@ -1,5 +1,7 @@
 # Runtime and Lifetime
 
+[日本語](../guide_ja/runtime-and-lifetime.html)
+
 A UIng application creates its controls between `UIng.init` and `UIng.main`.
 The main loop then waits for native events and invokes the callbacks registered
 by the application.

@@ -9,4 +9,4 @@ create-missing = false
 
 [output.html]
 git-repository-url = "https://github.com/kojix2/uing"
-edit-url-template = "https://github.com/kojix2/uing/edit/main/guide/content/books/guide/{path}"
+edit-url-template = "https://github.com/kojix2/uing/edit/main/guide/content/books/guide_en/{path}"

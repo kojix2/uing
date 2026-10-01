@@ -1,5 +1,7 @@
 # Controls and Layout
 
+[日本語](../guide_ja/controls-and-layout.html)
+
 UIng provides native controls for displaying text, accepting input, choosing
 values, showing progress, working with menus, and presenting tabular data.
 Common starting points include `Label`, `Button`, `Entry`, `Checkbox`,

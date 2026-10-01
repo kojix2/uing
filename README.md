@@ -15,6 +15,8 @@
 UIng is a [Crystal](https://crystal-lang.org/) binding for [kojix2/libui-ng](https://github.com/kojix2/libui-ng).
 You can use the Crystal language to create cross-platform native desktop apps.
 
+[日本語ガイド](https://kojix2.github.io/uing/books/guide_ja/) ·
+[English Guide](https://kojix2.github.io/uing/books/guide_en/) ·
 [API Reference](https://kojix2.github.io/uing/api/)
 
 libui-ng uses the native APIs of each platform: Win32 API, [Direct2D](https://learn.microsoft.com/windows/win32/Direct2D/), and [DirectWrite](https://learn.microsoft.com/windows/win32/directwrite/) on Windows; [Cocoa](<https://en.wikipedia.org/wiki/Cocoa_(API)>) (AppKit) on macOS; and [GTK+ 3.10+](https://docs.gtk.org/gtk3/) and [Pango](https://docs.gtk.org/Pango/) on Linux/Unix.

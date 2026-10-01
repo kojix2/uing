@@ -1,5 +1,7 @@
 # First Steps
 
+[日本語](../guide_ja/first-steps.html)
+
 This application opens a native window containing a button. Clicking the
 button displays a message box.
 

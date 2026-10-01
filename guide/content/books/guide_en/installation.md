@@ -1,5 +1,7 @@
 # Installation
 
+[日本語](../guide_ja/installation.html)
+
 Add UIng to your application's `shard.yml`:
 
 <pre><code class="yaml">
