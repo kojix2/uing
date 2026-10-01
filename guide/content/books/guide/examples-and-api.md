@@ -1,0 +1,28 @@
+# Examples and API Reference
+
+Use the guide to learn the application structure, then use the API Reference
+for the complete list of public types and methods.
+
+- [API Reference](../../api/)
+- [Control gallery](https://github.com/kojix2/uing/tree/main/examples/gallery)
+- [UIng source code](https://github.com/kojix2/uing)
+- [libui-ng](https://github.com/kojix2/libui-ng)
+
+## Runnable examples
+
+The gallery contains focused examples for individual controls, containers,
+menus, tables, and custom drawing. From a checkout of the repository, run the
+full gallery with:
+
+    crystal run examples/gallery/control_gallery.cr
+
+Larger examples include:
+
+- [MD5 Checker](https://github.com/kojix2/uing/tree/main/examples/md5_checker)
+- [Video Player](https://github.com/kojix2/uing/tree/main/examples/video_player)
+- [Air Hockey](https://github.com/kojix2/uing/tree/main/examples/air_hockey)
+- [World Clock](https://github.com/kojix2/uing/blob/main/examples/world_clock.cr)
+
+Start with the smallest example containing the control you need. Custom
+drawing and tables have additional callbacks and lifetime requirements, so
+their gallery examples are the best starting point.

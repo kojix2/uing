@@ -1,0 +1,25 @@
+title: "UIng Guide"
+description: "A guide to building native desktop applications with UIng"
+url: "https://kojix2.github.io"
+url_prefix: "uing"
+footer: "UIng is released under the MIT License"
+
+theme: "default"
+color_scheme: "default"
+
+output: "output/"
+content: "content/"
+books: "books/"
+
+language: "en"
+locale: "en_US.UTF-8"
+date_output_format: "%B %e, %Y"
+verbosity: 4
+
+features:
+  - assets
+  - base16
+  - books
+  - folder_indexes
+  - pages
+  - search

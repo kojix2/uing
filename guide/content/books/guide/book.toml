@@ -1,0 +1,12 @@
+[book]
+title = "UIng Guide"
+description = "Build cross-platform native desktop applications with Crystal and libui-ng."
+authors = ["UIng contributors"]
+language = "en"
+
+[build]
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/kojix2/uing"
+edit-url-template = "https://github.com/kojix2/uing/edit/main/guide/content/books/guide/{path}"

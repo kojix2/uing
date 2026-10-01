@@ -2,22 +2,70 @@ name: docs
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - "guide/**"
+      - "src/**"
+      - "shard.yml"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v7
-      - uses: crystal-lang/install-crystal@v1
-      - name: Install dependencies
+
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install Crystal dependencies
         run: shards install
-      - name: Generate document
+
+      - name: Build API documentation
         run: crystal docs
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+
+      - name: Install Nicolino
+        run: |
+          wget https://github.com/ralsina/nicolino/releases/download/latest/nicolino-static-linux-amd64
+          chmod +x nicolino-static-linux-amd64
+          sudo mv nicolino-static-linux-amd64 /usr/local/bin/nicolino
+
+      - name: Build Nicolino guide
+        working-directory: guide
+        run: |
+          nicolino validate
+          nicolino build -B -p
+
+      - name: Add API documentation to site
+        run: |
+          mkdir -p guide/output/api
+          cp -R docs/. guide/output/api/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          path: guide/output
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy documentation to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
