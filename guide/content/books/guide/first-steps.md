@@ -3,28 +3,32 @@
 This application opens a native window containing a button. Clicking the
 button displays a message box.
 
-    require "uing"
+<pre><code class="crystal">
+require "uing"
 
-    UIng.init do
-      window = UIng::Window.new("Hello World", 300, 200)
-      window.on_closing do
-        UIng.quit
-        true
-      end
+UIng.init do
+  window = UIng::Window.new("Hello World", 300, 200)
+  window.on_closing do
+    UIng.quit
+    true
+  end
 
-      button = UIng::Button.new("Click me")
-      button.on_clicked do
-        window.msg_box("UIng", "Hello from Crystal!")
-      end
+  button = UIng::Button.new("Click me")
+  button.on_clicked do
+    window.msg_box("UIng", "Hello from Crystal!")
+  end
 
-      window.child = button
-      window.show
-      UIng.main
-    end
+  window.child = button
+  window.show
+  UIng.main
+end
+</code></pre>
 
 Save the source as `hello.cr`, then run it:
 
-    crystal run hello.cr
+<pre><code class="bash">
+crystal run hello.cr
+</code></pre>
 
 ## How it works
 

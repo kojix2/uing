@@ -15,10 +15,12 @@ by the application.
 Prefer the block form of `UIng.init` because it guarantees the matching
 `UIng.uninit` call:
 
-    UIng.init do
-      # Build and show the interface here.
-      UIng.main
-    end
+<pre><code class="crystal">
+UIng.init do
+  # Build and show the interface here.
+  UIng.main
+end
+</code></pre>
 
 `UIng.quit` stops the loop; it does not destroy every open window. A normal
 window-closing callback returns `true`, allowing libui-ng to destroy that

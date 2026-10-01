@@ -17,16 +17,18 @@ UIng uses the platform's native GUI toolkit: GTK on Linux, AppKit on macOS,
 and Win32 on Windows. Use the regular object-oriented API or the optional
 block-based DSL; both create the same controls.
 
-    require "uing"
+<pre><code class="crystal">
+require "uing"
 
-    UIng.init do
-      UIng::Window.new("Hello World", 300, 200) {
-        on_closing { UIng.quit; true }
-        child { UIng::Label.new("Hello from UIng") }
-        show
-      }
+UIng.init do
+  UIng::Window.new("Hello World", 300, 200) {
+    on_closing { UIng.quit; true }
+    child { UIng::Label.new("Hello from UIng") }
+    show
+  }
 
-      UIng.main
-    end
+  UIng.main
+end
+</code></pre>
 
 [Read the guide →](books/guide/) · [Browse the API reference →](api/)

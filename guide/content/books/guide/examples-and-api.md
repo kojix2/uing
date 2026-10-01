@@ -14,7 +14,9 @@ The gallery contains focused examples for individual controls, containers,
 menus, tables, and custom drawing. From a checkout of the repository, run the
 full gallery with:
 
-    crystal run examples/gallery/control_gallery.cr
+<pre><code class="bash">
+crystal run examples/gallery/control_gallery.cr
+</code></pre>
 
 Larger examples include:
 

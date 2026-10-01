@@ -19,17 +19,21 @@ control:
 The following vertical box keeps its controls together and adds native
 spacing between them:
 
-    box = UIng::Box.new(:vertical, padded: true)
-    box.append(UIng::Label.new("Name"))
-    box.append(UIng::Entry.new)
-    box.append(UIng::Button.new("Save"))
+<pre><code class="crystal">
+box = UIng::Box.new(:vertical, padded: true)
+box.append(UIng::Label.new("Name"))
+box.append(UIng::Entry.new)
+box.append(UIng::Button.new("Save"))
 
-    window.child = box
+window.child = box
+</code></pre>
 
 The optional `stretchy` argument to `Box#append` controls whether a child uses
 the remaining space:
 
-    box.append(editor, stretchy: true)
+<pre><code class="crystal">
+box.append(editor, stretchy: true)
+</code></pre>
 
 Build small containers first, nest them as needed, and assign the outermost
 container to the window. See the

@@ -15,15 +15,19 @@ The same application source can target:
 UIng offers two equivalent ways to construct an interface. The regular API is
 explicit and familiar:
 
-    window = UIng::Window.new("Hello", 300, 200)
-    window.child = UIng::Label.new("Hello from UIng")
+<pre><code class="crystal">
+window = UIng::Window.new("Hello", 300, 200)
+window.child = UIng::Label.new("Hello from UIng")
+</code></pre>
 
 The block-based DSL keeps nested layouts visually close to their resulting
 control hierarchy:
 
-    UIng::Window.new("Hello", 300, 200) {
-      child { UIng::Label.new("Hello from UIng") }
-    }
+<pre><code class="crystal">
+UIng::Window.new("Hello", 300, 200) {
+  child { UIng::Label.new("Hello from UIng") }
+}
+</code></pre>
 
 Both styles use the same controls and may be mixed in one application.
 
