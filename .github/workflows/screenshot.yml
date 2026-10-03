@@ -35,6 +35,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Workaround
+        if: matrix.os == 'ubuntu'
+        run: sudo apt-get update -y
+      
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
         with:
