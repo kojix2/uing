@@ -13,6 +13,7 @@ jobs:
         with:
           submodules: true
 
+      - run: apt-get update -y
       - uses: crystal-lang/install-crystal@v1
         with:
           crystal: latest
