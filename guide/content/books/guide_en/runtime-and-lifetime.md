@@ -14,8 +14,19 @@ by the application.
 - `UIng.quit` asks that loop to stop.
 - `UIng.uninit` releases application-wide resources after the loop ends.
 
-Prefer the block form of `UIng.init` because it guarantees the matching
-`UIng.uninit` call:
+Make sure to call `UIng.uninit` after `UIng.main` so the matching
+`UIng.uninit` is not forgotten:
+
+<pre><code class="crystal">
+UIng.init
+
+# Build and show the interface here.
+UIng.main
+UIng.uninit
+</code></pre>
+
+`UIng.init` also accepts a block. In that form, `UIng.uninit` is called
+automatically after the event loop returns:
 
 <pre><code class="crystal">
 UIng.init do

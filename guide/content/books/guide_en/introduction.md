@@ -14,25 +14,17 @@ The same application source can target:
 - macOS through AppKit
 - Windows through Win32, Direct2D, and DirectWrite
 
-UIng offers two equivalent ways to construct an interface. The regular API is
-explicit and familiar:
+Here is the control gallery in action. The same code renders with the native
+look of each platform:
 
-<pre><code class="crystal">
-window = UIng::Window.new("Hello", 300, 200)
-window.child = UIng::Label.new("Hello from UIng")
-</code></pre>
-
-The block-based DSL keeps nested layouts visually close to their resulting
-control hierarchy:
-
-<pre><code class="crystal">
-UIng::Window.new("Hello", 300, 200) {
-  child { UIng::Label.new("Hello from UIng") }
-}
-</code></pre>
-
-Both styles use the same controls and may be mixed in one application.
+<div class="widget-screenshots">
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png" alt="Control gallery on Ubuntu" loading="lazy"></a><figcaption>Ubuntu</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png" alt="Control gallery on Windows" loading="lazy"></a><figcaption>Windows</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png" alt="Control gallery on macOS" loading="lazy"></a><figcaption>macOS</figcaption></figure>
+</div>
 
 This guide focuses on the small set of concepts needed to create an
-application. For the complete list of types and methods, use the
+application. Interfaces can be written with the regular API or the
+block-based DSL; see [Coding Styles](coding-styles.md) for details.
+For the complete list of types and methods, use the
 [API Reference](../../api/).

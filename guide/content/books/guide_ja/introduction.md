@@ -14,24 +14,16 @@ Crystalアプリケーションから利用できます。
 - macOS: AppKit
 - Windows: Win32、Direct2D、DirectWrite
 
-UIngには、インターフェースを構築するための同等な2つの書き方があります。
-通常のAPIは明示的で分かりやすい書き方です。
+コントロールギャラリーの実行例です。同じコードが各プラットフォームの
+ネイティブな外観で動作します。
 
-<pre><code class="crystal">
-window = UIng::Window.new("Hello", 300, 200)
-window.child = UIng::Label.new("Hello from UIng")
-</code></pre>
-
-ブロックベースのDSLでは、ネストしたレイアウトと実際のコントロール階層を
-近い形で記述できます。
-
-<pre><code class="crystal">
-UIng::Window.new("Hello", 300, 200) {
-  child { UIng::Label.new("Hello from UIng") }
-}
-</code></pre>
-
-どちらも同じコントロールを使用しており、1つのアプリケーション内で併用できます。
+<div class="widget-screenshots">
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png" alt="Control gallery on Ubuntu" loading="lazy"></a><figcaption>Ubuntu</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png" alt="Control gallery on Windows" loading="lazy"></a><figcaption>Windows</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png" alt="Control gallery on macOS" loading="lazy"></a><figcaption>macOS</figcaption></figure>
+</div>
 
 このガイドでは、アプリケーションを作成するために必要な基本概念に絞って説明します。
+インターフェースの書き方には通常のAPIとブロックベースのDSLの2つがあります。詳しくは
+[コーディングスタイル](coding-styles.md)を参照してください。
 型とメソッドの完全な一覧は[APIリファレンス](../../api/)を参照してください。

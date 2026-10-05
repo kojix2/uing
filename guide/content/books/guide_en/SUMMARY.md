@@ -10,6 +10,7 @@ Learn how to build cross-platform native desktop applications with UIng.
 - [Building Interfaces]()
   - [Controls and Layout](controls-and-layout.md)
   - [Events](events.md)
+  - [Coding Styles](coding-styles.md)
 - [Windows, Menus, and Dialogs]()
   - [Window](widget-window.md)
   - [Menu](widget-menu.md)

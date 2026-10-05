@@ -10,6 +10,7 @@ UIngを使ったクロスプラットフォームのネイティブデスクト�
 - [インターフェースを構築する]()
   - [コントロールとレイアウト](controls-and-layout.md)
   - [イベント](events.md)
+  - [コーディングスタイル](coding-styles.md)
 - [ウィンドウ、メニュー、ダイアログ]()
   - [Window](widget-window.md)
   - [Menu](widget-menu.md)

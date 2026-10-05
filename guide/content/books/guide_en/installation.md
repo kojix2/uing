@@ -17,8 +17,7 @@ shards install
 </code></pre>
 
 The post-install script downloads the appropriate libui-ng library for the
-current platform. Commit your `shard.yml` and `shard.lock`, but do not commit
-the downloaded `libui` directory.
+current platform.
 
 ## Platform notes
 
@@ -46,7 +45,19 @@ Create `hello.cr`:
 <pre><code class="crystal">
 require "uing"
 
-puts UIng::VERSION
+UIng.init
+
+window = UIng::Window.new("Hello World", 300, 200)
+window.on_closing do
+  UIng.quit
+  true
+end
+
+window.child = UIng::Label.new("Hello from UIng")
+window.show
+
+UIng.main
+UIng.uninit
 </code></pre>
 
 Then run it:
@@ -55,5 +66,6 @@ Then run it:
 crystal run hello.cr
 </code></pre>
 
-The command should print the installed UIng version. Continue with
-[First Steps](first-steps.md) to open a native window.
+If a native window titled "Hello World" opens, the installation works.
+Continue with [First Steps](first-steps.md) to add a button and handle
+events.

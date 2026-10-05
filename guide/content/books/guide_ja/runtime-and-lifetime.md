@@ -14,7 +14,19 @@ UIngアプリケーションは、`UIng.init`から`UIng.main`までの間にコ
 - `UIng.quit`はイベントループに終了を要求します。
 - `UIng.uninit`はイベントループ終了後にアプリケーション全体のリソースを解放します。
 
-対応する`UIng.uninit`が確実に呼ばれるため、`UIng.init`のブロック形式を推奨します。
+対応する`UIng.uninit`を呼び忘れないよう、`UIng.main`の後には必ず`UIng.uninit`を
+呼んでください。
+
+<pre><code class="crystal">
+UIng.init
+
+# ここでインターフェースを構築して表示します。
+UIng.main
+UIng.uninit
+</code></pre>
+
+`UIng.init`にブロックを渡す書き方もあります。この形式では、イベントループが
+終了した後に`UIng.uninit`が自動的に呼び出されます。
 
 <pre><code class="crystal">
 UIng.init do

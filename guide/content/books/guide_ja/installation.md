@@ -17,8 +17,7 @@ shards install
 </code></pre>
 
 インストール後のスクリプトが、現在のプラットフォームに対応するlibui-ngライブラリを
-ダウンロードします。`shard.yml`と`shard.lock`はコミットしますが、ダウンロードされた
-`libui`ディレクトリはコミットしないでください。
+ダウンロードします。
 
 ## プラットフォームごとの注意事項
 
@@ -46,7 +45,19 @@ PowerShellからCrystalを実行してください。
 <pre><code class="crystal">
 require "uing"
 
-puts UIng::VERSION
+UIng.init
+
+window = UIng::Window.new("Hello World", 300, 200)
+window.on_closing do
+  UIng.quit
+  true
+end
+
+window.child = UIng::Label.new("Hello from UIng")
+window.show
+
+UIng.main
+UIng.uninit
 </code></pre>
 
 次のコマンドで実行します。
@@ -55,5 +66,5 @@ puts UIng::VERSION
 crystal run hello.cr
 </code></pre>
 
-インストールされたUIngのバージョンが表示されれば成功です。
-[最初のアプリケーション](first-steps.md)へ進み、ネイティブウィンドウを開いてみましょう。
+「Hello World」というタイトルのネイティブウィンドウが開けば成功です。
+[最初のアプリケーション](first-steps.md)へ進み、ボタンとイベントを扱ってみましょう。

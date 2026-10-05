@@ -8,22 +8,24 @@
 <pre><code class="crystal">
 require "uing"
 
-UIng.init do
-  window = UIng::Window.new("Hello World", 300, 200)
-  window.on_closing do
-    UIng.quit
-    true
-  end
+UIng.init
 
-  button = UIng::Button.new("Click me")
-  button.on_clicked do
-    window.msg_box("UIng", "Hello from Crystal!")
-  end
-
-  window.child = button
-  window.show
-  UIng.main
+window = UIng::Window.new("Hello World", 300, 200)
+window.on_closing do
+  UIng.quit
+  true
 end
+
+button = UIng::Button.new("Click me")
+button.on_clicked do
+  window.msg_box("UIng", "Hello from Crystal!")
+end
+
+window.child = button
+window.show
+
+UIng.main
+UIng.uninit
 </code></pre>
 
 ソースを`hello.cr`として保存し、実行します。
@@ -40,6 +42,9 @@ crystal run hello.cr
 4. `window.child`への代入でボタンをウィンドウ内に配置します。
 5. `window.show`がインターフェースを表示します。
 6. `UIng.main`がイベントループを開始し、終了時のコールバックが`UIng.quit`を呼ぶまで待機します。
+7. `UIng.uninit`がイベントループ終了後にアプリケーション全体のリソースを解放します。
 
-`on_closing`から`true`を返すと、ウィンドウを閉じることができます。ブロック形式の
-`UIng.init`は、イベントループが終了した後に`UIng.uninit`を自動的に呼び出します。
+`on_closing`から`true`を返すと、ウィンドウを閉じることができます。`UIng.init`には
+ブロックを渡す書き方もあり、その場合はイベントループが終了した後に`UIng.uninit`が
+自動的に呼び出されます。詳しくは[ランタイムとライフタイム](runtime-and-lifetime.md)を
+参照してください。

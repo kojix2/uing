@@ -21,15 +21,19 @@ block-based DSL; both create the same controls.
 <pre><code class="crystal">
 require "uing"
 
-UIng.init do
-  UIng::Window.new("Hello World", 300, 200) {
-    on_closing { UIng.quit; true }
-    child { UIng::Label.new("Hello from UIng") }
-    show
-  }
+UIng.init
 
-  UIng.main
+window = UIng::Window.new("Hello World", 300, 200)
+window.on_closing do
+  UIng.quit
+  true
 end
+
+window.child = UIng::Label.new("Hello from UIng")
+window.show
+
+UIng.main
+UIng.uninit
 </code></pre>
 
 [日本語で読む →](books/guide_ja/) ·
