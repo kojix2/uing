@@ -9,7 +9,7 @@ window.on_closing do
 end
 
 color_button = UIng::ColorButton.new do
-  set_color(255, 0, 0, 255)
+  set_color(1.0, 0.0, 0.0, 1.0)
   on_changed do |red, green, blue, alpha|
     window.msg_box("Color Changed", "R=#{red}, G=#{green}, B=#{blue}, A=#{alpha}")
   end

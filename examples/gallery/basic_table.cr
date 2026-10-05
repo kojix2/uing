@@ -34,7 +34,7 @@ main_window.show
 main_window.on_closing do
   # Detach and destroy the table before freeing its model.
   hbox.delete(0)
-  table.destroy    # Destroy table firs
+  table.destroy    # Destroy table first
   table_model.free # Then free model
 
   UIng.quit

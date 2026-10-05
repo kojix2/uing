@@ -1,5 +1,4 @@
 require "../../src/uing"
-require "http/client"
 require "stumpy_png"
 
 fname = File.join(__DIR__, "crys.png")
