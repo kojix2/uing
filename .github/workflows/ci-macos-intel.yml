@@ -14,6 +14,14 @@ jobs:
           submodules: true
 
       - uses: crystal-lang/install-crystal@v1
+        id: install-crystal
+        continue-on-error: true
+        with:
+          crystal: latest
+
+      - name: Retry Crystal installation
+        if: steps.install-crystal.outcome == 'failure'
+        uses: crystal-lang/install-crystal@v1
         with:
           crystal: latest
 
