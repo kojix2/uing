@@ -2,10 +2,10 @@ require "../../src/uing"
 
 UIng.init
 
-main_window = UIng::Window.new("Table Example", 300, 100)
+main_window = UIng::Window.new("Table Example", 400, 220, margined: true)
 
-hbox = UIng::Box.new :horizontal
-main_window.child = hbox
+vbox = UIng::Box.new(:vertical, padded: true)
+main_window.child = vbox
 
 data = [
   %w[Windows Microsoft],
@@ -27,13 +27,25 @@ table = UIng::Table.new(table_model) do
   append_text_column("OS", 0, editable: :never)
   append_text_column("Vendor", 1, editable: :never)
 end
+table.selection_mode = UIng::Table::Selection::Mode::ZeroOrOne
 
-hbox.append(table, true)
+status = UIng::Label.new("Select a row")
+table.on_selection_changed do |selection|
+  if selection.num_rows == 0
+    status.text = "No row selected"
+  else
+    row = selection.rows.first
+    status.text = "Selected: #{data[row][0]} by #{data[row][1]}"
+  end
+end
+
+vbox.append(table, true)
+vbox.append(status)
 main_window.show
 
 main_window.on_closing do
   # Detach and destroy the table before freeing its model.
-  hbox.delete(0)
+  vbox.delete(0)
   table.destroy    # Destroy table first
   table_model.free # Then free model
 

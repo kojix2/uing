@@ -8,6 +8,7 @@ window.on_closing do
   true
 end
 
+window.child = UIng::Label.new("Hello from UIng")
 window.show
 
 UIng.main
