@@ -7,8 +7,8 @@ title: "UIng Guide"
 UIng is a Crystal binding for libui-ng. Build small, cross-platform
 interfaces with the native controls of Linux, macOS, and Windows.
 
-[日本語ガイド →](books/guide_ja/) ·
 [English Guide →](books/guide_en/) ·
+[日本語ガイド →](books/guide_ja/) ·
 [API reference →](api/) ·
 [View on GitHub →](https://github.com/kojix2/uing)
 
