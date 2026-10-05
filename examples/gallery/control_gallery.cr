@@ -163,7 +163,7 @@ class ControlGalleryApp
         end
       end
 
-      append_preferences_item.on_clicked do
+      append_preferences_item.on_clicked do |_window|
         create_preferences_window
       end
     end
@@ -177,8 +177,8 @@ class ControlGalleryApp
 
     UIng::Menu.new("Help") do
       append_item("Help")
-      append_about_item.on_clicked do
-        UIng.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
+      append_about_item.on_clicked do |window|
+        window.try &.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
       end
     end
   end

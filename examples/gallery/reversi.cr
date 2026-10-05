@@ -649,8 +649,8 @@ class ReversiUI
       handle_new_game
     end
 
-    about_item.on_clicked do
-      UIng.msg_box("About Reversi", <<-ABOUT
+    about_item.on_clicked do |window|
+      window.try &.msg_box("About Reversi", <<-ABOUT
         Reversi demo built with UIng
         AI: negamax search with positional weights
 
