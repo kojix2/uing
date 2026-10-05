@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -eu
+
+if [ "$#" -ne 1 ]; then
+  echo "usage: render-example EXAMPLE_NAME" >&2
+  exit 2
+fi
+
+example_name=$1
+case "$example_name" in
+  ""|*[!A-Za-z0-9_]*)
+    echo "invalid example name: $example_name" >&2
+    exit 2
+    ;;
+esac
+
+source_file="../examples/gallery/${example_name}.cr"
+if [ ! -f "$source_file" ]; then
+  echo "example not found: $source_file" >&2
+  exit 1
+fi
+
+printf '```crystal\n'
+awk '
+  !replaced && $0 == "require \"../../src/uing\"" {
+    print "require \"uing\""
+    replaced = 1
+    next
+  }
+  { print }
+  END {
+    if (!replaced) {
+      print "expected uing require was not found" > "/dev/stderr"
+      exit 1
+    }
+  }
+' "$source_file"
+printf '```\n'

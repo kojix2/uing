@@ -8,3 +8,32 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.widget-screenshots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.widget-screenshots figure {
+  margin: 0;
+  text-align: center;
+}
+
+.widget-screenshots img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.widget-screenshots figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 767px) {
+  .widget-screenshots {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

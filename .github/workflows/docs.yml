@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "guide/**"
+      - "examples/gallery/**"
       - "src/**"
       - "shard.yml"
       - ".github/workflows/docs.yml"
