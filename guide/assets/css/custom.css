@@ -25,11 +25,16 @@
   display: block;
   width: 100%;
   height: auto;
+  border-radius: 0;
 }
 
 .widget-screenshots figcaption {
   margin-top: 0.35rem;
   font-size: 0.9rem;
+}
+
+.article-content pre {
+  background-color: var(--code-bg, var(--bg-soft));
 }
 
 @media (max-width: 767px) {
