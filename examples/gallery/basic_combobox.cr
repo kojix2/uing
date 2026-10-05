@@ -9,6 +9,7 @@ window.on_closing do
 end
 
 combobox = UIng::Combobox.new(["Item 1", "Item 2", "Item 3"])
+combobox.selected = 0
 combobox.on_selected do |idx|
   window.msg_box("Combobox Changed", "Selected index: #{idx}")
 end

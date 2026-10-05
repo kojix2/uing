@@ -9,6 +9,7 @@ window.on_closing do
 end
 
 editable_combobox = UIng::EditableCombobox.new(["Item 1", "Item 2", "Item 3"])
+editable_combobox.text = "Item 1"
 editable_combobox.on_changed do |text|
   window.msg_box("EditableCombobox Changed", "Text: #{text}")
 end
