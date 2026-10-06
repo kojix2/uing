@@ -21,5 +21,7 @@ features:
   - base16
   - books
   - folder_indexes
+  - galleries
+  - images
   - pages
   - search

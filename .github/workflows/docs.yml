@@ -52,6 +52,7 @@ jobs:
       - name: Build Nicolino guide
         working-directory: guide
         run: |
+          ./scripts/fetch-screenshots
           nicolino validate
           nicolino build -B -p
 

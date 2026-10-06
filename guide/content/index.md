@@ -9,6 +9,7 @@ interfaces with the native controls of Linux, macOS, and Windows.
 
 [English Guide →](books/guide_en/) ·
 [日本語ガイド →](books/guide_ja/) ·
+[Screenshots →](galleries/screenshots/) ·
 [API reference →](api/) ·
 [View on GitHub →](https://github.com/kojix2/uing)
 

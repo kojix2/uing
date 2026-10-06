@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -eu
+
+cd "$(dirname "$0")/.."
+
+root="$(git rev-parse --show-toplevel)"
+dest="content/galleries/screenshots"
+
+git -C "$root" fetch origin screenshots
+
+mkdir -p "$dest"
+rm -f "$dest"/*.png
+git -C "$root" archive origin/screenshots -- '*.png' | tar -x -C "$dest"
+
+echo "$(ls "$dest" | wc -l | tr -d ' ') screenshots fetched into $dest"

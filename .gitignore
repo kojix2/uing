@@ -31,6 +31,9 @@
 /guide/.rucksack.toc
 /guide/.nicolino.lock
 
+# Fetched by guide/scripts/fetch-screenshots
+/guide/content/galleries/screenshots/*.png
+
 # executables
 basic_area
 basic_button
