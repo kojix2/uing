@@ -25,7 +25,6 @@ crystal run examples/gallery/control_gallery.cr
 - [MD5 Checker](https://github.com/kojix2/uing/tree/main/examples/md5_checker)
 - [Video Player](https://github.com/kojix2/uing/tree/main/examples/video_player)
 - [Air Hockey](https://github.com/kojix2/uing/tree/main/examples/air_hockey)
-- [World Clock](https://github.com/kojix2/uing/blob/main/examples/world_clock.cr)
 
 必要なコントロールを含む最小のサンプルから始めてください。カスタム描画とテーブルには
 追加のコールバックとライフタイム規則があるため、ギャラリーのサンプルが最適な出発点です。

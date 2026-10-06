@@ -25,7 +25,6 @@ Larger examples include:
 - [MD5 Checker](https://github.com/kojix2/uing/tree/main/examples/md5_checker)
 - [Video Player](https://github.com/kojix2/uing/tree/main/examples/video_player)
 - [Air Hockey](https://github.com/kojix2/uing/tree/main/examples/air_hockey)
-- [World Clock](https://github.com/kojix2/uing/blob/main/examples/world_clock.cr)
 
 Start with the smallest example containing the control you need. Custom
 drawing and tables have additional callbacks and lifetime requirements, so
