@@ -2,7 +2,7 @@ title: "UIng Guide"
 description: "A guide to building native desktop applications with UIng"
 url: "https://kojix2.github.io"
 url_prefix: "uing"
-footer: "UIng is released under the MIT License"
+footer: 'Built with <a href="https://github.com/ralsina/nicolino">Nicolino</a>'
 
 theme: "blox"
 color_scheme: "default"

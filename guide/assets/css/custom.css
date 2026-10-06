@@ -42,3 +42,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.site-footer .powered-by {
+  display: none;
+}
