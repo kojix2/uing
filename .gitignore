@@ -33,6 +33,7 @@
 
 # Fetched by guide/scripts/fetch-screenshots
 /guide/content/galleries/screenshots/*.png
+/guide/assets/galleries/screenshots/*.png
 
 # executables
 basic_area

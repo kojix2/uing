@@ -782,12 +782,12 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: 1rem;
+  align-items: start;
 }
 
 .gallery-item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   border-radius: var(--radius-card);
   transition: transform 0.3s ease;
 }

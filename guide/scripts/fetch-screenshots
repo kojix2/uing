@@ -6,11 +6,13 @@ cd "$(dirname "$0")/.."
 
 root="$(git rev-parse --show-toplevel)"
 dest="content/galleries/screenshots"
+assets_dest="assets/galleries/screenshots"
 
 git -C "$root" fetch origin screenshots
 
-mkdir -p "$dest"
-rm -f "$dest"/*.png
+mkdir -p "$dest" "$assets_dest"
+rm -f "$dest"/*.png "$assets_dest"/*.png
 git -C "$root" archive origin/screenshots -- '*.png' | tar -x -C "$dest"
+cp "$dest"/*.png "$assets_dest"
 
-echo "$(ls "$dest" | wc -l | tr -d ' ') screenshots fetched into $dest"
+echo "$(ls "$dest"/*.png | wc -l | tr -d ' ') screenshots fetched into $dest and $assets_dest"

@@ -10,7 +10,7 @@
     <video class="gallery-item gallery-video" controls preload="metadata" src="{{ image.name }}"></video>
     {% else %}
     <a class="gallery-item" href="{{ image.name }}">
-      <img src="{{ image.name|thumb_url }}" alt="{{ image.name }}" loading="lazy" />
+      <img src="{{ image.name }}" alt="{{ image.name }}" loading="lazy" />
     </a>
     {% endif %}
     {% endfor %}
