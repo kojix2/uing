@@ -401,12 +401,6 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_analog_clock-macos.png" alt="area_analog_clock-macos"></td>
     </tr>
     <tr>
-      <td><a href="examples/gallery/spirograph.cr">spirograph</a></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-ubuntu.png" alt="spirograph-ubuntu"></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-windows.png" alt="spirograph-windows"></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/spirograph-macos.png" alt="spirograph-macos"></td>
-    </tr>
-    <tr>
       <td><a href="examples/gallery/area_matrix.cr">area_matrix</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_matrix-ubuntu.png" alt="area_matrix-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_matrix-windows.png" alt="area_matrix-windows"></td>
