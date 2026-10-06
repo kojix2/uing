@@ -1,0 +1,44 @@
+<div class="toc-item toc-level-{{ chapter.level }}">
+  {% if chapter.has_children %}
+  <details class="toc-group" {% if chapter.active %}open{% endif %}>
+    <summary class="toc-summary">
+      {% if chapter.link %}
+      <a href="{{ chapter.link }}" class="toc-link{% if chapter.active %} active{% endif %}">
+        {% if chapter.number %}
+        <span class="toc-number">{{ chapter.number }}</span>
+        {% endif %}
+        {{ chapter.title }}
+      </a>
+      {% else %}
+      <span class="toc-title">
+        {% if chapter.number %}
+        <span class="toc-number">{{ chapter.number }}</span>
+        {% endif %}
+        {{ chapter.title }}
+      </span>
+      {% endif %}
+    </summary>
+    <div class="toc-children">
+      {% for child in chapter.children %}
+        {% include "templates/book_toc_item.tmpl" %}
+      {% endfor %}
+    </div>
+  </details>
+  {% else %}
+  {% if chapter.link %}
+  <a href="{{ chapter.link }}" class="toc-link{% if chapter.active %} active{% endif %}">
+    {% if chapter.number %}
+    <span class="toc-number">{{ chapter.number }}</span>
+    {% endif %}
+    {{ chapter.title }}
+  </a>
+  {% else %}
+  <span class="toc-title disabled">
+    {% if chapter.number %}
+    <span class="toc-number">{{ chapter.number }}</span>
+    {% endif %}
+    {{ chapter.title }}
+  </span>
+  {% endif %}
+  {% endif %}
+</div>

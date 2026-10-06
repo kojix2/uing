@@ -1,0 +1,20 @@
+{#-
+  title.tmpl - Blox theme page title with optional breadcrumbs
+
+  Variables: breadcrumbs, link, title, taxonomies
+
+  NOTE: rendered standalone by the taxonomies feature with a minimal
+  context — do not reference `theme.*` here (see porting guide).
+-#}
+{% if breadcrumbs|length > 1 %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  {% for crumb in breadcrumbs %}
+  {% if not loop.last %}
+  <a href="{{ crumb.link }}">{{ crumb.name }}</a>
+  <span aria-hidden="true">/</span>
+  {% else %}
+  <span aria-current="page">{{ crumb.name }}</span>
+  {% endif %}
+  {% endfor %}
+</nav>
+{% endif %}

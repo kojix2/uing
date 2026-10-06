@@ -1,0 +1,9 @@
+{#- language_switcher.tmpl - Blox theme language switcher
+    Variables: language_links [{lang, link, title}] -#}
+{% if language_links and language_links|length > 0 %}
+<li class="nav-languages">
+  {% for lang_link in language_links %}
+  <a href="{{ lang_link.link }}" title="{{ lang_link.title }}">{{ lang_link.lang }}</a>
+  {% endfor %}
+</li>
+{% endif %}

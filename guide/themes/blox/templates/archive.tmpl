@@ -1,0 +1,22 @@
+{#- archive.tmpl - Blox theme yearly archive -#}
+<header class="page-header">
+  <h1>Archive</h1>
+</header>
+<div class="archive">
+  {% for year in years %}
+  <section class="archive-year">
+    <h2>{{ year.year }}</h2>
+    {% for month in year.months %}
+    <h3>{{ month.name }}</h3>
+    <ul>
+      {% for post in month.posts %}
+      <li>
+        <a href="{{ post.link }}">{{ post.title }}</a>
+        <span class="archive-date">{{ post.date }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </section>
+  {% endfor %}
+</div>

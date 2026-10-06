@@ -1,0 +1,48 @@
+{#-
+  index.tmpl - Blox theme post list
+
+  Posts are shown as a responsive card grid like the Hugo Blox
+  "card" view: optional cover image (16:9), title, date, summary
+  and a read-more link. Cards lift on hover.
+
+  Variables:
+  - posts: Array of post values (link, title, date, summary,
+    preview_image, taxonomies, has_teaser)
+  - has_more: Whether older posts exist in the archive
+-#}
+<div class="card-grid">
+  {% for post in posts %}
+  <article class="card">
+    <a class="card-cover" href="{{ post.link }}">
+      {% if post.preview_image %}
+      <img src="{{ post.preview_image }}" alt="{{ post.title }}" loading="lazy" />
+      {% else %}
+      <div class="card-cover-placeholder" aria-hidden="true"></div>
+      {% endif %}
+    </a>
+    <div class="card-body">
+      <h2 class="card-title"><a href="{{ post.link }}">{{ post.title }}</a></h2>
+      <div class="card-meta">
+        {% if post.date %}
+        <time>{{ post.date }}</time>
+        {% endif %}
+        {% for taxonomy, terms in post.taxonomies %}
+          {% for term in terms %}
+          <a class="card-tag" href="{{ term.link }}">{{ term.name }}</a>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      {% if not theme.hide_summary %}
+      <p class="card-summary">{{ post.summary|striptags }}{% if post.has_teaser %}…{% endif %}</p>
+      {% endif %}
+      <a class="read-more" href="{{ post.link }}">{{ theme.read_more | default("Read more") }} <span aria-hidden="true">→</span></a>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+{% if has_more %}
+<nav class="list-pagination">
+  <a href="/archive/">Older posts →</a>
+</nav>
+{% endif %}

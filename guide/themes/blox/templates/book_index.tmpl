@@ -1,0 +1,23 @@
+{#- book_index.tmpl - Blox theme book landing page
+    Variables: book {name, title, description}, toc_html, first_chapter -#}
+<div class="book-layout">
+  <aside class="book-sidebar">
+    <div class="book-title">
+      <a href="/books/{{ book.name }}/">{{ book.title }}</a>
+    </div>
+    <nav class="book-toc">
+      {{ toc_html|safe }}
+    </nav>
+  </aside>
+  <main class="book-content article-content">
+    <h1 class="article-title">{{ book.title }}</h1>
+    {% if book.description %}
+    <p class="book-description">{{ book.description }}</p>
+    {% endif %}
+    <nav class="chapter-nav">
+      {% if first_chapter %}
+      <a class="read-more" href="{{ first_chapter.link }}">{{ first_chapter.title }} →</a>
+      {% endif %}
+    </nav>
+  </main>
+</div>

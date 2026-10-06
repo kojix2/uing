@@ -1,0 +1,12 @@
+name: Blox
+version: 1.0.0
+description: Card-based blog theme with sticky navbar and sidebar table of contents, ported from Hugo Blox Tailwind
+author: Lore Labs / HugoBlox (original), ported to Nicolino
+license: MIT
+screenshot: https://nicolino.ralsina.me/themes/shots/blox.png
+# Default theme parameters, overridable from conf.yml's theme_params
+params:
+  color_scheme: light
+  sticky_header: true
+  read_more: "Read more"
+  date_format: ""

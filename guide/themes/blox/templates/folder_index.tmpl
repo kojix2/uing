@@ -1,0 +1,37 @@
+{#- folder_index.tmpl - Blox theme folder index
+    Variables: posts, subdirs [{link, name}], files [{link, title}] -#}
+<div class="index-content">
+  {% if posts and posts|length > 0 %}
+  <div class="card-grid">
+    {% for post in posts %}
+    <article class="card">
+      <div class="card-body">
+        <h2 class="card-title"><a href="{{ post.link }}">{{ post.title }}</a></h2>
+        <div class="card-meta">
+          {% if post.date %}<time>{{ post.date }}</time>{% endif %}
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% elif subdirs or files %}
+    {% if subdirs %}
+    <h3>Subdirectories</h3>
+    <ul>
+      {% for subdir in subdirs %}
+      <li><a href="{{ subdir.link }}">{{ subdir.name }}/</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if files %}
+    <h3>Pages</h3>
+    <ul>
+      {% for file in files %}
+      <li><a href="{{ file.link }}">{{ file.title }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  {% else %}
+  <p>This folder is empty.</p>
+  {% endif %}
+</div>

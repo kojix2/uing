@@ -1,0 +1,25 @@
+{#- book_chapter.tmpl - Blox theme book chapter
+    Variables: book {name, title}, chapter {content}, toc_html,
+    prev_chapter, next_chapter, breadcrumbs -#}
+<div class="book-layout">
+  <aside class="book-sidebar">
+    <div class="book-title">
+      <a href="/books/{{ book.name }}/">{{ book.title }}</a>
+    </div>
+    <nav class="book-toc">
+      {{ toc_html|safe }}
+    </nav>
+  </aside>
+  <main class="book-content article-content">
+    {{ chapter.content|safe }}
+  </main>
+</div>
+
+<nav class="chapter-nav">
+  {% if prev_chapter %}
+  <a class="chapter-prev" href="{{ prev_chapter.link }}">← {{ prev_chapter.title }}</a>
+  {% endif %}
+  {% if next_chapter %}
+  <a class="chapter-next" href="{{ next_chapter.link }}">{{ next_chapter.title }} →</a>
+  {% endif %}
+</nav>

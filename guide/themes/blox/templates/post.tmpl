@@ -1,0 +1,63 @@
+{#-
+  post.tmpl - Blox theme single post
+
+  Wide article column with a sticky table-of-contents sidebar on
+  desktop (hidden on narrow screens), Hugo Blox style.
+
+  NOTE: rendered with only the post value at runtime — do not
+  reference `theme.*` here (see porting guide).
+
+  Variables: breadcrumbs, title, link, date, metadata, taxonomies,
+  toc, html, related_posts, is_fallback (see Nicolino docs)
+-#}
+{% include "templates/title.tmpl" %}
+
+<div class="article-layout{% if not toc or toc|length == 0 %} no-toc{% endif %}">
+  <article class="article">
+    <h1 class="article-title">{{ title }}</h1>
+    <div class="article-meta">
+      {% if date %}
+      <time>{{ date }}</time>
+      {% endif %}
+      {% if metadata.updated and show_updated %}
+      <span class="article-updated">updated {{ metadata.updated }}</span>
+      {% endif %}
+    </div>
+
+    {% if is_fallback %}
+    <p class="fallback-notice">⚠ This page has not been translated yet.</p>
+    {% endif %}
+
+    <div class="article-content">
+      {{ html|safe }}
+    </div>
+
+    {% if taxonomies|length > 0 %}
+    <div class="article-tags">
+      {% for taxonomy, terms in taxonomies %}
+        {% for term in terms %}
+        <a class="tag" href="{{ term.link }}">{{ term.name }}</a>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if related_posts and related_posts|length > 0 %}
+    <section class="related-posts">
+      <h2>Related</h2>
+      <ul>
+        {% for related in related_posts %}
+        <li><a href="{{ related.link }}">{{ related.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  </article>
+
+  {% if toc and toc|length > 0 %}
+  <aside class="toc" aria-label="Table of contents">
+    <h2>On this page</h2>
+    {{ toc|safe }}
+  </aside>
+  {% endif %}
+</div>

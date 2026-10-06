@@ -1,0 +1,12 @@
+{#- item_list.tmpl - Blox theme generic item list -#}
+<section class="index-content">
+  {% if items %}
+  <ul>
+    {% for item in items %}
+    <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No items found.</p>
+  {% endif %}
+</section>

@@ -1,0 +1,16 @@
+{#-
+  taxonomy.tmpl - Blox theme taxonomy index
+
+  Variables:
+  - taxonomy: {name, terms: [{name}]}
+-#}
+<header class="page-header">
+  <h1>{{ taxonomy.name }}</h1>
+</header>
+<ul class="terms">
+  {% for term in taxonomy.terms %}
+  <li>
+    <a href="{{ term.name }}/index.html">{{ term.name }}</a>
+  </li>
+  {% endfor %}
+</ul>

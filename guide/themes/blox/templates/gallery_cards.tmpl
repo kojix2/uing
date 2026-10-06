@@ -1,0 +1,19 @@
+{#- gallery_cards.tmpl - Blox theme gallery card grid
+    Variables: title, description, items [{link, title, thumb_link}] -#}
+<section class="gallery-cards">
+  {% if description %}
+  <p class="index-content">{{ description }}</p>
+  {% endif %}
+  <div class="card-grid">
+    {% for item in items %}
+    <article class="card">
+      <a class="card-cover" href="{{ item.link }}">
+        <img src="{{ item.thumb_link }}" alt="{{ item.title }}" loading="lazy" />
+      </a>
+      <div class="card-body">
+        <h2 class="card-title"><a href="{{ item.link }}">{{ item.title }}</a></h2>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>

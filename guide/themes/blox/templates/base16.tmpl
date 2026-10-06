@@ -1,0 +1,479 @@
+{#-
+  base16.tmpl - Base16 color scheme and font CSS template
+
+  Generates CSS for Base16 color schemes and fonts:
+  - Pico CSS theme variables for dark and light modes
+  - Base16 palette colors (base00-base0F) for custom styles
+  - Theme switcher integration
+  - Google Fonts imports (if configured)
+  - Font stack CSS custom properties
+
+  Variables:
+  - dark: Dark theme object with scheme_name, scheme_author, color hex values
+  - light: Light theme object with scheme_name, scheme_author, color hex values
+  - google_fonts_url: Google Fonts import URL (optional)
+  - font_sans: Sans-serif font stack CSS
+  - font_mono: Monospace font stack CSS
+  - font_display: Display font stack CSS
+  - font_heading: Heading font stack CSS (same as display)
+  - font_emoji: Emoji font stack CSS
+
+  Used by: Base16 feature for output/css/style.css
+-#}
+
+/* Font configuration */
+{% if google_fonts_url %}
+@import url("https://fonts.googleapis.com/css2?{{ google_fonts_url }}&display=swap");
+{% endif %}
+
+/* Font stacks as CSS custom properties */
+:root {
+    --pico-font-family: {{ font_sans }};
+    --pico-font-family-sans-serif: {{ font_sans }};
+    --pico-font-family-monospace: {{ font_mono }};
+    --pico-font-family-emoji: {{ font_emoji }};
+    --font-display: {{ font_display }};
+    --font-heading: {{ font_heading }};
+    font-variant-emoji: text;
+}
+
+/* Base16 color scheme integration for Nicolino
+   Generated from: {{dark.scheme_name}} (dark) and {{light.scheme_name}} (light)
+   Authors: {{dark.scheme_author}} / {{light.scheme_author}} */
+
+/* Theme: {{dark.scheme_name}} */
+
+[data-theme=dark] {
+    /* Pico CSS color variables */
+    --pico-background-color: #{{dark.base00_hex}};
+    --pico-color: #{{dark.base05_hex}};
+    --pico-text-selection-color: #{{dark.base02_hex}};
+    --pico-muted-color: #{{dark.base03_hex}};
+    --pico-muted-border-color: #{{dark.base02_hex}};
+    --pico-primary: #{{dark.base0D_hex}};
+    --pico-primary-background: #{{dark.base02_hex}};
+    --pico-primary-border: var(--pico-primary-background);
+    --pico-primary-underline: rgba({{dark.base0D_hex_r}}, {{dark.base0D_hex_g}}, {{dark.base0D_hex_b}}, 0.5);
+    --pico-primary-hover: #{{dark.base0E_hex}};
+    --pico-primary-hover-background: #{{dark.base0E_hex}};
+    --pico-primary-hover-border: var(--pico-primary-hover-background);
+    --pico-primary-hover-underline: var(--pico-primary-hover);
+    --pico-primary-focus: rgba({{dark.base0D_hex_r}}, {{dark.base0D_hex_g}}, {{dark.base0D_hex_b}}, 0.5);
+    --pico-primary-inverse: #{{dark.base00_hex}};
+    --pico-secondary: #{{dark.base04_hex}};
+    --pico-secondary-background: #{{dark.base02_hex}};
+    --pico-secondary-border: var(--pico-secondary-background);
+    --pico-secondary-underline: rgba({{dark.base04_hex_r}}, {{dark.base04_hex_g}}, {{dark.base04_hex_b}}, 0.5);
+    --pico-secondary-hover: #{{dark.base05_hex}};
+    --pico-secondary-hover-background: #{{dark.base03_hex}};
+    --pico-secondary-hover-border: var(--pico-secondary-hover-background);
+    --pico-secondary-hover-underline: var(--pico-secondary-hover);
+    --pico-secondary-focus: rgba({{dark.base04_hex_r}}, {{dark.base04_hex_g}}, {{dark.base04_hex_b}}, 0.25);
+    --pico-secondary-inverse: #{{dark.base00_hex}};
+    --pico-contrast: #{{dark.base06_hex}};
+    --pico-contrast-background: #{{dark.base06_hex}};
+    --pico-contrast-border: var(--pico-contrast-background);
+    --pico-contrast-underline: rgba({{dark.base06_hex_r}}, {{dark.base06_hex_g}}, {{dark.base06_hex_b}}, 0.5);
+    --pico-contrast-hover: #{{dark.base07_hex}};
+    --pico-contrast-hover-background: #{{dark.base07_hex}};
+    --pico-contrast-hover-border: var(--pico-contrast-hover-background);
+    --pico-contrast-hover-underline: var(--pico-contrast-hover);
+    --pico-contrast-focus: rgba({{dark.base06_hex_r}}, {{dark.base06_hex_g}}, {{dark.base06_hex_b}}, 0.25);
+    --pico-contrast-inverse: #{{dark.base00_hex}};
+    --pico-box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+    --pico-h1-color: #{{dark.base06_hex}};
+    --pico-h2-color: #{{dark.base05_hex}};
+    --pico-h3-color: #{{dark.base05_hex}};
+    --pico-h4-color: #{{dark.base04_hex}};
+    --pico-h5-color: #{{dark.base04_hex}};
+    --pico-h6-color: #{{dark.base03_hex}};
+    --pico-mark-background-color: #{{dark.base0A_hex}};
+    --pico-mark-color: #{{dark.base00_hex}};
+    --pico-ins-color: #{{dark.base0B_hex}};
+    --pico-del-color: #{{dark.base08_hex}};
+    --pico-blockquote-border-color: var(--pico-muted-border-color);
+    --pico-blockquote-footer-color: var(--pico-muted-color);
+    --pico-button-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --pico-button-hover-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --pico-table-border-color: var(--pico-muted-border-color);
+    --pico-table-row-stripped-background-color: #{{dark.base01_hex}};
+    --pico-code-background-color: #{{dark.base01_hex}};
+    --pico-code-color: #{{dark.base0A_hex}};
+    --pico-code-kbd-background-color: var(--pico-color);
+    --pico-code-kbd-color: var(--pico-background-color);
+    --pico-form-element-background-color: #{{dark.base00_hex}};
+    --pico-form-element-selected-background-color: #{{dark.base02_hex}};
+    --pico-form-element-border-color: #{{dark.base03_hex}};
+    --pico-form-element-color: #{{dark.base05_hex}};
+    --pico-form-element-placeholder-color: var(--pico-muted-color);
+    --pico-form-element-active-background-color: #{{dark.base00_hex}};
+    --pico-form-element-active-border-color: var(--pico-primary-border);
+    --pico-form-element-focus-color: var(--pico-primary-border);
+    --pico-form-element-disabled-opacity: 0.5;
+    --pico-form-element-invalid-border-color: #{{dark.base08_hex}};
+    --pico-form-element-invalid-active-border-color: #{{dark.base09_hex}};
+    --pico-form-element-invalid-focus-color: var(--pico-form-element-invalid-active-border-color);
+    --pico-form-element-valid-border-color: #{{dark.base0B_hex}};
+    --pico-form-element-valid-active-border-color: #{{dark.base0C_hex}};
+    --pico-form-element-valid-focus-color: var(--pico-form-element-valid-active-border-color);
+    --pico-switch-background-color: #{{dark.base03_hex}};
+    --pico-switch-checked-background-color: var(--pico-primary-background);
+    --pico-switch-color: #{{dark.base00_hex}};
+    --pico-switch-thumb-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --pico-range-border-color: #{{dark.base02_hex}};
+    --pico-range-active-border-color: #{{dark.base03_hex}};
+    --pico-range-thumb-border-color: var(--pico-background-color);
+    --pico-range-thumb-color: var(--pico-secondary-background);
+    --pico-range-thumb-active-color: var(--pico-primary-background);
+    --pico-accordion-border-color: var(--pico-muted-border-color);
+    --pico-accordion-active-summary-color: var(--pico-primary-hover);
+    --pico-accordion-close-summary-color: var(--pico-color);
+    --pico-accordion-open-summary-color: var(--pico-muted-color);
+    --pico-card-background-color: #{{dark.base00_hex}};
+    --pico-card-border-color: var(--pico-muted-border-color);
+    --pico-card-box-shadow: var(--pico-box-shadow);
+    --pico-card-sectioning-background-color: #{{dark.base01_hex}};
+    --pico-dropdown-background-color: #{{dark.base00_hex}};
+    --pico-dropdown-border-color: #{{dark.base02_hex}};
+    --pico-dropdown-box-shadow: var(--pico-box-shadow);
+    --pico-dropdown-color: var(--pico-color);
+    --pico-dropdown-hover-background-color: #{{dark.base01_hex}};
+    --pico-loading-spinner-opacity: 0.5;
+    --pico-modal-overlay-background-color: rgba(0, 0, 0, 0.5);
+    --pico-progress-background-color: #{{dark.base02_hex}};
+    --pico-progress-color: var(--pico-primary-background);
+    --pico-tooltip-background-color: var(--pico-contrast-background);
+    --pico-tooltip-color: var(--pico-contrast-inverse);
+
+    /* Base16 palette colors for use in custom styles */
+    --b16-base00: #{{dark.base00_hex}}; /* Default background */
+    --b16-base01: #{{dark.base01_hex}}; /* Lighter background */
+    --b16-base02: #{{dark.base02_hex}}; /* Selection background */
+    --b16-base03: #{{dark.base03_hex}}; /* Comments, secondary */
+    --b16-base04: #{{dark.base04_hex}}; /* Darker foreground */
+    --b16-base05: #{{dark.base05_hex}}; /* Default foreground */
+    --b16-base06: #{{dark.base06_hex}}; /* Lighter foreground */
+    --b16-base07: #{{dark.base07_hex}}; /* Lightest foreground */
+    --b16-base08: #{{dark.base08_hex}}; /* Variables, etc */
+    --b16-base09: #{{dark.base09_hex}}; /* Integers, constants */
+    --b16-base0A: #{{dark.base0A_hex}}; /* Classes, search match */
+    --b16-base0B: #{{dark.base0B_hex}}; /* Strings */
+    --b16-base0C: #{{dark.base0C_hex}}; /* Support, regex */
+    --b16-base0D: #{{dark.base0D_hex}}; /* Functions, methods */
+    --b16-base0E: #{{dark.base0E_hex}}; /* Keywords */
+    --b16-base0F: #{{dark.base0F_hex}}; /* Builtin, punctuation */
+}
+
+/* Theme: {{light.scheme_name}} */
+
+:root:not([data-theme=dark]),
+[data-theme=light] {
+    /* Pico CSS color variables */
+    --pico-background-color: #{{light.base00_hex}};
+    --pico-color: #{{light.base05_hex}};
+    --pico-text-selection-color: #{{light.base02_hex}};
+    --pico-muted-color: #{{light.base03_hex}};
+    --pico-muted-border-color: #{{light.base02_hex}};
+    --pico-primary: #{{light.base0D_hex}};
+    --pico-primary-background: #{{light.base02_hex}};
+    --pico-primary-border: var(--pico-primary-background);
+    --pico-primary-underline: rgba({{light.base0D_hex_r}}, {{light.base0D_hex_g}}, {{light.base0D_hex_b}}, 0.5);
+    --pico-primary-hover: #{{light.base0E_hex}};
+    --pico-primary-hover-background: #{{light.base0E_hex}};
+    --pico-primary-hover-border: var(--pico-primary-hover-background);
+    --pico-primary-hover-underline: var(--pico-primary-hover);
+    --pico-primary-focus: rgba({{light.base0D_hex_r}}, {{light.base0D_hex_g}}, {{light.base0D_hex_b}}, 0.5);
+    --pico-primary-inverse: #{{light.base00_hex}};
+    --pico-secondary: #{{light.base04_hex}};
+    --pico-secondary-background: #{{light.base02_hex}};
+    --pico-secondary-border: var(--pico-secondary-background);
+    --pico-secondary-underline: rgba({{light.base04_hex_r}}, {{light.base04_hex_g}}, {{light.base04_hex_b}}, 0.5);
+    --pico-secondary-hover: #{{light.base05_hex}};
+    --pico-secondary-hover-background: #{{light.base03_hex}};
+    --pico-secondary-hover-border: var(--pico-secondary-hover-background);
+    --pico-secondary-hover-underline: var(--pico-secondary-hover);
+    --pico-secondary-focus: rgba({{light.base04_hex_r}}, {{light.base04_hex_g}}, {{light.base04_hex_b}}, 0.25);
+    --pico-secondary-inverse: #{{light.base00_hex}};
+    --pico-contrast: #{{light.base06_hex}};
+    --pico-contrast-background: #{{light.base06_hex}};
+    --pico-contrast-border: var(--pico-contrast-background);
+    --pico-contrast-underline: rgba({{light.base06_hex_r}}, {{light.base06_hex_g}}, {{light.base06_hex_b}}, 0.5);
+    --pico-contrast-hover: #{{light.base07_hex}};
+    --pico-contrast-hover-background: #{{light.base07_hex}};
+    --pico-contrast-hover-border: var(--pico-contrast-hover-background);
+    --pico-contrast-hover-underline: var(--pico-contrast-hover);
+    --pico-contrast-focus: rgba({{light.base06_hex_r}}, {{light.base06_hex_g}}, {{light.base06_hex_b}}, 0.25);
+    --pico-contrast-inverse: #{{light.base00_hex}};
+    --pico-box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+    --pico-h1-color: #{{light.base06_hex}};
+    --pico-h2-color: #{{light.base05_hex}};
+    --pico-h3-color: #{{light.base05_hex}};
+    --pico-h4-color: #{{light.base04_hex}};
+    --pico-h5-color: #{{light.base04_hex}};
+    --pico-h6-color: #{{light.base03_hex}};
+    --pico-mark-background-color: #{{light.base0A_hex}};
+    --pico-mark-color: #{{light.base00_hex}};
+    --pico-ins-color: #{{light.base0B_hex}};
+    --pico-del-color: #{{light.base08_hex}};
+    --pico-blockquote-border-color: var(--pico-muted-border-color);
+    --pico-blockquote-footer-color: var(--pico-muted-color);
+    --pico-button-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --pico-button-hover-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --pico-table-border-color: var(--pico-muted-border-color);
+    --pico-table-row-stripped-background-color: #{{light.base01_hex}};
+    --pico-code-background-color: #{{light.base01_hex}};
+    --pico-code-color: #{{light.base0A_hex}};
+    --pico-code-kbd-background-color: var(--pico-color);
+    --pico-code-kbd-color: var(--pico-background-color);
+    --pico-form-element-background-color: #{{light.base00_hex}};
+    --pico-form-element-selected-background-color: #{{light.base02_hex}};
+    --pico-form-element-border-color: #{{light.base03_hex}};
+    --pico-form-element-color: #{{light.base05_hex}};
+    --pico-form-element-placeholder-color: var(--pico-muted-color);
+    --pico-form-element-active-background-color: #{{light.base00_hex}};
+    --pico-form-element-active-border-color: var(--pico-primary-border);
+    --pico-form-element-focus-color: var(--pico-primary-border);
+    --pico-form-element-disabled-opacity: 0.5;
+    --pico-form-element-invalid-border-color: #{{light.base08_hex}};
+    --pico-form-element-invalid-active-border-color: #{{light.base09_hex}};
+    --pico-form-element-invalid-focus-color: var(--pico-form-element-invalid-active-border-color);
+    --pico-form-element-valid-border-color: #{{light.base0B_hex}};
+    --pico-form-element-valid-active-border-color: #{{light.base0C_hex}};
+    --pico-form-element-valid-focus-color: var(--pico-form-element-valid-active-border-color);
+    --pico-switch-background-color: #{{light.base03_hex}};
+    --pico-switch-checked-background-color: var(--pico-primary-background);
+    --pico-switch-color: #{{light.base00_hex}};
+    --pico-switch-thumb-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --pico-range-border-color: #{{light.base02_hex}};
+    --pico-range-active-border-color: #{{light.base03_hex}};
+    --pico-range-thumb-border-color: var(--pico-background-color);
+    --pico-range-thumb-color: var(--pico-secondary-background);
+    --pico-range-thumb-active-color: var(--pico-primary-background);
+    --pico-accordion-border-color: var(--pico-muted-border-color);
+    --pico-accordion-active-summary-color: var(--pico-primary-hover);
+    --pico-accordion-close-summary-color: var(--pico-color);
+    --pico-accordion-open-summary-color: var(--pico-muted-color);
+    --pico-card-background-color: #{{light.base00_hex}};
+    --pico-card-border-color: var(--pico-muted-border-color);
+    --pico-card-box-shadow: var(--pico-box-shadow);
+    --pico-card-sectioning-background-color: #{{light.base01_hex}};
+    --pico-dropdown-background-color: #{{light.base00_hex}};
+    --pico-dropdown-border-color: #{{light.base02_hex}};
+    --pico-dropdown-box-shadow: var(--pico-box-shadow);
+    --pico-dropdown-color: var(--pico-color);
+    --pico-dropdown-hover-background-color: #{{light.base01_hex}};
+    --pico-loading-spinner-opacity: 0.5;
+    --pico-modal-overlay-background-color: rgba(0, 0, 0, 0.5);
+    --pico-progress-background-color: #{{light.base02_hex}};
+    --pico-progress-color: var(--pico-primary-background);
+    --pico-tooltip-background-color: var(--pico-contrast-background);
+    --pico-tooltip-color: var(--pico-contrast-inverse);
+
+    /* Base16 palette colors for use in custom styles */
+    --b16-base00: #{{light.base00_hex}}; /* Default background */
+    --b16-base01: #{{light.base01_hex}}; /* Lighter background */
+    --b16-base02: #{{light.base02_hex}}; /* Selection background */
+    --b16-base03: #{{light.base03_hex}}; /* Comments, secondary */
+    --b16-base04: #{{light.base04_hex}}; /* Darker foreground */
+    --b16-base05: #{{light.base05_hex}}; /* Default foreground */
+    --b16-base06: #{{light.base06_hex}}; /* Lighter foreground */
+    --b16-base07: #{{light.base07_hex}}; /* Lightest foreground */
+    --b16-base08: #{{light.base08_hex}}; /* Variables, etc */
+    --b16-base09: #{{light.base09_hex}}; /* Integers, constants */
+    --b16-base0A: #{{light.base0A_hex}}; /* Classes, search match */
+    --b16-base0B: #{{light.base0B_hex}}; /* Strings */
+    --b16-base0C: #{{light.base0C_hex}}; /* Support, regex */
+    --b16-base0D: #{{light.base0D_hex}}; /* Functions, methods */
+    --b16-base0E: #{{light.base0E_hex}}; /* Keywords */
+    --b16-base0F: #{{light.base0F_hex}}; /* Builtin, punctuation */
+}
+
+/* Highlight.js syntax highlighting - dark theme */
+pre code.hljs,
+[data-theme=dark] pre code.hljs,
+[data-theme=dark] .hljs {
+    color: #{{dark.base05_hex}};
+    background: #{{dark.base01_hex}};
+}
+[data-theme=dark] .hljs-comment,
+[data-theme=dark] .hljs-quote {
+    color: #{{dark.base03_hex}};
+    font-style: italic;
+}
+[data-theme=dark] .hljs-tag,
+[data-theme=dark] .hljs-variable,
+[data-theme=dark] .hljs-template-variable,
+[data-theme=dark] .hljs-selector-tag,
+[data-theme=dark] .hljs-name,
+[data-theme=dark] .hljs-deletion {
+    color: #{{dark.base08_hex}};
+}
+[data-theme=dark] .hljs-symbol,
+[data-theme=dark] .hljs-number,
+[data-theme=dark] .hljs-link,
+[data-theme=dark] .hljs-attr,
+[data-theme=dark] .hljs-variable.constant_,
+[data-theme=dark] .hljs-literal {
+    color: #{{dark.base09_hex}};
+}
+[data-theme=dark] .hljs-title,
+[data-theme=dark] .hljs-class .hljs-title,
+[data-theme=dark] .hljs-title.class_ {
+    color: #{{dark.base0A_hex}};
+}
+[data-theme=dark] .hljs-strong {
+    font-weight: bold;
+    color: #{{dark.base0A_hex}};
+}
+[data-theme=dark] .hljs-code,
+[data-theme=dark] .hljs-addition,
+[data-theme=dark] .hljs-title.class_.inherited__,
+[data-theme=dark] .hljs-string {
+    color: #{{dark.base0B_hex}};
+}
+[data-theme=dark] .hljs-built_in,
+[data-theme=dark] .hljs-doctag,
+[data-theme=dark] .hljs-quote,
+[data-theme=dark] .hljs-keyword.hljs-atrule,
+[data-theme=dark] .hljs-regexp {
+    color: #{{dark.base0C_hex}};
+}
+[data-theme=dark] .hljs-function .hljs-title,
+[data-theme=dark] .hljs-attribute,
+[data-theme=dark] .hljs-title.function_ {
+    color: #{{dark.base0D_hex}};
+}
+[data-theme=dark] .hljs-type,
+[data-theme=dark] .hljs-template-tag,
+[data-theme=dark] .diff .hljs-meta,
+[data-theme=dark] .hljs-keyword {
+    color: #{{dark.base0E_hex}};
+}
+[data-theme=dark] .hljs-emphasis {
+    color: #{{dark.base0E_hex}};
+    font-style: italic;
+}
+[data-theme=dark] .hljs-meta,
+[data-theme=dark] .hljs-meta .hljs-keyword,
+[data-theme=dark] .hljs-meta .hljs-string {
+    color: #{{dark.base0F_hex}};
+}
+
+/* Highlight.js syntax highlighting - light theme */
+pre code.hljs,
+:root:not([data-theme=dark]) pre code.hljs,
+[data-theme=light] pre code.hljs,
+:root:not([data-theme=dark]) .hljs,
+[data-theme=light] .hljs {
+    color: #{{light.base05_hex}};
+    background: #{{light.base01_hex}};
+}
+:root:not([data-theme=dark]) .hljs-comment,
+:root:not([data-theme=dark]) .hljs-quote,
+[data-theme=light] .hljs-comment,
+[data-theme=light] .hljs-quote {
+    color: #{{light.base03_hex}};
+    font-style: italic;
+}
+:root:not([data-theme=dark]) .hljs-tag,
+:root:not([data-theme=dark]) .hljs-variable,
+:root:not([data-theme=dark]) .hljs-template-variable,
+:root:not([data-theme=dark]) .hljs-selector-tag,
+:root:not([data-theme=dark]) .hljs-name,
+:root:not([data-theme=dark]) .hljs-deletion,
+[data-theme=light] .hljs-tag,
+[data-theme=light] .hljs-variable,
+[data-theme=light] .hljs-template-variable,
+[data-theme=light] .hljs-selector-tag,
+[data-theme=light] .hljs-name,
+[data-theme=light] .hljs-deletion {
+    color: #{{light.base08_hex}};
+}
+:root:not([data-theme=dark]) .hljs-symbol,
+:root:not([data-theme=dark]) .hljs-number,
+:root:not([data-theme=dark]) .hljs-link,
+:root:not([data-theme=dark]) .hljs-attr,
+:root:not([data-theme=dark]) .hljs-variable.constant_,
+:root:not([data-theme=dark]) .hljs-literal,
+[data-theme=light] .hljs-symbol,
+[data-theme=light] .hljs-number,
+[data-theme=light] .hljs-link,
+[data-theme=light] .hljs-attr,
+[data-theme=light] .hljs-variable.constant_,
+[data-theme=light] .hljs-literal {
+    color: #{{light.base09_hex}};
+}
+:root:not([data-theme=dark]) .hljs-title,
+:root:not([data-theme=dark]) .hljs-class .hljs-title,
+:root:not([data-theme=dark]) .hljs-title.class_,
+[data-theme=light] .hljs-title,
+[data-theme=light] .hljs-class .hljs-title,
+[data-theme=light] .hljs-title.class_ {
+    color: #{{light.base0A_hex}};
+}
+:root:not([data-theme=dark]) .hljs-strong,
+[data-theme=light] .hljs-strong {
+    font-weight: bold;
+    color: #{{light.base0A_hex}};
+}
+:root:not([data-theme=dark]) .hljs-code,
+:root:not([data-theme=dark]) .hljs-addition,
+:root:not([data-theme=dark]) .hljs-title.class_.inherited__,
+:root:not([data-theme=dark]) .hljs-string,
+[data-theme=light] .hljs-code,
+[data-theme=light] .hljs-addition,
+[data-theme=light] .hljs-title.class_.inherited__,
+[data-theme=light] .hljs-string {
+    color: #{{light.base0B_hex}};
+}
+:root:not([data-theme=dark]) .hljs-built_in,
+:root:not([data-theme=dark]) .hljs-doctag,
+:root:not([data-theme=dark]) .hljs-quote,
+:root:not([data-theme=dark]) .hljs-keyword.hljs-atrule,
+:root:not([data-theme=dark]) .hljs-regexp,
+[data-theme=light] .hljs-built_in,
+[data-theme=light] .hljs-doctag,
+[data-theme=light] .hljs-quote,
+[data-theme=light] .hljs-keyword.hljs-atrule,
+[data-theme=light] .hljs-regexp {
+    color: #{{light.base0C_hex}};
+}
+:root:not([data-theme=dark]) .hljs-function .hljs-title,
+:root:not([data-theme=dark]) .hljs-attribute,
+:root:not([data-theme=dark]) .hljs-title.function_,
+[data-theme=light] .hljs-function .hljs-title,
+[data-theme=light] .hljs-attribute,
+[data-theme=light] .hljs-title.function_ {
+    color: #{{light.base0D_hex}};
+}
+:root:not([data-theme=dark]) .hljs-type,
+:root:not([data-theme=dark]) .hljs-template-tag,
+:root:not([data-theme=dark]) .diff .hljs-meta,
+:root:not([data-theme=dark]) .hljs-keyword,
+[data-theme=light] .hljs-type,
+[data-theme=light] .hljs-template-tag,
+[data-theme=light] .diff .hljs-meta,
+[data-theme=light] .hljs-keyword {
+    color: #{{light.base0E_hex}};
+}
+:root:not([data-theme=dark]) .hljs-emphasis,
+[data-theme=light] .hljs-emphasis {
+    color: #{{light.base0E_hex}};
+    font-style: italic;
+}
+:root:not([data-theme=dark]) .hljs-meta,
+:root:not([data-theme=dark]) .hljs-meta .hljs-keyword,
+:root:not([data-theme=dark]) .hljs-meta .hljs-string,
+[data-theme=light] .hljs-meta,
+[data-theme=light] .hljs-meta .hljs-keyword,
+[data-theme=light] .hljs-meta .hljs-string {
+    color: #{{light.base0F_hex}};
+}
+
+/* Theme-specific override for copy button background */
+[data-theme=dark] .hljs-copy-button {
+    background-color: #444267;
+}
+[data-theme=light] .hljs-copy-button {
+    background-color: #9894b5;
+}

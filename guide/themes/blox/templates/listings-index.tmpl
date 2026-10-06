@@ -1,0 +1,10 @@
+{#- listings-index.tmpl - Blox theme code listings index
+    Variables: listings [{title, link}] -#}
+<header class="page-header">
+  <h1>Code Listings</h1>
+</header>
+<ul class="terms">
+  {% for item in listings %}
+  <li><a href="{{ item.link }}">{{ item.title }}</a></li>
+  {% endfor %}
+</ul>
