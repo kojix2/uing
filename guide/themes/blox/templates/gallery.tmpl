@@ -6,9 +6,13 @@
   {{ html|safe }}
   <div class="gallery">
     {% for image in image_list %}
-    <a class="gallery-item" href="{{ image }}">
-      <img src="{{ image|thumb_url }}" alt="{{ image }}" loading="lazy" />
+    {% if image.is_video %}
+    <video class="gallery-item gallery-video" controls preload="metadata" src="{{ image.name }}"></video>
+    {% else %}
+    <a class="gallery-item" href="{{ image.name }}">
+      <img src="{{ image.name|thumb_url }}" alt="{{ image.name }}" loading="lazy" />
     </a>
+    {% endif %}
     {% endfor %}
   </div>
 </div>
