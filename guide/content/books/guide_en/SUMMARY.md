@@ -25,6 +25,7 @@ Learn how to build cross-platform native desktop applications with UIng.
   - [EditableCombobox](widget-editable-combobox.md)
   - [Entry](widget-entry.md)
   - [FontButton](widget-font-button.md)
+  - [ImageView](widget-image-view.md)
   - [Label](widget-label.md)
   - [MultilineEntry](widget-multiline-entry.md)
   - [ProgressBar](widget-progress-bar.md)
