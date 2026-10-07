@@ -493,9 +493,11 @@ class ControlGalleryApp
   private def build_tab : UIng::Tab
     tab = UIng::Tab.new
     hbox1 = UIng::Box.new(:horizontal)
+    hbox2 = UIng::Box.new(:horizontal)
+    hbox3 = UIng::Box.new(:horizontal)
     tab.append("Page 1", hbox1)
-    tab.append("Page 2", UIng::Box.new(:horizontal))
-    tab.append("Page 3", UIng::Box.new(:horizontal))
+    tab.append("Page 2", hbox2)
+    tab.append("Page 3", hbox3)
     tab.on_selected do |idx|
       puts "Tab selected: index #{idx}"
     end
@@ -507,6 +509,13 @@ class ControlGalleryApp
       puts text
     end
     hbox1.append(text_entry, true)
+
+    [16, 24].zip({hbox2, hbox3}).each do |font_size, box|
+      entry = UIng::MultilineEntry.new
+      entry.text = "Multiline entry with a #{font_size} pt font"
+      entry.font_size = font_size
+      box.append(entry, true)
+    end
 
     tab
   end

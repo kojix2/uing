@@ -265,6 +265,9 @@ module UIng
     fun multiline_entry_set_text = uiMultilineEntrySetText(e : Pointer(MultilineEntry), text : Pointer(LibC::Char))
     fun multiline_entry_append = uiMultilineEntryAppend(e : Pointer(MultilineEntry), text : Pointer(LibC::Char))
     fun multiline_entry_on_changed = uiMultilineEntryOnChanged(e : Pointer(MultilineEntry), f : (Pointer(MultilineEntry), Pointer(Void) -> Void), data : Pointer(Void))
+    fun multiline_entry_font_size = uiMultilineEntryFontSize(e : Pointer(MultilineEntry)) : LibC::Double
+    fun multiline_entry_set_font_size = uiMultilineEntrySetFontSize(e : Pointer(MultilineEntry), size : LibC::Double)
+    fun multiline_entry_reset_font_size = uiMultilineEntryResetFontSize(e : Pointer(MultilineEntry))
     fun multiline_entry_read_only = uiMultilineEntryReadOnly(e : Pointer(MultilineEntry)) : LibC::Int
     fun multiline_entry_set_read_only = uiMultilineEntrySetReadOnly(e : Pointer(MultilineEntry), readonly : LibC::Int)
     fun new_multiline_entry = uiNewMultilineEntry : Pointer(MultilineEntry)

@@ -36,6 +36,28 @@ module UIng
       LibUI.multiline_entry_append(ref_ptr, text)
     end
 
+    # Returns the font size in typographical points.
+    def font_size : Float64
+      LibUI.multiline_entry_font_size(ref_ptr)
+    end
+
+    # Sets the font size in typographical points without changing other font
+    # properties.
+    def font_size=(size : Number) : Nil
+      check_available
+      value = size.to_f64
+      unless value.finite? && value > 0
+        raise ArgumentError.new("multiline entry font size must be finite and positive")
+      end
+      LibUI.multiline_entry_set_font_size(ref_ptr, value)
+    end
+
+    # Restores the platform-default font size that was in effect when this
+    # multiline entry was created.
+    def reset_font_size : Nil
+      LibUI.multiline_entry_reset_font_size(ref_ptr)
+    end
+
     def read_only? : Bool
       LibUI.multiline_entry_read_only(ref_ptr) != 0
     end
