@@ -16,8 +16,11 @@ Install the dependencies:
 shards install
 </code></pre>
 
-The post-install script downloads the appropriate libui-ng library for the
-current platform.
+The post-install script downloads the appropriate libui-ng library from
+[kojix2/libui-ng releases](https://github.com/kojix2/libui-ng/releases). UIng
+uses patched libui-ng builds maintained for the supported platforms; details
+of those patches are available on the libui-ng
+[`dev` branch](https://github.com/kojix2/libui-ng/commits/dev).
 
 ## Platform notes
 
@@ -37,6 +40,26 @@ and Apple Silicon are supported.
 UIng supports MSVC, MinGW64, and UCRT64. For an MSVC build, run Crystal from an
 x64 Native Tools command prompt or Developer PowerShell so the compiler and
 Windows SDK are available.
+
+The post-install script downloads both `/MD` and `/MT` MSVC libraries. Normal
+Crystal builds use `/MD`; builds made with `--static` use `/MT`.
+
+### Hide the console window
+
+GUI executables built on Windows may open a console window. Select the Windows
+GUI subsystem when building the final executable.
+
+MinGW64 or UCRT64:
+
+<pre><code class="bash">
+crystal build app.cr --link-flags "-mwindows"
+</code></pre>
+
+MSVC:
+
+<pre><code class="powershell">
+crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
+</code></pre>
 
 ## Verify the installation
 

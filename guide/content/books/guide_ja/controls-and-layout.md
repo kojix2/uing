@@ -42,16 +42,17 @@ box.append(editor, stretchy: true)
 
 ## Widgetガイド
 
-- ウィンドウ、メニュー、ダイアログ: [Window](widget-window.md)、[Menu](widget-menu.md)、
-  [ダイアログ](widget-dialogs.md)
+- ウィンドウ、メニュー、ダイアログ: [Window](widget-window.md)、
+  [Toolbar](widget-toolbar.md)、[Menu](widget-menu.md)、[ダイアログ](widget-dialogs.md)
 - 入力と選択: [Button](widget-button.md)、[Checkbox](widget-checkbox.md)、
   [Entry](widget-entry.md)、[Combobox](widget-combobox.md)、
   [EditableCombobox](widget-editable-combobox.md)、[RadioButtons](widget-radio-buttons.md)、
   [Slider](widget-slider.md)、[Spinbox](widget-spinbox.md)
 - 専用コントロール: [ColorButton](widget-color-button.md)、
   [DateTimePicker](widget-date-time-picker.md)、[FontButton](widget-font-button.md)、
-  [Label](widget-label.md)、[MultilineEntry](widget-multiline-entry.md)、
-  [ProgressBar](widget-progress-bar.md)、[Separator](widget-separator.md)
+  [ImageView](widget-image-view.md)、[Label](widget-label.md)、
+  [MultilineEntry](widget-multiline-entry.md)、[ProgressBar](widget-progress-bar.md)、
+  [Separator](widget-separator.md)
 - レイアウト: [Box](widget-box.md)、[Tab](widget-tab.md)、[Form](widget-form.md)、
   [Group](widget-group.md)、[Grid](widget-grid.md)
 - データと描画: [Table](widget-table.md)、[Area](widget-area.md)

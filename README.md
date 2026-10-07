@@ -15,7 +15,7 @@
 UIng is a [Crystal](https://crystal-lang.org/) binding for [kojix2/libui-ng](https://github.com/kojix2/libui-ng).
 You can use the Crystal language to create cross-platform native desktop apps.
 
-[API Reference](https://kojix2.github.io/uing/api/)
+**Documentation:** [Guide](https://kojix2.github.io/uing/) · [English](https://kojix2.github.io/uing/books/guide_en/) · [日本語](https://kojix2.github.io/uing/books/guide_ja/) · [API Reference](https://kojix2.github.io/uing/api/)
 
 libui-ng uses the native APIs of each platform: Win32 API, [Direct2D](https://learn.microsoft.com/windows/win32/Direct2D/), and [DirectWrite](https://learn.microsoft.com/windows/win32/directwrite/) on Windows; [Cocoa](<https://en.wikipedia.org/wiki/Cocoa_(API)>) (AppKit) on macOS; and [GTK+ 3.10+](https://docs.gtk.org/gtk3/) and [Pango](https://docs.gtk.org/Pango/) on Linux/Unix.
 You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other standard widgets.
@@ -55,38 +55,11 @@ dependencies:
     github: kojix2/uing
 ```
 
-- The required libui-ng binary is automatically downloaded from [kojix2/libui-ng GitHub Releases](https://github.com/kojix2/libui-ng/releases) via [postinstall](https://github.com/kojix2/uing/blob/main/shard.yml).
-- On Windows MSVC, both `/MD` and `/MT` static libui-ng libraries are downloaded. UIng selects `/MD` for normal Crystal builds and `/MT` when Crystal is built with `--static`.
-- The UIng project is not just a binding; it provides unofficial patched builds of libui-ng for platforms. For more details, see the [README.md](https://github.com/kojix2/libui-ng/blob/main/README.md) and commits on the [`dev` branch](https://github.com/kojix2/libui-ng/commits/dev).
+Run `shards install`. The post-install script downloads the required libui-ng binary for the current platform. See the [installation guide](https://kojix2.github.io/uing/books/guide_en/installation.html) for platform-specific setup.
 
 ## Quick Start
 
-Clone the repository:
-
-```sh
-git clone https://github.com/kojix2/uing
-cd uing
-```
-
-Create the `libui` directory and download the static library for your platform:
-
-```sh
-crystal run download.cr
-```
-
-To run the `control_gallery` example, use the following command:
-
-```sh
-crystal run examples/gallery/control_gallery.cr
-```
-
-### Windows MSVC Setup
-
-The MSVC build requires [Visual Studio Build Tools and a Windows SDK](https://crystal-lang.org/install/on_windows/).
-Run the commands above in [x64 Native Tools Command Prompt or Developer PowerShell for Visual Studio](https://learn.microsoft.com/en-us/visualstudio/ide/reference/command-prompt-powershell?view=visualstudio),
-because a regular Command Prompt or PowerShell session is not configured for MSVC.
-
-## Usage
+Create `hello.cr`:
 
 ```crystal
 require "uing"
@@ -111,29 +84,22 @@ UIng.main
 UIng.uninit
 ```
 
-### DSL style
+Run it with:
 
-```crystal
-require "uing"
-
-UIng.init do
-  UIng::Window.new("Hello World", 300, 200) { |win|
-    on_closing { UIng.quit; true }
-    child {
-      UIng::Button.new("Click me") {
-        on_clicked {
-          win.msg_box("Info", "Button clicked!")
-        }
-      }
-    }
-    show
-  }
-
-  UIng.main
-end
+```sh
+crystal run hello.cr
 ```
 
-Note: The DSL style is implemented using Crystal's `with ... yield` syntax internally.
+To run the full control gallery from a checkout:
+
+```sh
+git clone https://github.com/kojix2/uing
+cd uing
+shards install
+crystal run examples/gallery/control_gallery.cr
+```
+
+Continue with the [First Steps](https://kojix2.github.io/uing/books/guide_en/first-steps.html) guide. The optional block-based DSL is covered in [Coding Styles](https://kojix2.github.io/uing/books/guide_en/coding-styles.html).
 
 ## Examples Gallery
 
@@ -510,232 +476,9 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
 
 Note: Image display is a feature introduced in `kojix2/libui-ng`. This feature is not present in the original libui-ng.
 
-## API Levels
-
-<table>
-  <thead>
-    <tr>
-      <th><strong>Level</strong></th>
-      <th><strong>Defined in</strong></th>
-      <th><strong>Example</strong></th>
-      <th><strong>Description</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>High-Level</strong></td>
-      <td><code>src/uing/*.cr</code></td>
-      <td><code>button.on_clicked { }</code>, etc.</td>
-      <td>Object-oriented API</td>
-    </tr>
-    <tr>
-      <td><strong>Low-Level</strong></td>
-      <td><code>src/uing/lib_ui/lib_ui.cr</code></td>
-      <td><code>UIng::LibUI.new_button</code>, etc.</td>
-      <td>Direct bindings to libui</td>
-    </tr>
-  </tbody>
-</table>
-
-- Almost all basic control functions such as `Window`, `Label`, and `Button` are covered.
-- APIs for advanced controls such as `Table` and `Area` are also provided.
-
-## Memory Management Policy
-
-Some UIng objects must be cleaned up manually when they are no longer needed. Use `destroy` for controls and `free` for some other resources, such as images.
-
-This section explains when and how to clean up UIng objects.
-
-### Parent and Child Controls
-
-Some UIng controls can contain other controls. For example, a `Window` can contain a `Box`, and a `Box` can contain controls such as `Button`. The containing control is the parent, and a control inside it is a child.
-
-Destroying a parent automatically destroys all of its children. Normally, you only need to destroy the parent rather than each child individually.
-
-```crystal
-window = UIng::Window.new("App", 400, 300)
-box = UIng::Box.new(:vertical)
-button = UIng::Button.new("OK")
-
-box.append(button)
-window.child = box
-
-window.destroy # also destroys box and button
-```
-
-UIng also marks wrappers for those children as destroyed, so they can no longer be used.
-
-To reuse a child elsewhere, detach it before destroying its parent:
-
-```crystal
-button.detach # still alive
-other_box.append(button)
-```
-
-To destroy a child individually, detach it from its parent first and then call `destroy`:
-
-```crystal
-button.detach
-button.destroy
-```
-
-Calling `destroy` on a child that is still attached raises an exception and leaves the child intact.
-
-The following methods add, remove, or replace children in each type of parent:
-
-- `Window` and `Group` have one child. Assigning `nil` or a new child detaches the old child without destroying it. Destroying the `Window` or `Group` destroys its current child.
-- `Box`, `Form`, `Tab`, and `Grid` support `delete(child)`; the first three also support `delete(index)`.
-- A control that has no parent can be destroyed directly with `destroy`.
-
-### Closing an Application or Window
-
-Most controls are placed under a top-level window. Destroying that window automatically destroys its children, so you do not need to call `destroy` on each control individually.
-
-`UIng.quit` stops the event loop; it does not destroy windows. `UIng.uninit` shuts down the UI system and cleans up its internal resources, but it does not destroy windows created by the application. Destroy all top-level windows before calling `UIng.uninit`.
-
-`Window#on_closing` is called mainly when the user clicks a window's close button. For a simple application with one window, this callback is usually enough to handle shutdown.
-
-Return `true` from `Window#on_closing` to close and destroy the window, or `false` to keep it open. When the callback returns `true`, libui-ng destroys the window. The callback therefore only needs to call `UIng.quit` and return `true`:
-
-```crystal
-window.on_closing do
-  UIng.quit
-  true
-end
-```
-
-There is no need to call `window.destroy` as well on this exit path.
-
-`UIng.on_should_quit` handles requests to quit the entire application, such as choosing Quit from a menu. It is separate from `Window#on_closing`, which handles a window's close button.
-
-When exiting from `UIng.on_should_quit`, destroy every top-level window created by the application. The callback does not destroy them automatically.
-
-When using both callbacks, follow this pattern:
-
-- In `Window#on_closing`, call `UIng.quit` and return `true`; libui-ng handles destruction of the window.
-- In `UIng.on_should_quit`, explicitly destroy every top-level window and then return `true`.
-- Use `released?` to avoid destroying the same window twice.
-
-```crystal
-window.on_closing do
-  UIng.quit
-  true
-end
-
-UIng.on_should_quit do
-  window.destroy unless window.released?
-  true
-end
-```
-
-### Cleanup Rules for Other Objects
-
-For objects that are not controls, the cleanup method depends on how the object was obtained:
-
-- An object obtained directly from `.new` or as a method result usually needs to be freed after use.
-- An object used through `.open` or a block form is freed automatically when the block ends.
-- An object passed to a callback is usually valid only until that callback returns. UIng handles its cleanup.
-
-The following rules apply to specific objects:
-
-- `Table::Model`: request destruction of all `Table` controls using the model before calling `model.free`. If native destruction is still pending, the model becomes unavailable immediately and its native resource is freed after the last Table destruction completes.
-- `Image`: call `image.free` when the image is no longer needed. An image can be freed after passing it to `ImageView#image=`, but must remain alive while a table or `Toolbar` is using it.
-- `Toolbar`: detach it from its window before calling `free`.
-- `Draw::Path`, `Draw::TextLayout`, and `AttributedString`: prefer `.open` where available so that the object is freed automatically when the block ends.
-- `Table::Selection`: block and callback forms free the selection automatically. A direct `table.selection` result must be freed after use. `Table::Selection.new(rows)` is managed by Crystal's GC.
-- `Table::Value`: a value returned from `cell_value` is then managed by libui-ng. A value passed to `set_cell_value` is valid only until that callback returns.
-- `Attribute`: after it is passed to `set_attribute`, the receiving `AttributedString` manages it. An attribute yielded by `each_attribute` or `each_attribute_while` is valid only for that block.
-- `OpenTypeFeatures` and `AttributedString` may be read or enumerated recursively during enumeration, but cannot be freed or structurally modified until enumeration finishes.
-- Draw contexts are valid only during the draw callback.
-
-Calling `destroy` or `free` makes the corresponding wrapper unavailable for further use.
-
-## Limitations
-
-libui-ng is cross-platform, but comes with some limitations:
-
-1. Precise widget positioning is not possible. Control placement is intentionally coarse and cannot be specified numerically. This is an intentional constraint to ensure consistent behavior across all three platforms.
-
-2. There is no function to delete columns from the table.
-
-## Windows Setup
-
-### Hide Console Window
-
-MinGW:
-
-```
-crystal build app.cr --link-flags "-mwindows"
-```
-
-MSVC:
-
-```
-crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
-```
-
-## Packaging Your Application
-
-To learn how to package your UIng-based application for distribution, refer to the [md5_checker](examples/md5_checker) example.  
-This example demonstrates a simple way to bundle your Crystal app with the required native libraries, making it easy to share with others.
-
-## Development
-
-### Purpose
-
-This project aims to provide a small, sustainable foundation for building simple native GUIs.
-
-Our priority is not to keep adding new features, but to keep the library working, stable, and maintainable over the long term.
-Providing a full-featured GUI library is not the main scope of this project.
-
-### UIng::LibUI
-
-- `UIng::LibUI` is the module for direct C bindings
-- Initially, [crystal_lib](https://github.com/crystal-lang/crystal_lib) was used to generate low-level bindings
-  　　- However, it required many manual conversions, such as changing LibC::Int to Bool. Currently, it is better to use AI.
-- When adding new UI components, follow the established callback management patterns
-- libui libraries are generated using GitHub Actions at [kojix2/libui-ng](https://github.com/kojix2/libui-ng) in the pre-build branch.
-  - Enhancement patches such as image display functionality are provided on the dev branch.
-- `comctl32.manifest` is embedded in Windows builds so Win32 widgets use Common Controls v6 visual styles instead of the legacy classic appearance.
-
-### Memory Safety
-
-UIng applies several strategies to ensure safe interoperation between Crystal’s garbage-collected runtime and native C code:
-
-- Control Lifetime: A registry keeps wrappers alive until native destruction; parent references mirror the native control tree.
-
-- Callback Protection: Callbacks and boxed closures remain referenced for as long as native code may invoke them.
-
-- Extended Handler Structures: For complex controls like `Area` and `Table`, extended C structs embed the base handler along with extra fields for boxed callbacks. Static C-compatible trampolines cast back to these extended structs and invoke the stored closures safely.
-
-- Borrowed Lifetimes: Callback-only wrappers are invalidated on return. Other rules are defined in [Memory Management Policy](#memory-management-policy).
-
-### Closures in Low-Level Contexts
-
-- Many methods support Crystal closures because the underlying libui-ng functions accept a `data` parameter.
-
-- In some low-level APIs, such as function pointers assigned to struct members, no `data` can be passed. UIng works around this by using struct inheritance and boxed data to support closures in these cases.
-
-- This approach is used in controls like `Table` and `Area`.
-
-### Use of Generative AI
-
-This project is developed with the assistance of generative AI.
-
-AI is used extensively for:
-
-- Creating GitHub Actions workflows for screenshot automation
-- Creating complex example programs
-- Scanning for and fixing memory-management bugs
-- Developing [libui-ng](https://github.com/kojix2/libui-ng)
-
-UIng was initially built through manual work, iterative design, and line-by-line human review of AI-generated code. In 2026, line-by-line review was discontinued as AI's ability to detect bugs surpassed kojix2's. Human effort now focuses on the project's overall design, visual inspection of the GUI, and finding improvements through real-world use of UIng.
-
 ## Contributing
 
-- Fork this repository
-- Report bugs and submit pull requests
-- Write a blog post about Uing
+See the [development and contribution guide](https://kojix2.github.io/uing/books/guide_en/development.html). Bug reports, pull requests, and articles about UIng are welcome.
 
 ## License
 

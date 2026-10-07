@@ -28,3 +28,16 @@ application. Interfaces can be written with the regular API or the
 block-based DSL; see [Coding Styles](coding-styles.md) for details.
 For the complete list of types and methods, use the
 [API Reference](../../api/).
+
+## Project focus
+
+UIng aims to provide a small, sustainable foundation for simple native GUIs.
+Its priority is to remain stable and maintainable over the long term rather
+than grow into a full-featured GUI framework.
+
+## Limitations
+
+- Layout is intentionally based on native containers. Controls cannot be
+  positioned with arbitrary pixel coordinates, which helps preserve a native
+  appearance across platforms.
+- Table columns cannot be removed after they have been added.

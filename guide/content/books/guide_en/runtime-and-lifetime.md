@@ -41,13 +41,121 @@ window as it closes.
 
 ## Control ownership
 
-Containers own their child controls. Destroying a parent also destroys its
-children, so do not destroy a control while it is still attached.
+Some controls contain other controls. The containing control is the parent,
+and an attached control is its child. Destroying a parent automatically
+destroys all of its children, so normally only the top-level parent needs to
+be destroyed.
 
-Detach a child before reusing or explicitly destroying it. For example, set a
-window's child to `nil`, call `delete` on a `Box`, `Form`, or `Grid`, or use
-`control.detach`.
+<pre><code class="crystal">
+window = UIng::Window.new("App", 400, 300)
+box = UIng::Box.new(:vertical)
+button = UIng::Button.new("OK")
 
-Tables, custom drawing resources, menus, and multi-window shutdown have extra
-lifetime rules. Consult their examples and the
-[API Reference](../../api/) when using them.
+box.append(button)
+window.child = box
+
+window.destroy # also destroys box and button
+</code></pre>
+
+UIng marks the Crystal wrappers for those children as released. They cannot be
+used after their parent is destroyed.
+
+Detach a child before reusing it elsewhere:
+
+<pre><code class="crystal">
+button.detach
+other_box.append(button)
+</code></pre>
+
+Detach a child before destroying it individually:
+
+<pre><code class="crystal">
+button.detach
+button.destroy
+</code></pre>
+
+Calling `destroy` on an attached child raises an exception and leaves the
+child intact.
+
+- `Window` and `Group` have one child. Assigning `nil` or a new child detaches
+  the old child without destroying it.
+- `Box`, `Form`, `Tab`, and `Grid` support `delete(child)`; `Box`, `Form`, and
+  `Tab` also support `delete(index)`.
+- A control without a parent can be destroyed directly.
+
+## Closing a window or application
+
+`UIng.quit` stops the event loop; it does not destroy windows. `UIng.uninit`
+releases application-wide resources but does not destroy windows created by
+the application. Make sure every top-level window has been destroyed before
+calling `UIng.uninit`.
+
+`Window#on_closing` handles the window's close button. Return `true` to allow
+libui-ng to close and destroy the window, or `false` to keep it open. A simple
+single-window application only needs to stop the event loop and return `true`:
+
+<pre><code class="crystal">
+window.on_closing do
+  UIng.quit
+  true
+end
+</code></pre>
+
+Do not call `window.destroy` on this path; libui-ng destroys the window after
+the callback returns `true`.
+
+`UIng.on_should_quit` handles application-wide quit requests, such as a Quit
+menu item. It does not destroy top-level windows automatically. When both
+callbacks are used, destroy each open top-level window in `on_should_quit` and
+use `released?` to avoid destroying one twice:
+
+<pre><code class="crystal">
+window.on_closing do
+  UIng.quit
+  true
+end
+
+UIng.on_should_quit do
+  window.destroy unless window.released?
+  true
+end
+</code></pre>
+
+## Other resources
+
+Objects that are not controls follow the cleanup convention associated with
+how they were obtained:
+
+- An object created with `.new` or returned directly from a method usually
+  needs to be freed after use.
+- An object used through `.open` or another block form is freed automatically
+  when the block ends.
+- An object passed to a callback is usually valid only until that callback
+  returns; UIng handles its cleanup.
+
+Specific resource rules are:
+
+- `Table::Model`: request destruction of all `Table` controls using the model
+  before calling `model.free`. If native destruction is pending, the wrapper
+  becomes unavailable immediately and the native model is freed after the last
+  Table destruction completes.
+- `Image`: call `free` when it is no longer needed. It can be freed after
+  passing it to `ImageView#image=`, but must remain alive while a table or
+  `Toolbar` uses it.
+- `Toolbar`: detach it from its window before calling `free`.
+- `Draw::Path`, `Draw::TextLayout`, and `AttributedString`: prefer `.open`
+  where available so cleanup occurs when the block ends.
+- `Table::Selection`: block and callback forms free the selection
+  automatically. A direct `table.selection` result must be freed after use.
+  `Table::Selection.new(rows)` is managed by Crystal's GC.
+- `Table::Value`: a value returned from `cell_value` is managed by libui-ng. A
+  value passed to `set_cell_value` is valid only until that callback returns.
+- `Attribute`: after `set_attribute`, the receiving `AttributedString` owns
+  it. An attribute yielded by enumeration is valid only for that block.
+- `OpenTypeFeatures` and `AttributedString` may be read recursively during
+  enumeration, but cannot be freed or structurally modified until enumeration
+  finishes.
+- A draw context is valid only during its draw callback.
+
+Calling `destroy` or `free` makes the corresponding wrapper unavailable for
+further use.

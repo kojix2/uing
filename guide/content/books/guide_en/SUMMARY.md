@@ -44,3 +44,4 @@ Learn how to build cross-platform native desktop applications with UIng.
   - [Area](widget-area.md)
 - [Appendix]()
   - [Examples and API Reference](examples-and-api.md)
+  - [Development](development.md)

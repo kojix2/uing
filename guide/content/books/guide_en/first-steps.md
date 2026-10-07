@@ -5,6 +5,10 @@
 This application opens a native window containing a button. Clicking the
 button displays a message box.
 
+This is the regular object-oriented API used throughout most of the guide.
+The equivalent block-based form is described in
+[Coding Styles](coding-styles.md).
+
 <pre><code class="crystal">
 require "uing"
 

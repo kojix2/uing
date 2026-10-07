@@ -13,10 +13,13 @@ APIリファレンスで確認してください。
 ## 実行可能なサンプル
 
 ギャラリーには、個々のコントロール、コンテナ、メニュー、テーブル、カスタム描画に
-焦点を当てたサンプルがあります。リポジトリをチェックアウトしたディレクトリから、
+焦点を当てたサンプルがあります。リポジトリをcloneして開発用依存関係を導入し、
 次のコマンドでギャラリー全体を実行できます。
 
 <pre><code class="bash">
+git clone https://github.com/kojix2/uing
+cd uing
+shards install
 crystal run examples/gallery/control_gallery.cr
 </code></pre>
 
@@ -28,3 +31,10 @@ crystal run examples/gallery/control_gallery.cr
 
 必要なコントロールを含む最小のサンプルから始めてください。カスタム描画とテーブルには
 追加のコールバックとライフタイム規則があるため、ギャラリーのサンプルが最適な出発点です。
+
+## アプリケーションのパッケージング
+
+[MD5 Checker](https://github.com/kojix2/uing/tree/main/examples/md5_checker)には、
+UIngアプリケーションと必要なネイティブライブラリをLinux、macOS、Windows向けに
+パッケージングするスクリプトがあります。アプリケーションを配布するときの
+出発点として利用できます。

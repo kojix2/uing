@@ -41,13 +41,113 @@ end
 
 ## コントロールの所有権
 
-コンテナは子コントロールを所有します。親を破棄すると子も破棄されるため、
-コンテナに接続されたままのコントロールを破棄しないでください。
+一部のコントロールは別のコントロールを内包します。内包する側が親、接続された側が
+子です。親を破棄するとすべての子も自動的に破棄されるため、通常は最上位の親だけを
+破棄します。
 
-子を再利用または明示的に破棄する場合は、先に親から切り離します。たとえば、
-ウィンドウのchildを`nil`に設定する、`Box`、`Form`、`Grid`の`delete`を呼ぶ、
-または`control.detach`を使用します。
+<pre><code class="crystal">
+window = UIng::Window.new("App", 400, 300)
+box = UIng::Box.new(:vertical)
+button = UIng::Button.new("OK")
 
-テーブル、カスタム描画リソース、メニュー、複数ウィンドウの終了処理には追加の
-ライフタイム規則があります。使用するときはサンプルと
-[APIリファレンス](../../api/)を参照してください。
+box.append(button)
+window.child = box
+
+window.destroy # boxとbuttonも破棄されます
+</code></pre>
+
+UIngは子のCrystalラッパーも解放済みとして扱います。親を破棄した後に子を使用する
+ことはできません。
+
+子を別の場所で再利用する場合は、先に親から切り離します。
+
+<pre><code class="crystal">
+button.detach
+other_box.append(button)
+</code></pre>
+
+子を個別に破棄する場合も、先に切り離します。
+
+<pre><code class="crystal">
+button.detach
+button.destroy
+</code></pre>
+
+接続中の子に`destroy`を呼ぶと例外が発生し、子は破棄されずに残ります。
+
+- `Window`と`Group`は子を1つ持ちます。`nil`または新しい子を代入すると、以前の子は
+  破棄されずに切り離されます。
+- `Box`、`Form`、`Tab`、`Grid`は`delete(child)`を利用できます。`Box`、`Form`、
+  `Tab`では`delete(index)`も利用できます。
+- 親を持たないコントロールは直接破棄できます。
+
+## ウィンドウとアプリケーションの終了
+
+`UIng.quit`はイベントループを停止しますが、ウィンドウを破棄しません。
+`UIng.uninit`はアプリケーション全体のリソースを解放しますが、アプリケーションが
+作成したウィンドウを破棄しません。`UIng.uninit`を呼ぶ前に、すべての最上位
+ウィンドウが破棄されていることを確認してください。
+
+`Window#on_closing`はウィンドウの閉じるボタンを処理します。`true`を返すと
+libui-ngがウィンドウを閉じて破棄し、`false`を返すと開いたままにします。
+単一ウィンドウのアプリケーションでは、イベントループを停止して`true`を返します。
+
+<pre><code class="crystal">
+window.on_closing do
+  UIng.quit
+  true
+end
+</code></pre>
+
+この経路では`window.destroy`を呼ばないでください。コールバックが`true`を返した後、
+libui-ngがウィンドウを破棄します。
+
+`UIng.on_should_quit`は、終了メニューなどアプリケーション全体の終了要求を処理します。
+このコールバックは最上位ウィンドウを自動的には破棄しません。両方のコールバックを
+使う場合は、`on_should_quit`ですべての最上位ウィンドウを破棄し、二重破棄を避ける
+ために`released?`を使います。
+
+<pre><code class="crystal">
+window.on_closing do
+  UIng.quit
+  true
+end
+
+UIng.on_should_quit do
+  window.destroy unless window.released?
+  true
+end
+</code></pre>
+
+## その他のリソース
+
+コントロール以外のオブジェクトは、取得方法に応じた規則で解放します。
+
+- `.new`で作成したオブジェクトやメソッドから直接返されたオブジェクトは、通常、
+  使用後に解放する必要があります。
+- `.open`などのブロック形式で使うオブジェクトは、ブロック終了時に自動解放されます。
+- コールバックへ渡されたオブジェクトは、通常、そのコールバックが返るまでだけ有効です。
+  解放はUIngが処理します。
+
+個別のリソースには次の規則があります。
+
+- `Table::Model`: `model.free`の前に、そのモデルを使用するすべての`Table`の破棄を
+  要求します。ネイティブ側の破棄が保留中の場合、ラッパーは直ちに利用不能になり、
+  最後のTableの破棄完了後にネイティブモデルが解放されます。
+- `Image`: 不要になったら`free`を呼びます。`ImageView#image=`へ渡した後は解放できますが、
+  Tableまたは`Toolbar`が使用している間は保持してください。
+- `Toolbar`: ウィンドウから切り離してから`free`を呼びます。
+- `Draw::Path`、`Draw::TextLayout`、`AttributedString`: 利用できる場合は`.open`を使い、
+  ブロック終了時に解放させます。
+- `Table::Selection`: ブロック形式とコールバック形式では自動解放されます。
+  `table.selection`の直接の戻り値は使用後に解放します。`Table::Selection.new(rows)`は
+  CrystalのGCが管理します。
+- `Table::Value`: `cell_value`から返した値はlibui-ngが管理します。`set_cell_value`へ
+  渡された値は、そのコールバックが返るまでだけ有効です。
+- `Attribute`: `set_attribute`へ渡した後は、受け取った`AttributedString`が管理します。
+  列挙中にyieldされたAttributeは、そのブロック内だけで有効です。
+- `OpenTypeFeatures`と`AttributedString`は列挙中に再帰的に読み取れますが、列挙が
+  終わるまでは解放や構造変更ができません。
+- 描画コンテキストはdrawコールバック中だけ有効です。
+
+`destroy`または`free`を呼ぶと、対応するラッパーは以後利用できません。

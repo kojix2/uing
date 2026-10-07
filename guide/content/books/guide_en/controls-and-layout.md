@@ -44,7 +44,8 @@ for examples of each control and layout.
 
 ## Widget guides
 
-- Window, menus, and dialogs: [Window](widget-window.md), [Menu](widget-menu.md),
+- Window, menus, and dialogs: [Window](widget-window.md),
+  [Toolbar](widget-toolbar.md), [Menu](widget-menu.md), and
   [Dialogs](widget-dialogs.md)
 - Input and display: [Button](widget-button.md), [Checkbox](widget-checkbox.md),
   [Entry](widget-entry.md), [Combobox](widget-combobox.md),
@@ -52,8 +53,9 @@ for examples of each control and layout.
   [Slider](widget-slider.md), and [Spinbox](widget-spinbox.md)
 - Specialized controls: [ColorButton](widget-color-button.md),
   [DateTimePicker](widget-date-time-picker.md), [FontButton](widget-font-button.md),
-  [Label](widget-label.md), [MultilineEntry](widget-multiline-entry.md),
-  [ProgressBar](widget-progress-bar.md), and [Separator](widget-separator.md)
+  [ImageView](widget-image-view.md), [Label](widget-label.md),
+  [MultilineEntry](widget-multiline-entry.md), [ProgressBar](widget-progress-bar.md),
+  and [Separator](widget-separator.md)
 - Layout: [Box](widget-box.md), [Tab](widget-tab.md), [Form](widget-form.md),
   [Group](widget-group.md), and [Grid](widget-grid.md)
 - Data and drawing: [Table](widget-table.md) and [Area](widget-area.md)

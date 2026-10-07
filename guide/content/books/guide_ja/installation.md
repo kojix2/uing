@@ -17,7 +17,10 @@ shards install
 </code></pre>
 
 インストール後のスクリプトが、現在のプラットフォームに対応するlibui-ngライブラリを
-ダウンロードします。
+[kojix2/libui-ngのリリース](https://github.com/kojix2/libui-ng/releases)から
+ダウンロードします。UIngは対応プラットフォーム向けに保守されたパッチ適用版を使用します。
+パッチの詳細はlibui-ngの
+[`dev`ブランチ](https://github.com/kojix2/libui-ng/commits/dev)で確認できます。
 
 ## プラットフォームごとの注意事項
 
@@ -37,6 +40,26 @@ Intel MacとApple Siliconの両方に対応しています。
 UIngはMSVC、MinGW64、UCRT64に対応しています。MSVCでビルドする場合は、コンパイラと
 Windows SDKを利用できるよう、x64 Native ToolsコマンドプロンプトまたはDeveloper
 PowerShellからCrystalを実行してください。
+
+インストール後のスクリプトは、MSVC用の`/MD`版と`/MT`版を両方ダウンロードします。
+通常のCrystalビルドでは`/MD`、`--static`を指定したビルドでは`/MT`が使われます。
+
+### コンソールウィンドウを表示しない
+
+WindowsでビルドしたGUI実行ファイルは、コンソールウィンドウを開く場合があります。
+配布用の実行ファイルではWindows GUIサブシステムを指定します。
+
+MinGW64またはUCRT64:
+
+<pre><code class="bash">
+crystal build app.cr --link-flags "-mwindows"
+</code></pre>
+
+MSVC:
+
+<pre><code class="powershell">
+crystal build app.cr --link-flags=/SUBSYSTEM:WINDOWS
+</code></pre>
 
 ## インストールを確認する
 
