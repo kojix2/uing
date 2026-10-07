@@ -10,6 +10,7 @@ end
 
 editor = UIng::MultilineEntry.new(wrapping: true)
 editor.text = "Type here. Long lines wrap automatically."
+editor.font_size = 18
 
 status = UIng::Label.new("The text is editable")
 editor.on_changed do
@@ -27,9 +28,16 @@ read_only.on_toggled do |checked|
   status.text = checked ? "The text is read only" : "The text is editable"
 end
 
+font_size = UIng::Spinbox.new(8, 72, value: 18)
+font_size.on_changed do |size|
+  editor.font_size = size
+end
+
 controls = UIng::Box.new(:horizontal, padded: true)
 controls.append(append_button)
 controls.append(read_only)
+controls.append(UIng::Label.new("Font size"))
+controls.append(font_size)
 
 box = UIng::Box.new(:vertical, padded: true)
 box.append(editor, stretchy: true)
