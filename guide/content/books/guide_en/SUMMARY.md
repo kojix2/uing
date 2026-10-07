@@ -13,6 +13,7 @@ Learn how to build cross-platform native desktop applications with UIng.
   - [Coding Styles](coding-styles.md)
 - [Windows, Menus, and Dialogs]()
   - [Window](widget-window.md)
+  - [Toolbar](widget-toolbar.md)
   - [Menu](widget-menu.md)
   - [Dialogs](widget-dialogs.md)
 - [Controls]()

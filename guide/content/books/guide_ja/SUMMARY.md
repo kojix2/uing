@@ -13,6 +13,7 @@ UIngを使ったクロスプラットフォームのネイティブデスクト�
   - [コーディングスタイル](coding-styles.md)
 - [ウィンドウ、メニュー、ダイアログ]()
   - [Window](widget-window.md)
+  - [Toolbar](widget-toolbar.md)
   - [Menu](widget-menu.md)
   - [ダイアログ](widget-dialogs.md)
 - [コントロール]()
