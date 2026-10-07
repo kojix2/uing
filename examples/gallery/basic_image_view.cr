@@ -1,20 +1,21 @@
 require "../../src/uing"
-require "stumpy_png"
+require "crimage"
 
 fname = File.join(__DIR__, "crys.png")
-canvas = StumpyPNG.read(fname)
-width = canvas.width.to_i32
-height = canvas.height.to_i32
+source = CrImage.read(fname)
+bounds = source.bounds
+width = bounds.width
+height = bounds.height
 
 pixels = Bytes.new(width * height * 4)
 (0...height).each do |y|
   (0...width).each do |x|
     offset = (y * width + x) * 4
-    r, g, b, a = canvas[x, y].to_rgba
-    pixels[offset] = r
-    pixels[offset + 1] = g
-    pixels[offset + 2] = b
-    pixels[offset + 3] = a || 255_u8
+    color = source.at(bounds.min.x + x, bounds.min.y + y).to_rgba8
+    pixels[offset] = color.r
+    pixels[offset + 1] = color.g
+    pixels[offset + 2] = color.b
+    pixels[offset + 3] = color.a
   end
 end
 

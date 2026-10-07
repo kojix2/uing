@@ -1,33 +1,22 @@
 require "../../src/uing"
-require "stumpy_png"
+require "crimage"
 
 fname = File.join(__DIR__, "crys.png")
-canvas = StumpyPNG.read(fname)
-width = canvas.width.to_i32
-height = canvas.height.to_i32
+source = CrImage.read(fname)
+bounds = source.bounds
+width = bounds.width
+height = bounds.height
 
-# Create pixel buffer for premultiplied RGBA
+# CrImage::Color#to_rgba8 returns premultiplied RGBA as required by UIng::Image.
 pixels = Bytes.new(width * height * 4)
 (0...height).each do |y|
   (0...width).each do |x|
     offset = (y * width + x) * 4
-    r, g, b, a = canvas[x, y].to_rgba
-
-    # Handle alpha properly - default to 255 if nil
-    alpha = a || 255_u8
-
-    # For premultiplied alpha, multiply RGB by alpha/255
-    if alpha < 255
-      alpha_factor = alpha.to_f / 255.0
-      r = (r.to_f * alpha_factor).to_u8
-      g = (g.to_f * alpha_factor).to_u8
-      b = (b.to_f * alpha_factor).to_u8
-    end
-
-    pixels[offset] = r
-    pixels[offset + 1] = g
-    pixels[offset + 2] = b
-    pixels[offset + 3] = alpha
+    color = source.at(bounds.min.x + x, bounds.min.y + y).to_rgba8
+    pixels[offset] = color.r
+    pixels[offset + 1] = color.g
+    pixels[offset + 2] = color.b
+    pixels[offset + 3] = color.a
   end
 end
 

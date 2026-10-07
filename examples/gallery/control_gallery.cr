@@ -1,7 +1,7 @@
 require "../../src/uing"
 require "base64"
 require "compress/zlib"
-require "stumpy_png"
+require "crimage"
 
 class ControlGalleryApp
   NEW_ICON  = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
@@ -281,18 +281,19 @@ class ControlGalleryApp
 
   private def build_image_view : UIng::Group
     group = UIng::Group.new("ImageView", margined: true)
-    canvas = StumpyPNG.read(File.join(__DIR__, "crys.png"))
-    width, height = canvas.width.to_i32, canvas.height.to_i32
+    source = CrImage.read(File.join(__DIR__, "crys.png"))
+    bounds = source.bounds
+    width, height = bounds.width, bounds.height
     pixels = Bytes.new(width * height * 4)
 
     height.times do |y|
       width.times do |x|
         offset = (y * width + x) * 4
-        red, green, blue, alpha = canvas[x, y].to_rgba
-        pixels[offset] = red
-        pixels[offset + 1] = green
-        pixels[offset + 2] = blue
-        pixels[offset + 3] = alpha || 255_u8
+        color = source.at(bounds.min.x + x, bounds.min.y + y).to_rgba8
+        pixels[offset] = color.r
+        pixels[offset + 1] = color.g
+        pixels[offset + 2] = color.b
+        pixels[offset + 3] = color.a
       end
     end
 
