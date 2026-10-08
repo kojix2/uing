@@ -30,11 +30,6 @@ module UIng
 
     # scrolling area
 
-    def initialize(area_handler : Pointer(LibUI::AreaHandler), width : Int32, height : Int32)
-      @ref_ptr = LibUI.new_scrolling_area(area_handler, width, height)
-      register_control
-    end
-
     def initialize(area_handler : Handler, width : Int32, height : Int32)
       @area_handler = area_handler # Keep reference to prevent GC
       @ref_ptr = LibUI.new_scrolling_area(area_handler.to_unsafe, width, height)
