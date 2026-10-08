@@ -113,11 +113,6 @@ module UIng
     end
   end
 
-  def self.init(init_options : Pointer(LibUI::InitOptions)) : Nil
-    @@init_options = init_options
-    init
-  end
-
   def self.uninit : Nil
     LibUI.uninit
     Menu.reset_after_uninit
