@@ -13,7 +13,8 @@ module UIng
       @zone : String? = nil
     {% end %}
 
-    def initialize(@cstruct : LibUI::TM = LibUI::TM.new)
+    def initialize
+      @cstruct = LibUI::Tm.new
       {% unless flag?(:windows) %}
         # Explicitly initialize zone to NULL for safety
         @cstruct.zone = Pointer(LibC::Char).null
@@ -23,7 +24,7 @@ module UIng
     # Copies the calendar and clock fields from *time*. This does not convert
     # the value to the process-local time zone.
     def initialize(time : ::Time)
-      @cstruct = LibUI::TM.new
+      @cstruct = LibUI::Tm.new
       {% unless flag?(:windows) %}
         @cstruct.zone = Pointer(LibC::Char).null
       {% end %}

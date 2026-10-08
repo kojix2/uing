@@ -1,7 +1,7 @@
 module UIng
   lib LibUI
     {% if flag?(:windows) %}
-      struct TM
+      struct Tm
         sec : LibC::Int
         min : LibC::Int
         hour : LibC::Int
@@ -13,7 +13,7 @@ module UIng
         isdst : LibC::Int
       end
     {% else %}
-      struct TM
+      struct Tm
         sec : LibC::Int
         min : LibC::Int
         hour : LibC::Int
