@@ -84,13 +84,13 @@ module UIng
     # FontButton callback or block descriptor expires.
     def snapshot : FontDescriptor
       check_available
-      copy = FontDescriptor.new
-      copy.family = family
-      copy.size = size
-      copy.weight = weight
-      copy.italic = italic
-      copy.stretch = stretch
-      copy
+      FontDescriptor.new(
+        family: family,
+        size: size,
+        weight: weight,
+        italic: italic,
+        stretch: stretch
+      )
     end
 
     def free : Nil
