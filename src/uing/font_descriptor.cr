@@ -9,9 +9,6 @@ module UIng
     @native_family = false
     getter? released = false
 
-    def initialize(@cstruct : LibUI::FontDescriptor = LibUI::FontDescriptor.new)
-    end
-
     def initialize(
       family : String? = nil, size : Int32? = nil, weight : TextWeight? = nil,
       italic : TextItalic? = nil, stretch : TextStretch? = nil,
