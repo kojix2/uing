@@ -16,10 +16,36 @@ Table presents model-backed rows and native text, image, checkbox, progress, and
 
 {{% shell command="sh scripts/render-example basic_table" %}}
 
+## Basic setup
+
+`Table::Model::Handler` supplies data, which a `Table` displays through a `Table::Model`. See the runnable example above for initialization and window creation.
+
+```crystal
+data = %w[Windows macOS Ubuntu]
+handler = UIng::Table::Model::Handler.new do
+  num_columns { 1 }
+  column_type { |_column| UIng::Table::Value::Type::String }
+  num_rows { data.size }
+  cell_value { |row, _column| UIng::Table::Value.new(data[row]) }
+  set_cell_value { |_row, _column, _value| }
+end
+
+model = UIng::Table::Model.new(handler)
+table = UIng::Table.new(model) do
+  append_text_column("OS", 0, editable: :never)
+end
+window.child = table
+```
+
+Row and model column indices start at zero. The `0` in `append_text_column` selects the model column to display. Model column counts and types are fixed at creation; cell values must match their column types.
+
 ## Usage notes
 
-- The Handler defines the schema and supplies cell values; notify the Model after inserting, changing, or deleting rows.
-- Detach and destroy every Table before freeing its Model. Callback selections are freed automatically.
+- Return a new `Table::Value` on every `cell_value` call. Ownership transfers to libui; do not reuse or free the returned value.
+- To allow editing, set `editable: :always` and update the underlying data in `set_cell_value`. The supplied value is valid only during the callback and is `nil` for button clicks.
+- After inserting, changing, or deleting underlying data, notify the Model with `row_inserted(index)`, `row_changed(index)`, or `row_deleted(old_index)`. For deletion, use the row index before removal.
+- Detach and `destroy` every Table using a Model before calling its `free` method. The Model retains its Handler.
+- Use `on_selection_changed` to read selected rows. Its Selection is freed automatically; extract row indices with `selection.rows` if you need to keep them.
 
 ## Related examples
 
