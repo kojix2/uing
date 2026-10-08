@@ -16,10 +16,37 @@ AreaはArea::Handlerで描画と入力を処理するカスタム描画領域で
 
 {{% shell command="sh scripts/render-example area_basic_shapes" %}}
 
+## 基本構成
+
+`Area::Handler`を作り、`draw`コールバックを登録してから、Handlerを`Area.new`に渡します。Areaは、自身が存在する間Handlerへの参照を保持します。
+
+```crystal
+handler = UIng::Area::Handler.new do
+  draw do |_area, params|
+    brush = UIng::Area::Draw::Brush.new(:solid, 0.2, 0.4, 0.8, 1.0)
+    params.context.fill_path(brush) do |path|
+      path.add_rectangle(30, 30, 120, 70)
+    end
+  end
+end
+
+area = UIng::Area.new(handler)
+window.child = area
+```
+
+コントロールの作成前にUIngを初期化し、実行例のようにウィンドウを表示して`UIng.main`を実行します。`Area.new(handler, width, height)`を使うとスクロール可能なAreaになり、指定したサイズはコンテンツの大きさです。
+
+## 描画
+
+- `draw`は描画が必要なときに呼ばれます。`params.area_width`と`params.area_height`は非スクロールAreaのみ有効です。スクロールAreaのコンテンツサイズはアプリ側で管理します。`clip_x`、`clip_y`、`clip_width`、`clip_height`は描画対象の範囲です。
+- `params.context`の`fill_path`／`stroke_path`で描画すると、パスの終了・解放は自動です。直接`Path.open`を使う場合は描画前に`end_path`を呼びます。ブラシの色成分（`r`、`g`、`b`、`a`）は0.0から1.0の範囲です。
+- 描画Contextは`draw`の実行中だけ有効です。保存してコールバック終了後に使わないでください。
+
 ## 使い方
 
-- 描画はHandlerの<code>draw</code>コールバック内で、渡されたcontextとサイズを使って行います。
-- 状態変更後は<code>queue_redraw_all</code>を呼びます。マウス・キーイベントから状態を更新して再描画できます。
+- Handlerに`mouse_event`、`mouse_crossed`、`drag_broken`、`key_event`を登録して入力を処理できます。マウス座標はイベントから取得できます。`key_event`はキーを処理した場合`true`、それ以外は`false`を返します。
+- アプリケーションの状態は描画コールバックの外で管理します。入力コールバックやタイマーで状態を更新した後、`area.queue_redraw_all`を呼んで次の描画を要求します。これは描画を即時実行するのではなく、再描画を予約します。
+- `set_size`と`scroll_to`はスクロールArea専用です。`begin_user_window_move`／`begin_user_window_resize`は、`mouse_event`内の`event.down != 0`のときだけ呼べます。
 
 ## 関連作例
 

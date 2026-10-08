@@ -16,10 +16,37 @@ Area is a custom drawing surface driven by an Area::Handler.
 
 {{% shell command="sh scripts/render-example area_basic_shapes" %}}
 
+## Basic setup
+
+Create an `Area::Handler`, register a `draw` callback, then pass the handler to `Area.new`. The handler is retained by the Area for as long as the Area exists.
+
+```crystal
+handler = UIng::Area::Handler.new do
+  draw do |_area, params|
+    brush = UIng::Area::Draw::Brush.new(:solid, 0.2, 0.4, 0.8, 1.0)
+    params.context.fill_path(brush) do |path|
+      path.add_rectangle(30, 30, 120, 70)
+    end
+  end
+end
+
+area = UIng::Area.new(handler)
+window.child = area
+```
+
+Initialize UIng before creating controls, show the window, and run `UIng.main` as in the runnable example. The `Area.new(handler, width, height)` overload creates a scrolling area; the dimensions specify its content size.
+
+## Drawing
+
+- `draw` runs when painting is needed. `params.area_width` and `params.area_height` are defined only for non-scrolling Areas. Track scrolling Area content sizes in your application. `clip_x`, `clip_y`, `clip_width`, and `clip_height` describe the portion being drawn.
+- Use `params.context.fill_path` or `stroke_path` to end and free paths automatically. When using `Path.open` directly, call `end_path` before drawing. Brush color components (`r`, `g`, `b`, `a`) range from 0.0 to 1.0.
+- The drawing context is valid only during `draw`. Do not store it or use it after the callback returns.
+
 ## Usage notes
 
-- Draw only inside the Handler's <code>draw</code> callback, using the supplied context and dimensions.
-- After state changes, call <code>queue_redraw_all</code>. Mouse and key handlers can update state and request a redraw.
+- Handle input by registering `mouse_event`, `mouse_crossed`, `drag_broken`, or `key_event` on the same handler. Mouse coordinates are available on the event; `key_event` should return `true` when the key was handled and `false` otherwise.
+- Keep application state outside the draw callback. Update that state in input callbacks or a timer, then call `area.queue_redraw_all` to request a new frame. This schedules drawing; it does not draw immediately.
+- `set_size` and `scroll_to` are for scrolling Areas only. Call `begin_user_window_move` or `begin_user_window_resize` only inside `mouse_event` when `event.down != 0`.
 
 ## Related examples
 
