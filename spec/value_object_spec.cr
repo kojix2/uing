@@ -22,7 +22,7 @@ describe "public value objects" do
   it "keeps a FontDescriptor snapshot valid independently" do
     descriptor = UIng::FontDescriptor.new(
       family: "Inter",
-      size: 14,
+      size: 14.5,
       weight: UIng::TextWeight::Bold,
       italic: UIng::TextItalic::Italic,
       stretch: UIng::TextStretch::Normal
@@ -34,7 +34,7 @@ describe "public value objects" do
     descriptor.free
 
     snapshot.family.should eq("Inter")
-    snapshot.size.should eq(14)
+    snapshot.size.should eq(14.5)
     snapshot.weight.should eq(UIng::TextWeight::Bold)
     snapshot.italic.should eq(UIng::TextItalic::Italic)
     snapshot.stretch.should eq(UIng::TextStretch::Normal)
