@@ -56,7 +56,7 @@ module UIng
       @cstruct.weight
     end
 
-    def weight=(value)
+    def weight=(value : TextWeight)
       check_available
       @cstruct.weight = value
     end
@@ -66,7 +66,7 @@ module UIng
       @cstruct.italic
     end
 
-    def italic=(value)
+    def italic=(value : TextItalic)
       check_available
       @cstruct.italic = value
     end
@@ -76,7 +76,7 @@ module UIng
       @cstruct.stretch
     end
 
-    def stretch=(value)
+    def stretch=(value : TextStretch)
       check_available
       @cstruct.stretch = value
     end
