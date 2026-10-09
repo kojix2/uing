@@ -86,7 +86,7 @@ module UIng
     end
 
     # :nodoc:
-    def self.reset_after_uninit : Nil
+    protected def self.reset_after_uninit : Nil
       @@mutex.synchronize do
         @@menu.each(&.invalidate_after_uninit)
         @@menu.clear

@@ -58,7 +58,7 @@ module UIng
       end
 
       # Transfers ownership to libui. After this call, this wrapper must not be used or freed.
-      def transfer_to_libui : Pointer(LibUI::TableValue)
+      protected def transfer_to_libui : Pointer(LibUI::TableValue)
         raise "Cannot transfer a borrowed TableValue to libui" if @borrowed
         raise "TableValue has already been released" if @released
         @released = true

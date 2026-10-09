@@ -83,7 +83,7 @@ module UIng
     end
 
     # :nodoc:
-    def __ensure_attachable__(window : Window) : Nil
+    protected def __ensure_attachable__(window : Window) : Nil
       check_available
       if attached_window = @attached_window
         raise "Toolbar is already attached to another Window" unless attached_window.same?(window)
@@ -91,18 +91,18 @@ module UIng
     end
 
     # :nodoc:
-    def __attached_by__(window : Window) : Nil
+    protected def __attached_by__(window : Window) : Nil
       @attached_window = window
       @ever_attached = true
     end
 
     # :nodoc:
-    def __detached_by__(window : Window) : Nil
+    protected def __detached_by__(window : Window) : Nil
       @attached_window = nil if @attached_window.same?(window)
     end
 
     # :nodoc:
-    def __retain_image__(image : Image) : Nil
+    protected def __retain_image__(image : Image) : Nil
       check_available
       image.to_unsafe
       retain(image)
@@ -218,7 +218,7 @@ module UIng
     end
 
     # :nodoc:
-    def __release__ : Nil
+    protected def __release__ : Nil
       @released = true
       @on_clicked_box = nil
     end

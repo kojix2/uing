@@ -41,12 +41,12 @@ module UIng
   @@should_quit_callback_box : Pointer(Void)?
 
   # Convert control to Pointer(LibUI::Control)
-  def self.to_control(control : Control)
+  protected def self.to_control(control : Control)
     control.check_available
     control.to_unsafe.as(Pointer(LibUI::Control))
   end
 
-  def self.to_control(control)
+  protected def self.to_control(control)
     if control.is_a?(Pointer)
       control.as(Pointer(LibUI::Control))
     else
@@ -56,7 +56,7 @@ module UIng
 
   # Convert string pointer to Crystal string
   # and free the pointer
-  def self.string_from_pointer(str_ptr) : String?
+  protected def self.string_from_pointer(str_ptr) : String?
     return if str_ptr.null?
     str = String.new(str_ptr)
     LibUI.free_text(str_ptr)
@@ -128,7 +128,7 @@ module UIng
   # should not be used.
   # See the implementation of `init` above.
 
-  def self.free_init_error(err) : Nil
+  private def self.free_init_error(err) : Nil
     LibUI.free_init_error(err)
   end
 
@@ -217,7 +217,7 @@ module UIng
     end, boxed_data)
   end
 
-  def self.free_text(text) : Nil
+  private def self.free_text(text) : Nil
     LibUI.free_text(text)
   end
 

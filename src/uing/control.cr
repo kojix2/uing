@@ -149,14 +149,14 @@ module UIng
     end
 
     # native libui function
-    def __parent__
+    private def __parent__
       check_available
       LibUI.control_parent(UIng.to_control(@ref_ptr))
     end
 
     # native libui function
     # should not be used directly
-    def __set_parent__(parent) : Nil
+    private def __set_parent__(parent) : Nil
       check_available
       LibUI.control_set_parent(UIng.to_control(@ref_ptr), UIng.to_control(parent))
     end
@@ -221,7 +221,7 @@ module UIng
       LibUI.control_enabled_to_user(UIng.to_control(@ref_ptr)) != 0
     end
 
-    def verify_set_parent(parent) : Nil
+    private def verify_set_parent(parent) : Nil
       check_available
       LibUI.control_verify_set_parent(UIng.to_control(@ref_ptr), UIng.to_control(parent))
     end

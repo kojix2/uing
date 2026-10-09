@@ -100,7 +100,7 @@ module UIng
       @released = true
     end
 
-    def load_control_font : Nil
+    private def load_control_font : Nil
       release_family
       @released = false
       LibUI.load_control_font(cstruct_pointer)
@@ -108,12 +108,12 @@ module UIng
       @native_family = true
     end
 
-    def prepare_for_font_button_font : Nil
+    protected def prepare_for_font_button_font : Nil
       release_family
       @released = false
     end
 
-    def font_button_font_loaded : Nil
+    protected def font_button_font_loaded : Nil
       @family_string = ""
       @native_family = true
       @released = false

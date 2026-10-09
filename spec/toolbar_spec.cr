@@ -14,6 +14,10 @@ private class GuardedToolbarItem < UIng::ToolbarItem
       toggle: toggle
     )
   end
+
+  def release_for_spec : Nil
+    __release__
+  end
 end
 
 describe UIng::ToolbarItem do
@@ -35,7 +39,7 @@ describe UIng::ToolbarItem do
 
   it "reports a released item before checking its kind" do
     item = GuardedToolbarItem.new
-    item.__release__
+    item.release_for_spec
 
     expect_raises(Exception, /already been released/) do
       item.checked?

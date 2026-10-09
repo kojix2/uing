@@ -21,7 +21,7 @@ module UIng
     end
 
     # :nodoc:
-    def self.__new_for_menu__(ref_ptr : Pointer(LibUI::MenuItem), kind : Symbol) : MenuItem
+    protected def self.__new_for_menu__(ref_ptr : Pointer(LibUI::MenuItem), kind : Symbol) : MenuItem
       item_kind = case kind
                   when :regular     then Kind::Regular
                   when :check       then Kind::Check
@@ -112,7 +112,7 @@ module UIng
     # Marks an item invalid after libui-ng has released all menus in uiUninit().
     # This must not call back into native code because the pointer is already dead.
     # :nodoc:
-    def invalidate_after_uninit : Nil
+    protected def invalidate_after_uninit : Nil
       @on_clicked_box = nil
       @released = true
     end

@@ -19,6 +19,12 @@ private class LifetimeSafetyMenuItem < UIng::MenuItem
   end
 end
 
+class UIng::MenuItem
+  def self.quit_item_for_spec : MenuItem
+    __new_for_menu__(Pointer(UIng::LibUI::MenuItem).null, :quit)
+  end
+end
+
 class UIng::Menu
   def initialize(@ref_ptr : Pointer(UIng::LibUI::Menu), *, lifetime_spec : Bool)
     @@mutex.synchronize do
@@ -38,6 +44,10 @@ class UIng::Menu
 
   def self.special_items_reserved_for_lifetime_spec? : Bool
     @@has_quit_item && @@has_preferences_item && @@has_about_item
+  end
+
+  def self.reset_after_uninit_for_spec : Nil
+    reset_after_uninit
   end
 end
 
@@ -260,7 +270,7 @@ describe "lifetime safety" do
   end
 
   it "rejects callbacks on Quit MenuItems before calling libui-ng" do
-    item = UIng::MenuItem.__new_for_menu__(Pointer(UIng::LibUI::MenuItem).null, :quit)
+    item = UIng::MenuItem.quit_item_for_spec
 
     expect_raises(ArgumentError, /UIng\.on_should_quit/) do
       item.on_clicked { |_window| }
@@ -276,7 +286,7 @@ describe "lifetime safety" do
     menu.add_item_for_lifetime_spec(item)
     UIng::Menu.reserve_special_items_for_lifetime_spec
 
-    UIng::Menu.reset_after_uninit
+    UIng::Menu.reset_after_uninit_for_spec
 
     UIng::Menu.special_items_reserved_for_lifetime_spec?.should be_false
     item.callback_retained?.should be_false

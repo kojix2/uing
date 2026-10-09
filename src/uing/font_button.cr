@@ -64,7 +64,7 @@ module UIng
       descriptor.font_button_font_loaded
     end
 
-    def free_font(font_descriptor : FontDescriptor) : Nil
+    private def free_font(font_descriptor : FontDescriptor) : Nil
       font_descriptor.free
     end
 
