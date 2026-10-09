@@ -22,7 +22,11 @@ module UIng
     end
 
     def set_color(r : Number, g : Number, b : Number, a : Number) : Nil
-      LibUI.color_button_set_color(ref_ptr, r.to_f64, g.to_f64, b.to_f64, a.to_f64)
+      red = NumericValue.unit_interval(r, "color button red")
+      green = NumericValue.unit_interval(g, "color button green")
+      blue = NumericValue.unit_interval(b, "color button blue")
+      alpha = NumericValue.unit_interval(a, "color button alpha")
+      LibUI.color_button_set_color(ref_ptr, red, green, blue, alpha)
     end
 
     def on_changed(&block : Float64, Float64, Float64, Float64 -> Nil) : Nil

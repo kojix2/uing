@@ -13,10 +13,11 @@ module UIng
       family : String? = nil, size : Number? = nil, weight : TextWeight? = nil,
       italic : TextItalic? = nil, stretch : TextStretch? = nil,
     )
+      converted_size = NumericValue.positive(size, "font descriptor size") if size
       @cstruct = LibUI::FontDescriptor.new
       load_control_font unless family && size && weight && italic && stretch
       self.family = family if family
-      self.size = size.to_f64 if size
+      @cstruct.size = converted_size if converted_size
       self.weight = weight if weight
       self.italic = italic if italic
       self.stretch = stretch if stretch
@@ -47,7 +48,7 @@ module UIng
 
     def size=(value : Number)
       check_available
-      @cstruct.size = value.to_f64
+      @cstruct.size = NumericValue.positive(value, "font descriptor size")
     end
 
     def weight

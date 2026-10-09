@@ -49,7 +49,11 @@ module UIng
     end
 
     def scroll_to(x : Number, y : Number, width : Number, height : Number) : Nil
-      LibUI.area_scroll_to(ref_ptr, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
+      scroll_x = NumericValue.finite(x, "area scroll x")
+      scroll_y = NumericValue.finite(y, "area scroll y")
+      scroll_width = NumericValue.finite(width, "area scroll width")
+      scroll_height = NumericValue.finite(height, "area scroll height")
+      LibUI.area_scroll_to(ref_ptr, scroll_x, scroll_y, scroll_width, scroll_height)
     end
 
     def begin_user_window_move : Nil

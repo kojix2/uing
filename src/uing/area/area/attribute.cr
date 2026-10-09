@@ -40,7 +40,7 @@ module UIng
       end
 
       def self.new_size(size : Number) : Attribute
-        ref_ptr = LibUI.new_size_attribute(size.to_f64)
+        ref_ptr = LibUI.new_size_attribute(NumericValue.positive(size, "attribute font size"))
         Attribute.new(ref_ptr)
       end
 
@@ -60,12 +60,20 @@ module UIng
       end
 
       def self.new_color(r : Number, g : Number, b : Number, a : Number) : Attribute
-        ref_ptr = LibUI.new_color_attribute(r.to_f64, g.to_f64, b.to_f64, a.to_f64)
+        red = NumericValue.unit_interval(r, "text color red")
+        green = NumericValue.unit_interval(g, "text color green")
+        blue = NumericValue.unit_interval(b, "text color blue")
+        alpha = NumericValue.unit_interval(a, "text color alpha")
+        ref_ptr = LibUI.new_color_attribute(red, green, blue, alpha)
         Attribute.new(ref_ptr)
       end
 
       def self.new_background(r : Number, g : Number, b : Number, a : Number) : Attribute
-        ref_ptr = LibUI.new_background_attribute(r.to_f64, g.to_f64, b.to_f64, a.to_f64)
+        red = NumericValue.unit_interval(r, "background color red")
+        green = NumericValue.unit_interval(g, "background color green")
+        blue = NumericValue.unit_interval(b, "background color blue")
+        alpha = NumericValue.unit_interval(a, "background color alpha")
+        ref_ptr = LibUI.new_background_attribute(red, green, blue, alpha)
         Attribute.new(ref_ptr)
       end
 
@@ -75,7 +83,11 @@ module UIng
       end
 
       def self.new_underline_color(underline_color : UnderlineColor, r : Number, g : Number, b : Number, a : Number) : Attribute
-        ref_ptr = LibUI.new_underline_color_attribute(underline_color, r.to_f64, g.to_f64, b.to_f64, a.to_f64)
+        red = NumericValue.unit_interval(r, "underline color red")
+        green = NumericValue.unit_interval(g, "underline color green")
+        blue = NumericValue.unit_interval(b, "underline color blue")
+        alpha = NumericValue.unit_interval(a, "underline color alpha")
+        ref_ptr = LibUI.new_underline_color_attribute(underline_color, red, green, blue, alpha)
         Attribute.new(ref_ptr)
       end
 

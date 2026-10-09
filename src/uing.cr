@@ -1,5 +1,6 @@
 require "./uing/version"
 require "./uing/lib_ui/lib_ui"
+require "./uing/numeric_value"
 require "./uing/tm"
 
 require "./uing/*"

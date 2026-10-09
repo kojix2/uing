@@ -38,7 +38,11 @@ module UIng
       end
 
       def initialize(r : Number, g : Number, b : Number, a : Number)
-        @ref_ptr = LibUI.new_table_value_color(r.to_f64, g.to_f64, b.to_f64, a.to_f64)
+        red = NumericValue.unit_interval(r, "table color red")
+        green = NumericValue.unit_interval(g, "table color green")
+        blue = NumericValue.unit_interval(b, "table color blue")
+        alpha = NumericValue.unit_interval(a, "table color alpha")
+        @ref_ptr = LibUI.new_table_value_color(red, green, blue, alpha)
         @borrowed = false
       end
 

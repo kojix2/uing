@@ -15,7 +15,7 @@ module UIng
             @font_descriptor = default_font
             @cstruct.string = string.to_unsafe
             @cstruct.default_font = default_font.to_unsafe
-            @cstruct.width = width.to_f64
+            @cstruct.width = NumericValue.finite(width, "text layout width")
             @cstruct.align = align
           end
 
@@ -43,7 +43,7 @@ module UIng
           end
 
           def width=(value : Number)
-            @cstruct.width = value.to_f64
+            @cstruct.width = NumericValue.finite(value, "text layout width")
           end
 
           def align : UIng::Area::Draw::TextAlign

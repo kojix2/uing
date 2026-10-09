@@ -40,31 +40,51 @@ module UIng
 
         def new_figure(x : Number, y : Number) : self
           ensure_not_ended
-          LibUI.draw_path_new_figure(@ref_ptr, x.to_f64, y.to_f64)
+          x = NumericValue.finite(x, "path x")
+          y = NumericValue.finite(y, "path y")
+          LibUI.draw_path_new_figure(@ref_ptr, x, y)
           self
         end
 
         def new_figure_with_arc(x_center : Number, y_center : Number, radius : Number, start_angle : Number, sweep : Number, negative : Bool) : self
           ensure_not_ended
-          LibUI.draw_path_new_figure_with_arc(@ref_ptr, x_center.to_f64, y_center.to_f64, radius.to_f64, start_angle.to_f64, sweep.to_f64, negative ? 1 : 0)
+          x_center = NumericValue.finite(x_center, "path arc x center")
+          y_center = NumericValue.finite(y_center, "path arc y center")
+          radius = NumericValue.finite(radius, "path arc radius")
+          start_angle = NumericValue.finite(start_angle, "path arc start angle")
+          sweep = NumericValue.finite(sweep, "path arc sweep")
+          LibUI.draw_path_new_figure_with_arc(@ref_ptr, x_center, y_center, radius, start_angle, sweep, negative ? 1 : 0)
           self
         end
 
         def line_to(x : Number, y : Number) : self
           ensure_not_ended
-          LibUI.draw_path_line_to(@ref_ptr, x.to_f64, y.to_f64)
+          x = NumericValue.finite(x, "path x")
+          y = NumericValue.finite(y, "path y")
+          LibUI.draw_path_line_to(@ref_ptr, x, y)
           self
         end
 
         def arc_to(x_center : Number, y_center : Number, radius : Number, start_angle : Number, sweep : Number, negative : Bool) : self
           ensure_not_ended
-          LibUI.draw_path_arc_to(@ref_ptr, x_center.to_f64, y_center.to_f64, radius.to_f64, start_angle.to_f64, sweep.to_f64, negative ? 1 : 0)
+          x_center = NumericValue.finite(x_center, "path arc x center")
+          y_center = NumericValue.finite(y_center, "path arc y center")
+          radius = NumericValue.finite(radius, "path arc radius")
+          start_angle = NumericValue.finite(start_angle, "path arc start angle")
+          sweep = NumericValue.finite(sweep, "path arc sweep")
+          LibUI.draw_path_arc_to(@ref_ptr, x_center, y_center, radius, start_angle, sweep, negative ? 1 : 0)
           self
         end
 
         def bezier_to(c1x : Number, c1y : Number, c2x : Number, c2y : Number, end_x : Number, end_y : Number) : self
           ensure_not_ended
-          LibUI.draw_path_bezier_to(@ref_ptr, c1x.to_f64, c1y.to_f64, c2x.to_f64, c2y.to_f64, end_x.to_f64, end_y.to_f64)
+          c1x = NumericValue.finite(c1x, "path first control x")
+          c1y = NumericValue.finite(c1y, "path first control y")
+          c2x = NumericValue.finite(c2x, "path second control x")
+          c2y = NumericValue.finite(c2y, "path second control y")
+          end_x = NumericValue.finite(end_x, "path end x")
+          end_y = NumericValue.finite(end_y, "path end y")
+          LibUI.draw_path_bezier_to(@ref_ptr, c1x, c1y, c2x, c2y, end_x, end_y)
           self
         end
 
@@ -76,7 +96,11 @@ module UIng
 
         def add_rectangle(x : Number, y : Number, width : Number, height : Number) : self
           ensure_not_ended
-          LibUI.draw_path_add_rectangle(@ref_ptr, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
+          x = NumericValue.finite(x, "path rectangle x")
+          y = NumericValue.finite(y, "path rectangle y")
+          width = NumericValue.finite(width, "path rectangle width")
+          height = NumericValue.finite(height, "path rectangle height")
+          LibUI.draw_path_add_rectangle(@ref_ptr, x, y, width, height)
           self
         end
 

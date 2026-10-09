@@ -11,11 +11,11 @@ module UIng
                          b : Number = 0.0,
                          a : Number = 1.0)
             @cstruct = LibUI::DrawBrushGradientStop.new
-            self.pos = pos.to_f64
-            self.r = r.to_f64
-            self.g = g.to_f64
-            self.b = b.to_f64
-            self.a = a.to_f64
+            self.pos = pos
+            self.r = r
+            self.g = g
+            self.b = b
+            self.a = a
           end
 
           def pos : Float64
@@ -23,7 +23,7 @@ module UIng
           end
 
           def pos=(value : Number)
-            @cstruct.pos = value.to_f64
+            @cstruct.pos = NumericValue.unit_interval(value, "gradient stop position")
           end
 
           def r : Float64
@@ -31,7 +31,7 @@ module UIng
           end
 
           def r=(value : Number)
-            @cstruct.r = value.to_f64
+            @cstruct.r = NumericValue.unit_interval(value, "gradient stop red")
           end
 
           def g : Float64
@@ -39,7 +39,7 @@ module UIng
           end
 
           def g=(value : Number)
-            @cstruct.g = value.to_f64
+            @cstruct.g = NumericValue.unit_interval(value, "gradient stop green")
           end
 
           def b : Float64
@@ -47,7 +47,7 @@ module UIng
           end
 
           def b=(value : Number)
-            @cstruct.b = value.to_f64
+            @cstruct.b = NumericValue.unit_interval(value, "gradient stop blue")
           end
 
           def a : Float64
@@ -55,7 +55,7 @@ module UIng
           end
 
           def a=(value : Number)
-            @cstruct.a = value.to_f64
+            @cstruct.a = NumericValue.unit_interval(value, "gradient stop alpha")
           end
 
           def to_unsafe

@@ -22,15 +22,15 @@ module UIng
                        stops : Array(GradientStop)? = nil)
           @cstruct = LibUI::DrawBrush.new
           @cstruct.type = type
-          @cstruct.r = r.to_f64
-          @cstruct.g = g.to_f64
-          @cstruct.b = b.to_f64
-          @cstruct.a = a.to_f64
-          @cstruct.x0 = x0.to_f64
-          @cstruct.y0 = y0.to_f64
-          @cstruct.x1 = x1.to_f64
-          @cstruct.y1 = y1.to_f64
-          @cstruct.outer_radius = outer_radius.to_f64
+          self.r = r
+          self.g = g
+          self.b = b
+          self.a = a
+          self.x0 = x0
+          self.y0 = y0
+          self.x1 = x1
+          self.y1 = y1
+          self.outer_radius = outer_radius
 
           if stops
             set_gradient_stops(stops)
@@ -71,7 +71,7 @@ module UIng
         end
 
         def r=(value : Number)
-          @cstruct.r = value.to_f64
+          @cstruct.r = NumericValue.unit_interval(value, "brush red")
         end
 
         def g : Float64
@@ -79,7 +79,7 @@ module UIng
         end
 
         def g=(value : Number)
-          @cstruct.g = value.to_f64
+          @cstruct.g = NumericValue.unit_interval(value, "brush green")
         end
 
         def b : Float64
@@ -87,7 +87,7 @@ module UIng
         end
 
         def b=(value : Number)
-          @cstruct.b = value.to_f64
+          @cstruct.b = NumericValue.unit_interval(value, "brush blue")
         end
 
         def a : Float64
@@ -95,7 +95,7 @@ module UIng
         end
 
         def a=(value : Number)
-          @cstruct.a = value.to_f64
+          @cstruct.a = NumericValue.unit_interval(value, "brush alpha")
         end
 
         def x0 : Float64
@@ -103,7 +103,7 @@ module UIng
         end
 
         def x0=(value : Number)
-          @cstruct.x0 = value.to_f64
+          @cstruct.x0 = NumericValue.finite(value, "brush x0")
         end
 
         def y0 : Float64
@@ -111,7 +111,7 @@ module UIng
         end
 
         def y0=(value : Number)
-          @cstruct.y0 = value.to_f64
+          @cstruct.y0 = NumericValue.finite(value, "brush y0")
         end
 
         def x1 : Float64
@@ -119,7 +119,7 @@ module UIng
         end
 
         def x1=(value : Number)
-          @cstruct.x1 = value.to_f64
+          @cstruct.x1 = NumericValue.finite(value, "brush x1")
         end
 
         def y1 : Float64
@@ -127,7 +127,7 @@ module UIng
         end
 
         def y1=(value : Number)
-          @cstruct.y1 = value.to_f64
+          @cstruct.y1 = NumericValue.finite(value, "brush y1")
         end
 
         def outer_radius : Float64
@@ -135,7 +135,7 @@ module UIng
         end
 
         def outer_radius=(value : Number)
-          @cstruct.outer_radius = value.to_f64
+          @cstruct.outer_radius = NumericValue.finite(value, "brush outer radius")
         end
 
         def stops : Array(GradientStop)

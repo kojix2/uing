@@ -141,7 +141,9 @@ module UIng
 
         # Text drawing (libui uiDrawText equivalent)
         def draw_text_layout(text_layout : TextLayout, x : Number, y : Number) : Nil
-          LibUI.draw_text(to_unsafe, text_layout.to_unsafe, x.to_f64, y.to_f64)
+          draw_x = NumericValue.finite(x, "text draw x")
+          draw_y = NumericValue.finite(y, "text draw y")
+          LibUI.draw_text(to_unsafe, text_layout.to_unsafe, draw_x, draw_y)
         end
 
         def draw_image(img : UIng::Image, x : Number, y : Number, width : Number, height : Number) : Nil
