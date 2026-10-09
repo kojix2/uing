@@ -39,7 +39,7 @@ describe UIng::Area::AttributedString do
     end
 
     result.should eq(3)
-    scoped.not_nil!.freed?.should be_true
+    scoped.try(&.freed?).should be_true
   end
 
   it "frees the string when an open block raises" do
@@ -51,7 +51,7 @@ describe UIng::Area::AttributedString do
       end
     end
 
-    scoped.not_nil!.freed?.should be_true
+    scoped.try(&.freed?).should be_true
   end
 
   it "rejects insertion positions outside the string or inside a UTF-8 codepoint" do
