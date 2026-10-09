@@ -2,7 +2,7 @@ module UIng
   # This class provides read-only access to key event properties.
   class Area < Control
     class MouseEvent
-      def initialize(@ref_ptr : LibUI::AreaMouseEvent*)
+      protected def initialize(@ref_ptr : LibUI::AreaMouseEvent*)
         @cstruct = @ref_ptr.value
       end
 

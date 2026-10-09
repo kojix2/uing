@@ -8,7 +8,7 @@ module UIng
         @released : Bool = false
         @ref_ptr : Pointer(LibUI::DrawPath)
 
-        def initialize(@ref_ptr : Pointer(LibUI::DrawPath))
+        protected def initialize(@ref_ptr : Pointer(LibUI::DrawPath))
         end
 
         def initialize(mode : FillMode)

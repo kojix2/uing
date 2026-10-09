@@ -1,7 +1,7 @@
 require "./spec_helper"
 
 describe UIng::Image do
-  image = UIng::Image.new(Pointer(UIng::LibUI::Image).new(0x200_u64))
+  image = UIng::Image.from_native_for_spec(Pointer(UIng::LibUI::Image).new(0x200_u64))
 
   it "rejects invalid logical dimensions before creating a native image" do
     invalid_dimensions = [0.0, -1.0, Float64::NAN, Float64::INFINITY, Int32::MAX.to_f64 + 1]

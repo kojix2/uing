@@ -13,7 +13,7 @@ module UIng
     # Store callback box to prevent GC collection
     @on_clicked_box : Pointer(Void)?
 
-    def initialize(@ref_ptr : Pointer(LibUI::MenuItem))
+    protected def initialize(@ref_ptr : Pointer(LibUI::MenuItem))
       @kind = Kind::Regular
     end
 

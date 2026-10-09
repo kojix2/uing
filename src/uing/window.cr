@@ -21,7 +21,7 @@ module UIng
     @child_ref : Control?   # Reference to the child control
     @toolbar_ref : Toolbar? # The native window borrows this toolbar
 
-    def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
+    protected def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
       @borrowed = borrowed
       register_control
     end

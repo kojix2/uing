@@ -99,7 +99,7 @@ describe UIng::Table::Model::Handler do
     native_values = types.map { |type| FakeTableValue.new(type) }
     values = types.each_index.map do |index|
       ptr = (native_values.to_unsafe + index).as(Pointer(UIng::LibUI::TableValue))
-      UIng::Table::Value.new(ptr, borrowed: false)
+      UIng::Table::Value.owned_from_native_for_spec(ptr)
     end.to_a
     handler = UIng::Table::Model::Handler.new
     handler.num_columns { types.size }

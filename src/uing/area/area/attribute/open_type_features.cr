@@ -11,7 +11,7 @@ module UIng
 
     # Used for wrappers around libui pointers. By default the wrapper owns the
     # pointer, but uiAttributeFeatures() returns a pointer owned by its attribute.
-    def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures), @borrowed : Bool = false)
+    protected def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures), @borrowed : Bool = false)
       @ref_ptr = ref_ptr
     end
 

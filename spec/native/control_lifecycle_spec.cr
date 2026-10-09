@@ -75,7 +75,7 @@ private def new_native_table_value(type : UIng::Table::Value::Type) : UIng::Tabl
     UIng::Table::Value.new("value")
   when .image?
     ptr = UIng::LibUI.new_table_value_image(Pointer(UIng::LibUI::Image).null)
-    UIng::Table::Value.new(ptr, borrowed: false)
+    UIng::Table::Value.owned_from_native_for_spec(ptr)
   when .int?
     UIng::Table::Value.new(1)
   when .color?
@@ -486,9 +486,8 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     it "checks typed TableValue and Attribute getters before reading native unions" do
       int_value = UIng::Table::Value.new(7)
       string_value = UIng::Table::Value.new("seven")
-      image_value = UIng::Table::Value.new(
-        UIng::LibUI.new_table_value_image(Pointer(UIng::LibUI::Image).null),
-        borrowed: false
+      image_value = UIng::Table::Value.owned_from_native_for_spec(
+        UIng::LibUI.new_table_value_image(Pointer(UIng::LibUI::Image).null)
       )
       table_color_value = UIng::Table::Value.new_color(0.7, 0.8, 0.9, 1.0)
       family_attribute = UIng::Area::Attribute.new_family("Sans")

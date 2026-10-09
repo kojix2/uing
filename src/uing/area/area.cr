@@ -12,7 +12,7 @@ module UIng
     # Keep a reference to the Area::Handler to prevent GC
     @area_handler : Handler?
 
-    def initialize(@ref_ptr : Pointer(LibUI::Area), borrowed : Bool = true)
+    protected def initialize(@ref_ptr : Pointer(LibUI::Area), borrowed : Bool = true)
       @borrowed = borrowed
       register_control
     end

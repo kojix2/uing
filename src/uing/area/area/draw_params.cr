@@ -19,7 +19,7 @@ module UIng
         include BlockConstructor; block_constructor
         @callback_scope : CallbackScope?
 
-        def initialize(ptr_ref : LibUI::AreaDrawParams*)
+        protected def initialize(ptr_ref : LibUI::AreaDrawParams*)
           @cstruct = ptr_ref.value
           @callback_scope = nil
         end

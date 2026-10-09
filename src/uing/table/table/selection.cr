@@ -31,7 +31,7 @@ module UIng
       @cstruct : LibUI::TableSelection
       @released : Bool = false
 
-      def initialize(@ptr : Pointer(LibUI::TableSelection))
+      protected def initialize(@ptr : Pointer(LibUI::TableSelection))
         @rows = nil
         @cstruct = uninitialized LibUI::TableSelection
       end

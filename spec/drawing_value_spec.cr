@@ -2,8 +2,8 @@ require "./spec_helper"
 
 describe "Area drawing values" do
   it "rejects non-finite image drawing geometry before calling libui-ng" do
-    context = UIng::Area::Draw::Context.new(Pointer(UIng::LibUI::DrawContext).null)
-    image = UIng::Image.new(Pointer(UIng::LibUI::Image).null)
+    context = UIng::Area::Draw::Context.from_native_for_spec(Pointer(UIng::LibUI::DrawContext).null)
+    image = UIng::Image.from_native_for_spec(Pointer(UIng::LibUI::Image).null)
 
     expect_raises(ArgumentError, /draw x must be finite/) do
       context.draw_image(image, Float64::NAN, 0, 1, 1)

@@ -7,7 +7,7 @@ module UIng
       getter? borrowed : Bool = false
 
       # Unified constructor - handles both borrowed and owned TableValue
-      def initialize(@ref_ptr : Pointer(LibUI::TableValue), borrowed : Bool = true)
+      protected def initialize(@ref_ptr : Pointer(LibUI::TableValue), borrowed : Bool = true)
         @borrowed = borrowed
       end
 

@@ -12,7 +12,7 @@ module UIng
       getter? released : Bool = false
       @borrowed : Bool = false
 
-      def initialize(@ref_ptr : Pointer(LibUI::Attribute), @borrowed : Bool = false)
+      protected def initialize(@ref_ptr : Pointer(LibUI::Attribute), @borrowed : Bool = false)
       end
 
       # Internal: Create a borrowed Attribute wrapper for libui-owned pointers.

@@ -21,7 +21,7 @@ describe "numeric input validation" do
       matrix.translate(Float64::NAN, 0)
     end
 
-    path = UIng::Area::Draw::Path.new(Pointer(UIng::LibUI::DrawPath).null)
+    path = UIng::Area::Draw::Path.from_native_for_spec(Pointer(UIng::LibUI::DrawPath).null)
     expect_raises(ArgumentError, /path y must be finite/) do
       path.new_figure(0, Float64::INFINITY)
     end

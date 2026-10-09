@@ -5,7 +5,7 @@ module UIng
         include BlockConstructor; block_constructor
         @callback_scope : CallbackScope?
 
-        def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
+        protected def initialize(@ref_ptr : Pointer(LibUI::DrawContext))
           @callback_scope = nil
         end
 

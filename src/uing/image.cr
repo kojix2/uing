@@ -2,7 +2,7 @@ module UIng
   class Image
     @released : Bool = false
 
-    def initialize(@ref_ptr : Pointer(LibUI::Image))
+    protected def initialize(@ref_ptr : Pointer(LibUI::Image))
     end
 
     def initialize(width : Number, height : Number)

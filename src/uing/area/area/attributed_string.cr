@@ -9,7 +9,7 @@ module UIng
       @enumeration_depth : Int32 = 0
       @each_attribute_boxes = [] of Pointer(Void)
 
-      def initialize(@ref_ptr : Pointer(LibUI::AttributedString))
+      protected def initialize(@ref_ptr : Pointer(LibUI::AttributedString))
       end
 
       def initialize(string : String)

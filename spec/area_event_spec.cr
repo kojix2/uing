@@ -13,7 +13,7 @@ describe "Area event wrappers" do
       modifiers: UIng::Area::Modifiers::Ctrl | UIng::Area::Modifiers::Shift,
       held1_to64: 5_u64
     )
-    event = UIng::Area::MouseEvent.new(pointerof(native))
+    event = UIng::Area::MouseEvent.from_native_for_spec(pointerof(native))
     native.x = 99.0
 
     {event.x, event.y}.should eq({12.5, 7.25})
@@ -31,7 +31,7 @@ describe "Area event wrappers" do
       modifiers: UIng::Area::Modifiers::Ctrl | UIng::Area::Modifiers::Alt,
       up: 1
     )
-    event = UIng::Area::KeyEvent.new(pointerof(native))
+    event = UIng::Area::KeyEvent.from_native_for_spec(pointerof(native))
     native.key = 'z'.ord.to_i8
 
     event.key.should eq('x')
@@ -45,7 +45,7 @@ describe "Area event wrappers" do
       ext_key: UIng::Area::ExtKey::F2,
       up: 0
     )
-    extended_event = UIng::Area::KeyEvent.new(pointerof(extended_native))
+    extended_event = UIng::Area::KeyEvent.from_native_for_spec(pointerof(extended_native))
     extended_event.key.should be_nil
     extended_event.ext_key.should eq(UIng::Area::ExtKey::F2)
     extended_event.up?.should be_false
