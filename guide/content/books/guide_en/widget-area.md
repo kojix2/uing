@@ -36,17 +36,14 @@ window.child = area
 
 Initialize UIng before creating controls, show the window, and run `UIng.main` as in the runnable example. The `Area.new(handler, width, height)` overload creates a scrolling area; the dimensions specify its content size.
 
-## Drawing
+## In this chapter
 
-- `draw` runs when painting is needed. `params.area_width` and `params.area_height` are defined only for non-scrolling Areas. Track scrolling Area content sizes in your application. `clip_x`, `clip_y`, `clip_width`, and `clip_height` describe the portion being drawn.
-- Use `params.context.fill_path` or `stroke_path` to end and free paths automatically. When using `Path.open` directly, call `end_path` before drawing. Brush color components (`r`, `g`, `b`, `a`) range from 0.0 to 1.0.
-- The drawing context is valid only during `draw`. Do not store it or use it after the callback returns.
+This page introduces Area creation and the first drawing callback. Grow a drawing program through the following focused pages.
 
-## Usage notes
-
-- Handle input by registering `mouse_event`, `mouse_crossed`, `drag_broken`, or `key_event` on the same handler. Mouse coordinates are available on the event; `key_event` should return `true` when the key was handled and `false` otherwise.
-- Keep application state outside the draw callback. Update that state in input callbacks or a timer, then call `area.queue_redraw_all` to request a new frame. This schedules drawing; it does not draw immediately.
-- `set_size` and `scroll_to` are for scrolling Areas only. Call `begin_user_window_move` or `begin_user_window_resize` only inside `mouse_event` when `event.down != 0`.
+- [Paths, brushes, and strokes](area-paths-and-brushes.html): shapes, fills, strokes, and clipping
+- [Text, images, and transforms](area-text-images-and-transforms.html): text layout, images, and Matrix
+- [Input and redraws](area-input-and-redraw.html): mouse/keyboard input, state, and animation
+- [Scrolling and examples](area-scrolling-and-examples.html): scrolling Areas, visible regions, and next examples
 
 ## Related examples
 

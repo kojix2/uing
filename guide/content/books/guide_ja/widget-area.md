@@ -36,17 +36,14 @@ window.child = area
 
 コントロールの作成前にUIngを初期化し、実行例のようにウィンドウを表示して`UIng.main`を実行します。`Area.new(handler, width, height)`を使うとスクロール可能なAreaになり、指定したサイズはコンテンツの大きさです。
 
-## 描画
+## この章の進め方
 
-- `draw`は描画が必要なときに呼ばれます。`params.area_width`と`params.area_height`は非スクロールAreaのみ有効です。スクロールAreaのコンテンツサイズはアプリ側で管理します。`clip_x`、`clip_y`、`clip_width`、`clip_height`は描画対象の範囲です。
-- `params.context`の`fill_path`／`stroke_path`で描画すると、パスの終了・解放は自動です。直接`Path.open`を使う場合は描画前に`end_path`を呼びます。ブラシの色成分（`r`、`g`、`b`、`a`）は0.0から1.0の範囲です。
-- 描画Contextは`draw`の実行中だけ有効です。保存してコールバック終了後に使わないでください。
+このページではAreaの作成と最初の描画を扱います。描画を増やすときは、次の順番で進めると責務を分けやすくなります。
 
-## 使い方
-
-- Handlerに`mouse_event`、`mouse_crossed`、`drag_broken`、`key_event`を登録して入力を処理できます。マウス座標はイベントから取得できます。`key_event`はキーを処理した場合`true`、それ以外は`false`を返します。
-- アプリケーションの状態は描画コールバックの外で管理します。入力コールバックやタイマーで状態を更新した後、`area.queue_redraw_all`を呼んで次の描画を要求します。これは描画を即時実行するのではなく、再描画を予約します。
-- `set_size`と`scroll_to`はスクロールArea専用です。`begin_user_window_move`／`begin_user_window_resize`は、`mouse_event`内の`event.down != 0`のときだけ呼べます。
+- [パス・ブラシ・線](area-paths-and-brushes.html): 図形、塗り、線、クリッピング
+- [テキスト・画像・変換](area-text-images-and-transforms.html): 文字組み、画像、Matrix
+- [入力と再描画](area-input-and-redraw.html): マウス・キー入力、状態、アニメーション
+- [スクロールと実践例](area-scrolling-and-examples.html): スクロールArea、可視領域、発展例
 
 ## 関連作例
 

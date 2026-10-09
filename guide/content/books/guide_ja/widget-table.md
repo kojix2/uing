@@ -39,13 +39,13 @@ window.child = table
 
 行・モデル列の番号は0始まりです。`append_text_column`の`0`は表示するモデル列を指定します。モデルの列数と型は作成時に固定され、セル値は列の型に合わせます。
 
-## 使い方
+## この章の進め方
 
-- `cell_value`は呼ばれるたびに新しい`Table::Value`を返します。所有権はlibuiに移るため、返した値を再利用・解放しないでください。
-- 編集を許可するには`editable: :always`を指定し、`set_cell_value`で元データを更新します。渡される値はコールバック中だけ有効で、ボタンクリックでは`nil`です。
-- 元データの追加・変更・削除後は、Modelの`row_inserted(index)`・`row_changed(index)`・`row_deleted(old_index)`で通知します。削除時は削除前の行番号を使います。
-- Modelを`free`する前に、それを使うすべてのTableを親から切り離して`destroy`します。ModelはHandlerへの参照を保持します。
-- `on_selection_changed`で選択行を取得できます。渡されるSelectionは自動解放されるため、保存する場合は`selection.rows`で行番号を取り出します。
+このページでは最小構成を扱います。続くページで、モデルコールバックと値の所有権、列の種類・編集・選択、データ更新と破棄順を順に説明します。
+
+- [モデルとデータ供給](table-model.html): ModelとHandlerの役割、型、`Table::Value`の所有権
+- [列・編集・選択](table-columns.html): 列の追加、編集可能なセル、選択とクリックイベント
+- [更新とライフタイム](table-updates-and-lifetime.html): 行通知と安全な解放
 
 ## 関連作例
 
