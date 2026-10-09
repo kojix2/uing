@@ -18,7 +18,7 @@ Separator draws a native horizontal or vertical divider.
 
 ## Usage notes
 
-- Construct it with <code>:horizontal</code> or <code>:vertical</code>.
+- Construct it with <code>:horizontal</code> or <code>:vertical</code>. The typed <code>UIng::Orientation</code> values are also accepted.
 - Place a vertical separator inside a horizontal Box and a horizontal separator inside a vertical Box.
 
 [API reference](../../api/UIng/Separator.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_separator.cr)

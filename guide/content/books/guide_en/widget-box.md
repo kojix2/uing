@@ -18,7 +18,7 @@ Box arranges children in a horizontal or vertical sequence.
 
 ## Usage notes
 
-- Choose <code>:horizontal</code> or <code>:vertical</code> when constructing it.
+- Choose <code>:horizontal</code> or <code>:vertical</code> when constructing it. You can also use <code>UIng::Orientation::Horizontal</code> or <code>UIng::Orientation::Vertical</code>.
 - Pass <code>stretchy: true</code> to let a child consume remaining space; <code>padded</code> adds native spacing.
 
 See also the [horizontal Box example](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_box_horizontal.cr).

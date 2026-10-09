@@ -14,15 +14,16 @@ module UIng
     @ref_ptr : Pointer(LibUI::Box)
     @children_refs : Array(Control) = [] of Control
 
-    def initialize(orientation : Symbol, padded : Bool = false)
-      case orientation
-      when :horizontal
-        @ref_ptr = LibUI.new_horizontal_box
-      when :vertical
-        @ref_ptr = LibUI.new_vertical_box
-      else
-        raise "Invalid orientation: #{orientation}"
-      end
+    def initialize(orientation : Orientation | Symbol, padded : Bool = false)
+      value = orientation.is_a?(Symbol) ? Orientation.parse(orientation.to_s) : orientation
+      @ref_ptr = case value
+                 when .horizontal?
+                   LibUI.new_horizontal_box
+                 when .vertical?
+                   LibUI.new_vertical_box
+                 else
+                   raise ArgumentError.new("Unsupported box orientation: #{value}")
+                 end
       self.padded = true if padded
       register_control
     end

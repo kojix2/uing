@@ -18,7 +18,7 @@ Entry is a single-line text field with standard, search, and password variants.
 
 ## Usage notes
 
-- Pass <code>:search</code> or <code>:password</code> to select a native variant.
+- Pass <code>:search</code> or <code>:password</code> to select a native variant. The typed <code>UIng::Entry::Type</code> values are also accepted.
 - Use <code>read_only</code> for text that should be selectable but not editable.
 
 [API reference](../../api/UIng/Entry.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_entry.cr)

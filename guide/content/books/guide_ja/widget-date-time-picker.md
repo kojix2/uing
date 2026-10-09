@@ -18,7 +18,7 @@ DateTimePickerは日付、時刻、日付と時刻のネイティブ入力を提
 
 ## 使い方
 
-- <code>:date</code>、<code>:time</code>、<code>:date_time</code>を指定して作成します。
+- <code>:date</code>、<code>:time</code>、<code>:date_time</code>を指定して作成します。型付きの<code>UIng::DateTimePicker::Type</code>も使用できます。
 - 値はローカルのwall-clockフィールドとして扱われ、元のタイムゾーンや瞬間は保持されません。
 
 [APIリファレンス](../../api/UIng/DateTimePicker.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_date_time_picker.cr)

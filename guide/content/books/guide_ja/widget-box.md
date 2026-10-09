@@ -18,7 +18,7 @@ Boxは子コントロールを水平または垂直に並べます。
 
 ## 使い方
 
-- 作成時に<code>:horizontal</code>または<code>:vertical</code>を選びます。
+- 作成時に<code>:horizontal</code>または<code>:vertical</code>を選びます。<code>UIng::Orientation::Horizontal</code>と<code>UIng::Orientation::Vertical</code>も使用できます。
 - <code>stretchy: true</code>で残りの領域を使わせ、<code>padded</code>でネイティブな間隔を加えます。
 
 [水平Boxの例](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_box_horizontal.cr)も参照してください。

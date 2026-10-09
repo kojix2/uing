@@ -9,30 +9,32 @@ module UIng
   # `Time::Location.local`. The original instant, offset, and location therefore
   # do not round-trip when they differ from the local time zone.
   class DateTimePicker < Control
+    enum Type
+      Date
+      Time
+      DateTime
+    end
+
     block_constructor
 
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
+    @ref_ptr : Pointer(LibUI::DateTimePicker)
     # Keep TM instance to avoid repeated allocation and ensure memory safety
     @tm : UIng::TM
 
-    def initialize(type : Symbol)
-      case type
-      when :date
-        @ref_ptr = LibUI.new_date_picker
-      when :time
-        @ref_ptr = LibUI.new_time_picker
-      when :date_time
-        @ref_ptr = LibUI.new_date_time_picker
-      else
-        raise "Invalid type: #{type}"
-      end
-      @tm = UIng::TM.new
-      register_control
-    end
-
-    def initialize
-      @ref_ptr = LibUI.new_date_time_picker
+    def initialize(type : Type | Symbol = Type::DateTime)
+      value = type.is_a?(Symbol) ? Type.parse(type.to_s) : type
+      @ref_ptr = case value
+                 when .date?
+                   LibUI.new_date_picker
+                 when .time?
+                   LibUI.new_time_picker
+                 when .date_time?
+                   LibUI.new_date_time_picker
+                 else
+                   raise ArgumentError.new("Unsupported date-time picker type: #{value}")
+                 end
       @tm = UIng::TM.new
       register_control
     end

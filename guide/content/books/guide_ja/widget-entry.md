@@ -18,7 +18,7 @@ Entryは通常・検索・パスワードの各形式を持つ1行テキスト�
 
 ## 使い方
 
-- <code>:search</code>または<code>:password</code>でネイティブ形式を選択します。
+- <code>:search</code>または<code>:password</code>でネイティブ形式を選択します。型付きの<code>UIng::Entry::Type</code>も使用できます。
 - 選択はできても編集させない場合は<code>read_only</code>を使います。
 
 [APIリファレンス](../../api/UIng/Entry.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_entry.cr)

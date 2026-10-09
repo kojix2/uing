@@ -18,7 +18,7 @@ Separatorは水平または垂直のネイティブ区切り線を描画しま�
 
 ## 使い方
 
-- <code>:horizontal</code>または<code>:vertical</code>を指定します。
+- <code>:horizontal</code>または<code>:vertical</code>を指定します。型付きの<code>UIng::Orientation</code>も使用できます。
 - 垂直線は水平Box、水平線は垂直Boxの中に配置します。
 
 [APIリファレンス](../../api/UIng/Separator.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_separator.cr)

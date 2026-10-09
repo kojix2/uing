@@ -2,20 +2,30 @@ require "./control"
 
 module UIng
   class Entry < Control
+    enum Type
+      Default
+      Password
+      Search
+    end
+
     block_constructor
 
     # Store callback box to prevent GC collection
     @on_changed_box : Pointer(Void)?
+    @ref_ptr : Pointer(LibUI::Entry)
 
-    def initialize(type : Symbol = :default, read_only = false)
-      case type
-      when :password
-        @ref_ptr = LibUI.new_password_entry
-      when :search
-        @ref_ptr = LibUI.new_search_entry
-      else
-        @ref_ptr = LibUI.new_entry
-      end
+    def initialize(type : Type | Symbol = Type::Default, read_only : Bool = false)
+      value = type.is_a?(Symbol) ? Type.parse(type.to_s) : type
+      @ref_ptr = case value
+                 when .password?
+                   LibUI.new_password_entry
+                 when .search?
+                   LibUI.new_search_entry
+                 when .default?
+                   LibUI.new_entry
+                 else
+                   raise ArgumentError.new("Unsupported entry type: #{value}")
+                 end
       if read_only
         self.read_only = true
       end

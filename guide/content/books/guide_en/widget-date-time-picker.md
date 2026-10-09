@@ -18,7 +18,7 @@ DateTimePicker provides native date, time, and combined date-time editors.
 
 ## Usage notes
 
-- Construct it with <code>:date</code>, <code>:time</code>, or <code>:date_time</code>.
+- Construct it with <code>:date</code>, <code>:time</code>, or <code>:date_time</code>. The typed <code>UIng::DateTimePicker::Type</code> values are also accepted.
 - Values are local wall-clock fields; assigning a <code>Time</code> does not preserve its original zone or instant.
 
 [API reference](../../api/UIng/DateTimePicker.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_date_time_picker.cr)
