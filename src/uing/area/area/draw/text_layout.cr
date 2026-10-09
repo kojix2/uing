@@ -29,10 +29,10 @@ module UIng
                       default_font : FontDescriptor,
                       width : Number,
                       align : UIng::Area::Draw::TextAlign = UIng::Area::Draw::TextAlign::Left,
-                      &block : TextLayout -> Nil) : Nil
+                      &)
           text_layout = TextLayout.new(string, default_font, width, align)
           begin
-            block.call(text_layout)
+            yield text_layout
           ensure
             text_layout.free
           end

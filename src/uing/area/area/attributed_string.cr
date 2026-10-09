@@ -16,10 +16,10 @@ module UIng
         @ref_ptr = LibUI.new_attributed_string(string)
       end
 
-      def self.open(string : String, &block : AttributedString -> Nil) : Nil
+      def self.open(string : String, &)
         attr_str = new(string)
         begin
-          block.call(attr_str)
+          yield attr_str
         ensure
           attr_str.free
         end

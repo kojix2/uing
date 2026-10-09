@@ -1,11 +1,14 @@
 require "./spec_helper"
 
 private class BoundaryAttributedString < UIng::Area::AttributedString
+  getter? freed = false
+
   def initialize(@contents : String)
     super(Pointer(UIng::LibUI::AttributedString).null)
   end
 
   def free : Nil
+    @freed = true
   end
 
   protected def native_len : LibC::SizeT
@@ -28,6 +31,29 @@ private class BoundaryAttribute < UIng::Area::Attribute
 end
 
 describe UIng::Area::AttributedString do
+  it "returns the block result and frees the string after the block" do
+    scoped = nil
+    result = BoundaryAttributedString.open("abc") do |string|
+      scoped = string
+      string.len.to_i
+    end
+
+    result.should eq(3)
+    scoped.not_nil!.freed?.should be_true
+  end
+
+  it "frees the string when an open block raises" do
+    scoped = nil
+    expect_raises(Exception, "block failed") do
+      BoundaryAttributedString.open("abc") do |string|
+        scoped = string
+        raise "block failed"
+      end
+    end
+
+    scoped.not_nil!.freed?.should be_true
+  end
+
   it "rejects insertion positions outside the string or inside a UTF-8 codepoint" do
     string = BoundaryAttributedString.new("Aé🙂B")
 

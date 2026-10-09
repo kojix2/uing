@@ -1,6 +1,16 @@
 require "./spec_helper"
 
 describe "Area drawing values" do
+  it "infers the return type of TextLayout.open from its block" do
+    result_type = typeof(UIng::Area::Draw::TextLayout.open(
+      UIng::Area::AttributedString.new("abc"),
+      UIng::FontDescriptor.new,
+      10
+    ) { |layout| layout.extents })
+
+    result_type.should eq(Tuple(Float64, Float64))
+  end
+
   it "rejects non-finite image drawing geometry before calling libui-ng" do
     context = UIng::Area::Draw::Context.from_native_for_spec(Pointer(UIng::LibUI::DrawContext).null)
     image = UIng::Image.from_native_for_spec(Pointer(UIng::LibUI::Image).null)
