@@ -30,7 +30,7 @@ module UIng
                         thickness : Number = 1.0,
                         miter_limit : Number = 10.0,
                         dash_phase : Number = 0.0,
-                        dashes : Enumerable(Float64)? = nil) : Nil
+                        dashes : Enumerable(Number)? = nil) : Nil
           stroke_params = StrokeParams.new(
             cap: cap,
             join: join,
@@ -57,7 +57,7 @@ module UIng
                         thickness : Number = 1.0,
                         miter_limit : Number = 10.0,
                         dash_phase : Number = 0.0,
-                        dashes : Enumerable(Float64)? = nil,
+                        dashes : Enumerable(Number)? = nil,
                         mode : FillMode = FillMode::Winding,
                         &block : Path -> Nil) : Nil
           stroke_params = StrokeParams.new(
@@ -140,8 +140,8 @@ module UIng
         end
 
         # Text drawing (libui uiDrawText equivalent)
-        def draw_text_layout(text_layout : TextLayout, x : Float64, y : Float64) : Nil
-          LibUI.draw_text(to_unsafe, text_layout.to_unsafe, x, y)
+        def draw_text_layout(text_layout : TextLayout, x : Number, y : Number) : Nil
+          LibUI.draw_text(to_unsafe, text_layout.to_unsafe, x.to_f64, y.to_f64)
         end
 
         def draw_image(img : UIng::Image, x : Number, y : Number, width : Number, height : Number) : Nil

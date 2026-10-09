@@ -37,12 +37,12 @@ module UIng
         @borrowed = false
       end
 
-      def initialize(r : Float64, g : Float64, b : Float64, a : Float64)
-        @ref_ptr = LibUI.new_table_value_color(r, g, b, a)
+      def initialize(r : Number, g : Number, b : Number, a : Number)
+        @ref_ptr = LibUI.new_table_value_color(r.to_f64, g.to_f64, b.to_f64, a.to_f64)
         @borrowed = false
       end
 
-      def self.new_color(r : Float64, g : Float64, b : Float64, a : Float64) : Value
+      def self.new_color(r : Number, g : Number, b : Number, a : Number) : Value
         Value.new(r, g, b, a)
       end
 

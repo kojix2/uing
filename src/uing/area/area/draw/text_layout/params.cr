@@ -9,13 +9,13 @@ module UIng
           @attributed_string : AttributedString
           @font_descriptor : FontDescriptor
 
-          def initialize(string : AttributedString, default_font : FontDescriptor, width : Float64, align : UIng::Area::Draw::TextAlign)
+          def initialize(string : AttributedString, default_font : FontDescriptor, width : Number, align : UIng::Area::Draw::TextAlign)
             @cstruct = LibUI::DrawTextLayoutParams.new
             @attributed_string = string
             @font_descriptor = default_font
             @cstruct.string = string.to_unsafe
             @cstruct.default_font = default_font.to_unsafe
-            @cstruct.width = width
+            @cstruct.width = width.to_f64
             @cstruct.align = align
           end
 
@@ -42,8 +42,8 @@ module UIng
             @cstruct.width
           end
 
-          def width=(value : Float64)
-            @cstruct.width = value
+          def width=(value : Number)
+            @cstruct.width = value.to_f64
           end
 
           def align : UIng::Area::Draw::TextAlign

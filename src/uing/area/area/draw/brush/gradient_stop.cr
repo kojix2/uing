@@ -22,40 +22,40 @@ module UIng
             @cstruct.pos
           end
 
-          def pos=(value : Float64)
-            @cstruct.pos = value
+          def pos=(value : Number)
+            @cstruct.pos = value.to_f64
           end
 
           def r : Float64
             @cstruct.r
           end
 
-          def r=(value : Float64)
-            @cstruct.r = value
+          def r=(value : Number)
+            @cstruct.r = value.to_f64
           end
 
           def g : Float64
             @cstruct.g
           end
 
-          def g=(value : Float64)
-            @cstruct.g = value
+          def g=(value : Number)
+            @cstruct.g = value.to_f64
           end
 
           def b : Float64
             @cstruct.b
           end
 
-          def b=(value : Float64)
-            @cstruct.b = value
+          def b=(value : Number)
+            @cstruct.b = value.to_f64
           end
 
           def a : Float64
             @cstruct.a
           end
 
-          def a=(value : Float64)
-            @cstruct.a = value
+          def a=(value : Number)
+            @cstruct.a = value.to_f64
           end
 
           def to_unsafe

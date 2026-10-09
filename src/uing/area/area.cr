@@ -48,8 +48,8 @@ module UIng
       LibUI.area_queue_redraw_all(ref_ptr)
     end
 
-    def scroll_to(x : Float64, y : Float64, width : Float64, height : Float64) : Nil
-      LibUI.area_scroll_to(ref_ptr, x, y, width, height)
+    def scroll_to(x : Number, y : Number, width : Number, height : Number) : Nil
+      LibUI.area_scroll_to(ref_ptr, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
     end
 
     def begin_user_window_move : Nil

@@ -39,7 +39,7 @@ describe "Area drawing values" do
       join: UIng::Area::Draw::LineJoin::Bevel,
       thickness: 2,
       dash_phase: 0.5,
-      dashes: [1.0, 3.0]
+      dashes: [1, 3.0]
     )
     native = params.to_unsafe.value
 
@@ -47,6 +47,27 @@ describe "Area drawing values" do
     {native.dashes[0], native.dashes[1]}.should eq({1.0, 3.0})
     {params.thickness, params.dash_phase}.should eq({2.0, 0.5})
     {params.cap, params.join}.should eq({UIng::Area::Draw::LineCap::Round, UIng::Area::Draw::LineJoin::Bevel})
+  end
+
+  it "accepts integer and floating-point drawing values" do
+    stop = UIng::Area::Draw::Brush::GradientStop.new(pos: 0)
+    stop.pos = 0.5
+    stop.r = 1
+
+    brush = UIng::Area::Draw::Brush.new(
+      UIng::Area::Draw::Brush::Type::LinearGradient,
+      x0: 0,
+      x1: 10,
+      stops: [stop]
+    )
+    brush.outer_radius = 4
+
+    matrix = UIng::Area::Draw::Matrix.new
+    matrix.set_identity
+    matrix.translate(2, 3)
+    matrix.transform_point(1, 1).should eq({3.0, 4.0})
+
+    {stop.pos, stop.r, brush.x1, brush.outer_radius}.should eq({0.5, 1.0, 10.0, 4.0})
   end
 
   it "supports block construction without replacing the instance" do

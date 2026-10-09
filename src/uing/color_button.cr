@@ -21,8 +21,8 @@ module UIng
       {r, g, b, a}
     end
 
-    def set_color(r : Float64, g : Float64, b : Float64, a : Float64) : Nil
-      LibUI.color_button_set_color(ref_ptr, r, g, b, a)
+    def set_color(r : Number, g : Number, b : Number, a : Number) : Nil
+      LibUI.color_button_set_color(ref_ptr, r.to_f64, g.to_f64, b.to_f64, a.to_f64)
     end
 
     def on_changed(&block : Float64, Float64, Float64, Float64 -> Nil) : Nil

@@ -45,9 +45,9 @@ module UIng
       @cstruct.size
     end
 
-    def size=(value)
+    def size=(value : Number)
       check_available
-      @cstruct.size = value
+      @cstruct.size = value.to_f64
     end
 
     def weight

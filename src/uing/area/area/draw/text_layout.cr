@@ -14,7 +14,7 @@ module UIng
 
         def initialize(string : AttributedString,
                        default_font : FontDescriptor,
-                       width : Float64,
+                       width : Number,
                        align : UIng::Area::Draw::TextAlign = UIng::Area::Draw::TextAlign::Left)
           draw_text_layout_params = Draw::TextLayout::Params.new(
             string: string,
@@ -27,7 +27,7 @@ module UIng
 
         def self.open(string : AttributedString,
                       default_font : FontDescriptor,
-                      width : Float64,
+                      width : Number,
                       align : UIng::Area::Draw::TextAlign = UIng::Area::Draw::TextAlign::Left,
                       &block : TextLayout -> Nil) : Nil
           text_layout = TextLayout.new(string, default_font, width, align)

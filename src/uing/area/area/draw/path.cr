@@ -38,33 +38,33 @@ module UIng
           raise RuntimeError.new("Path is already ended") if @ended
         end
 
-        def new_figure(x : Float64, y : Float64) : self
+        def new_figure(x : Number, y : Number) : self
           ensure_not_ended
-          LibUI.draw_path_new_figure(@ref_ptr, x, y)
+          LibUI.draw_path_new_figure(@ref_ptr, x.to_f64, y.to_f64)
           self
         end
 
-        def new_figure_with_arc(x_center : Float64, y_center : Float64, radius : Float64, start_angle : Float64, sweep : Float64, negative : Bool) : self
+        def new_figure_with_arc(x_center : Number, y_center : Number, radius : Number, start_angle : Number, sweep : Number, negative : Bool) : self
           ensure_not_ended
-          LibUI.draw_path_new_figure_with_arc(@ref_ptr, x_center, y_center, radius, start_angle, sweep, negative ? 1 : 0)
+          LibUI.draw_path_new_figure_with_arc(@ref_ptr, x_center.to_f64, y_center.to_f64, radius.to_f64, start_angle.to_f64, sweep.to_f64, negative ? 1 : 0)
           self
         end
 
-        def line_to(x : Float64, y : Float64) : self
+        def line_to(x : Number, y : Number) : self
           ensure_not_ended
-          LibUI.draw_path_line_to(@ref_ptr, x, y)
+          LibUI.draw_path_line_to(@ref_ptr, x.to_f64, y.to_f64)
           self
         end
 
-        def arc_to(x_center : Float64, y_center : Float64, radius : Float64, start_angle : Float64, sweep : Float64, negative : Bool) : self
+        def arc_to(x_center : Number, y_center : Number, radius : Number, start_angle : Number, sweep : Number, negative : Bool) : self
           ensure_not_ended
-          LibUI.draw_path_arc_to(@ref_ptr, x_center, y_center, radius, start_angle, sweep, negative ? 1 : 0)
+          LibUI.draw_path_arc_to(@ref_ptr, x_center.to_f64, y_center.to_f64, radius.to_f64, start_angle.to_f64, sweep.to_f64, negative ? 1 : 0)
           self
         end
 
-        def bezier_to(c1x : Float64, c1y : Float64, c2x : Float64, c2y : Float64, end_x : Float64, end_y : Float64) : self
+        def bezier_to(c1x : Number, c1y : Number, c2x : Number, c2y : Number, end_x : Number, end_y : Number) : self
           ensure_not_ended
-          LibUI.draw_path_bezier_to(@ref_ptr, c1x, c1y, c2x, c2y, end_x, end_y)
+          LibUI.draw_path_bezier_to(@ref_ptr, c1x.to_f64, c1y.to_f64, c2x.to_f64, c2y.to_f64, end_x.to_f64, end_y.to_f64)
           self
         end
 
@@ -74,9 +74,9 @@ module UIng
           self
         end
 
-        def add_rectangle(x : Float64, y : Float64, width : Float64, height : Float64) : self
+        def add_rectangle(x : Number, y : Number, width : Number, height : Number) : self
           ensure_not_ended
-          LibUI.draw_path_add_rectangle(@ref_ptr, x, y, width, height)
+          LibUI.draw_path_add_rectangle(@ref_ptr, x.to_f64, y.to_f64, width.to_f64, height.to_f64)
           self
         end
 

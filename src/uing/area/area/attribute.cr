@@ -39,8 +39,8 @@ module UIng
         Attribute.new(ref_ptr)
       end
 
-      def self.new_size(size : Float64) : Attribute
-        ref_ptr = LibUI.new_size_attribute(size)
+      def self.new_size(size : Number) : Attribute
+        ref_ptr = LibUI.new_size_attribute(size.to_f64)
         Attribute.new(ref_ptr)
       end
 
@@ -59,13 +59,13 @@ module UIng
         Attribute.new(ref_ptr)
       end
 
-      def self.new_color(r : Float64, g : Float64, b : Float64, a : Float64) : Attribute
-        ref_ptr = LibUI.new_color_attribute(r, g, b, a)
+      def self.new_color(r : Number, g : Number, b : Number, a : Number) : Attribute
+        ref_ptr = LibUI.new_color_attribute(r.to_f64, g.to_f64, b.to_f64, a.to_f64)
         Attribute.new(ref_ptr)
       end
 
-      def self.new_background(r : Float64, g : Float64, b : Float64, a : Float64) : Attribute
-        ref_ptr = LibUI.new_background_attribute(r, g, b, a)
+      def self.new_background(r : Number, g : Number, b : Number, a : Number) : Attribute
+        ref_ptr = LibUI.new_background_attribute(r.to_f64, g.to_f64, b.to_f64, a.to_f64)
         Attribute.new(ref_ptr)
       end
 
@@ -74,8 +74,8 @@ module UIng
         Attribute.new(ref_ptr)
       end
 
-      def self.new_underline_color(underline_color : UnderlineColor, r : Float64, g : Float64, b : Float64, a : Float64) : Attribute
-        ref_ptr = LibUI.new_underline_color_attribute(underline_color, r, g, b, a)
+      def self.new_underline_color(underline_color : UnderlineColor, r : Number, g : Number, b : Number, a : Number) : Attribute
+        ref_ptr = LibUI.new_underline_color_attribute(underline_color, r.to_f64, g.to_f64, b.to_f64, a.to_f64)
         Attribute.new(ref_ptr)
       end
 

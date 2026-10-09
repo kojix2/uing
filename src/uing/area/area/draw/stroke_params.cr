@@ -9,7 +9,7 @@ module UIng
                        thickness : Number = 1.0,
                        miter_limit : Number = LibUI::DRAWDEFAULTMITERLIMIT,
                        dash_phase : Number = 0.0,
-                       dashes : Enumerable(Float64)? = nil)
+                       dashes : Enumerable(Number)? = nil)
           @cstruct = LibUI::DrawStrokeParams.new
           @dashes_array = Array(Float64).new
 
@@ -42,24 +42,24 @@ module UIng
           @cstruct.thickness
         end
 
-        def thickness=(value : Float64)
-          @cstruct.thickness = value
+        def thickness=(value : Number)
+          @cstruct.thickness = value.to_f64
         end
 
         def miter_limit : Float64
           @cstruct.miter_limit
         end
 
-        def miter_limit=(value : Float64)
-          @cstruct.miter_limit = value
+        def miter_limit=(value : Number)
+          @cstruct.miter_limit = value.to_f64
         end
 
         def dash_phase : Float64
           @cstruct.dash_phase
         end
 
-        def dash_phase=(value : Float64)
-          @cstruct.dash_phase = value
+        def dash_phase=(value : Number)
+          @cstruct.dash_phase = value.to_f64
         end
 
         # Dashes property using Crystal Array
@@ -72,8 +72,8 @@ module UIng
           sync_dashes
         end
 
-        def dashes=(values : Enumerable(Float64))
-          @dashes_array = values.to_a
+        def dashes=(values : Enumerable(Number))
+          @dashes_array = values.map(&.to_f64)
           sync_dashes
         end
 

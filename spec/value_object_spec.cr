@@ -15,6 +15,9 @@ describe "public value objects" do
     descriptor.weight.should eq(UIng::TextWeight::Bold)
     descriptor.italic.should eq(UIng::TextItalic::Italic)
     descriptor.stretch.should eq(UIng::TextStretch::Normal)
+
+    descriptor.size = 16.5
+    descriptor.size.should eq(16.5)
   ensure
     descriptor.try &.free
   end

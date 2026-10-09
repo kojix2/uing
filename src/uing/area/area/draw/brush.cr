@@ -70,72 +70,72 @@ module UIng
           @cstruct.r
         end
 
-        def r=(value : Float64)
-          @cstruct.r = value
+        def r=(value : Number)
+          @cstruct.r = value.to_f64
         end
 
         def g : Float64
           @cstruct.g
         end
 
-        def g=(value : Float64)
-          @cstruct.g = value
+        def g=(value : Number)
+          @cstruct.g = value.to_f64
         end
 
         def b : Float64
           @cstruct.b
         end
 
-        def b=(value : Float64)
-          @cstruct.b = value
+        def b=(value : Number)
+          @cstruct.b = value.to_f64
         end
 
         def a : Float64
           @cstruct.a
         end
 
-        def a=(value : Float64)
-          @cstruct.a = value
+        def a=(value : Number)
+          @cstruct.a = value.to_f64
         end
 
         def x0 : Float64
           @cstruct.x0
         end
 
-        def x0=(value : Float64)
-          @cstruct.x0 = value
+        def x0=(value : Number)
+          @cstruct.x0 = value.to_f64
         end
 
         def y0 : Float64
           @cstruct.y0
         end
 
-        def y0=(value : Float64)
-          @cstruct.y0 = value
+        def y0=(value : Number)
+          @cstruct.y0 = value.to_f64
         end
 
         def x1 : Float64
           @cstruct.x1
         end
 
-        def x1=(value : Float64)
-          @cstruct.x1 = value
+        def x1=(value : Number)
+          @cstruct.x1 = value.to_f64
         end
 
         def y1 : Float64
           @cstruct.y1
         end
 
-        def y1=(value : Float64)
-          @cstruct.y1 = value
+        def y1=(value : Number)
+          @cstruct.y1 = value.to_f64
         end
 
         def outer_radius : Float64
           @cstruct.outer_radius
         end
 
-        def outer_radius=(value : Float64)
-          @cstruct.outer_radius = value
+        def outer_radius=(value : Number)
+          @cstruct.outer_radius = value.to_f64
         end
 
         def stops : Array(GradientStop)
