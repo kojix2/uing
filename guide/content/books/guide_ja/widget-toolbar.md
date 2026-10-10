@@ -20,10 +20,20 @@ Toolbarは`kojix2/libui-ng`固有の実験的な機能であり、今後変更�
 
 ## 使い方
 
-- すべての項目の追加と<code>display_mode</code>の設定は、ToolbarをWindowへ取り付ける前に行います。どちらも一度取り付けた後は変更できません。
+- すべての項目は、ToolbarをWindowへ初めて取り付ける前に追加します。一度取り付けた後は、取り外しても項目を追加できません。
+- <code>display_mode</code>は取り付け後も変更できます。変更時には、既存の項目、クリック時のコールバック、有効・無効状態、トグルの選択状態が維持されます。
 - Toolbarは一度に1つのWindowにのみ取り付けられます。<code>toolbar.free</code>を呼ぶ前に、<code>window.toolbar</code>へ<code>nil</code>を代入して取り外します。
 - Toolbarが使用している間はImageを保持し、Toolbarを解放した後でImageを解放します。
 - <code>checked?</code>と<code>checked=</code>は、<code>append_toggle_button</code>で作成した項目でのみ利用できます。
 - macOSでは、<code>IconAndTextHorizontal</code>も縦方向に表示されます。
+
+取り付けたToolbarの表示モードは、次のように切り替えられます。Galleryの実行例でも、選択ボックスから切り替えられます。
+
+```crystal
+window.toolbar = toolbar
+toolbar.display_mode = UIng::Toolbar::DisplayMode::TextOnly
+toolbar.display_mode = UIng::Toolbar::DisplayMode::IconOnly
+toolbar.display_mode = UIng::Toolbar::DisplayMode::IconAndTextVertical
+```
 
 [Toolbar API](../../api/UIng/Toolbar.html) · [ToolbarItem API](../../api/UIng/ToolbarItem.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_toolbar.cr)
