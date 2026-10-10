@@ -44,5 +44,5 @@ end
 ```
 
 - [basic_draw_text.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_draw_text.cr): 属性付きテキスト
-- [area_draw_image.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_draw_image.cr): 画像の描画と拡大縮小
+- [area_draw_image.cr](https://github.com/kojix2/uing/blob/main/examples/crimage/area_draw_image.cr): 画像の描画と拡大縮小
 - [area_matrix.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_matrix.cr): Matrixによる変換

@@ -30,6 +30,8 @@ area = UIng::Area.new(handler)
 
 色成分`r`、`g`、`b`、`a`は0.0から1.0です。`Brush`は単色のほか、線形・放射状グラデーションを表せます。`StrokeParams`で太さ、端点、結合方法、破線を指定します。
 
+任意の`require "uing/crimage"`を使うと、`Brush.solid(color)`と`Brush::GradientStop.new(位置, color)`へCrImageの色を渡せます。文字属性とTableの色値にも色のオーバーロードが追加されます。半透明のUI色には`CrImage::Color::NRGBA`を使います。
+
 ## パスと可視領域
 
 パスには矩形、直線、ベジェ曲線、円弧を追加できます。直接`Path.open`を使う場合は、描画前に`end_path`を呼び、不要になったら解放します。頻繁に描く静的な形状は、Pathを再利用すると負荷を抑えられます。

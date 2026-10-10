@@ -55,7 +55,9 @@ This page introduces Area creation and the first drawing callback. Grow a drawin
   <figure><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/reversi.cr"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/reversi-ubuntu.png" alt="Reversi" loading="lazy"></a><figcaption><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/reversi.cr">Reversi</a></figcaption></figure>
   <figure><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/area_breakout.cr"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_breakout-ubuntu.png" alt="Breakout" loading="lazy"></a><figcaption><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/area_breakout.cr">Breakout</a></figcaption></figure>
   <figure><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/boid3d.cr"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/boid3d-ubuntu.png" alt="Boid 3D" loading="lazy"></a><figcaption><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/boid3d.cr">Boid 3D</a></figcaption></figure>
-  <figure><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/area_draw_image.cr"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-ubuntu.png" alt="Image drawing" loading="lazy"></a><figcaption><a href="https://github.com/kojix2/uing/blob/main/examples/gallery/area_draw_image.cr">Image drawing</a></figcaption></figure>
 </div>
+
+The optional CrImage integration has a separate
+[image drawing example](https://github.com/kojix2/uing/blob/main/examples/crimage/area_draw_image.cr).
 
 [API reference](../../api/UIng/Area.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/area_basic_shapes.cr)

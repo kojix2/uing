@@ -30,6 +30,8 @@ area = UIng::Area.new(handler)
 
 The `r`, `g`, `b`, and `a` color components range from 0.0 to 1.0. A `Brush` can be solid, linear-gradient, or radial-gradient. `StrokeParams` controls thickness, caps, joins, and dash patterns.
 
+With the optional `require "uing/crimage"`, `Brush.solid(color)` and `Brush::GradientStop.new(position, color)` accept any CrImage color. The same require adds color overloads for text attributes and table color values. Translucent UI colors should use `CrImage::Color::NRGBA`.
+
 ## Paths and visible regions
 
 Paths can contain rectangles, lines, Bézier curves, and arcs. If you use `Path.open` directly, call `end_path` before drawing and free the path when it is no longer needed. Reusing a static Path can reduce work for frequently drawn shapes.

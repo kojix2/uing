@@ -14,13 +14,13 @@ The same application source can target:
 - macOS through AppKit
 - Windows through Win32, Direct2D, and DirectWrite
 
-Here is the control gallery in action. The same code renders with the native
-look of each platform:
+The [basic window example](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_window.cr)
+shows how the same code takes on each platform's native look:
 
 <div class="widget-screenshots">
-  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png" alt="Control gallery on Ubuntu" loading="lazy"></a><figcaption>Ubuntu</figcaption></figure>
-  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png" alt="Control gallery on Windows" loading="lazy"></a><figcaption>Windows</figcaption></figure>
-  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png" alt="Control gallery on macOS" loading="lazy"></a><figcaption>macOS</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-ubuntu.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-ubuntu.png" alt="Basic window on Ubuntu" loading="lazy"></a><figcaption>Ubuntu</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-windows.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-windows.png" alt="Basic window on Windows" loading="lazy"></a><figcaption>Windows</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-macos.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-macos.png" alt="Basic window on macOS" loading="lazy"></a><figcaption>macOS</figcaption></figure>
 </div>
 
 This guide focuses on the small set of concepts needed to create an

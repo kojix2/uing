@@ -96,7 +96,7 @@ To run the full control gallery from a checkout:
 git clone https://github.com/kojix2/uing
 cd uing
 shards install
-crystal run examples/gallery/control_gallery.cr
+crystal run examples/crimage/control_gallery.cr
 ```
 
 Continue with the [First Steps](https://kojix2.github.io/uing/books/guide_en/first-steps.html) guide. The optional block-based DSL is covered in [Coding Styles](https://kojix2.github.io/uing/books/guide_en/coding-styles.html).
@@ -160,7 +160,7 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_checkbox-macos.png" alt="basic_checkbox-macos"></td>
     </tr>
     <tr>
-      <td><a href="examples/gallery/basic_color_button.cr">ColorButton</a></td>
+      <td><a href="examples/crimage/basic_color_button.cr">ColorButton</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-ubuntu.png" alt="basic_color_button-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-windows.png" alt="basic_color_button-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_color_button-macos.png" alt="basic_color_button-macos"></td>
@@ -449,6 +449,13 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
 
 ### Image
 
+`require "uing/crimage"` enables optional helpers for reading images, converting
+CrImage pixels, and passing CrImage colors to UIng controls. Applications using
+these helpers must declare `crimage` in their own `shard.yml`. Plain
+`require "uing"` does not load it. CrImage examples are kept in
+[`examples/crimage/`](examples/crimage/). See the [ImageView guide](guide/content/books/guide_en/widget-image-view.md)
+for usage and image ownership rules.
+
 <table>
   <thead>
     <tr>
@@ -460,13 +467,13 @@ Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and
   </thead>
   <tbody>
     <tr>
-      <td><a href="examples/gallery/area_draw_image.cr">area_draw_image</a></td>
+      <td><a href="examples/crimage/area_draw_image.cr">area_draw_image</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-ubuntu.png" alt="area_draw_image-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-windows.png" alt="area_draw_image-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_draw_image-macos.png" alt="area_draw_image-macos"></td>
     </tr>
     <tr>
-      <td><a href="examples/gallery/basic_image_view.cr">basic_image_view</a></td>
+      <td><a href="examples/crimage/basic_image_view.cr">basic_image_view</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_image_view-ubuntu.png" alt="basic_image_view-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_image_view-windows.png" alt="basic_image_view-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_image_view-macos.png" alt="basic_image_view-macos"></td>

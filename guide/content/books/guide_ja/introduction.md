@@ -14,13 +14,13 @@ Crystalアプリケーションから利用できます。
 - macOS: AppKit
 - Windows: Win32、Direct2D、DirectWrite
 
-コントロールギャラリーの実行例です。同じコードが各プラットフォームの
-ネイティブな外観で動作します。
+[基本的なウィンドウの作例](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_window.cr)です。
+同じコードが各プラットフォームのネイティブな外観で動作します。
 
 <div class="widget-screenshots">
-  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-ubuntu.png" alt="Control gallery on Ubuntu" loading="lazy"></a><figcaption>Ubuntu</figcaption></figure>
-  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-windows.png" alt="Control gallery on Windows" loading="lazy"></a><figcaption>Windows</figcaption></figure>
-  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/control_gallery-macos.png" alt="Control gallery on macOS" loading="lazy"></a><figcaption>macOS</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-ubuntu.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-ubuntu.png" alt="基本的なウィンドウ（Ubuntu）" loading="lazy"></a><figcaption>Ubuntu</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-windows.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-windows.png" alt="基本的なウィンドウ（Windows）" loading="lazy"></a><figcaption>Windows</figcaption></figure>
+  <figure><a href="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-macos.png"><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_window-macos.png" alt="基本的なウィンドウ（macOS）" loading="lazy"></a><figcaption>macOS</figcaption></figure>
 </div>
 
 このガイドでは、アプリケーションを作成するために必要な基本概念に絞って説明します。

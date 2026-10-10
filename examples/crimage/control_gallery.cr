@@ -1,7 +1,6 @@
-require "../../src/uing"
+require "../../src/uing/crimage"
 require "base64"
 require "compress/zlib"
-require "crimage"
 
 class ControlGalleryApp
   NEW_ICON  = "eNpjYKAcePRc+k8OprV+GBgp+okFtNI/0sN/oNL/KBi4MoxacTdq/9CyH1eZOGr/qP2j9g99+6kNRu0fWvaP5r9R+0ftH7V/tP07MuwfqQAAcYgRdg=="
@@ -281,26 +280,8 @@ class ControlGalleryApp
 
   private def build_image_view : UIng::Group
     group = UIng::Group.new("ImageView", margined: true)
-    source = CrImage.read(File.join(__DIR__, "crys.png"))
-    bounds = source.bounds
-    width, height = bounds.width, bounds.height
-    pixels = Bytes.new(width * height * 4)
-
-    height.times do |y|
-      width.times do |x|
-        offset = (y * width + x) * 4
-        color = source.at(bounds.min.x + x, bounds.min.y + y).to_rgba8
-        pixels[offset] = color.r
-        pixels[offset + 1] = color.g
-        pixels[offset + 2] = color.b
-        pixels[offset + 3] = color.a
-      end
-    end
-
-    image = UIng::Image.new(width, height)
-    image.append(pixels, width, height, width * 4)
-    group.child = UIng::ImageView.new(image, :fit)
-    image.free
+    source = CrImage.read(File.join(__DIR__, "../gallery/crys.png"))
+    group.child = UIng::ImageView.new(source, :fit)
     group
   end
 

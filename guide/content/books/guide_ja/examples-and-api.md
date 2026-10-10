@@ -20,7 +20,7 @@ APIリファレンスで確認してください。
 git clone https://github.com/kojix2/uing
 cd uing
 shards install
-crystal run examples/gallery/control_gallery.cr
+crystal run examples/crimage/control_gallery.cr
 </code></pre>
 
 より大きなサンプルには次のものがあります。

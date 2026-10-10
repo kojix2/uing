@@ -1,4 +1,5 @@
 require "../spec_helper"
+require "../../src/uing/crimage"
 
 private def pointer_is_unavailable?(control : UIng::Control) : Bool
   control.to_unsafe
@@ -127,6 +128,50 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
       item.destroy
       expect_raises(Exception, /already been released/) { item.to_unsafe }
+    end
+
+    it "converts CrImage colors and images through native controls" do
+      color = CrImage::Color::NRGBA.new(255, 0, 0, 128)
+      foreground = UIng::Area::Attribute.new_color(color)
+      background = UIng::Area::Attribute.new_background(color)
+      underline = UIng::Area::Attribute.new_underline_color(UIng::Area::Attribute::UnderlineColor::Custom, color)
+      table_color = UIng::Table::Value.new_color(color)
+
+      foreground.color[0].should be_close(1.0, 1.0 / 255)
+      background.color[3].should be_close(128.0 / 255, 1.0 / 255)
+      underline.underline_color[1].should be_close(1.0, 1.0 / 255)
+      table_color.color[3].should be_close(128.0 / 255, 1.0 / 255)
+
+      color_button = UIng::ColorButton.new
+      color_button.color = color
+      color_button.color[0].should be_close(1.0, 1.0 / 255)
+      color_button.color[3].should be_close(128.0 / 255, 1.0 / 255)
+      color_button.color_crimage.should be_a(CrImage::Color::NRGBA)
+      color_button.set_color(CrImage::Color::NRGBA.new(0, 255, 0, 255))
+      color_button.color[1].should be_close(1.0, 1.0 / 255)
+
+      source = CrImage::NRGBA.new(CrImage.rect(0, 0, 1, 1))
+      source.set_nrgba(0, 0, color)
+      image = source.to_uing_image
+      image.append(CrImage.rgba(2, 2, color))
+      file_image = UIng::Image.from_file(File.join(__DIR__, "../../examples/gallery/crys.png"))
+      view = UIng::ImageView.new(source)
+      view.image = source
+      view.image = nil
+
+      window = UIng::Window.new("CrImage integration spec", 200, 100)
+      box = UIng::Box.new(:vertical)
+      box.append(color_button)
+      box.append(view)
+      window.child = box
+    ensure
+      window.try { |control| control.destroy unless control.released? }
+      image.try &.free
+      file_image.try &.free
+      foreground.try &.free
+      background.try &.free
+      underline.try &.free
+      table_color.try &.free
     end
 
     it "sets and removes descriptive control tooltips" do

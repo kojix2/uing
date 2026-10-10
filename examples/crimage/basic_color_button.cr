@@ -1,4 +1,4 @@
-require "../../src/uing"
+require "../../src/uing/crimage"
 
 UIng.init
 
@@ -8,8 +8,8 @@ window.on_closing do
   true
 end
 
-color_button = UIng::ColorButton.new do
-  set_color(1.0, 0.0, 0.0, 1.0)
+color_button = UIng::ColorButton.new do |button|
+  button.color = CrImage::Color::NRGBA.new(255, 0, 0, 255)
   on_changed do |red, green, blue, alpha|
     window.msg_box("Color Changed", "R=#{red}, G=#{green}, B=#{blue}, A=#{alpha}")
   end

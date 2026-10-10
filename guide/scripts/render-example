@@ -17,12 +17,20 @@ esac
 
 source_file="../examples/gallery/${example_name}.cr"
 if [ ! -f "$source_file" ]; then
+  source_file="../examples/crimage/${example_name}.cr"
+fi
+if [ ! -f "$source_file" ]; then
   echo "example not found: $source_file" >&2
   exit 1
 fi
 
 printf '```crystal\n'
 awk '
+  !replaced && $0 == "require \"../../src/uing/crimage\"" {
+    print "require \"uing/crimage\""
+    replaced = 1
+    next
+  }
   !replaced && $0 == "require \"../../src/uing\"" {
     print "require \"uing\""
     replaced = 1
