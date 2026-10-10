@@ -28,8 +28,9 @@ box.append(UIng::Button.new("Save"))
 window.child = box
 </code></pre>
 
-`Box#append`の省略可能な`stretchy`引数は、子が残りの領域を使用するかどうかを
-制御します。
+`Box#append`の`stretchy: true`は、並べる方向の残りの領域を子に配分します。
+上の縦Boxでは高さが対象です。`padded`は子同士の間隔、Windowの`margined`は外周の余白を設定します。
+配分と入れ子の詳しい説明は[Box](widget-box.html)を参照してください。
 
 <pre><code class="crystal">
 box.append(editor, stretchy: true)

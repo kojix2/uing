@@ -30,8 +30,10 @@ box.append(UIng::Button.new("Save"))
 window.child = box
 </code></pre>
 
-The optional `stretchy` argument to `Box#append` controls whether a child uses
-the remaining space:
+`stretchy: true` in `Box#append` gives a child the remaining space along the layout
+direction: height in the vertical Box above. `padded` sets gaps between children;
+the Window's `margined` sets outer margins. See [Box](widget-box.html) for size
+allocation and nesting.
 
 <pre><code class="crystal">
 box.append(editor, stretchy: true)
