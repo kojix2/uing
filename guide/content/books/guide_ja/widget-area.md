@@ -41,7 +41,9 @@ window.child = area
 このページではAreaの作成と最初の描画を扱います。描画を増やすときは、次の順番で進めると責務を分けやすくなります。
 
 - [パス・ブラシ・線](area-paths-and-brushes.html): 図形、塗り、線、クリッピング
-- [テキスト・画像・変換](area-text-images-and-transforms.html): 文字組み、画像、Matrix
+- [テキスト](area-text.html): 属性、レイアウト、文字組み
+- [画像](area-images.html): `UIng::Image`、描画、拡大縮小
+- [座標変換](area-transforms.html): Matrix、座標系、save / restore
 - [入力と再描画](area-input-and-redraw.html): マウス・キー入力、状態、アニメーション
 - [スクロールと実践例](area-scrolling-and-examples.html): スクロールArea、可視領域、発展例
 

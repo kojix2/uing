@@ -41,7 +41,9 @@ Initialize UIng before creating controls, show the window, and run `UIng.main` a
 This page introduces Area creation and the first drawing callback. Grow a drawing program through the following focused pages.
 
 - [Paths, brushes, and strokes](area-paths-and-brushes.html): shapes, fills, strokes, and clipping
-- [Text, images, and transforms](area-text-images-and-transforms.html): text layout, images, and Matrix
+- [Text](area-text.html): attributes, layouts, and typesetting
+- [Images](area-images.html): `UIng::Image`, drawing, and scaling
+- [Coordinate transforms](area-transforms.html): Matrix, coordinate systems, and save/restore
 - [Input and redraws](area-input-and-redraw.html): mouse/keyboard input, state, and animation
 - [Scrolling and examples](area-scrolling-and-examples.html): scrolling Areas, visible regions, and next examples
 
