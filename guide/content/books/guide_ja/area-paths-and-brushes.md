@@ -87,20 +87,42 @@ end
 
 ## 線、塗り規則、クリッピング
 
-`StrokeParams`では`thickness`、`cap`（`:flat`、`:round`、`:square`）、`join`（`:miter`、`:round`、`:bevel`）、`miter_limit`、`dashes`、`dash_phase`を指定します。
+`StrokeParams`では太さ、端点、折れ点、破線を指定します。
+
+| 項目 | 効果 |
+| --- | --- |
+| `thickness` | 線の太さ |
+| `cap` | 終端。`:flat`は端で止まり、`:round`は半円、`:square`は半分の太さだけ延長 |
+| `join` | 折れ点。`:miter`は鋭角、`:round`は丸形、`:bevel`は面取り |
+| `miter_limit` | 鋭い角で`:miter`をどこまで伸ばすかの上限 |
+| `dashes` | 描く長さと空ける長さの交互の配列 |
+| `dash_phase` | 破線パターンの開始位置 |
 
 ```crystal
 dashed = UIng::Area::Draw::StrokeParams.new(
-  thickness: 4.0, cap: :round, join: :round, dashes: [8.0, 4.0]
+  thickness: 4.0,
+  cap: :round,
+  join: :round,
+  dashes: [8.0, 4.0], # 8描く、4空ける
+  dash_phase: 2.0
 )
 ```
 
-自己交差や穴のある形では、`fill_path`または`draw_path`の`mode:`に`:winding`（既定）か`:alternate`を指定します。描画範囲を絞るには`clip_path`を`save`と`restore`で囲みます。
+自己交差や穴のある形には塗り規則を指定できます。`mode: :winding`（既定）は輪郭の向きも考慮する規則で、`mode: :alternate`は境界を通るたびに内外を切り替える偶奇規則です。穴のある形を作るだけなら`:alternate`が扱いやすくなります。
+
+```crystal
+context.fill_path(brush, mode: :alternate) do |path|
+  path.new_figure_with_arc(100, 100, 60, 0, Math::PI * 2, false)
+  path.new_figure_with_arc(100, 100, 30, 0, Math::PI * 2, false) # 穴
+end
+```
+
+`clip_path`は以後の描画をパスとの共通部分に制限します。クリップはContextに残るため、影響範囲を`save`と`restore`で囲みます。
 
 ```crystal
 context.save
 context.clip_path { |path| path.add_rectangle(0, 0, 120, 80) }
-# この範囲だけ描画
+context.fill_path(brush) { |path| path.add_rectangle(0, 0, 240, 160) }
 context.restore
 ```
 

@@ -87,20 +87,42 @@ end
 
 ## Strokes, fill rules, and clipping
 
-`StrokeParams` accepts `thickness`, `cap` (`:flat`, `:round`, `:square`), `join` (`:miter`, `:round`, `:bevel`), `miter_limit`, `dashes`, and `dash_phase`.
+`StrokeParams` controls thickness, endpoints, corners, and dashes.
+
+| Option | Effect |
+| --- | --- |
+| `thickness` | Line width |
+| `cap` | Endpoint: `:flat` stops at the endpoint, `:round` adds a semicircle, and `:square` extends by half the line width |
+| `join` | Corner: `:miter` is sharp, `:round` is rounded, and `:bevel` is cut off |
+| `miter_limit` | Maximum extension of a sharp `:miter` corner |
+| `dashes` | Alternating painted and skipped lengths |
+| `dash_phase` | Starting offset of the dash pattern |
 
 ```crystal
 dashed = UIng::Area::Draw::StrokeParams.new(
-  thickness: 4.0, cap: :round, join: :round, dashes: [8.0, 4.0]
+  thickness: 4.0,
+  cap: :round,
+  join: :round,
+  dashes: [8.0, 4.0], # paint 8, skip 4
+  dash_phase: 2.0
 )
 ```
 
-For self-intersections and holes, pass `mode: :winding` (the default) or `:alternate` to `fill_path` or `draw_path`. Restrict drawing with `clip_path`, enclosed by `save` and `restore`.
+For self-intersections and holes, choose a fill rule. `mode: :winding` (the default) considers the direction of each contour; `mode: :alternate` switches inside and outside at every boundary crossing. `:alternate` is usually the simpler choice for a shape with holes.
+
+```crystal
+context.fill_path(brush, mode: :alternate) do |path|
+  path.new_figure_with_arc(100, 100, 60, 0, Math::PI * 2, false)
+  path.new_figure_with_arc(100, 100, 30, 0, Math::PI * 2, false) # hole
+end
+```
+
+`clip_path` restricts subsequent drawing to its intersection with the path. A clip remains on the Context, so limit its scope with `save` and `restore`.
 
 ```crystal
 context.save
 context.clip_path { |path| path.add_rectangle(0, 0, 120, 80) }
-# Draw only in this rectangle.
+context.fill_path(brush) { |path| path.add_rectangle(0, 0, 240, 160) }
 context.restore
 ```
 
