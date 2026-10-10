@@ -2,12 +2,14 @@
     Variables: book {name, title, description}, toc_html, first_chapter -#}
 <div class="book-layout">
   <aside class="book-sidebar">
-    <div class="book-title">
-      <a href="/books/{{ book.name }}/">{{ book.title }}</a>
-    </div>
-    <nav class="book-toc">
-      {{ toc_html|safe }}
-    </nav>
+    <noindex>
+      <div class="book-title">
+        <a href="/books/{{ book.name }}/">{{ book.title }}</a>
+      </div>
+      <nav class="book-toc">
+        {{ toc_html|safe }}
+      </nav>
+    </noindex>
   </aside>
   <main class="book-content article-content">
     <h1 class="article-title">{{ book.title }}</h1>
