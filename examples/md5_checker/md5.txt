@@ -1,0 +1,10 @@
+a08c98ed64447f3eeeda0e70653dfeac  ./build-win.ps1
+616eadbbf6bf8b0a626e171bbf1e79e4  ./resources/app_icon.png
+b47b5d2addc004ef377ecfc1a4c5e980  ./src/table_handler.cr
+9123984bfcb15e77ffd9a8778551b5d5  ./src/checker.cr
+821b48b84c3043a8ebf704746e1b52da  ./build-mac.sh
+ef362ee265bcf435edf5692a76fd58da  ./src/app.cr
+47aebe2bb95549a77317708f1a4d6c63  ./README.md
+a6393c0e0043d7605676c17380505542  ./shard.yml
+feaf626b2e501008e8f4f4ea36026692  ./build-deb.sh
+1e7da9e15cc043aaaa9ca7de2851d04f  ./src/md5_checker.cr
