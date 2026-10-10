@@ -18,8 +18,28 @@ Grid places controls at explicit rows and columns with spans, expansion, and ali
 
 ## Usage notes
 
-- Coordinates are zero-based; <code>xspan</code> and <code>yspan</code> control cell spanning.
-- Expansion and alignment are configured independently for each axis.
+`left` is the column and `top` is the row, both zero-based. `xspan` and `yspan` specify how many columns and rows a control occupies.
+
+![A Grid control spanning two columns, and centered versus filled alignment within an expanded allocation.](../../images/grid-layout.svg)
+
+```crystal
+grid = UIng::Grid.new(padded: true)
+grid.append(UIng::Button.new("Span"),
+  left: 0, top: 1, xspan: 2, yspan: 1,
+  hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+```
+
+`hexpand` and `vexpand` expand columns and rows; `halign` and `valign` set placement within them. Dashed outlines show allocated space; blue rectangles show children.
+
+| Horizontal settings | Behavior |
+| --- | --- |
+| `hexpand: true, halign: :fill` | Expands the column and fills its width with the child |
+| `hexpand: true, halign: :center` | Expands the column and centers the child at its required width |
+| `hexpand: false, halign: :fill` | Does not request column expansion, but fills the allocated width |
+
+If another child expands the same column, a child with `hexpand: false` and `:fill` also grows. The vertical direction works the same way. `:start` and `:end` keep the required size at the start or end of the allocation.
+
+`padded: true` adds standard spacing between cells.
 
 ## Related example
 

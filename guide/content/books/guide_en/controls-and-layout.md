@@ -18,8 +18,7 @@ control:
 - `Group` places a title around one child.
 - `Tab` organizes controls into pages.
 
-The following vertical box keeps its controls together and adds native
-spacing between them:
+This example arranges controls in a vertical Box:
 
 <pre><code class="crystal">
 box = UIng::Box.new(:vertical, padded: true)
@@ -30,19 +29,26 @@ box.append(UIng::Button.new("Save"))
 window.child = box
 </code></pre>
 
-`stretchy: true` in `Box#append` gives a child the remaining space along the layout
-direction: height in the vertical Box above. `padded` sets gaps between children;
-the Window's `margined` sets outer margins. See [Box](widget-box.html) for size
-allocation and nesting.
+Use `box.append(editor, stretchy: true)` to give an editor the remaining height.
+For complex layouts, nest containers and assign the outermost one to the Window (see the [Box example](widget-box.html) and [control gallery](https://github.com/kojix2/uing/tree/main/examples/gallery)).
 
-<pre><code class="crystal">
-box.append(editor, stretchy: true)
-</code></pre>
+## Space allocation and alignment
 
-Build small containers first, nest them as needed, and assign the outermost
-container to the window. See the
-[control gallery](https://github.com/kojix2/uing/tree/main/examples/gallery)
-for examples of each control and layout.
+Allocating extra space and placing children within it are separate decisions.
+
+| Container | Space allocation | Placement within that space |
+| --- | --- | --- |
+| Box | `stretchy` distributes space along the layout direction | A stretchy child fills that direction |
+| Form | `stretchy` distributes height | A stretchy control grows vertically; controls always fill the input column horizontally |
+| Grid | `hexpand` and `vexpand` expand columns and rows | `halign` and `valign` set alignment; `:fill` fills the allocation |
+
+Box and Form combine allocation and stretching, with no separate `fill` argument. Use [Grid](widget-grid.html) to control expansion and alignment independently. `padded` sets gaps between children; `margined` sets outer margins. Neither controls stretching.
+
+<a id="platform-differences"></a>
+
+## Platform differences
+
+Diagrams show layout bounds, which may differ from a control's visible parts. macOS Spinbox centers its input field and stepper at their natural heights; Windows sizes the input field to the allocated height. Minimum sizes, text placement, and standard spacing also vary by OS.
 
 ## Widget guides
 

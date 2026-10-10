@@ -18,39 +18,30 @@ Box arranges children in a horizontal or vertical sequence.
 
 ## Direction and stretching
 
-Choose `:horizontal` for a row or `:vertical` for a column. Children appear in `append` order.
+Children appear in `append` order; set `stretchy` for each child.
 
-The `stretchy` argument to `append` controls width in a horizontal Box and height in a vertical Box.
-
-| Setting | Size along the layout direction |
-| --- | --- |
-| `stretchy: false` (default) | Keeps the size needed by its content; receives no extra space |
-| `stretchy: true` | Uses the space left after non-stretchy children and gaps |
+| Box direction | `stretchy: false` (default) | `stretchy: true` | Other direction |
+| --- | --- | --- | --- |
+| `:horizontal` | Keeps the required width | Receives remaining width | Height generally follows the Box |
+| `:vertical` | Keeps the required height | Receives remaining height | Width generally follows the Box |
 
 Multiple stretchy children receive equal widths (or heights in a vertical Box). There is no weight setting. With all children set to `false`, they stay at the left (or top), leaving extra space at the end. Minimum sizes follow children's size requirements.
 
-Children generally fill the Box in the other direction: a child in a vertical Box can grow horizontally even with `false`. A Label in a horizontal Box is an exception; it keeps its natural height and is centered vertically.
+![A horizontal Box with only B stretchy, compared with equal widths for stretchy children B and C.](../../images/box-stretchy.svg)
+
+A Label in a horizontal Box keeps its natural height and is centered vertically. Internal appearance has [platform differences](controls-and-layout.html#platform-differences). Use [Grid](widget-grid.html) to control expansion and alignment independently.
 
 ## Gaps and outer margins
 
-`padded: true` adds standard spacing between adjacent children. The default is `false`. Use the Window or Group's `margined` setting for outer margins.
+`padded: true` adds gaps between children; the Window or Group's `margined` sets outer margins. `padded` defaults to `false`.
 
-```text
-Window (margined: true)
-+---------------------------------------+
-|                margin                 |
-|  +---------------------------------+  |
-|  | [A]  gap  [B]  gap  [C]          |  |  Box (padded: true)
-|  +---------------------------------+  |
-|                margin                 |
-+---------------------------------------+
-```
+![Window margined adds space around the Box; Box padded adds gaps between children A, B, and C.](../../images/box-spacing.svg)
 
-Spacing follows the OS and display settings; pixel values cannot be specified. Change it later with `box.padded = true`. Nested Boxes each need their own setting.
+Spacing follows the OS and display settings, not a pixel value. Change it with `box.padded = true`; nested Boxes have independent settings.
 
 ## Nesting Boxes
 
-This example stacks a search row, editor, and status label. Run it after `UIng.init`, with a window already created.
+Run this example after `UIng.init`, with a window already created.
 
 ```crystal
 search = UIng::Box.new(:horizontal, padded: true)
@@ -72,7 +63,7 @@ window.child = body
 
 Widening the window expands the search field and editor; increasing its height expands the editor. The search row and status label keep their heights.
 
-`stretchy` governs allocation from parent to child. If `body` is placed inside another vertical Box, append it with `stretchy: true` there as well to let it grow vertically.
+If `body` is inside another vertical Box, append it with `stretchy: true` there as well to let it grow vertically.
 
 See also the [horizontal Box example](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_box_horizontal.cr).
 

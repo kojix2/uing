@@ -18,9 +18,17 @@ Tab organizes controls into named pages.
 
 ## Usage notes
 
-- Use <code>append</code> or <code>insert_at</code> to add a page.
-- Read or change <code>selected</code>; <code>on_selected</code> reports page changes.
+Add pages with `append` or `insert_at`. Each page holds one child; use a Box or Form for multiple controls. Only the selected page is shown.
 
+![With selected set to 0, General shows its Box; with 1, Details shows its Form.](../../images/tab-pages.svg)
 
+```crystal
+tab = UIng::Tab.new
+tab.append("General", UIng::Box.new(:vertical), margined: true)
+tab.append("Details", UIng::Form.new, margined: true)
+tab.selected = 1
+```
+
+`selected` is a zero-based page index; `on_selected` reports changes. Set margins per page with `margined: true`, or change them later with `set_margined(index, true)`.
 
 [API reference](../../api/UIng/Tab.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_tab.cr)

@@ -18,39 +18,30 @@ Boxは子コントロールを水平または垂直に並べます。
 
 ## 並べる方向と伸縮
 
-`:horizontal`は横並び、`:vertical`は縦並びです。子は`append`した順に配置されます。
+子は`append`した順に並び、`stretchy`は子ごとに指定します。
 
-`append`の`stretchy`は、横Boxでは幅、縦Boxでは高さの配分を指定します。
-
-| 指定 | 並べる方向のサイズ |
-| --- | --- |
-| `stretchy: false`（既定） | 内容に必要なサイズを保ち、余った領域を受け取らない |
-| `stretchy: true` | 伸縮しない子と間隔の領域を除き、残りを使う |
+| Boxの向き | `stretchy: false`（既定） | `stretchy: true` | 直交する方向 |
+| --- | --- | --- | --- |
+| 横 `:horizontal` | 必要な幅を保つ | 残りの幅を受け取る | 高さは原則Boxに合わせる |
+| 縦 `:vertical` | 必要な高さを保つ | 残りの高さを受け取る | 幅は原則Boxに合わせる |
 
 `true`が複数なら、それらの幅（縦Boxなら高さ）は等しくなります。重みの指定はありません。すべて`false`なら左（縦Boxなら上）に詰め、余りは末尾に残ります。最小サイズは子の必要サイズに従います。
 
-直交する方向は基本的にBoxを満たすため、`false`でも縦Boxの子は横に広がります。ただし、横BoxのLabelは自然な高さで上下中央に配置されます。
+![横BoxでBだけを伸縮させる場合と、B・Cに等しい幅を割り当てる場合](../../images/box-stretchy.svg)
+
+横BoxのLabelは自然な高さで上下中央に配置されます。部品内部の見た目には[プラットフォーム差](controls-and-layout.html#platform-differences)があります。拡張と中央寄せなどを別々に指定するには[Grid](widget-grid.html)を使います。
 
 ## 子同士の間隔と外周の余白
 
-`padded: true`は隣り合う子の間に標準間隔を入れます。既定値は`false`です。外周の余白はWindowやGroupの`margined`で設定します。
+`padded: true`は子同士の間隔、WindowやGroupの`margined`は外周の余白を設定します。`padded`の既定値は`false`です。
 
-```text
-Window (margined: true)
-+---------------------------------------+
-|                margin                 |
-|  +---------------------------------+  |
-|  | [A]  gap  [B]  gap  [C]          |  |  Box (padded: true)
-|  +---------------------------------+  |
-|                margin                 |
-+---------------------------------------+
-```
+![WindowのmarginedはBoxの外周に余白を、Boxのpaddedは子A・B・Cの間に間隔を設ける](../../images/box-spacing.svg)
 
-間隔の寸法はOSや表示設定に従い、ピクセル数は指定できません。`box.padded = true`で作成後も変更できます。入れ子ではBoxごとに設定します。
+間隔はOSや表示設定に従い、ピクセル数は指定できません。`box.padded = true`で変更でき、入れ子ではBoxごとに設定します。
 
 ## 入れ子で組み立てる
 
-検索行、エディタ、状態表示を組み合わせます。`UIng.init`後、作成済みの`window`に配置してください。
+`UIng.init`後、作成済みの`window`に配置する例です。
 
 ```crystal
 search = UIng::Box.new(:horizontal, padded: true)
@@ -72,7 +63,7 @@ window.child = body
 
 横に広げると検索欄とエディタが、縦に広げるとエディタが伸びます。検索行の高さと状態表示の高さは保たれます。
 
-`stretchy`は親から子への割り当てです。`body`を別の縦Boxに入れて縦に伸ばす場合は、その`append`にも`stretchy: true`を指定します。
+`body`を別の縦Boxに入れて縦に伸ばす場合は、その`append`にも`stretchy: true`が必要です。
 
 [水平Boxの例](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_box_horizontal.cr)も参照してください。
 

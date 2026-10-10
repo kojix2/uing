@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="288" viewBox="0 0 720 288" role="img" aria-labelledby="title desc">
+  <title id="title">One Box child inside a Group</title>
+  <desc id="desc">A titled Group contains one Box. The blue area is the Group margin. The Box contains controls A and B, separated by an orange gap.</desc>
+  <defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 8 4 0 8Z" fill="context-stroke"/></marker></defs>
+  <rect width="720" height="288" rx="8" fill="#fff"/>
+  <rect x="24" y="62" width="672" height="198" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <rect x="40" y="48" width="120" height="28" fill="#fff"/>
+  <text x="48" y="69" font-family="sans-serif" font-size="20" fill="#334155">Settings</text>
+  <rect x="64" y="114" width="592" height="108" fill="#ffedd5" stroke="#64748b" stroke-width="1.5"/>
+  <g fill="#f8fafc" stroke="#64748b" stroke-width="1.5">
+    <rect x="64" y="114" width="592" height="46"/><rect x="64" y="176" width="592" height="46"/>
+  </g>
+  <g font-family="sans-serif" font-size="18" text-anchor="middle" fill="#334155">
+    <text x="360" y="144">A</text><text x="360" y="206">B</text>
+  </g>
+  <g font-family="monospace" font-size="17">
+    <text x="24" y="30" fill="#0369a1">Group: margined = true</text>
+    <text x="374" y="30" fill="#334155">group.child = box</text>
+    <text x="80" y="101" fill="#9a3412">Box: padded = true</text>
+  </g>
+  <path d="M472 40V104" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M30 138H58" stroke="#0284c7" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+</svg>

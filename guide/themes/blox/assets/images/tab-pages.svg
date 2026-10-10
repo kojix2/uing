@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="268" viewBox="0 0 720 268" role="img" aria-labelledby="title desc">
+  <title id="title">Tab selection and page children</title>
+  <desc id="desc">With selected equal to zero, the General page shows its Box child. With selected equal to one, the Details page shows its Form child. Both pages have margins enabled.</desc>
+  <defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#64748b"/></marker></defs>
+  <rect width="720" height="268" rx="8" fill="#fff"/>
+  <g font-family="monospace" font-size="18" fill="#334155">
+    <text x="24" y="30">selected = 0</text><text x="400" y="30">selected = 1</text>
+  </g>
+  <g fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5">
+    <rect x="24" y="84" width="296" height="132"/><rect x="400" y="84" width="296" height="132"/>
+    <path d="M24 84V52H148V84"/><path d="M524 84V52H648V84"/>
+  </g>
+  <g fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5">
+    <rect x="148" y="52" width="124" height="32"/><rect x="400" y="52" width="124" height="32"/>
+  </g>
+  <g fill="#fff" stroke="#64748b" stroke-width="1.5">
+    <rect x="48" y="108" width="248" height="84"/><rect x="424" y="108" width="248" height="84"/>
+  </g>
+  <g font-family="sans-serif" font-size="18" text-anchor="middle" fill="#334155">
+    <text x="86" y="75">General</text><text x="210" y="75">Details</text>
+    <text x="462" y="75">General</text><text x="586" y="75">Details</text>
+    <text x="172" y="156">Box</text><text x="548" y="156">Form</text>
+  </g>
+  <path d="M338 150H382" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g font-family="monospace" font-size="16" text-anchor="middle" fill="#0369a1">
+    <text x="172" y="244">margined: true</text><text x="548" y="244">margined: true</text>
+  </g>
+</svg>

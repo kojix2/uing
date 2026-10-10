@@ -18,9 +18,18 @@ Groupは1つの子コントロールをタイトル付きの枠内に配置し�
 
 ## 使い方
 
-- 複数のコントロールを入れる場合はBox、Form、Gridを子にします。
-- <code>margined</code>で枠の内側にネイティブな余白を加えます。
+Groupが直接持てる子は1つです。複数のコントロールはBox、Form、Gridにまとめて`child`に指定します。
 
+![Groupの唯一の子としてBoxを配置し、その中にA・Bを並べる。Groupの余白とBoxの間隔は独立する](../../images/group-child.svg)
 
+```crystal
+box = UIng::Box.new(:vertical, padded: true)
+box.append(UIng::Checkbox.new("A"))
+box.append(UIng::Checkbox.new("B"))
+group = UIng::Group.new("Settings", margined: true)
+group.child = box
+```
+
+`margined: true`は枠と子の間の余白、Boxの`padded: true`は子同士の間隔を設定します。
 
 [APIリファレンス](../../api/UIng/Group.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_group.cr)

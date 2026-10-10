@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="300" viewBox="0 0 720 300" role="img" aria-labelledby="title desc">
+  <title id="title">Grid spanning and alignment</title>
+  <desc id="desc">Left: a control at column zero, row one spans two columns. Right: in an expanded allocation, center keeps a control centered at its required width, while fill stretches it across the allocation.</desc>
+  <rect width="720" height="300" rx="8" fill="#fff"/>
+  <g font-family="monospace" font-size="17" fill="#334155">
+    <text x="24" y="30">left, top, xspan, yspan</text>
+    <text x="412" y="30">hexpand: true</text>
+  </g>
+  <g font-family="sans-serif" font-size="16" text-anchor="middle" fill="#64748b">
+    <text x="96" y="64">0</text><text x="196" y="64">1</text><text x="296" y="64">2</text>
+    <text x="30" y="116">0</text><text x="30" y="186">1</text>
+  </g>
+  <g fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5">
+    <rect x="52" y="80" width="88" height="52"/><rect x="152" y="80" width="88" height="52"/>
+    <rect x="252" y="80" width="88" height="52"/><rect x="252" y="150" width="88" height="52"/>
+  </g>
+  <rect x="52" y="150" width="188" height="52" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <g font-family="monospace" font-size="17" fill="#0369a1">
+    <text x="76" y="182">0, 1, 2, 1</text>
+  </g>
+  <g font-family="monospace" font-size="17" fill="#334155">
+    <text x="412" y="74">halign: :center</text><text x="412" y="190">halign: :fill</text>
+  </g>
+  <g fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5 4">
+    <rect x="412" y="88" width="284" height="56"/><rect x="412" y="204" width="284" height="56"/>
+  </g>
+  <g fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5">
+    <rect x="510" y="96" width="88" height="40"/><rect x="412" y="212" width="284" height="40"/>
+  </g>
+  <g font-family="sans-serif" font-size="17" text-anchor="middle" fill="#334155">
+    <text x="554" y="122">Button</text><text x="554" y="238">Button</text>
+  </g>
+</svg>

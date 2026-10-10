@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="264" viewBox="0 0 720 264" role="img" aria-labelledby="title desc">
+  <title id="title">Form labels and stretchy rows</title>
+  <desc id="desc">Labels share a column and controls share a left edge. The Name row keeps its height; the Notes row receives extra height.</desc>
+  <defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 8 4 0 8Z" fill="#0284c7"/></marker></defs>
+  <rect width="720" height="264" rx="8" fill="#fff"/>
+  <path d="M152 42V240" stroke="#94a3b8" stroke-dasharray="4 4"/>
+  <rect x="164" y="52" width="304" height="42" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <rect x="164" y="110" width="304" height="126" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <g font-family="sans-serif" font-size="18" fill="#334155">
+    <text x="32" y="30">Form</text>
+    <text x="64" y="79">Name</text><text x="64" y="138">Notes</text>
+    <text x="184" y="79">Entry</text><text x="184" y="138">MultilineEntry</text>
+  </g>
+  <g font-family="monospace" font-size="17">
+    <text x="496" y="79" fill="#334155">stretchy: false</text>
+    <text x="496" y="138" fill="#0369a1">stretchy: true</text>
+  </g>
+  <path d="M442 151V220" stroke="#0284c7" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+</svg>

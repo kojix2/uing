@@ -17,7 +17,7 @@ UIngは、テキストの表示、入力、値の選択、進捗表示、メニ�
 - `Group`は1つの子をタイトル付きの枠内に配置します。
 - `Tab`はコントロールを複数のページに整理します。
 
-次の縦方向のBoxはコントロールをまとめ、ネイティブな間隔を追加します。
+縦Boxにコントロールを並べる例です。
 
 <pre><code class="crystal">
 box = UIng::Box.new(:vertical, padded: true)
@@ -28,18 +28,26 @@ box.append(UIng::Button.new("Save"))
 window.child = box
 </code></pre>
 
-`Box#append`の`stretchy: true`は、並べる方向の残りの領域を子に配分します。
-上の縦Boxでは高さが対象です。`padded`は子同士の間隔、Windowの`margined`は外周の余白を設定します。
-配分と入れ子の詳しい説明は[Box](widget-box.html)を参照してください。
+エディタに残りの高さを使わせるには`box.append(editor, stretchy: true)`とします。
+複雑な配置はコンテナを入れ子にし、最外のコンテナをWindowの子にします（[Boxの実例](widget-box.html)、[コントロールギャラリー](https://github.com/kojix2/uing/tree/main/examples/gallery)）。
 
-<pre><code class="crystal">
-box.append(editor, stretchy: true)
-</code></pre>
+## 領域の配分と配置
 
-まず小さなコンテナを作り、必要に応じて入れ子にして、一番外側のコンテナを
-ウィンドウに割り当てます。各コントロールとレイアウトの例は
-[コントロールギャラリー](https://github.com/kojix2/uing/tree/main/examples/gallery)を
-参照してください。
+「余った領域の配分」と「領域内での子の配置」は別の指定です。
+
+| コンテナ | 領域の配分 | 領域内の配置 |
+| --- | --- | --- |
+| Box | `stretchy`で並べる方向に配分 | `true`の子はその方向に領域を満たす |
+| Form | `stretchy`で高さを配分 | `true`の入力欄は縦に伸び、横は常に入力列を満たす |
+| Grid | `hexpand`・`vexpand`で列・行に配分 | `halign`・`valign`で指定。`:fill`なら領域を満たす |
+
+BoxとFormは配分と引き伸ばしをまとめて行い、個別の`fill`引数はありません。拡張と配置を分けるには[Grid](widget-grid.html)を使います。`padded`は子同士の間隔、`margined`は外周の余白で、伸縮とは独立です。
+
+<a id="platform-differences"></a>
+
+## プラットフォーム差
+
+図は配置領域を示し、内部の部品の見た目とは異なる場合があります。macOSのSpinboxは入力欄と矢印の自然な高さを保って中央配置し、Windowsは入力欄を配置領域の高さに合わせます。最小サイズ、文字の位置、標準間隔もOSにより異なります。
 
 ## Widgetガイド
 

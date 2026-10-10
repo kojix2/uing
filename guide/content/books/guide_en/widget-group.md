@@ -18,9 +18,18 @@ Group places one child inside a titled native frame.
 
 ## Usage notes
 
-- Use a Box, Form, or Grid as the child when the group contains several controls.
-- <code>margined</code> adds native spacing inside the frame.
+A Group has one direct child. To hold several controls, place them in a Box, Form, or Grid and assign that container to `child`.
 
+![A Group has one Box child containing A and B. Group margins and Box spacing are independent.](../../images/group-child.svg)
 
+```crystal
+box = UIng::Box.new(:vertical, padded: true)
+box.append(UIng::Checkbox.new("A"))
+box.append(UIng::Checkbox.new("B"))
+group = UIng::Group.new("Settings", margined: true)
+group.child = box
+```
+
+`margined: true` adds space between the frame and its child; the Box's `padded: true` adds gaps between its children.
 
 [API reference](../../api/UIng/Group.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_group.cr)
