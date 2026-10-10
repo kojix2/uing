@@ -93,6 +93,10 @@ img {
   height: auto;
 }
 
+noindex {
+  display: contents;
+}
+
 /* ---- Sticky navbar ---- */
 
 .site-header {
@@ -188,6 +192,130 @@ img {
 #github_link:hover {
   background: var(--bg-soft);
   text-decoration: none;
+}
+
+/* ---- Search ---- */
+
+.search-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 0.65rem;
+  width: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 2.25rem;
+  height: 2rem;
+  padding: 0.35rem 0.6rem 0.35rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  color: var(--fg);
+  background: var(--bg);
+  font: inherit;
+  transition: width 0.2s ease;
+}
+
+.search-input:hover,
+.search-input:focus,
+.search-input:not(:placeholder-shown) {
+  width: 12rem;
+}
+
+.search-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+#search_results {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: start center;
+  padding: 6rem 1rem 1rem;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+#search_results[hidden] {
+  display: none;
+}
+
+.search-modal {
+  width: min(42rem, 100%);
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  color: var(--fg);
+  background: var(--bg);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.search-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.search-modal h2 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.search-close {
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.search-results-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-results-list li + li {
+  border-top: 1px solid var(--border);
+}
+
+.search-results-list a {
+  display: block;
+  padding: 0.75rem 0;
+}
+
+.search-results-list a:hover {
+  text-decoration: none;
+}
+
+.search-result-title {
+  display: block;
+  color: var(--fg-strong);
+  font-weight: 600;
+}
+
+.search-result-snippet,
+.search-message {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 /* Mobile menu: hamburger checkbox trick (as in the original theme) */
