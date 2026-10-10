@@ -65,11 +65,13 @@ module UIng
 
     def checked? : Bool
       check_available
+      check_check_item
       LibUI.menu_item_checked(@ref_ptr) != 0
     end
 
     def checked=(checked : Bool) : Nil
       check_available
+      check_check_item
       LibUI.menu_item_set_checked(@ref_ptr, checked ? 1 : 0)
     end
 
@@ -119,6 +121,11 @@ module UIng
 
     private def check_available : Nil
       raise "MenuItem has already been released" if @released
+    end
+
+    private def check_check_item : Nil
+      return if @kind.check?
+      raise ArgumentError.new("checked state is only available for check MenuItems")
     end
   end
 end

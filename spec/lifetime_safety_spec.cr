@@ -20,8 +20,12 @@ private class LifetimeSafetyMenuItem < UIng::MenuItem
 end
 
 class UIng::MenuItem
+  def self.item_for_spec(kind : Symbol) : MenuItem
+    __new_for_menu__(Pointer(UIng::LibUI::MenuItem).null, kind)
+  end
+
   def self.quit_item_for_spec : MenuItem
-    __new_for_menu__(Pointer(UIng::LibUI::MenuItem).null, :quit)
+    item_for_spec(:quit)
   end
 end
 
@@ -278,6 +282,15 @@ describe "lifetime safety" do
 
     item.destroy
     expect_raises(Exception, /already been released/) { item.to_unsafe }
+  end
+
+  it "rejects checked state on non-check MenuItems before calling libui-ng" do
+    [:regular, :quit, :preferences, :about].each do |kind|
+      item = UIng::MenuItem.item_for_spec(kind)
+
+      expect_raises(ArgumentError, /only available for check MenuItems/) { item.checked? }
+      expect_raises(ArgumentError, /only available for check MenuItems/) { item.checked = true }
+    end
   end
 
   it "invalidates menu wrappers and resets special items after uninit" do
