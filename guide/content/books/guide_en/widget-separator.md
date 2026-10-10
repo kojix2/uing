@@ -2,7 +2,7 @@
 
 [日本語](../guide_ja/widget-separator.html)
 
-Separator draws a native horizontal or vertical divider.
+Separator draws a native horizontal or vertical divider. By itself it has nothing to divide, so use it in a Box with controls such as Labels. The runnable example shows both orientations.
 
 ## Appearance
 
@@ -20,5 +20,6 @@ Separator draws a native horizontal or vertical divider.
 
 - Construct it with <code>:horizontal</code> or <code>:vertical</code>. The typed <code>UIng::Orientation</code> values are also accepted.
 - Place a vertical separator inside a horizontal Box and a horizontal separator inside a vertical Box.
+- Place Labels or other controls on either side to visually separate related groups.
 
 [API reference](../../api/UIng/Separator.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_separator.cr)
