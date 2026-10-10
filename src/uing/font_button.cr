@@ -21,12 +21,8 @@ module UIng
     # callback returns.
     def on_changed(&block : FontDescriptor -> Nil) : Nil
       wrapper = -> : Nil {
-        font_descriptor = FontDescriptor.new
-        font(font_descriptor)
-        begin
+        font do |font_descriptor|
           block.call(font_descriptor)
-        ensure
-          free_font(font_descriptor)
         end
       }
       @on_changed_box = ::Box.box(wrapper)
@@ -48,24 +44,36 @@ module UIng
 
     # Yields the selected font as a block-scoped FontDescriptor.
     # Use FontDescriptor#snapshot to retain its values after the block returns.
-    def font(&block : FontDescriptor -> Nil)
-      font_descriptor = FontDescriptor.new
-      font(font_descriptor)
+    def font(&block : FontDescriptor -> Nil) : Nil
+      font_descriptor = font
       begin
         block.call(font_descriptor)
       ensure
-        free_font(font_descriptor)
+        font_descriptor.free
       end
     end
 
-    def font(descriptor : FontDescriptor)
+    # Returns the selected font as an owned descriptor. Call FontDescriptor#free when done.
+    def font : FontDescriptor
+      descriptor = FontDescriptor.new
+      begin
+        load_font_into(descriptor)
+        descriptor
+      rescue error
+        descriptor.free
+        raise error
+      end
+    end
+
+    @[Deprecated("Use `font` to return a FontDescriptor, or `font { ... }` for scoped access")]
+    def font(descriptor : FontDescriptor) : Nil
+      load_font_into(descriptor)
+    end
+
+    private def load_font_into(descriptor : FontDescriptor) : Nil
       descriptor.prepare_for_font_button_font
       LibUI.font_button_font(ref_ptr, descriptor)
       descriptor.font_button_font_loaded
-    end
-
-    private def free_font(font_descriptor : FontDescriptor) : Nil
-      font_descriptor.free
     end
 
     def to_unsafe

@@ -203,6 +203,19 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       button.try &.destroy
     end
 
+    it "returns an owned FontButton descriptor" do
+      button = UIng::FontButton.new
+      descriptor = button.font
+      button.destroy
+
+      descriptor.released?.should be_false
+      descriptor.family.empty?.should be_false
+      descriptor.size.should be > 0
+    ensure
+      descriptor.try &.free
+      button.try { |control| control.destroy unless control.released? }
+    end
+
     it "sets and resets a Label font size" do
       label = UIng::Label.new("Text")
       default_size = label.font_size
