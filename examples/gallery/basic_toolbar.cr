@@ -60,6 +60,18 @@ help_item.on_clicked { puts "Help clicked" }
 
 window.toolbar = toolbar
 
+display_modes = UIng::Toolbar::DisplayMode.values
+mode_selector = UIng::Combobox.new([
+  "Icons only",
+  "Icons and text (horizontal)",
+  "Icons and text (vertical)",
+  "Text only",
+])
+mode_selector.selected = 2
+mode_selector.on_selected { |index| toolbar.display_mode = display_modes[index] }
+window.child = mode_selector
+window.margined = true
+
 window.on_closing do
   window.toolbar = nil
   toolbar.free

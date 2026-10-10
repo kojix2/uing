@@ -49,13 +49,10 @@ module UIng
       LibUI.toolbar_get_display_mode(ref_ptr)
     end
 
-    # Sets the display mode before the toolbar is first attached to a window.
+    # Sets the display mode, including while attached to a window.
     # macOS displays `DisplayMode::IconAndTextHorizontal` vertically.
     def display_mode=(mode : DisplayMode) : Nil
       check_available
-      if @ever_attached
-        raise "Toolbar display mode cannot be changed after the toolbar has been attached"
-      end
       LibUI.toolbar_set_display_mode(ref_ptr, mode)
     end
 
