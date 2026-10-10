@@ -35,9 +35,20 @@ UIng.init do
 end
 </code></pre>
 
-`UIng.quit` stops the loop; it does not destroy every open window. A normal
-window-closing callback returns `true`, allowing libui-ng to destroy that
-window as it closes.
+## Closing a single window
+
+Normally, you do not need to destroy controls yourself. Stop the event loop
+and return `true` from `on_closing`; libui-ng destroys the Window and its
+children.
+
+<pre><code class="crystal">
+window.on_closing do
+  UIng.quit
+  true
+end
+</code></pre>
+
+Do not call `window.destroy` in this callback.
 
 ## Control ownership
 
@@ -90,36 +101,22 @@ releases application-wide resources but does not destroy windows created by
 the application. Make sure every top-level window has been destroyed before
 calling `UIng.uninit`.
 
-`Window#on_closing` handles the window's close button. Return `true` to allow
-libui-ng to close and destroy the window, or `false` to keep it open. A simple
-single-window application only needs to stop the event loop and return `true`:
+`Window#on_closing` handles the close button. Return `true` to close the
+Window or `false` to keep it open. With multiple Windows, do not call
+`UIng.quit` unconditionally whenever one Window closes.
+
+`UIng.on_should_quit` handles application-wide requests such as a Quit menu.
+Destroy every top-level Window, then return `true`:
 
 <pre><code class="crystal">
-window.on_closing do
-  UIng.quit
-  true
-end
-</code></pre>
-
-Do not call `window.destroy` on this path; libui-ng destroys the window after
-the callback returns `true`.
-
-`UIng.on_should_quit` handles application-wide quit requests, such as a Quit
-menu item. It does not destroy top-level windows automatically. When both
-callbacks are used, destroy each open top-level window in `on_should_quit` and
-use `released?` to avoid destroying one twice:
-
-<pre><code class="crystal">
-window.on_closing do
-  UIng.quit
-  true
-end
-
 UIng.on_should_quit do
   window.destroy unless window.released?
   true
 end
 </code></pre>
+
+For multiple Windows, repeat this for every top-level Window. `released?`
+prevents double destruction.
 
 ## Other resources
 

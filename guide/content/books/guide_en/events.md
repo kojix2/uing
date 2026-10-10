@@ -3,26 +3,26 @@
 [日本語](../guide_ja/events.html)
 
 UIng applications respond to native events with callback blocks. Register
-callbacks while building the interface, before calling `UIng.main`.
+callbacks while building the interface, before calling `UIng.main`. This
+excerpt uses the `window` created in [First Steps](first-steps.html).
 
 <pre><code class="crystal">
 entry = UIng::Entry.new
 button = UIng::Button.new("Greet")
+status = UIng::Label.new("Enter your name")
 
 button.on_clicked do
   name = entry.text || ""
   window.msg_box("Greeting", "Hello, #{name}!")
 end
-</code></pre>
 
-Callbacks expose values when useful. For example, `Entry#on_changed` yields
-the current text and `Slider#on_changed` yields the current integer value.
-
-<pre><code class="crystal">
 entry.on_changed do |text|
   status.text = "#{text.size} characters"
 end
 </code></pre>
+
+Callbacks expose values when useful. For example, `Entry#on_changed` yields
+the current text and `Slider#on_changed` yields the current integer value.
 
 ## Updating the interface
 

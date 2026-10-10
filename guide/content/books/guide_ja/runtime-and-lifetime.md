@@ -35,9 +35,19 @@ UIng.init do
 end
 </code></pre>
 
-`UIng.quit`はイベントループを停止しますが、開いているすべてのウィンドウを破棄する
-わけではありません。通常のウィンドウ終了コールバックは`true`を返し、ウィンドウを
-閉じるときにlibui-ngが破棄できるようにします。
+## 単一ウィンドウの終了
+
+通常はコントロールを手動で破棄する必要はありません。`on_closing`でイベントループを
+停止して`true`を返すと、libui-ngがWindowとその子を破棄します。
+
+<pre><code class="crystal">
+window.on_closing do
+  UIng.quit
+  true
+end
+</code></pre>
+
+このコールバック内では`window.destroy`を呼びません。
 
 ## コントロールの所有権
 
@@ -88,36 +98,21 @@ button.destroy
 作成したウィンドウを破棄しません。`UIng.uninit`を呼ぶ前に、すべての最上位
 ウィンドウが破棄されていることを確認してください。
 
-`Window#on_closing`はウィンドウの閉じるボタンを処理します。`true`を返すと
-libui-ngがウィンドウを閉じて破棄し、`false`を返すと開いたままにします。
-単一ウィンドウのアプリケーションでは、イベントループを停止して`true`を返します。
+`Window#on_closing`は閉じるボタンを処理します。`true`ならWindowを閉じ、`false`なら
+開いたままにします。複数Windowでは、各Windowを閉じるたびに無条件で`UIng.quit`を
+呼ばないでください。
+
+`UIng.on_should_quit`はQuitメニューなど、アプリケーション全体の終了要求を処理します。
+すべての最上位Windowを破棄してから`true`を返します。
 
 <pre><code class="crystal">
-window.on_closing do
-  UIng.quit
-  true
-end
-</code></pre>
-
-この経路では`window.destroy`を呼ばないでください。コールバックが`true`を返した後、
-libui-ngがウィンドウを破棄します。
-
-`UIng.on_should_quit`は、終了メニューなどアプリケーション全体の終了要求を処理します。
-このコールバックは最上位ウィンドウを自動的には破棄しません。両方のコールバックを
-使う場合は、`on_should_quit`ですべての最上位ウィンドウを破棄し、二重破棄を避ける
-ために`released?`を使います。
-
-<pre><code class="crystal">
-window.on_closing do
-  UIng.quit
-  true
-end
-
 UIng.on_should_quit do
   window.destroy unless window.released?
   true
 end
 </code></pre>
+
+複数Windowでは同じ処理をすべての最上位Windowに行います。`released?`は二重破棄を防ぎます。
 
 ## その他のリソース
 

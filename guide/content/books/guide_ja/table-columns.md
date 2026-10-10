@@ -37,14 +37,23 @@ set_cell_value do |row, column, value|
 end
 ```
 
-このコードは前ページのHandlerに登録する`set_cell_value`を置き換えます。
+このコールバックを前ページのHandlerに追加します。
 ユーザーの編集をこのコールバックで受けた場合、`row_changed`を追加で呼ぶ必要はありません。アプリケーションの別の処理で値を変えた場合は通知します。
 
-ボタン列のクリックでは`value`が`nil`になります。列番号を確認して、その行に対する操作を実行してください。編集できない列にも`set_cell_value`を用意しておくと、Handlerの役割が明確になります。
+ボタン列のクリックでは`value`が`nil`になります。列番号を確認して、その行に対する操作を実行してください。純粋な読み取り専用のTableでは`set_cell_value`を省略できますが、ボタン列を使う場合は登録します。
 
 ## 選択とクリック
 
-選択は`selection_mode`で制御します。`on_selection_changed`の`Selection`はコールバック後に解放されるため、後で使うなら`selection.rows`で行番号を取り出します。
+選択は`selection_mode`で制御します。
+
+| モード | 選択できる行数 | 用途 |
+| --- | --- | --- |
+| `None` | 0 | 行選択を無効にする |
+| `ZeroOrOne` | 0または1 | 任意選択の単一行リスト |
+| `One` | 常に1 | 必ず1行を選ばせる画面 |
+| `ZeroOrMany` | 0以上 | 複数選択 |
+
+`on_selection_changed`の`Selection`はコールバック後に解放されるため、後で使うなら`selection.rows`で行番号を取り出します。
 
 ```crystal
 table.selection_mode = UIng::Table::Selection::Mode::ZeroOrOne

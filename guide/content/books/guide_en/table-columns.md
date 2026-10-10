@@ -37,14 +37,23 @@ set_cell_value do |row, column, value|
 end
 ```
 
-Replace the `set_cell_value` callback from the previous page with this one.
+Add this callback to the Handler from the previous page.
 When this callback handles a user edit, you do not need an extra `row_changed` call. Notify the Model when application code changes a value elsewhere.
 
-For a button-column click, `value` is `nil`; inspect the column and perform the row action. Providing `set_cell_value` even for read-only columns makes the Handler's responsibility explicit.
+For a button-column click, `value` is `nil`; inspect the column and perform the row action. A purely read-only Table can omit `set_cell_value`, but register it when using a button column.
 
 ## Selection and clicks
 
-Use `selection_mode` to control selection. The `Selection` passed to `on_selection_changed` is freed after the callback, so extract `selection.rows` when you need row numbers later.
+Use `selection_mode` to control selection.
+
+| Mode | Selectable rows | Use case |
+| --- | --- | --- |
+| `None` | 0 | Disable row selection |
+| `ZeroOrOne` | 0 or 1 | An optional single-row selection |
+| `One` | Exactly 1 | A screen that must always have a selected row |
+| `ZeroOrMany` | 0 or more | Multiple selection |
+
+The `Selection` passed to `on_selection_changed` is freed after the callback, so extract `selection.rows` when you need row numbers later.
 
 ```crystal
 table.selection_mode = UIng::Table::Selection::Mode::ZeroOrOne

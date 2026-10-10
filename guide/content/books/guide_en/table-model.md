@@ -6,7 +6,7 @@ A `Table` does not store cell values. Your application owns an array or records,
 
 ## The model contract
 
-Register four callbacks on the Handler:
+For a read-only Model, register these four callbacks on the Handler:
 
 - `num_columns`: the number of model columns
 - `column_type`: a `Table::Value::Type` for every model column
@@ -25,11 +25,15 @@ handler = UIng::Table::Model::Handler.new do
   cell_value do |row, _column|
     UIng::Table::Value.new(rows[row])
   end
-  set_cell_value { |_row, _column, _value| }
 end
 
 model = UIng::Table::Model.new(handler)
 ```
+
+Add `set_cell_value` only when handling edits to a cell or clicks on a button
+column. It can be omitted for a read-only Table. A value received by that
+callback is valid only while the callback runs; the next chapter shows how to
+apply an edit to backing data.
 
 Row and model-column indices are zero-based. A display column selects its model column with an argument such as `append_text_column("Name", 0, ...)`.
 

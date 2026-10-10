@@ -3,26 +3,26 @@
 [English](../guide_en/events.html)
 
 UIngアプリケーションは、コールバックブロックを使ってネイティブイベントに応答します。
-コールバックはインターフェースの構築中、`UIng.main`を呼ぶ前に登録します。
+コールバックはインターフェースの構築中、`UIng.main`を呼ぶ前に登録します。次は
+[最初のアプリケーション](first-steps.html)で作成した`window`を使う抜粋です。
 
 <pre><code class="crystal">
 entry = UIng::Entry.new
 button = UIng::Button.new("Greet")
+status = UIng::Label.new("Enter your name")
 
 button.on_clicked do
   name = entry.text || ""
   window.msg_box("Greeting", "Hello, #{name}!")
 end
-</code></pre>
 
-必要な場合、コールバックは値を受け取ります。たとえば`Entry#on_changed`は現在の
-テキストを、`Slider#on_changed`は現在の整数値を渡します。
-
-<pre><code class="crystal">
 entry.on_changed do |text|
   status.text = "#{text.size} characters"
 end
 </code></pre>
+
+必要な場合、コールバックは値を受け取ります。たとえば`Entry#on_changed`は現在の
+テキストを、`Slider#on_changed`は現在の整数値を渡します。
 
 ## インターフェースを更新する
 

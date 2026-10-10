@@ -2,6 +2,8 @@
 
 Learn how to build cross-platform native desktop applications with UIng.
 
+<!-- An empty link target represents a non-clickable chapter group in the generated table of contents. -->
+
 - [Introduction](introduction.md)
 - [Learning the Basics]()
   - [Installation](installation.md)

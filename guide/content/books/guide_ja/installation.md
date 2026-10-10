@@ -2,6 +2,10 @@
 
 [English](../guide_en/installation.html)
 
+## 前提条件
+
+CrystalとShardsが必要です。UIngはCrystalの最新版で継続的にテストされています。
+
 アプリケーションの`shard.yml`にUIngを追加します。
 
 <pre><code class="yaml">
@@ -30,6 +34,12 @@ shards install
 パッケージ名はディストリビューションによって異なります。DebianとUbuntuでは
 `libgtk-3-dev`です。
 
+<pre><code class="bash">
+sudo apt install libgtk-3-dev
+</code></pre>
+
+配布先にもGTK 3のランタイムが必要です。
+
 ### macOS
 
 ネイティブGUIの依存関係には、システムのAppKitフレームワークを使用します。
@@ -37,9 +47,9 @@ Intel MacとApple Siliconの両方に対応しています。
 
 ### Windows
 
-UIngはMSVC、MinGW64、UCRT64に対応しています。MSVCでビルドする場合は、コンパイラと
-Windows SDKを利用できるよう、x64 Native ToolsコマンドプロンプトまたはDeveloper
-PowerShellからCrystalを実行してください。
+UIngはMSVC、MinGW64、UCRT64に対応しています。Crystalと同じツールチェーンを使います。
+MSVCではDeveloper PowerShellなどの開発者シェル、MinGW64とUCRT64では対応するMSYS2
+シェルから実行してください。
 
 インストール後のスクリプトは、MSVC用の`/MD`版と`/MT`版を両方ダウンロードします。
 通常のCrystalビルドでは`/MD`、`--static`を指定したビルドでは`/MT`が使われます。

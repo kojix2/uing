@@ -6,7 +6,7 @@
 
 ## モデルの契約
 
-Handlerには次の4つを登録します。
+読み取り専用のModelでは、Handlerに次の4つを登録します。
 
 - `num_columns`: モデル列数
 - `column_type`: 各モデル列の`Table::Value::Type`
@@ -25,11 +25,14 @@ handler = UIng::Table::Model::Handler.new do
   cell_value do |row, _column|
     UIng::Table::Value.new(rows[row])
   end
-  set_cell_value { |_row, _column, _value| }
 end
 
 model = UIng::Table::Model.new(handler)
 ```
+
+`set_cell_value`は、編集可能なセルの変更やボタン列のクリックを扱うときだけ追加します。
+読み取り専用のTableでは省略できます。受け取る値はコールバック中だけ有効です。編集を
+元データへ反映する例は次の章で扱います。
 
 行番号とモデル列番号は0始まりです。表示列が参照するモデル列は、`append_text_column("Name", 0, ...)`のように指定します。
 

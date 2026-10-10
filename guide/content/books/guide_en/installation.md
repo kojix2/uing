@@ -2,6 +2,11 @@
 
 [日本語](../guide_ja/installation.html)
 
+## Prerequisites
+
+Crystal and Shards are required. UIng is continuously tested with the latest
+Crystal release.
+
 Add UIng to your application's `shard.yml`:
 
 <pre><code class="yaml">
@@ -30,6 +35,12 @@ Install the GTK 3 development package before building your application. The
 package name depends on the distribution; on Debian and Ubuntu it is
 `libgtk-3-dev`.
 
+<pre><code class="bash">
+sudo apt install libgtk-3-dev
+</code></pre>
+
+The target Linux system also needs the GTK 3 runtime.
+
 ### macOS
 
 The system AppKit framework provides the native GUI dependencies. Both Intel
@@ -37,9 +48,9 @@ and Apple Silicon are supported.
 
 ### Windows
 
-UIng supports MSVC, MinGW64, and UCRT64. For an MSVC build, run Crystal from an
-x64 Native Tools command prompt or Developer PowerShell so the compiler and
-Windows SDK are available.
+UIng supports MSVC, MinGW64, and UCRT64. Use the same toolchain as Crystal.
+Run MSVC builds from a developer shell such as Developer PowerShell, and use
+the matching MSYS2 shell for MinGW64 or UCRT64.
 
 The post-install script downloads both `/MD` and `/MT` MSVC libraries. Normal
 Crystal builds use `/MD`; builds made with `--static` use `/MT`.
