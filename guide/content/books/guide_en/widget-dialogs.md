@@ -16,10 +16,28 @@ Window provides native message, error, file, folder, and save dialogs.
 
 {{% shell command="sh scripts/render-example basic_file_dialog" %}}
 
+## Types
+
+### Messages
+
+| Method | Purpose | Return value |
+| --- | --- | --- |
+| <code>msg_box(title, description)</code> | Shows information or a notice. | <code>Nil</code> |
+| <code>msg_box_error(title, description)</code> | Shows an error. | <code>Nil</code> |
+
+### Files and folders
+
+| Method | Purpose | Return value |
+| --- | --- | --- |
+| <code>open_file</code> | Selects a file to open. | The selected path, or <code>nil</code> if canceled. |
+| <code>save_file</code> | Selects a file to save. | The selected path, or <code>nil</code> if canceled. |
+| <code>open_folder</code> | Selects a folder to open. | The selected path, or <code>nil</code> if canceled. |
+
 ## Usage notes
 
 - Call dialogs from their parent Window so the platform can keep modality and focus correct.
 - <code>open_file</code>, <code>open_folder</code>, and <code>save_file</code> return <code>nil</code> when canceled.
+- Appearance and detailed behavior follow the OS-native dialog.
 
 
 

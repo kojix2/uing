@@ -16,10 +16,28 @@ Windowはメッセージ、エラー、ファイル選択、フォルダ選択�
 
 {{% shell command="sh scripts/render-example basic_file_dialog" %}}
 
+## 種類
+
+### メッセージ
+
+| メソッド | 用途 | 戻り値 |
+| --- | --- | --- |
+| <code>msg_box(title, description)</code> | 情報や確認事項を表示します。 | <code>Nil</code> |
+| <code>msg_box_error(title, description)</code> | エラーを表示します。 | <code>Nil</code> |
+
+### ファイルとフォルダ
+
+| メソッド | 用途 | 戻り値 |
+| --- | --- | --- |
+| <code>open_file</code> | 開くファイルを選択します。 | 選択したパス、またはキャンセル時は<code>nil</code> |
+| <code>save_file</code> | 保存先のファイルを選択します。 | 選択したパス、またはキャンセル時は<code>nil</code> |
+| <code>open_folder</code> | 開くフォルダを選択します。 | 選択したパス、またはキャンセル時は<code>nil</code> |
+
 ## 使い方
 
 - モーダル状態とフォーカスを正しく保つため、親となるWindowからダイアログを呼び出します。
 - <code>open_file</code>、<code>open_folder</code>、<code>save_file</code>はキャンセル時に<code>nil</code>を返します。
+- 表示や細部の操作はOSのネイティブダイアログに従います。
 
 
 
