@@ -44,6 +44,14 @@ private class BlockConstructedLifetimeControl < LifetimeControl
   block_constructor
 end
 
+private class PendingPointerControl < LifetimeControl
+  getter destroyed_address : UInt64?
+
+  protected def destroy_native : Nil
+    @destroyed_address = raw_control_ptr.address
+  end
+end
+
 private class KeywordBlockConstructedLifetimeControl < LifetimeControl
   block_constructor
 
@@ -291,6 +299,18 @@ describe UIng::Control do
     control.cleaned_up?.should be_true
   end
 
+  it "keeps the native pointer available to destruction after marking a Control pending" do
+    address = 0x10B_u64
+    control = PendingPointerControl.new(address)
+    controls = [control] of UIng::Control
+
+    controls.each(&.destroy)
+
+    control.released?.should be_true
+    control.destroyed_address.should eq(address)
+    expect_raises(Exception, /already been destroyed/) { control.to_unsafe }
+  end
+
   it "marks a closing Window pending before native destruction is flushed" do
     address = 0x10C_u64
     window = RegistryWindow.new(address)
@@ -380,6 +400,29 @@ describe UIng::Control do
 
     expect_raises(Exception, /already been destroyed/) do
       child.to_unsafe
+    end
+  end
+
+  it "rejects common operations on destroyed controls in a mixed Control array" do
+    button_address = 0x109_u64
+    area_address = 0x10A_u64
+    button = LifetimeControl.new(button_address, register: true)
+    area = RegistryArea.new(area_address)
+    controls : Array(UIng::Control) = [button, area]
+
+    UIng.native_control_destroyed_for_spec(Pointer(UIng::LibUI::Button).new(button_address))
+    UIng.native_control_destroyed_for_spec(Pointer(UIng::LibUI::Area).new(area_address))
+
+    controls.each do |control|
+      expect_raises(Exception, /already been destroyed/) { control.disable }
+      expect_raises(Exception, /already been destroyed/) { control.enable }
+      expect_raises(Exception, /already been destroyed/) { control.enabled? }
+      expect_raises(Exception, /already been destroyed/) { control.hide }
+      expect_raises(Exception, /already been destroyed/) { control.show }
+      expect_raises(Exception, /already been destroyed/) { control.visible? }
+      expect_raises(Exception, /already been destroyed/) { control.toplevel? }
+      expect_raises(Exception, /already been destroyed/) { control.handle }
+      expect_raises(Exception, /already been destroyed/) { control.enabled_to_user? }
     end
   end
 end

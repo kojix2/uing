@@ -227,6 +227,35 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       window.try { |control| control.destroy unless control.released? }
     end
 
+    it "operates on mixed native controls through their common Control methods" do
+      window = UIng::Window.new("Mixed controls spec", 320, 200)
+      box = UIng::Box.new(:vertical)
+      button = UIng::Button.new("Button")
+      checkbox = UIng::Checkbox.new("Checkbox")
+      entry = UIng::Entry.new
+      box.append(button)
+      box.append(checkbox)
+      box.append(entry)
+      window.child = box
+
+      controls = [button, checkbox, entry]
+      controls.each do |control|
+        control.disable
+        control.enabled?.should be_false
+        control.enable
+        control.enabled?.should be_true
+        control.hide
+        control.visible?.should be_false
+        control.show
+        control.visible?.should be_true
+        control.toplevel?.should be_false
+        control.enabled_to_user?
+        control.handle
+      end
+    ensure
+      window.try { |control| control.destroy unless control.released? }
+    end
+
     it "expires FontButton descriptors while preserving snapshots" do
       button = UIng::FontButton.new
       borrowed = nil
@@ -346,6 +375,27 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       handle.null?.should be_false
     ensure
       button.try &.destroy
+    end
+
+    it "destroys top-level controls through a Control array" do
+      first = UIng::Window.new("First polymorphic destroy", 320, 200)
+      second = NativeLifecycleWindow.new("Second polymorphic destroy", 320, 200)
+      controls = [first, second] of UIng::Control
+
+      controls.each(&.destroy)
+      controls.all?(&.released?).should be_true
+
+      deadline = Time.instant + 5.seconds
+      until second.native_destroyed?
+        UIng.main_step(false)
+        raise "timed out waiting for polymorphic destruction" if Time.instant >= deadline
+        sleep 1.millisecond
+      end
+
+      controls.each(&.destroy)
+    ensure
+      first.try { |control| control.destroy unless control.released? }
+      second.try { |control| control.destroy unless control.released? }
     end
 
     it "destroys a native Control tree when block construction raises" do

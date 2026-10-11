@@ -4,8 +4,16 @@ module UIng
   abstract class Control
     include BlockConstructor
 
+    protected abstract def raw_control_ptr : Pointer(UIng::LibUI::Control)
+
     macro inherited
-      # All native calls in Control subclasses should go through this accessor.
+      # destroy_native runs after the wrapper becomes unavailable, so it cannot
+      # use ref_ptr or to_unsafe. Keep this unchecked pointer internal.
+      protected def raw_control_ptr : Pointer(UIng::LibUI::Control)
+        @ref_ptr.as(Pointer(UIng::LibUI::Control))
+      end
+
+      # Normal native calls in Control subclasses should go through this accessor.
       # Parent destruction can free the underlying uiControl behind a still-live
       # Crystal wrapper, so touching @ref_ptr directly after construction risks
       # a use-after-free.
@@ -108,7 +116,7 @@ module UIng
     end
 
     protected def destroy_native : Nil
-      LibUI.control_destroy(UIng.to_control(@ref_ptr))
+      LibUI.control_destroy(raw_control_ptr)
     end
 
     def released? : Bool
@@ -131,8 +139,7 @@ module UIng
     end
 
     def handle : Pointer(Void)
-      check_available
-      Pointer(Void).new(LibUI.control_handle(UIng.to_control(@ref_ptr)).to_u64)
+      Pointer(Void).new(LibUI.control_handle(UIng.to_control(self)).to_u64)
     end
 
     # Sets a descriptive tooltip for this control.
@@ -150,50 +157,41 @@ module UIng
 
     # native libui function
     private def __parent__
-      check_available
-      LibUI.control_parent(UIng.to_control(@ref_ptr))
+      LibUI.control_parent(UIng.to_control(self))
     end
 
     # native libui function
     # should not be used directly
     private def __set_parent__(parent) : Nil
-      check_available
-      LibUI.control_set_parent(UIng.to_control(@ref_ptr), UIng.to_control(parent))
+      LibUI.control_set_parent(UIng.to_control(self), UIng.to_control(parent))
     end
 
     def toplevel? : Bool
-      check_available
-      LibUI.control_toplevel(UIng.to_control(@ref_ptr)) != 0
+      LibUI.control_toplevel(UIng.to_control(self)) != 0
     end
 
     def visible? : Bool
-      check_available
-      LibUI.control_visible(UIng.to_control(@ref_ptr)) != 0
+      LibUI.control_visible(UIng.to_control(self)) != 0
     end
 
     def show : Nil
-      check_available
-      LibUI.control_show(UIng.to_control(@ref_ptr))
+      LibUI.control_show(UIng.to_control(self))
     end
 
     def hide : Nil
-      check_available
-      LibUI.control_hide(UIng.to_control(@ref_ptr))
+      LibUI.control_hide(UIng.to_control(self))
     end
 
     def enabled? : Bool
-      check_available
-      LibUI.control_enabled(UIng.to_control(@ref_ptr)) != 0
+      LibUI.control_enabled(UIng.to_control(self)) != 0
     end
 
     def enable : Nil
-      check_available
-      LibUI.control_enable(UIng.to_control(@ref_ptr))
+      LibUI.control_enable(UIng.to_control(self))
     end
 
     def disable : Nil
-      check_available
-      LibUI.control_disable(UIng.to_control(@ref_ptr))
+      LibUI.control_disable(UIng.to_control(self))
     end
 
     # Overrides the minimum size this control requests from its parent.
@@ -217,13 +215,11 @@ module UIng
     end
 
     def enabled_to_user? : Bool
-      check_available
-      LibUI.control_enabled_to_user(UIng.to_control(@ref_ptr)) != 0
+      LibUI.control_enabled_to_user(UIng.to_control(self)) != 0
     end
 
     private def verify_set_parent(parent) : Nil
-      check_available
-      LibUI.control_verify_set_parent(UIng.to_control(@ref_ptr), UIng.to_control(parent))
+      LibUI.control_verify_set_parent(UIng.to_control(self), UIng.to_control(parent))
     end
 
     def delete(child : Control)
