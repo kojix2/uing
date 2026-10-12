@@ -8,10 +8,15 @@ window.on_closing do
   true
 end
 
-font_button = UIng::FontButton.new do
-  on_changed do |font_descriptor|
-    window.msg_box("Font Changed", "Family: #{font_descriptor.family}\nSize: #{font_descriptor.size}")
-  end
+font_button = UIng::FontButton.new
+selected_font = font_button.font
+font_button.on_changed do |font_descriptor|
+  previous_font = selected_font
+  selected_font = font_descriptor
+  window.msg_box(
+    "Font Changed",
+    "Previous: #{previous_font.family}\nFamily: #{selected_font.family}\nSize: #{selected_font.size}"
+  )
 end
 
 window.child = font_button

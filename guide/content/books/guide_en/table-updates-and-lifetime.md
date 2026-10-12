@@ -36,6 +36,9 @@ window.on_closing do
 end
 ```
 
-When several Tables share one Model, destroy every Table first. Do not notify a destroyed Model and do not retain `Table::Value` or `Selection` objects outside their callback scopes.
+When several Tables share one Model, destroy every Table first. Do not notify a
+destroyed Model or retain a `Table::Value` received by `set_cell_value` beyond
+its callback. A `Selection` is an independent snapshot and can be retained,
+but check whether its row indices still apply after inserting or deleting rows.
 
 Following this order keeps close-window and data-update logic small and predictable.

@@ -72,6 +72,9 @@ UIng::Area::Draw::TextLayout.open(
 end
 ```
 
-`TextLayout`は作成時に文字列とフォントをコピーします。静的なテキストはレイアウトを保持して再利用できますが、不要になった時点で`free`します。`AttributedString`と`FontDescriptor`も保持する場合は終了時に`free`します。
+`TextLayout`は作成時に文字列とフォントをコピーします。静的なテキストはレイアウトを
+保持して再利用できますが、不要になった時点で`free`します。保持した
+`AttributedString`も不要になったら`free`します。`FontDescriptor`はCrystalが管理し、
+手動で解放する必要はありません。
 
 [basic_draw_text.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_draw_text.cr)は属性付きテキストの例です。

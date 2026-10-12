@@ -53,7 +53,9 @@ end
 | `One` | 常に1 | 必ず1行を選ばせる画面 |
 | `ZeroOrMany` | 0以上 | 複数選択 |
 
-`on_selection_changed`の`Selection`はコールバック後に解放されるため、後で使うなら`selection.rows`で行番号を取り出します。
+`on_selection_changed`の`Selection`は選択行のスナップショットです。コールバック後も
+保持でき、`free`は不要です。`selection.rows`は行番号の配列をコピーして返します。
+`table.selection`で直接取得した値も同じように扱えます。
 
 ```crystal
 table.selection_mode = UIng::Table::Selection::Mode::ZeroOrOne

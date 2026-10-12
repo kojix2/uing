@@ -298,47 +298,38 @@ add_button.on_clicked do
 end
 
 delete_button.on_clicked do
-  table.selection do |selection|
-    if selection.num_rows > 0
-      # Delete in reverse order to maintain indices
-      rows_to_delete = [] of Int32
-      (0...selection.num_rows).each do |i|
-        rows_to_delete << selection.rows[i]
-      end
-      rows_to_delete.sort!.reverse!
-
-      rows_to_delete.each do |row|
-        # Free avatar image before deleting the employee, but not if it's DEFAULT_AVATAR or nil
-        if avatar = EMPLOYEES[row].avatar
-          unless avatar.same?(DEFAULT_AVATAR)
-            avatar.free
-          end
+  rows_to_delete = table.selection.rows.sort!.reverse!
+  if rows_to_delete.empty?
+    status_label.text = "No employees selected for deletion"
+  else
+    # Delete in reverse order to maintain indices
+    rows_to_delete.each do |row|
+      # Free avatar image before deleting the employee, but not if it's DEFAULT_AVATAR or nil
+      if avatar = EMPLOYEES[row].avatar
+        unless avatar.same?(DEFAULT_AVATAR)
+          avatar.free
         end
-        EMPLOYEES.delete_at(row)
-        table_model.row_deleted(row)
       end
-
-      status_label.text = "Deleted #{rows_to_delete.size} employee(s)"
-    else
-      status_label.text = "No employees selected for deletion"
+      EMPLOYEES.delete_at(row)
+      table_model.row_deleted(row)
     end
+
+    status_label.text = "Deleted #{rows_to_delete.size} employee(s)"
   end
 end
 
 toggle_button.on_clicked do
-  table.selection do |selection|
-    if selection.num_rows > 0
-      (0...selection.num_rows).each do |i|
-        row = selection.rows[i]
-        if row < EMPLOYEES.size
-          EMPLOYEES[row].active = !EMPLOYEES[row].active?
-          table_model.row_changed(row)
-        end
+  selected_rows = table.selection.rows
+  if selected_rows.empty?
+    status_label.text = "No employees selected"
+  else
+    selected_rows.each do |row|
+      if row < EMPLOYEES.size
+        EMPLOYEES[row].active = !EMPLOYEES[row].active?
+        table_model.row_changed(row)
       end
-      status_label.text = "Toggled active status for #{selection.num_rows} employee(s)"
-    else
-      status_label.text = "No employees selected"
     end
+    status_label.text = "Toggled active status for #{selected_rows.size} employee(s)"
   end
 end
 

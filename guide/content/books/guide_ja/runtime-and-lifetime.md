@@ -116,13 +116,13 @@ end
 
 ## その他のリソース
 
-コントロール以外のオブジェクトは、取得方法に応じた規則で解放します。
+コントロール以外には、Crystalが管理する値と、明示的な解放が必要なネイティブ資源が
+あります。`.new`で作ったか、メソッドから受け取ったかだけでは区別できません。
 
-- `.new`で作成したオブジェクトやメソッドから直接返されたオブジェクトは、通常、
-  使用後に解放する必要があります。
-- `.open`などのブロック形式で使うオブジェクトは、ブロック終了時に自動解放されます。
-- コールバックへ渡されたオブジェクトは、通常、そのコールバックが返るまでだけ有効です。
-  解放はUIngが処理します。
+- `.open`で使うネイティブ資源は、ブロック終了時に自動解放されます。
+- コールバックへ渡された値を後で使えるかどうかは型によって異なります。
+  `Table::Selection`と`FontDescriptor`は保持できますが、借用された`Table::Value`や
+  `Attribute`はコールバック終了後に使えません。
 
 個別のリソースには次の規則があります。
 
@@ -134,11 +134,15 @@ end
 - `Toolbar`: ウィンドウから切り離してから`free`を呼びます。
 - `Draw::Path`、`Draw::TextLayout`、`AttributedString`: 利用できる場合は`.open`を使い、
   ブロック終了時に解放させます。
-- `Table::Selection`: ブロック形式とコールバック形式では自動解放されます。
-  `table.selection`の直接の戻り値は使用後に解放します。`Table::Selection.new(rows)`は
-  CrystalのGCが管理します。
+- `Table::Selection`: `table.selection`の戻り値、コールバックで受け取った値、
+  `Table::Selection.new(rows)`で作った値は、いずれも独立したスナップショットです。
+  コールバックの外でも保持でき、`free`は不要です。
+- `FontDescriptor`: `FontButton#font`の戻り値とコールバックで受け取った値を保持できます。
+  Crystalが管理するため、`free`は不要です。
+- `TM`: Crystalが管理します。Windows以外では`zone=`に渡した文字列をコピーして保持します。
+  `free`は不要です。
 - `Table::Value`: `cell_value`から返した値はlibui-ngが管理します。`set_cell_value`へ
-  渡された値は、そのコールバックが返るまでだけ有効です。
+  渡された値は、そのコールバックが返るまでだけ有効です。渡さずに作った値は`free`します。
 - `Attribute`: `set_attribute`へ渡した後は、受け取った`AttributedString`が管理します。
   列挙中にyieldされたAttributeは、そのブロック内だけで有効です。
 - `OpenTypeFeatures`と`AttributedString`は列挙中に再帰的に読み取れますが、列挙が

@@ -18,7 +18,10 @@ FontButton opens the native font chooser and reports a FontDescriptor.
 
 ## Usage notes
 
-- Handle a new choice with <code>on_changed</code>.
-- Use the descriptor inside the callback or the block-based <code>font</code> helper.
+- <code>font</code> returns the currently selected <code>FontDescriptor</code>.
+- Handle a new choice with <code>on_changed</code>. Its descriptor can be
+  retained after the callback.
+- The block-based <code>font</code> form is also available. None of these
+  descriptors needs <code>free</code>.
 
 [API reference](../../api/UIng/FontButton.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_font_button.cr)

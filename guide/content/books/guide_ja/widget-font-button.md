@@ -18,7 +18,9 @@ FontButtonはOS標準のフォント選択画面を開き、FontDescriptorを返
 
 ## 使い方
 
-- 新しい選択は<code>on_changed</code>で処理します。
-- 記述子はコールバック内、またはブロック形式の<code>font</code>ヘルパー内で使用します。
+- <code>font</code>は現在選択されている<code>FontDescriptor</code>を返します。
+- 新しい選択は<code>on_changed</code>で処理します。受け取った記述子は
+  コールバック後も保持できます。
+- ブロック形式の<code>font</code>も使えます。どの形式でも記述子の<code>free</code>は不要です。
 
 [APIリファレンス](../../api/UIng/FontButton.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_font_button.cr)

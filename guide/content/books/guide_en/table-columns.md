@@ -53,7 +53,10 @@ Use `selection_mode` to control selection.
 | `One` | Exactly 1 | A screen that must always have a selected row |
 | `ZeroOrMany` | 0 or more | Multiple selection |
 
-The `Selection` passed to `on_selection_changed` is freed after the callback, so extract `selection.rows` when you need row numbers later.
+The `Selection` passed to `on_selection_changed` is a snapshot of selected
+rows. It can be retained after the callback and does not need `free`.
+`selection.rows` returns a copy of the row-index array. A direct
+`table.selection` result follows the same rule.
 
 ```crystal
 table.selection_mode = UIng::Table::Selection::Mode::ZeroOrOne

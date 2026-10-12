@@ -72,6 +72,9 @@ UIng::Area::Draw::TextLayout.open(
 end
 ```
 
-`TextLayout` copies its text and font at creation. A static layout can be retained and redrawn; call `free` when done. Also free retained `AttributedString` and `FontDescriptor` values when the application exits.
+`TextLayout` copies its text and font at creation. A static layout can be
+retained and redrawn; call `free` when done. Free a retained
+`AttributedString` when it is no longer needed. Crystal manages
+`FontDescriptor`, so it needs no manual cleanup.
 
 [basic_draw_text.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_draw_text.cr) demonstrates attributed text.

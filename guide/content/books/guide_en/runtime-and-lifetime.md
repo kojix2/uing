@@ -120,15 +120,14 @@ prevents double destruction.
 
 ## Other resources
 
-Objects that are not controls follow the cleanup convention associated with
-how they were obtained:
+Objects that are not controls include Crystal-managed values and native
+resources that need explicit cleanup. Creating one with `.new` or receiving it
+from a method does not, by itself, determine which rule applies:
 
-- An object created with `.new` or returned directly from a method usually
-  needs to be freed after use.
-- An object used through `.open` or another block form is freed automatically
-  when the block ends.
-- An object passed to a callback is usually valid only until that callback
-  returns; UIng handles its cleanup.
+- A native resource used through `.open` is freed when the block ends.
+- Whether a callback value can be retained depends on its type.
+  `Table::Selection` and `FontDescriptor` can be kept; borrowed `Table::Value`
+  and `Attribute` objects cannot be used after the callback.
 
 Specific resource rules are:
 
@@ -142,11 +141,16 @@ Specific resource rules are:
 - `Toolbar`: detach it from its window before calling `free`.
 - `Draw::Path`, `Draw::TextLayout`, and `AttributedString`: prefer `.open`
   where available so cleanup occurs when the block ends.
-- `Table::Selection`: block and callback forms free the selection
-  automatically. A direct `table.selection` result must be freed after use.
-  `Table::Selection.new(rows)` is managed by Crystal's GC.
+- `Table::Selection`: results from `table.selection`, callback values, and
+  values created with `Table::Selection.new(rows)` are independent snapshots.
+  They can be retained after a callback and do not need `free`.
+- `FontDescriptor`: results from `FontButton#font` and callback values can be
+  retained. Crystal manages them; do not call `free`.
+- `TM`: Crystal manages it. Outside Windows, `zone=` copies and retains its
+  string. No `free` is needed.
 - `Table::Value`: a value returned from `cell_value` is managed by libui-ng. A
   value passed to `set_cell_value` is valid only until that callback returns.
+  Free a value you create but do not pass to libui-ng.
 - `Attribute`: after `set_attribute`, the receiving `AttributedString` owns
   it. An attribute yielded by enumeration is valid only for that block.
 - `OpenTypeFeatures` and `AttributedString` may be read recursively during

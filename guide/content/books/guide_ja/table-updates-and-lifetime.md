@@ -36,6 +36,9 @@ window.on_closing do
 end
 ```
 
-同じModelを複数のTableで使う場合は、すべてのTableを先に破棄します。破棄後にModelへ行通知を送らず、`Table::Value`や`Selection`をコールバック外へ保持しないでください。
+同じModelを複数のTableで使う場合は、すべてのTableを先に破棄します。破棄後に
+Modelへ行通知を送らず、`set_cell_value`で受け取った`Table::Value`をコールバック外へ
+保持しないでください。`Selection`は独立したスナップショットなので保持できますが、
+行の追加や削除後にその行番号が有効かは確認してください。
 
 この順序を守ると、画面を閉じる処理とデータ更新処理をそれぞれ小さく保てます。
