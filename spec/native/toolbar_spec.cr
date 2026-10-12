@@ -12,6 +12,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       image.append(Bytes.new(16 * 16 * 4, 0xFF_u8), 16, 16, 16 * 4)
       item = toolbar.append_toggle_button("Pinned")
       button = toolbar.append_button("Action", image)
+      image.free
       item.checked = true
       item.disable
       item.tooltip = "Keep pinned"
@@ -41,11 +42,35 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       expect_raises(Exception, /cannot be appended/) do
         toolbar.append_button("Late")
       end
+
+      window.destroy
+      toolbar.released?.should be_true
+      expect_raises(Exception, /already been released/) { button.text }
     ensure
-      if window && !window.released?
-        window.toolbar = nil
-        window.destroy
-      end
+      window.try &.destroy
+      toolbar.try &.free
+      image.try &.free
+    end
+
+    it "copies replacement icons and preserves a toolbar detached before window destruction" do
+      window = UIng::Window.new("Toolbar ownership", 400, 200)
+      toolbar = UIng::Toolbar.new
+      image = UIng::Image.new(16, 16)
+      image.append(Bytes.new(16 * 16 * 4, 0xFF_u8), 16, 16, 16 * 4)
+      item = toolbar.append_button("Action", image)
+      item.icon = image
+      image.free
+      window.toolbar = toolbar
+      item.icon = nil
+      window.toolbar = nil
+      window.destroy
+
+      toolbar.released?.should be_false
+      item.text.should eq("Action")
+      toolbar.free
+      expect_raises(Exception, /already been released/) { item.text }
+    ensure
+      window.try &.destroy
       toolbar.try &.free
       image.try &.free
     end

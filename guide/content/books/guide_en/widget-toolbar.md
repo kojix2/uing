@@ -22,8 +22,9 @@ Toolbar is an experimental feature specific to `kojix2/libui-ng` and may change.
 
 - Add every item before attaching the Toolbar to a Window for the first time. After its first attachment, items cannot be added even if the Toolbar is detached.
 - <code>display_mode</code> can be changed after attachment. Existing items, click callbacks, enabled states, and toggle checked states are preserved when the mode changes.
-- A Toolbar can be attached to only one Window at a time. Assign <code>nil</code> to <code>window.toolbar</code> before calling <code>toolbar.free</code>.
-- Keep an Image alive while the Toolbar is using it, then free the Image after freeing the Toolbar.
+- A Toolbar can be attached to only one Window at a time. Destroying that Window also frees its attached Toolbar. Assign <code>nil</code> to <code>window.toolbar</code> before destroying the Window if you want to reuse the Toolbar. A detached Toolbar still needs <code>free</code>.
+- Toolbar items copy their icons, including icons set later with <code>icon=</code>. You may free an Image immediately after passing it to a Toolbar; the Toolbar frees its own copies. Assign <code>nil</code> before calling <code>toolbar.free</code> on an attached Toolbar.
+- Image retains its source pixel data to support copying, so large images use additional memory.
 - <code>checked?</code> and <code>checked=</code> are available only on items created by <code>append_toggle_button</code>.
 - On macOS, <code>IconAndTextHorizontal</code> is displayed vertically.
 

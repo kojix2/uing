@@ -59,6 +59,7 @@ help_item.tooltip = "Show help"
 help_item.on_clicked { puts "Help clicked" }
 
 window.toolbar = toolbar
+icons.each &.free
 
 display_modes = UIng::Toolbar::DisplayMode.values
 mode_selector = UIng::Combobox.new([
@@ -73,9 +74,6 @@ window.child = mode_selector
 window.margined = true
 
 window.on_closing do
-  window.toolbar = nil
-  toolbar.free
-  icons.each &.free
   UIng.quit
   true
 end

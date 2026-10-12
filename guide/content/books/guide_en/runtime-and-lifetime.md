@@ -143,9 +143,10 @@ Specific resource rules are:
   becomes unavailable immediately and the native model is freed after the last
   Table destruction completes.
 - `Image`: call `free` when it is no longer needed. It can be freed after
-  passing it to `ImageView#image=`, but must remain alive while a table or
-  `Toolbar` uses it.
-- `Toolbar`: detach it from its window before calling `free`.
+  passing it to `ImageView#image=` or a `Toolbar` item, but must remain alive
+  while a table uses it.
+- `Toolbar`: an attached toolbar is freed when its window is destroyed. Detach
+  it first to reuse it; detached toolbars still need `free`.
 - `Draw::Path`, `Draw::TextLayout`, and `AttributedString`: prefer `.open`
   where available so cleanup occurs when the block ends.
 - `Table::Selection`: results from `table.selection`, callback values, and

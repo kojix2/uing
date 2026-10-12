@@ -10,8 +10,6 @@ class ControlGalleryApp
 
   @main_window : UIng::Window?
   @preferences_window : UIng::Window?
-  @toolbar : UIng::Toolbar?
-  @toolbar_icons : Array(UIng::Image)
   @area_text : UIng::Area::AttributedString?
   @area_font : UIng::FontDescriptor?
   @table_model : UIng::Table::Model?
@@ -19,8 +17,6 @@ class ControlGalleryApp
   def initialize
     @main_window = nil
     @preferences_window = nil
-    @toolbar = nil
-    @toolbar_icons = [] of UIng::Image
     @area_text = nil
     @area_font = nil
     @table_model = nil
@@ -30,7 +26,6 @@ class ControlGalleryApp
       on_closing do
         puts "Bye Bye"
         close_preferences
-        release_toolbar
         release_area_text
         UIng.quit
         true
@@ -79,48 +74,38 @@ class ControlGalleryApp
   end
 
   private def build_toolbar : UIng::Toolbar
-    @toolbar_icons = [
+    icons = [
       icon(NEW_ICON),
       icon(OPEN_ICON),
       icon(PIN_ICON),
       icon(HELP_ICON),
     ]
 
-    UIng::Toolbar.new.tap do |toolbar|
-      @toolbar = toolbar
-
-      new_item = toolbar.append_button("New", @toolbar_icons[0])
+    toolbar = UIng::Toolbar.new.tap do |toolbar|
+      new_item = toolbar.append_button("New", icons[0])
       new_item.tooltip = "New document"
       new_item.on_clicked { puts "New clicked" }
 
-      open_item = toolbar.append_button("Open", @toolbar_icons[1])
+      open_item = toolbar.append_button("Open", icons[1])
       open_item.tooltip = "Open document"
       open_item.on_clicked { puts main_window.open_file }
 
       toolbar.append_separator
 
-      pinned_item = toolbar.append_toggle_button("Pinned", @toolbar_icons[2])
+      pinned_item = toolbar.append_toggle_button("Pinned", icons[2])
       pinned_item.tooltip = "Pin document"
       pinned_item.on_clicked { |item| puts "Pinned: #{item.checked?}" }
 
       toolbar.append_separator
 
-      help_item = toolbar.append_button("Help", @toolbar_icons[3])
+      help_item = toolbar.append_button("Help", icons[3])
       help_item.tooltip = "Show help"
       help_item.on_clicked do
         main_window.msg_box("Help", "This is the toolbar control.")
       end
     end
-  end
-
-  private def release_toolbar : Nil
-    main_window.toolbar = nil
-
-    @toolbar.try &.free
-    @toolbar = nil
-
-    @toolbar_icons.each &.free
-    @toolbar_icons.clear
+    icons.each &.free
+    toolbar
   end
 
   private def release_area_text : Nil
@@ -155,7 +140,6 @@ class ControlGalleryApp
         if should_quit_item.checked?
           puts "Bye Bye (on_should_quit)"
           close_preferences
-          release_toolbar
           release_area_text
           main_window.destroy # You have to destroy the window manually.
           true                # UIng.quit is automatically called in the C function onQuitClicked().

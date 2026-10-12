@@ -135,9 +135,10 @@ end
 - `Table::Model`: `model.free`の前に、そのモデルを使用するすべての`Table`の破棄を
   要求します。ネイティブ側の破棄が保留中の場合、ラッパーは直ちに利用不能になり、
   最後のTableの破棄完了後にネイティブモデルが解放されます。
-- `Image`: 不要になったら`free`を呼びます。`ImageView#image=`へ渡した後は解放できますが、
-  Tableまたは`Toolbar`が使用している間は保持してください。
-- `Toolbar`: ウィンドウから切り離してから`free`を呼びます。
+- `Image`: 不要になったら`free`を呼びます。`ImageView#image=`または`Toolbar`の項目へ渡した後は解放できますが、
+  Tableが使用している間は保持してください。
+- `Toolbar`: ウィンドウに取り付けたToolbarは、そのウィンドウの破棄時に解放されます。
+  再利用するなら先に取り外してください。取り外したToolbarは`free`が必要です。
 - `Draw::Path`、`Draw::TextLayout`、`AttributedString`: 利用できる場合は`.open`を使い、
   ブロック終了時に解放させます。
 - `Table::Selection`: `table.selection`の戻り値、コールバックで受け取った値、

@@ -21,6 +21,9 @@ describe UIng::Image do
     expect_raises(ArgumentError, /pixel width is too large/) do
       image.append(pixels.to_unsafe, Int32::MAX // 4 + 1, 1, Int32::MAX)
     end
+    expect_raises(ArgumentError, /too large to retain for copying/) do
+      image.append(pixels.to_unsafe, 1, Int32::MAX, Int32::MAX)
+    end
   end
 
   it "rejects byte buffers shorter than the declared image" do

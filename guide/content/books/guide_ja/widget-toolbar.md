@@ -22,8 +22,9 @@ Toolbarは`kojix2/libui-ng`固有の実験的な機能であり、今後変更�
 
 - すべての項目は、ToolbarをWindowへ初めて取り付ける前に追加します。一度取り付けた後は、取り外しても項目を追加できません。
 - <code>display_mode</code>は取り付け後も変更できます。変更時には、既存の項目、クリック時のコールバック、有効・無効状態、トグルの選択状態が維持されます。
-- Toolbarは一度に1つのWindowにのみ取り付けられます。<code>toolbar.free</code>を呼ぶ前に、<code>window.toolbar</code>へ<code>nil</code>を代入して取り外します。
-- Toolbarが使用している間はImageを保持し、Toolbarを解放した後でImageを解放します。
+- Toolbarは一度に1つのWindowにのみ取り付けられます。Windowを破棄すると、取り付け中のToolbarも解放されます。Toolbarを再利用する場合は、Windowの破棄前に<code>window.toolbar</code>へ<code>nil</code>を代入してください。取り外したToolbarは引き続き<code>free</code>が必要です。
+- Toolbarの項目は、後から<code>icon=</code>で設定したものを含め、画像をコピーします。渡したImageはすぐに解放でき、Toolbarは自身のコピーを解放します。取り付け中のToolbarを<code>toolbar.free</code>で解放する場合は、先に取り外してください。
+- コピーに備えてImageは元の画素データを保持するため、大きな画像ではメモリ使用量が増えます。
 - <code>checked?</code>と<code>checked=</code>は、<code>append_toggle_button</code>で作成した項目でのみ利用できます。
 - macOSでは、<code>IconAndTextHorizontal</code>も縦方向に表示されます。
 

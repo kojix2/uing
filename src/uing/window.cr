@@ -19,7 +19,7 @@ module UIng
     @on_focus_changed_box : Pointer(Void)?
 
     @child_ref : Control?   # Reference to the child control
-    @toolbar_ref : Toolbar? # The native window borrows this toolbar
+    @toolbar_ref : Toolbar? # The attached toolbar is freed with this window
 
     protected def initialize(@ref_ptr : Pointer(LibUI::Window), borrowed : Bool = true)
       @borrowed = borrowed
@@ -41,7 +41,10 @@ module UIng
     end
 
     protected def after_destroy : Nil
-      @toolbar_ref.try &.__detached_by__(self)
+      if toolbar = @toolbar_ref
+        toolbar.__detached_by__(self)
+        toolbar.free
+      end
       @toolbar_ref = nil
       @@mutex.synchronize do
         @@windows.delete(self)

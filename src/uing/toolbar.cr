@@ -1,9 +1,8 @@
 module UIng
   # A native toolbar that can be attached to one Window at a time.
   #
-  # Toolbar is not a Control. Free it explicitly after detaching it from its
-  # window. Images passed to toolbar items are borrowed by libui-ng and must
-  # remain alive until the toolbar is freed.
+  # Toolbar is not a Control. An attached toolbar is freed when its window is
+  # destroyed. Detach it first to keep using it. Item icons are copied.
   class Toolbar
     enum DisplayMode
       IconOnly              = 0
@@ -16,7 +15,6 @@ module UIng
     @ever_attached = false
     @attached_window : Window?
     @items = [] of ToolbarItem
-    @image_refs = [] of Image
 
     def initialize
       @ref_ptr = LibUI.new_toolbar
@@ -24,18 +22,12 @@ module UIng
 
     def append_button(text : String, icon : Image? = nil) : ToolbarItem
       check_mutable
-      retain(icon)
-      item = ToolbarItem.new(self, LibUI.toolbar_append_button(ref_ptr, text, image_pointer(icon)), toggle: false)
-      @items << item
-      item
+      append_item(text, icon, toggle: false)
     end
 
     def append_toggle_button(text : String, icon : Image? = nil) : ToolbarItem
       check_mutable
-      retain(icon)
-      item = ToolbarItem.new(self, LibUI.toolbar_append_toggle_button(ref_ptr, text, image_pointer(icon)), toggle: true)
-      @items << item
-      item
+      append_item(text, icon, toggle: true)
     end
 
     def append_separator : Nil
@@ -68,7 +60,6 @@ module UIng
       @released = true
       @items.each &.__release__
       @items.clear
-      @image_refs.clear
     end
 
     def released? : Bool
@@ -98,13 +89,6 @@ module UIng
       @attached_window = nil if @attached_window.same?(window)
     end
 
-    # :nodoc:
-    protected def __retain_image__(image : Image) : Nil
-      check_available
-      image.to_unsafe
-      retain(image)
-    end
-
     protected def check_available : Nil
       raise "Toolbar has already been released" if @released
     end
@@ -114,12 +98,22 @@ module UIng
       raise "Toolbar items cannot be appended after the toolbar has been attached" if @ever_attached
     end
 
-    private def retain(image : Image?) : Nil
-      @image_refs << image if image && !@image_refs.includes?(image)
-    end
-
-    private def image_pointer(image : Image?) : Pointer(LibUI::Image)
-      image ? image.to_unsafe : Pointer(LibUI::Image).null
+    private def append_item(text : String, icon : Image?, toggle : Bool) : ToolbarItem
+      icon_copy = icon.try &.copy
+      begin
+        icon_ptr = icon_copy ? icon_copy.to_unsafe : Pointer(LibUI::Image).null
+        item_ptr = if toggle
+                     LibUI.toolbar_append_toggle_button(ref_ptr, text, icon_ptr)
+                   else
+                     LibUI.toolbar_append_button(ref_ptr, text, icon_ptr)
+                   end
+        item = ToolbarItem.new(self, item_ptr, toggle: toggle, icon_copy: icon_copy)
+        @items << item
+        item
+      rescue error
+        icon_copy.try &.free
+        raise error
+      end
     end
 
     private def ref_ptr
@@ -137,8 +131,9 @@ module UIng
 
     @released = false
     @on_clicked_box : Pointer(Void)?
+    @icon_copy : Image?
 
-    protected def initialize(@toolbar : Toolbar, @ref_ptr : Pointer(LibUI::ToolbarItem), toggle : Bool = false)
+    protected def initialize(@toolbar : Toolbar, @ref_ptr : Pointer(LibUI::ToolbarItem), toggle : Bool = false, @icon_copy : Image? = nil)
       @kind = toggle ? Kind::Toggle : Kind::Button
     end
 
@@ -151,12 +146,23 @@ module UIng
     end
 
     def icon=(icon : Image) : Nil
-      @toolbar.__retain_image__(icon)
-      LibUI.toolbar_item_set_icon(ref_ptr, icon.to_unsafe)
+      item = ref_ptr
+      icon_copy = icon.copy
+      begin
+        LibUI.toolbar_item_set_icon(item, icon_copy.to_unsafe)
+        previous_icon = @icon_copy
+        @icon_copy = icon_copy
+        previous_icon.try &.free
+      rescue error
+        icon_copy.free
+        raise error
+      end
     end
 
     def icon=(icon : Nil) : Nil
       LibUI.toolbar_item_set_icon(ref_ptr, Pointer(LibUI::Image).null)
+      @icon_copy.try &.free
+      @icon_copy = nil
     end
 
     def tooltip : String?
@@ -228,6 +234,8 @@ module UIng
     protected def __release__ : Nil
       @released = true
       @on_clicked_box = nil
+      @icon_copy.try &.free
+      @icon_copy = nil
     end
 
     private def ref_ptr

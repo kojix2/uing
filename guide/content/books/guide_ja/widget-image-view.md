@@ -19,7 +19,7 @@ source = CrImage.read("photo.png")
 view = UIng::ImageView.new(source, :fit)
 view.image = CrImage.read("next.png")
 
-# Area、Table、Toolbarで使う画像は、利用が終わるまで保持します。
+# AreaとTableで使う画像は保持が必要な場合があります。Toolbarはアイコンをコピーします。
 image = UIng::Image.from_crimage(source)
 # ... image を使用 ...
 image.free
@@ -37,7 +37,7 @@ image.free
 - `require "uing"`だけならCrImageは不要です。`require "uing/crimage"`で便利メソッドが追加され、アプリ側のCrImage依存が必要になります。
 - `UIng::Image.from_file(path)`はファイル内容から形式を判定します。現在のCrImageの`CrImage.read(path)`は拡張子で形式を選びます。
 - `UIng::Image.from_crimage`、`CrImage::Image#to_uing_image`、`UIng::Image#append(CrImage::Image)`は各種CrImage画像を受け取り、premultiplied RGBAへ変換します。原点が0でない画像やサブ画像にも対応します。
-- `ImageView`は設定時に作る一時的なUIng画像を解放します。`from_crimage`、`from_file`、`to_uing_image`が返す画像は、利用先の使用が終わった後に呼び出し側が解放してください。
+- `ImageView`は設定時に作る一時的なUIng画像を解放します。`from_crimage`、`from_file`、`to_uing_image`が返す画像は呼び出し側が解放してください。Toolbarの項目へ渡した場合は直後に解放できます。
 - 同じ拡張で`ColorButton#set_color`、単色Brush、グラデーション停止点、文字属性、Tableの色値へCrImageの色を渡せます。半透明のUI色には`CrImage::Color::NRGBA`を使います。現在のCrImageの`Color.parse`は半透明RGBAを正しくpremultiplyしません。
 
 [ImageView API](../../api/UIng/ImageView.html) · [Image API](../../api/UIng/Image.html) · [Galleryソース](https://github.com/kojix2/uing/blob/main/examples/crimage/basic_image_view.cr)
