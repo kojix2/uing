@@ -8,6 +8,7 @@ module UIng
     block_constructor
 
     @borrowed : Bool = false
+    @scrolling : Bool = false
 
     # Keep a reference to the Area::Handler to prevent GC
     @area_handler : Handler?
@@ -33,6 +34,7 @@ module UIng
     def initialize(area_handler : Handler, width : Int32, height : Int32)
       @area_handler = area_handler # Keep reference to prevent GC
       @ref_ptr = LibUI.new_scrolling_area(area_handler.to_unsafe, width, height)
+      @scrolling = true
       register_control
     end
 
@@ -40,7 +42,9 @@ module UIng
       @area_handler = nil
     end
 
+    # Changes the content size of a scrolling Area.
     def set_size(width : Int32, height : Int32) : Nil
+      require_scrolling("set_size")
       LibUI.area_set_size(ref_ptr, width, height)
     end
 
@@ -48,7 +52,9 @@ module UIng
       LibUI.area_queue_redraw_all(ref_ptr)
     end
 
+    # Scrolls a scrolling Area to make the given rectangle visible.
     def scroll_to(x : Number, y : Number, width : Number, height : Number) : Nil
+      require_scrolling("scroll_to")
       scroll_x = NumericValue.finite(x, "area scroll x")
       scroll_y = NumericValue.finite(y, "area scroll y")
       scroll_width = NumericValue.finite(width, "area scroll width")
@@ -66,6 +72,11 @@ module UIng
 
     def to_unsafe
       ref_ptr
+    end
+
+    private def require_scrolling(method : String) : Nil
+      check_available
+      raise ArgumentError.new("Area##{method} requires a scrolling Area") unless @scrolling
     end
   end
 end
