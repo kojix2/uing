@@ -97,15 +97,8 @@ module UIng
           ->(table, data) : Nil {
             begin
               callback = ::Box(typeof(block)).unbox(data)
-              # Get current selection and pass it to the callback
-              selection_ptr = LibUI.table_get_selection(table)
-              selection = Selection.new(selection_ptr)
-              begin
-                callback.call(selection)
-              ensure
-                # Automatically free the selection after callback
-                selection.free
-              end
+              selection = Selection.new(LibUI.table_get_selection(table))
+              callback.call(selection)
             rescue e
               UIng.handle_callback_error(e, "Table on_selection_changed")
             end
@@ -226,15 +219,8 @@ module UIng
       Selection.new(selection_ptr)
     end
 
-    # Block version that automatically frees the selection after the block
-    # This eliminates the need for manual free() calls
     def selection(& : Selection -> Nil) : Nil
-      selection_obj = selection
-      begin
-        yield selection_obj
-      ensure
-        selection_obj.free
-      end
+      yield selection
     end
 
     def selection=(selection : Selection) : Nil

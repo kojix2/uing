@@ -55,13 +55,6 @@ class UIng::Menu
   end
 end
 
-private class ReleasedLifetimeSafetySelection < UIng::Table::Selection
-  def initialize
-    super([1])
-    @released = true
-  end
-end
-
 private class ReleasedLifetimeSafetyAttribute < UIng::Area::Attribute
   def initialize
     super(Pointer(UIng::LibUI::Attribute).null)
@@ -141,15 +134,10 @@ describe "lifetime safety" do
 
     selection.rows.should eq([1, 3])
     selection.num_rows.should eq(2)
-  end
 
-  it "rejects every Table::Selection pointer read after free" do
-    selection = ReleasedLifetimeSafetySelection.new
-
-    expect_raises(Exception, /already been released/) { selection.num_rows }
-    expect_raises(Exception, /already been released/) { selection.rows }
-    expect_raises(Exception, /already been released/) { selection.rows_ptr }
-    expect_raises(Exception, /already been released/) { selection.to_unsafe }
+    copied_rows = selection.rows
+    copied_rows[0] = 7
+    selection.rows.should eq([1, 3])
   end
 
   it "invalidates draw parameters and contexts after the callback" do

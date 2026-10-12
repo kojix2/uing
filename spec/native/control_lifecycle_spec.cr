@@ -763,6 +763,12 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
           window.show
         end
       end.to_a
+      tables.first.selection = UIng::Table::Selection.new([0])
+      selection = tables.first.selection
+      selection.rows.should eq([0])
+      tables.first.selection = UIng::Table::Selection.new([] of Int32)
+      tables.first.selection.rows.should be_empty
+      selection.rows.should eq([0])
       destroy_was_requested = false
 
       UIng.main_steps
