@@ -9,6 +9,43 @@ private def tm_with_date(year : Int32, month : Int32, day : Int32) : UIng::TM
 end
 
 describe UIng::TM do
+  {% unless flag?(:windows) %}
+    it "keeps its own copy of the zone string" do
+      source = String.new("TEST".to_slice)
+      tm = UIng::TM.new
+      tm.zone = source
+
+      tm.zone.should eq("TEST")
+      tm.to_unsafe.value.zone.should_not eq(source.to_unsafe)
+      GC.collect
+      String.new(tm.to_unsafe.value.zone).should eq("TEST")
+
+      tm.zone = "NEXT"
+      tm.zone.should eq("NEXT")
+      String.new(tm.to_unsafe.value.zone).should eq("NEXT")
+    end
+
+    it "copies a zone supplied by native code" do
+      native_zone = String.new("NATIVE".to_slice)
+      tm = UIng::TM.new
+      tm.zone = "OLD"
+      tm.to_unsafe.value.zone = native_zone.to_unsafe
+
+      tm.capture_native_zone
+      tm.zone.should eq("NATIVE")
+      tm.to_unsafe.value.zone.should_not eq(native_zone.to_unsafe)
+
+      borrowed_zone = String.new("BORROWED".to_slice)
+      tm.to_unsafe.value.zone = borrowed_zone.to_unsafe
+      tm.zone.should eq("BORROWED")
+      tm.to_unsafe.value.zone.should_not eq(borrowed_zone.to_unsafe)
+
+      tm.to_unsafe.value.zone = Pointer(LibC::Char).null
+      tm.capture_native_zone
+      tm.zone.should be_nil
+    end
+  {% end %}
+
   it "converts valid fields to Time" do
     time = tm_with_date(2024, 2, 29).to_time
 

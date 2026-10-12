@@ -1,15 +1,6 @@
-{% unless flag?(:windows) %}
-  lib LibC
-    fun strdup(str : Pointer(LibC::Char)) : Pointer(LibC::Char)
-  end
-{% end %}
-
 module UIng
   class TM
     {% unless flag?(:windows) %}
-      # C-side memory managed zone string pointer
-      @zone_cstr : Pointer(LibC::Char)? = nil
-      # Crystal-side reference for convenience methods
       @zone : String? = nil
     {% end %}
 
@@ -46,38 +37,33 @@ module UIng
 
     {% unless flag?(:windows) %}
       def zone : String?
-        # Return Crystal-side reference if available
-        return @zone if @zone
-        # Otherwise copy from C pointer if not NULL
         ptr = @cstruct.zone
-        return nil if ptr.null?
-        String.new(ptr)
+        if ptr.null?
+          @zone = nil
+          return nil
+        end
+        if owned = @zone
+          return owned if ptr == owned.to_unsafe
+        end
+        capture_native_zone
+        @zone
       end
 
       def zone=(value : String)
-        # Free previous C memory if allocated
-        if (old = @zone_cstr)
-          LibC.free(old.as(Void*))
-          @zone_cstr = nil
-        end
-
-        # Allocate C memory with strdup for safe ownership
-        dup = LibC.strdup(value)
-        raise "strdup failed" if dup.null?
-
-        @zone_cstr = dup
-        @cstruct.zone = dup
-        @zone = value
-      end
-
-      def finalize
-        # Clean up owned C memory
-        if (ptr = @zone_cstr)
-          LibC.free(ptr.as(Void*))
-          @zone_cstr = nil
-        end
+        @zone = String.new(value.to_slice)
+        @cstruct.zone = @zone.not_nil!.to_unsafe
       end
     {% end %}
+
+    # Copy a zone written by native code before its pointer can become stale.
+    # Windows' struct tm has no zone field.
+    def capture_native_zone : Nil
+      {% unless flag?(:windows) %}
+        ptr = @cstruct.zone
+        @zone = ptr.null? ? nil : String.new(ptr)
+        @cstruct.zone = @zone ? @zone.not_nil!.to_unsafe : Pointer(LibC::Char).null
+      {% end %}
+    end
 
     forward_missing_to(@cstruct)
 

@@ -46,6 +46,7 @@ module UIng
     # Returns the displayed wall-clock value in `Time::Location.local`.
     def time : Time
       LibUI.date_time_picker_time(ref_ptr, @tm)
+      @tm.capture_native_zone
       @tm.to_time
     end
 
@@ -57,6 +58,7 @@ module UIng
       LibUI.date_time_picker_set_time(ref_ptr, temp_tm)
       # Sync @tm with the actual widget state
       LibUI.date_time_picker_time(ref_ptr, @tm)
+      @tm.capture_native_zone
     end
 
     # Invokes the block with the displayed wall-clock value in
@@ -64,6 +66,7 @@ module UIng
     def on_changed(&block : Time -> Nil) : Nil
       wrapper = -> : Nil {
         LibUI.date_time_picker_time(ref_ptr, @tm)
+        @tm.capture_native_zone
         current_time = @tm.to_time
         block.call(current_time)
       }
