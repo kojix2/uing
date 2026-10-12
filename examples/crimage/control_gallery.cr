@@ -126,7 +126,6 @@ class ControlGalleryApp
   private def release_area_text : Nil
     @area_text.try &.free
     @area_text = nil
-    @area_font.try &.free
     @area_font = nil
   end
 

@@ -16,9 +16,7 @@ module UIng
       @on_changed_box = nil
     end
 
-    # Registers a callback that receives a block-scoped FontDescriptor.
-    # Use FontDescriptor#snapshot to retain the selected font after the
-    # callback returns.
+    # Registers a callback that receives a retainable FontDescriptor.
     def on_changed(&block : FontDescriptor -> Nil) : Nil
       wrapper = -> : Nil {
         font do |font_descriptor|
@@ -42,38 +40,24 @@ module UIng
       end
     end
 
-    # Yields the selected font as a block-scoped FontDescriptor.
-    # Use FontDescriptor#snapshot to retain its values after the block returns.
+    # Yields the selected font as a retainable FontDescriptor.
     def font(&block : FontDescriptor -> Nil) : Nil
-      font_descriptor = font
-      begin
-        block.call(font_descriptor)
-      ensure
-        font_descriptor.free
-      end
+      block.call(font)
     end
 
-    # Returns the selected font as an owned descriptor. Call FontDescriptor#free when done.
+    # Returns the selected font as a Crystal-managed descriptor.
     def font : FontDescriptor
-      descriptor = FontDescriptor.new
-      begin
-        load_font_into(descriptor)
-        descriptor
-      rescue error
-        descriptor.free
-        raise error
-      end
+      FontDescriptor.from_font_button(ref_ptr)
     end
 
     @[Deprecated("Use `font` to return a FontDescriptor, or `font { ... }` for scoped access")]
     def font(descriptor : FontDescriptor) : Nil
-      load_font_into(descriptor)
-    end
-
-    private def load_font_into(descriptor : FontDescriptor) : Nil
-      descriptor.prepare_for_font_button_font
-      LibUI.font_button_font(ref_ptr, descriptor)
-      descriptor.font_button_font_loaded
+      selected = font
+      descriptor.family = selected.family
+      descriptor.size = selected.size
+      descriptor.weight = selected.weight
+      descriptor.italic = selected.italic
+      descriptor.stretch = selected.stretch
     end
 
     def to_unsafe

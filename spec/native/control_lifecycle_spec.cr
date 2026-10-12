@@ -256,7 +256,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       window.try { |control| control.destroy unless control.released? }
     end
 
-    it "expires FontButton descriptors while preserving snapshots" do
+    it "retains FontButton descriptors after the block" do
       button = UIng::FontButton.new
       borrowed = nil
       saved = nil
@@ -266,28 +266,36 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         saved = descriptor.snapshot
       end
 
-      expired = borrowed.as(UIng::FontDescriptor)
+      retained = borrowed.as(UIng::FontDescriptor)
       snapshot = saved.as(UIng::FontDescriptor)
-      expired.released?.should be_true
-      expect_raises(Exception, /already been released/) { expired.family }
+      retained.family.empty?.should be_false
+      retained.size.should be > 0
       snapshot.family.empty?.should be_false
       snapshot.size.should be > 0
+      retained.family = "Changed"
+      snapshot.family.should_not eq("Changed")
     ensure
-      saved.try &.free
       button.try &.destroy
     end
 
-    it "returns an owned FontButton descriptor" do
+    it "returns a managed FontButton descriptor" do
       button = UIng::FontButton.new
       descriptor = button.font
       button.destroy
 
-      descriptor.released?.should be_false
       descriptor.family.empty?.should be_false
       descriptor.size.should be > 0
+      String.new(descriptor.to_unsafe.value.family).should eq(descriptor.family)
     ensure
-      descriptor.try &.free
       button.try { |control| control.destroy unless control.released? }
+    end
+
+    it "loads the default control font into a managed descriptor" do
+      descriptor = UIng::FontDescriptor.new
+
+      descriptor.family.empty?.should be_false
+      descriptor.size.should be > 0
+      String.new(descriptor.to_unsafe.value.family).should eq(descriptor.family)
     end
 
     it "sets and resets a Label font size" do

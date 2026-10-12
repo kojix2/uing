@@ -1,13 +1,8 @@
 module UIng
-  # Describes a font and owns its family name until #free is called.
-  #
-  # Descriptors yielded by FontButton callbacks and block methods are valid
-  # only for the duration of the block. Use #snapshot to retain their values.
+  # A Crystal-managed font description. FontButton results and callback values
+  # can be retained without manual freeing.
   class FontDescriptor
-    # Store reference to family string to prevent garbage collection
     @family_string : String = ""
-    @native_family = false
-    getter? released = false
 
     def initialize(
       family : String? = nil, size : Number? = nil, weight : TextWeight? = nil,
@@ -23,68 +18,49 @@ module UIng
       self.stretch = stretch if stretch
     end
 
-    # Auto convert to and from String
-    def family
-      check_available
-      if @cstruct.family.null?
-        ""
-      else
-        # This copies the string from the C struct to a Crystal String
-        String.new(@cstruct.family)
-      end
+    def family : String
+      @family_string
     end
 
     def family=(value : String)
-      check_available
-      release_family
       @family_string = value
       @cstruct.family = @family_string.to_unsafe
     end
 
     def size
-      check_available
       @cstruct.size
     end
 
     def size=(value : Number)
-      check_available
       @cstruct.size = NumericValue.positive(value, "font descriptor size")
     end
 
     def weight
-      check_available
       @cstruct.weight
     end
 
     def weight=(value : TextWeight)
-      check_available
       @cstruct.weight = value
     end
 
     def italic
-      check_available
       @cstruct.italic
     end
 
     def italic=(value : TextItalic)
-      check_available
       @cstruct.italic = value
     end
 
     def stretch
-      check_available
       @cstruct.stretch
     end
 
     def stretch=(value : TextStretch)
-      check_available
       @cstruct.stretch = value
     end
 
-    # Returns an independently owned copy that remains valid after a borrowed
-    # FontButton callback or block descriptor expires.
+    # Returns an independent copy of this descriptor.
     def snapshot : FontDescriptor
-      check_available
       FontDescriptor.new(
         family: family,
         size: size,
@@ -94,57 +70,44 @@ module UIng
       )
     end
 
-    def free : Nil
-      return if @released
-      release_family
-      @released = true
-    end
-
     private def load_control_font : Nil
-      release_family
-      @released = false
-      LibUI.load_control_font(cstruct_pointer)
-      @family_string = ""
-      @native_family = true
+      native = LibUI::FontDescriptor.new
+      LibUI.load_control_font(pointerof(native))
+      load_from_native(pointerof(native))
     end
 
-    protected def prepare_for_font_button_font : Nil
-      release_family
-      @released = false
+    protected def self.from_font_button(button : Pointer(LibUI::FontButton)) : FontDescriptor
+      native = LibUI::FontDescriptor.new
+      LibUI.font_button_font(button, pointerof(native))
+      from_native(pointerof(native))
     end
 
-    protected def font_button_font_loaded : Nil
-      @family_string = ""
-      @native_family = true
-      @released = false
-    end
-
-    # Compatibility alias for #free.
-    def free_font_button_font : Nil
-      free
+    private def self.from_native(native_ptr : Pointer(LibUI::FontDescriptor)) : FontDescriptor
+      native = native_ptr.value
+      FontDescriptor.new(
+        family: native.family.null? ? "" : String.new(native.family),
+        size: native.size,
+        weight: native.weight,
+        italic: native.italic,
+        stretch: native.stretch
+      )
+    ensure
+      LibUI.free_font_descriptor(native_ptr)
     end
 
     def to_unsafe
-      check_available
       cstruct_pointer
     end
 
-    def finalize
-      free
-    end
-
-    private def release_family : Nil
-      return if @released
-
-      LibUI.free_font_descriptor(cstruct_pointer) if @native_family
-
-      @cstruct.family = Pointer(UInt8).null
-      @family_string = ""
-      @native_family = false
-    end
-
-    private def check_available : Nil
-      raise "FontDescriptor has already been released" if @released
+    private def load_from_native(native_ptr : Pointer(LibUI::FontDescriptor)) : Nil
+      native = native_ptr.value
+      self.family = native.family.null? ? "" : String.new(native.family)
+      @cstruct.size = native.size
+      @cstruct.weight = native.weight
+      @cstruct.italic = native.italic
+      @cstruct.stretch = native.stretch
+    ensure
+      LibUI.free_font_descriptor(native_ptr)
     end
 
     private def cstruct_pointer
