@@ -139,14 +139,17 @@ end
   コールバックの外でも保持でき、`free`は不要です。
 - `FontDescriptor`: `FontButton#font`の戻り値とコールバックで受け取った値を保持できます。
   Crystalが管理するため、`free`は不要です。
+- `OpenTypeFeatures`: タグと値はCrystalが管理します。`Attribute.new_features`へ渡した後も
+  再利用でき、`free`は不要です。`Attribute#features`も独立したコピーを返します。
 - `TM`: Crystalが管理します。Windows以外では`zone=`に渡した文字列をコピーして保持します。
   `free`は不要です。
 - `Table::Value`: `cell_value`から返した値はlibui-ngが管理します。`set_cell_value`へ
   渡された値は、そのコールバックが返るまでだけ有効です。渡さずに作った値は`free`します。
 - `Attribute`: `set_attribute`へ渡した後は、受け取った`AttributedString`が管理します。
   列挙中にyieldされたAttributeは、そのブロック内だけで有効です。
-- `OpenTypeFeatures`と`AttributedString`は列挙中に再帰的に読み取れますが、列挙が
-  終わるまでは解放や構造変更ができません。
+- `OpenTypeFeatures`は列挙中に再帰的に読み取れますが、追加や削除はできません。
+  `AttributedString`も列挙中に再帰的に読み取れますが、列挙が終わるまでは解放や
+  構造変更ができません。
 - 描画コンテキストはdrawコールバック中だけ有効です。
 
 `destroy`または`free`を呼ぶと、対応するラッパーは以後利用できません。

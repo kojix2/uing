@@ -1,93 +1,73 @@
 module UIng
+  # A Crystal-managed set of OpenType feature tags and values.
   class OpenTypeFeatures
-    @released : Bool = false
-    @borrowed : Bool = false
+    private class NativeCopyState
+      getter values = {} of String => UInt32
+      property error : Exception? = nil
+    end
+
+    @values : Hash(String, UInt32)
     @enumeration_depth : Int32 = 0
-    @for_each_boxes = [] of Pointer(Void)
 
     def initialize
-      @ref_ptr = LibUI.new_open_type_features
+      @values = {} of String => UInt32
     end
 
-    # Used for wrappers around libui pointers. By default the wrapper owns the
-    # pointer, but uiAttributeFeatures() returns a pointer owned by its attribute.
-    protected def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures), @borrowed : Bool = false)
-      @ref_ptr = ref_ptr
+    protected def initialize(@values : Hash(String, UInt32))
     end
 
-    def free : Nil
-      return if @released
-      check_not_enumerating("free")
-      LibUI.free_open_type_features(@ref_ptr) unless @borrowed
-      @released = true
+    protected def initialize(ref_ptr : Pointer(LibUI::OpenTypeFeatures))
+      state = NativeCopyState.new
+      @values = state.values
+      LibUI.open_type_features_for_each(
+        ref_ptr,
+        ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibUI::ForEach {
+          callback_state = ::Box(NativeCopyState).unbox(data)
+          begin
+            callback_state.values["#{a.chr}#{b.chr}#{c.chr}#{d.chr}"] = value
+            0_u32
+          rescue error
+            callback_state.error = error
+            1_u32
+          end
+        },
+        ::Box.box(state)
+      )
+      if error = state.error
+        raise error
+      end
     end
 
     def clone : OpenTypeFeatures
-      check_available
-      ref_ptr = LibUI.open_type_features_clone(@ref_ptr)
-      OpenTypeFeatures.new(ref_ptr)
+      OpenTypeFeatures.new(@values.dup)
     end
 
     def add(tag : String, value : UInt32 = 1_u32) : Nil
-      check_available
       check_not_enumerating("add features")
-      bytes = tag_bytes(tag)
-      LibUI.open_type_features_add(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], value)
+      validate_tag(tag)
+      @values[tag] = value
     end
 
     def remove(tag : String) : Nil
-      check_available
       check_not_enumerating("remove features")
-      bytes = tag_bytes(tag)
-      LibUI.open_type_features_remove(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3])
+      validate_tag(tag)
+      @values.delete(tag)
     end
 
     def get(tag : String) : UInt32?
-      check_available
-      bytes = tag_bytes(tag)
-      result = LibUI.open_type_features_get(@ref_ptr, bytes[0], bytes[1], bytes[2], bytes[3], out value)
-      return if result == 0
-      value
+      validate_tag(tag)
+      @values[tag]?
     end
 
     def for_each(&callback : (String, UInt32) -> _) : Nil
-      check_available
-      boxed_callback = ::Box.box(callback)
-      @for_each_boxes << boxed_callback
       @enumeration_depth += 1
-
-      proc = ->(_otf : Pointer(LibUI::OpenTypeFeatures), a : LibC::Char, b : LibC::Char, c : LibC::Char, d : LibC::Char, value : UInt32, data : Pointer(Void)) : LibUI::ForEach do
-        begin
-          data_as_callback = ::Box(typeof(callback)).unbox(data)
-          tag = "#{a.chr}#{b.chr}#{c.chr}#{d.chr}"
-          data_as_callback.call(tag, value)
-          0_u32 # uiForEachContinue
-        rescue e
-          UIng.handle_callback_error(e, "OpenTypeFeatures for_each")
-          1_u32 # uiForEachStop
-        end
-      end
-
       begin
-        LibUI.open_type_features_for_each(@ref_ptr, proc, boxed_callback)
+        @values.each do |tag, value|
+          callback.call(tag, value)
+        end
       ensure
         @enumeration_depth -= 1
-        @for_each_boxes.pop
       end
-    end
-
-    def to_unsafe
-      check_available
-      @ref_ptr
-    end
-
-    def finalize
-      # Releasing timing is not critical for this class
-      free
-    end
-
-    private def check_available : Nil
-      raise "OpenTypeFeatures has already been released" if @released
     end
 
     private def check_not_enumerating(operation : String) : Nil
@@ -95,15 +75,12 @@ module UIng
       raise "Cannot #{operation} while OpenTypeFeatures is being enumerated"
     end
 
-    private def tag_bytes(tag : String) : Bytes
+    private def validate_tag(tag : String) : Nil
       raise ArgumentError.new("OpenType tag must be exactly 4 bytes") unless tag.bytesize == 4
 
-      bytes = tag.to_slice
-      unless bytes.all? { |byte| 0x20 <= byte <= 0x7e }
+      unless tag.to_slice.all? { |byte| 0x20 <= byte <= 0x7e }
         raise ArgumentError.new("OpenType tag must contain only printable ASCII bytes")
       end
-
-      bytes
     end
   end
 end

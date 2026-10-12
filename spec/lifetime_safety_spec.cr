@@ -79,13 +79,6 @@ private class ReleasedLifetimeSafetyAttributedString < UIng::Area::AttributedStr
   end
 end
 
-private class ReleasedLifetimeSafetyOpenTypeFeatures < UIng::OpenTypeFeatures
-  def initialize
-    super(Pointer(UIng::LibUI::OpenTypeFeatures).null)
-    @released = true
-  end
-end
-
 private class ReleasedLifetimeSafetyTextLayout < UIng::Area::Draw::TextLayout
   def initialize
     @ref_ptr = Pointer(UIng::LibUI::DrawTextLayout).null
@@ -213,19 +206,6 @@ describe "lifetime safety" do
     expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }
     expect_raises(Exception, /already been released/) { string.grapheme_to_byte_index(0) }
     expect_raises(Exception, /already been released/) { string.to_unsafe }
-  end
-
-  it "rejects every OpenTypeFeatures operation after free" do
-    features = ReleasedLifetimeSafetyOpenTypeFeatures.new
-
-    expect_raises(Exception, /already been released/) { features.clone }
-    expect_raises(Exception, /already been released/) { features.add("liga") }
-    expect_raises(Exception, /already been released/) { features.remove("liga") }
-    expect_raises(Exception, /already been released/) { features.get("liga") }
-    expect_raises(Exception, /already been released/) do
-      features.for_each { |_tag, _value| }
-    end
-    expect_raises(Exception, /already been released/) { features.to_unsafe }
   end
 
   it "rejects every TextLayout operation after free" do

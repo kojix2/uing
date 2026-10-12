@@ -92,8 +92,16 @@ module UIng
       end
 
       def self.new_features(open_type_features : OpenTypeFeatures) : Attribute
-        ref_ptr = LibUI.new_features_attribute(open_type_features.to_unsafe)
-        Attribute.new(ref_ptr)
+        native_features = LibUI.new_open_type_features
+        begin
+          open_type_features.for_each do |tag, value|
+            bytes = tag.to_slice
+            LibUI.open_type_features_add(native_features, bytes[0], bytes[1], bytes[2], bytes[3], value)
+          end
+          Attribute.new(LibUI.new_features_attribute(native_features))
+        ensure
+          LibUI.free_open_type_features(native_features)
+        end
       end
 
       def free : Nil
@@ -156,8 +164,7 @@ module UIng
       def features : OpenTypeFeatures
         check_type(Type::Features)
         ref_ptr = LibUI.attribute_features(@ref_ptr)
-        # Return an owned clone so it remains valid independently of this Attribute.
-        OpenTypeFeatures.new(LibUI.open_type_features_clone(ref_ptr))
+        OpenTypeFeatures.new(ref_ptr)
       end
 
       def to_unsafe

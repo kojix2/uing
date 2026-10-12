@@ -146,6 +146,9 @@ Specific resource rules are:
   They can be retained after a callback and do not need `free`.
 - `FontDescriptor`: results from `FontButton#font` and callback values can be
   retained. Crystal manages them; do not call `free`.
+- `OpenTypeFeatures`: Crystal manages the tags and values. It can be reused
+  after passing it to `Attribute.new_features` and needs no `free`.
+  `Attribute#features` returns an independent copy.
 - `TM`: Crystal manages it. Outside Windows, `zone=` copies and retains its
   string. No `free` is needed.
 - `Table::Value`: a value returned from `cell_value` is managed by libui-ng. A
@@ -153,9 +156,9 @@ Specific resource rules are:
   Free a value you create but do not pass to libui-ng.
 - `Attribute`: after `set_attribute`, the receiving `AttributedString` owns
   it. An attribute yielded by enumeration is valid only for that block.
-- `OpenTypeFeatures` and `AttributedString` may be read recursively during
-  enumeration, but cannot be freed or structurally modified until enumeration
-  finishes.
+- `OpenTypeFeatures` may be read recursively during enumeration, but tags
+  cannot be added or removed. `AttributedString` may also be read recursively,
+  but cannot be freed or structurally modified until enumeration finishes.
 - A draw context is valid only during its draw callback.
 
 Calling `destroy` or `free` makes the corresponding wrapper unavailable for

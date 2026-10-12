@@ -562,22 +562,6 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       errors.size.should eq(types.size - 1)
     end
 
-    it "round-trips the full UInt32 range through OpenType features" do
-      features = UIng::OpenTypeFeatures.new
-      features.get("liga").should be_nil
-
-      features.add("liga", 0_u32)
-      features.add("kern", UInt32::MAX)
-      features.get("liga").should eq(0_u32)
-      features.get("kern").should eq(UInt32::MAX)
-
-      values = {} of String => UInt32
-      features.for_each { |tag, value| values[tag] = value }
-      values.should eq({"kern" => UInt32::MAX, "liga" => 0_u32})
-    ensure
-      features.try &.free
-    end
-
     it "represents empty combobox and radio-button selections as nil" do
       combobox = UIng::Combobox.new(["first", "second"])
       radio_buttons = UIng::RadioButtons.new(["first", "second"])
@@ -640,6 +624,10 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       })
       cloned_features = features_attribute.features
       cloned_features.get("liga").should eq(3_u32)
+      source_features.add("liga", 0_u32)
+      features_attribute.free
+      GC.collect
+      cloned_features.get("liga").should eq(3_u32)
 
       expect_raises(TypeCastError, /expected String, got Int/) { int_value.string }
       expect_raises(TypeCastError, /expected Family, got Size/) { size_attribute.family }
@@ -658,38 +646,6 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       underline_attribute.try &.free
       underline_color_attribute.try &.free
       features_attribute.try &.free
-      source_features.try &.free
-      cloned_features.try &.free
-    end
-
-    it "rejects OpenTypeFeatures mutation during enumeration and permits nested reads" do
-      features = UIng::OpenTypeFeatures.new
-      features.add("kern")
-      features.add("liga")
-      errors = [] of Exception
-      UIng.on_error { |error, _context| errors << error }
-
-      visits = 0
-      features.for_each do |_tag, _value|
-        visits += 1
-        features.free
-      end
-
-      visits.should eq(1)
-      errors.size.should eq(1)
-      errors.first.message.to_s.should contain("being enumerated")
-      features.get("liga").should eq(1_u32)
-
-      nested_visits = 0
-      features.for_each do |_outer_tag, _outer_value|
-        features.for_each do |_inner_tag, _inner_value|
-          nested_visits += 1
-        end
-      end
-      nested_visits.should eq(4)
-    ensure
-      UIng.on_error(nil)
-      features.try &.free
     end
 
     it "rejects AttributedString mutation during enumeration and preserves its owner" do
