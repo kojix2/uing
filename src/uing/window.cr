@@ -292,9 +292,19 @@ module UIng
       UIng.string_from_pointer(str_ptr)
     end
 
+    # Returns selected file paths, or nil when canceled or the dialog fails.
+    def open_files : Array(String)?
+      UIng.strings_from_pointer(LibUI.open_files(ref_ptr))
+    end
+
     def open_folder : String?
       str_ptr = LibUI.open_folder(ref_ptr)
       UIng.string_from_pointer(str_ptr)
+    end
+
+    # Returns selected folder paths, or nil when canceled or the dialog fails.
+    def open_folders : Array(String)?
+      UIng.strings_from_pointer(LibUI.open_folders(ref_ptr))
     end
 
     def save_file : String?

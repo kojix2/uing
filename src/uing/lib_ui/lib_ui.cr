@@ -91,6 +91,7 @@ module UIng
     fun timer = uiTimer(milliseconds : LibC::Int, f : (Pointer(Void) -> LibC::Int), data : Pointer(Void))
     fun on_should_quit = uiOnShouldQuit(f : (Pointer(Void) -> LibC::Int), data : Pointer(Void))
     fun free_text = uiFreeText(text : Pointer(LibC::Char))
+    fun free_text_array = uiFreeTextArray(texts : Pointer(Pointer(LibC::Char)))
     # Control is a struct
     fun control_destroy = uiControlDestroy(c : Pointer(Control))
     fun control_on_destroyed = uiControlOnDestroyed(c : Pointer(Control), f : (Pointer(Control), Pointer(Void) -> Void), data : Pointer(Void))
@@ -286,7 +287,9 @@ module UIng
     fun menu_append_separator = uiMenuAppendSeparator(m : Pointer(Menu))
     fun new_menu = uiNewMenu(name : Pointer(LibC::Char)) : Pointer(Menu)
     fun open_file = uiOpenFile(parent : Pointer(Window)) : Pointer(LibC::Char)
+    fun open_files = uiOpenFiles(parent : Pointer(Window)) : Pointer(Pointer(LibC::Char))
     fun open_folder = uiOpenFolder(parent : Pointer(Window)) : Pointer(LibC::Char)
+    fun open_folders = uiOpenFolders(parent : Pointer(Window)) : Pointer(Pointer(LibC::Char))
     fun save_file = uiSaveFile(parent : Pointer(Window)) : Pointer(LibC::Char)
     fun msg_box = uiMsgBox(parent : Pointer(Window), title : Pointer(LibC::Char), description : Pointer(LibC::Char))
     fun msg_box_error = uiMsgBoxError(parent : Pointer(Window), title : Pointer(LibC::Char), description : Pointer(LibC::Char))

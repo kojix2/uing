@@ -30,13 +30,15 @@ Window provides native message, error, file, folder, and save dialogs.
 | Method | Purpose | Return value |
 | --- | --- | --- |
 | <code>open_file</code> | Selects a file to open. | The selected path, or <code>nil</code> if canceled. |
+| <code>open_files</code> | Selects one or more files. | An array of paths, or <code>nil</code> if canceled. |
 | <code>save_file</code> | Selects a file to save. | The selected path, or <code>nil</code> if canceled. |
 | <code>open_folder</code> | Selects a folder to open. | The selected path, or <code>nil</code> if canceled. |
+| <code>open_folders</code> | Selects one or more folders. | An array of paths, or <code>nil</code> if canceled. |
 
 ## Usage notes
 
 - Call dialogs from their parent Window so the platform can keep modality and focus correct.
-- <code>open_file</code>, <code>open_folder</code>, and <code>save_file</code> return <code>nil</code> when canceled.
+- File and folder dialogs return <code>nil</code> when canceled or if the dialog fails. The multiple-selection methods return one or more paths on success; selection order is unspecified.
 - Appearance and detailed behavior follow the OS-native dialog.
 
 

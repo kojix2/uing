@@ -98,6 +98,23 @@ module UIng
     str
   end
 
+  # Copy a NULL-terminated array of paths before releasing it with libui-ng.
+  protected def self.strings_from_pointer(array_ptr : Pointer(Pointer(LibC::Char))) : Array(String)?
+    return if array_ptr.null?
+
+    begin
+      paths = [] of String
+      index = 0
+      until (path_ptr = array_ptr[index]).null?
+        paths << String.new(path_ptr)
+        index += 1
+      end
+      paths
+    ensure
+      LibUI.free_text_array(array_ptr)
+    end
+  end
+
   @[Experimental]
   def self.on_error(&handler : Exception, String -> Nil) : Nil
     @@callback_mutex.synchronize { @@error_handler = handler }
