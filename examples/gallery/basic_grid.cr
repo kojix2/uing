@@ -22,7 +22,7 @@ labels.each_with_index do |text, index|
   col = index % 3
 
   label = UIng::Label.new(text)
-  grid.append(label, col, row, 1, 1, true, :fill, true, :fill)
+  grid.append(label, left: col, top: row, hexpand: true, vexpand: true)
 end
 
 # Add a button that spans 2 columns at the bottom
@@ -30,14 +30,14 @@ button = UIng::Button.new("Span Button")
 button.on_clicked do
   window.msg_box("Grid Demo", "This button spans 2 columns!")
 end
-grid.append(button, 0, 3, 2, 1, true, :fill, false, :fill)
+grid.append(button, left: 0, top: 3, xspan: 2, hexpand: true)
 
 # Add another button in the remaining space
 another_button = UIng::Button.new("Single")
 another_button.on_clicked do
   window.msg_box("Grid Demo", "Single column button!")
 end
-grid.append(another_button, 2, 3, 1, 1, true, :fill, false, :fill)
+grid.append(another_button, left: 2, top: 3, hexpand: true)
 
 window.child = grid
 window.show

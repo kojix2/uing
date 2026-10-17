@@ -24,10 +24,11 @@ Gridは行・列・結合範囲・拡張・配置を指定してコントロー�
 
 ```crystal
 grid = UIng::Grid.new(padded: true)
-grid.append(UIng::Button.new("Span"),
-  left: 0, top: 1, xspan: 2, yspan: 1,
-  hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+grid.append(UIng::Button.new("Span"), left: 0, top: 1, xspan: 2, hexpand: true)
 ```
+
+既定値は`xspan: 1`、`yspan: 1`、`hexpand: false`、`vexpand: false`、
+両方向の配置は`:fill`です。スパンは1以上を指定します。`insert_at`も同じ既定値です。
 
 `hexpand`・`vexpand`は列・行の拡張、`halign`・`valign`は領域内の配置を指定します。図の破線は割り当て領域、青い矩形は子です。
 

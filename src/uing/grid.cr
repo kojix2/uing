@@ -29,17 +29,25 @@ module UIng
       LibUI.grid_delete(ref_ptr, UIng.to_control(child))
     end
 
-    def append(control, left : Int32, top : Int32, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil
+    def append(control, left : Int32, top : Int32,
+               xspan : Int32 = 1, yspan : Int32 = 1,
+               hexpand : Bool = false, halign : UIng::Align = UIng::Align::Fill,
+               vexpand : Bool = false, valign : UIng::Align = UIng::Align::Fill) : Nil
+      check_spans(xspan, yspan)
       control.check_can_move(self)
       LibUI.grid_append(ref_ptr, UIng.to_control(control), left, top, xspan, yspan, hexpand, halign, vexpand, valign)
       @children_refs << control
       control.take_ownership(self)
     end
 
-    def insert_at(control, existing, at : At, xspan : Int32, yspan : Int32, hexpand : Bool, halign : UIng::Align, vexpand : Bool, valign : UIng::Align) : Nil
+    def insert_at(control, existing, at : At,
+                  xspan : Int32 = 1, yspan : Int32 = 1,
+                  hexpand : Bool = false, halign : UIng::Align = UIng::Align::Fill,
+                  vexpand : Bool = false, valign : UIng::Align = UIng::Align::Fill) : Nil
       unless @children_refs.includes?(existing)
         raise ArgumentError.new("existing control does not belong to this Grid")
       end
+      check_spans(xspan, yspan)
       control.check_can_move(self)
       LibUI.grid_insert_at(ref_ptr, UIng.to_control(control), UIng.to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
       @children_refs << control
@@ -56,6 +64,11 @@ module UIng
 
     def to_unsafe
       ref_ptr
+    end
+
+    private def check_spans(xspan : Int32, yspan : Int32) : Nil
+      raise ArgumentError.new("xspan must be at least 1") if xspan < 1
+      raise ArgumentError.new("yspan must be at least 1") if yspan < 1
     end
   end
 end

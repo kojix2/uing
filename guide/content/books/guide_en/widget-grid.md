@@ -24,10 +24,12 @@ Grid places controls at explicit rows and columns with spans, expansion, and ali
 
 ```crystal
 grid = UIng::Grid.new(padded: true)
-grid.append(UIng::Button.new("Span"),
-  left: 0, top: 1, xspan: 2, yspan: 1,
-  hexpand: true, halign: :fill, vexpand: false, valign: :fill)
+grid.append(UIng::Button.new("Span"), left: 0, top: 1, xspan: 2, hexpand: true)
 ```
+
+The defaults are `xspan: 1`, `yspan: 1`, `hexpand: false`, `vexpand: false`,
+and `:fill` for both alignments. Spans must be at least 1. `insert_at` uses the
+same defaults.
 
 `hexpand` and `vexpand` expand columns and rows; `halign` and `valign` set placement within them. Dashed outlines show allocated space; blue rectangles show children.
 

@@ -223,6 +223,22 @@ describe "container lifetime" do
     child.parent.should be_nil
   end
 
+  it "rejects invalid Grid spans before passing them to libui-ng" do
+    grid = DetachableGrid.new
+    anchor = DetachableControl.new
+    grid.adopt(anchor)
+    child = DetachableControl.new
+
+    expect_raises(ArgumentError, /xspan must be at least 1/) do
+      grid.append(child, 0, 0, 0, 1, false, UIng::Align::Fill, false, UIng::Align::Fill)
+    end
+    expect_raises(ArgumentError, /yspan must be at least 1/) do
+      grid.insert_at(child, anchor, UIng::Grid::At::Trailing, yspan: 0)
+    end
+
+    child.parent.should be_nil
+  end
+
   it "preserves Window ownership when child replacement is attempted while destruction is pending" do
     window = DetachableWindow.new
     old_child = DetachableControl.new

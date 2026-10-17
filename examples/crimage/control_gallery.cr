@@ -534,12 +534,12 @@ class ControlGalleryApp
       )
       append(
         UIng::Grid.new do
-          append(UIng::Checkbox.new("Check 1"), 0, 0, 1, 1, true, :fill, true, :fill)
-          append(UIng::Checkbox.new("Check 2"), 1, 0, 1, 1, true, :fill, true, :fill)
-          append(UIng::Checkbox.new("Check 3"), 0, 1, 1, 1, true, :fill, true, :fill)
-          append(UIng::Checkbox.new("Check 4"), 1, 1, 1, 1, true, :fill, true, :fill)
-          append(UIng::Checkbox.new("Check 5"), 0, 2, 1, 1, true, :fill, true, :fill)
-          append(UIng::Checkbox.new("Check 6"), 1, 2, 1, 1, true, :fill, true, :fill)
+          append(UIng::Checkbox.new("Check 1"), left: 0, top: 0, hexpand: true, vexpand: true)
+          append(UIng::Checkbox.new("Check 2"), left: 1, top: 0, hexpand: true, vexpand: true)
+          append(UIng::Checkbox.new("Check 3"), left: 0, top: 1, hexpand: true, vexpand: true)
+          append(UIng::Checkbox.new("Check 4"), left: 1, top: 1, hexpand: true, vexpand: true)
+          append(UIng::Checkbox.new("Check 5"), left: 0, top: 2, hexpand: true, vexpand: true)
+          append(UIng::Checkbox.new("Check 6"), left: 1, top: 2, hexpand: true, vexpand: true)
         end
       )
       append(
