@@ -55,6 +55,12 @@ module UIng
   # Mutex for thread-safe access to callbacks
   @@callback_mutex = Mutex.new
 
+  # libui-ng requires exactly one matching uninit for every successful init.
+  # Keep that contract on the Crystal side so an accidental duplicate uninit
+  # cannot enter a backend after its global state has been released.
+  @@lifecycle_mutex = Mutex.new
+  @@initialized = false
+
   # Optional application-defined callback error policy. Errors are always
   # logged; UI notification is left to the application.
   @@error_handler : ErrorHandler?
@@ -74,6 +80,11 @@ module UIng
 
   # Storage for on_should_quit callback (libui-ng supports only one callback)
   @@should_quit_callback_box : Pointer(Void)?
+
+  # Keep a process-lifetime callback available while replacing a user callback
+  # during shutdown. This also protects applications linked against an older
+  # libui-ng that does not reset uiOnShouldQuit() during uiUninit().
+  DEFAULT_SHOULD_QUIT_CALLBACK = ->(_data : Pointer(Void)) : LibC::Int { 0_i32 }
 
   # Convert control to Pointer(LibUI::Control)
   protected def self.to_control(control : Control)
@@ -150,11 +161,18 @@ module UIng
   end
 
   def self.init : Nil
-    str_ptr = LibUI.init(@@init_options)
-    return if str_ptr.null?
-    err = String.new(str_ptr)
-    LibUI.free_init_error(str_ptr)
-    raise err
+    @@lifecycle_mutex.synchronize do
+      raise RuntimeError.new("UIng is already initialized") if @@initialized
+
+      str_ptr = LibUI.init(@@init_options)
+      unless str_ptr.null?
+        err = String.new(str_ptr)
+        LibUI.free_init_error(str_ptr)
+        raise err
+      end
+
+      @@initialized = true
+    end
   end
 
   def self.init(&)
@@ -167,14 +185,24 @@ module UIng
   end
 
   def self.uninit : Nil
-    LibUI.uninit
-    Menu.reset_after_uninit
-    # Clear global callback arrays on uninit to prevent memory leaks
-    @@callback_mutex.synchronize do
-      @@timer_callback_boxes.clear
-      @@queue_callback_boxes.clear
-      @@should_quit_callback_box = nil
+    @@lifecycle_mutex.synchronize do
+      if @@initialized
+        reset_should_quit_callback
+        LibUI.uninit
+
+        # Keep teardown atomic with respect to the next init. Otherwise another
+        # fiber could initialize libui-ng between native uninit and invalidating
+        # wrappers retained from the previous runtime.
+        Menu.reset_after_uninit
+        # Clear global callback arrays on uninit to prevent memory leaks.
+        @@callback_mutex.synchronize do
+          @@timer_callback_boxes.clear
+          @@queue_callback_boxes.clear
+        end
+        @@initialized = false
+      end
     end
+    nil
   end
 
   # should not be used.
@@ -257,16 +285,29 @@ module UIng
   def self.on_should_quit(&callback : -> Bool) : Nil
     boxed_data = ::Box.box(callback)
     # Store in dedicated variable (libui-ng supports only one callback, overwrites previous)
-    @@should_quit_callback_box = boxed_data
-    LibUI.on_should_quit(->(data) : LibC::Int do
-      begin
-        data_as_callback = ::Box(typeof(callback)).unbox(data)
-        data_as_callback.call ? 1 : 0
-      rescue e
-        UIng.handle_callback_error(e, "UIng.on_should_quit")
-        0
+    # Share the lifecycle lock with uninit so a concurrent registration cannot
+    # store a new Box in libui-ng after its teardown has cleared the old one.
+    @@lifecycle_mutex.synchronize do
+      @@callback_mutex.synchronize do
+        @@should_quit_callback_box = boxed_data
+        LibUI.on_should_quit(->(data) : LibC::Int do
+          begin
+            data_as_callback = ::Box(typeof(callback)).unbox(data)
+            data_as_callback.call ? 1 : 0
+          rescue e
+            UIng.handle_callback_error(e, "UIng.on_should_quit")
+            0
+          end
+        end, boxed_data)
       end
-    end, boxed_data)
+    end
+  end
+
+  private def self.reset_should_quit_callback : Nil
+    @@callback_mutex.synchronize do
+      LibUI.on_should_quit(DEFAULT_SHOULD_QUIT_CALLBACK, Pointer(Void).null)
+      @@should_quit_callback_box = nil
+    end
   end
 
   private def self.free_text(text) : Nil

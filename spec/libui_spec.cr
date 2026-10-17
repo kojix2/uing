@@ -28,4 +28,9 @@ describe UIng do
 
     callback_called.should be_false
   end
+
+  it "does not invoke native shutdown when the runtime is already inactive" do
+    UIng.uninit
+    UIng.uninit
+  end
 end
