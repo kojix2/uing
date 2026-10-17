@@ -19,9 +19,7 @@ module UIng
     # Registers a callback that receives a retainable FontDescriptor.
     def on_changed(&block : FontDescriptor -> Nil) : Nil
       wrapper = -> : Nil {
-        font do |font_descriptor|
-          block.call(font_descriptor)
-        end
+        block.call(font)
       }
       @on_changed_box = ::Box.box(wrapper)
       if boxed_data = @on_changed_box
@@ -40,17 +38,12 @@ module UIng
       end
     end
 
-    # Yields the selected font as a retainable FontDescriptor.
-    def font(&block : FontDescriptor -> Nil) : Nil
-      block.call(font)
-    end
-
     # Returns the selected font as a Crystal-managed descriptor.
     def font : FontDescriptor
       FontDescriptor.from_font_button(ref_ptr)
     end
 
-    @[Deprecated("Use `font` to return a FontDescriptor, or `font { ... }` for scoped access")]
+    @[Deprecated("Use `font` to return a FontDescriptor")]
     def font(descriptor : FontDescriptor) : Nil
       selected = font
       descriptor.family = selected.family

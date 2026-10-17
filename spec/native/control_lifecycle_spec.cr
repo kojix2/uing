@@ -288,18 +288,10 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       window.try { |control| control.destroy unless control.released? }
     end
 
-    it "retains FontButton descriptors after the block" do
+    it "keeps FontButton descriptor snapshots independent" do
       button = UIng::FontButton.new
-      borrowed = nil
-      saved = nil
-
-      button.font do |descriptor|
-        borrowed = descriptor
-        saved = descriptor.snapshot
-      end
-
-      retained = borrowed.as(UIng::FontDescriptor)
-      snapshot = saved.as(UIng::FontDescriptor)
+      retained = button.font
+      snapshot = retained.snapshot
       retained.family.empty?.should be_false
       retained.size.should be > 0
       snapshot.family.empty?.should be_false
