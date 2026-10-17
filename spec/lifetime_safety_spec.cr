@@ -224,14 +224,6 @@ describe "lifetime safety" do
     status.success?.should be_true, "#{output}\n#{error}"
   end
 
-  it "clears the native MenuItem callback before releasing its callback box" do
-    item = LifetimeSafetyMenuItem.new
-
-    item.destroy
-
-    item.callback_was_retained_when_cleared?.should be_true
-  end
-
   it "clears a MenuItem click callback without invalidating its wrapper" do
     item = LifetimeSafetyMenuItem.new
 
@@ -249,10 +241,10 @@ describe "lifetime safety" do
   it "does not touch the native callback when a MenuItem has no registered callback" do
     item = LifetimeSafetyMenuItem.new(callback_registered: false)
 
-    item.destroy
+    item.clear_on_clicked
 
     item.callback_clear_count.should eq(0)
-    expect_raises(Exception, /already been released/) { item.to_unsafe }
+    item.to_unsafe.null?.should be_true
   end
 
   it "rejects callbacks on Quit MenuItems before calling libui-ng" do
@@ -262,8 +254,8 @@ describe "lifetime safety" do
       item.on_clicked { |_window| }
     end
 
-    item.destroy
-    expect_raises(Exception, /already been released/) { item.to_unsafe }
+    item.clear_on_clicked
+    item.to_unsafe.null?.should be_true
   end
 
   it "rejects checked state on non-check MenuItems before calling libui-ng" do

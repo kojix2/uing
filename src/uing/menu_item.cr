@@ -34,14 +34,6 @@ module UIng
       new(ref_ptr, item_kind)
     end
 
-    # Invalidates this wrapper and releases its callback. Menu items are owned
-    # by libui-ng, so this does not remove the native item from its menu.
-    def destroy : Nil
-      return if @released
-      clear_on_clicked
-      @released = true
-    end
-
     private def clear_native_callback : Nil
       LibUI.menu_item_on_clicked(
         @ref_ptr,

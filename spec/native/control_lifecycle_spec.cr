@@ -118,7 +118,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
     # libui-ng finalizes the application menu when the first Window is created,
     # so menu coverage must run before any example that constructs a Window.
-    it "releases a Quit MenuItem wrapper without touching its forbidden callback API" do
+    it "clears a Quit MenuItem callback without touching its forbidden callback API" do
       menu = UIng::Menu.new("Application")
       item = menu.append_quit_item
 
@@ -126,8 +126,8 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         item.on_clicked { |_window| }
       end
 
-      item.destroy
-      expect_raises(Exception, /already been released/) { item.to_unsafe }
+      item.clear_on_clicked
+      item.to_unsafe.null?.should be_false
     end
 
     it "converts CrImage colors and images through native controls" do
