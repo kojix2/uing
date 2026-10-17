@@ -26,24 +26,25 @@ describe UIng::Timer do
   end
 
   it "honors stop called from inside the callback" do
-    timer = nil.as(UIng::Timer?)
-    timer = UIng::Timer.__create__(-> { timer.not_nil!.stop; true })
+    timers = [] of UIng::Timer
+    timer = UIng::Timer.__create__(-> { timers.first.stop; true })
+    timers << timer
 
-    timer.not_nil!.__tick__.should be_false
-    timer.not_nil!.stopped?.should be_true
+    timer.__tick__.should be_false
+    timer.stopped?.should be_true
   end
 
   it "stops and reports callback errors without propagating them" do
     reported = nil.as(Exception?)
     UIng.on_error { |error, _context| reported = error }
-    timer = UIng::Timer.__create__(-> { raise "timer failed"; true })
+    timer = UIng::Timer.__create__(-> : Bool { raise "timer failed" })
 
     UIng.expect_callback_error_log("timer failed", "UIng.timer") do
       timer.__tick__.should be_false
     end
 
     timer.stopped?.should be_true
-    reported.not_nil!.message.should eq("timer failed")
+    reported.try(&.message).should eq("timer failed")
   ensure
     UIng.clear_on_error
   end
