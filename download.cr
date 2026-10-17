@@ -14,8 +14,6 @@ ASSET_SHA256 = {
   "libui-ng-ubuntu-arm64-static-release.zip"        => "829160c949cc46fe19e9d771ae69011c6e23e865a07de8d923a83e2fedde3657",
   "libui-ng-ubuntu-x64-static-debug.zip"            => "d6d000d1f595476dc9c4e872bf4dae9f7c632f27679db38eba9f12e2fa48c67b",
   "libui-ng-ubuntu-x64-static-release.zip"          => "110061cb79de3b866b517607ed86d72f7cf992bc949079f513df9b81b2f67f8d",
-  "libui-ng-windows-x64-mingw-static-debug.zip"     => "fbfec2ad91a112dbd7fa821830b4a27dfdc23cc1b5b1c43a4e25c795348da301",
-  "libui-ng-windows-x64-mingw-static-release.zip"   => "e346c42042630d5cb9141f3eeae66defb76e122e08a3da41a9f4e62bec6a38be",
   "libui-ng-windows-x64-msvc-static-md-debug.zip"   => "eb0c3fe45daa4f89adb922b41330769ab7c23fb51b63efecc01f44ee481efd03",
   "libui-ng-windows-x64-msvc-static-md-release.zip" => "1c521707d22f44aec58e18b4cc6399aa3896c6f448bb9a6f5eaa5a5b36a8e783",
   "libui-ng-windows-x64-msvc-static-mt-debug.zip"   => "43873f0f31572c381e43e106253f1edaf085b4604f663b973e375a6bc6a813e9",
@@ -37,16 +35,6 @@ MSVC_LIBUI_SOURCE = File.join(SDK_LIB_DIR, "libui.lib")
 PDB_SOURCE        = File.join(SDK_LIB_DIR, "libui.pdb")
 
 Dir.mkdir(WORK_DIR)
-
-def windows_flavor_from_msystem
-  msystem = ENV["MSYSTEM"]?.to_s.upcase
-  case msystem
-  when "UCRT64"
-    "ucrt"
-  when "MINGW64"
-    "mingw64"
-  end
-end
 
 # Platform-specific configuration with architecture support
 PLATFORM_CONFIG = {
@@ -88,11 +76,6 @@ PLATFORM_CONFIG = {
   ucrt_x64: [
     {zip: "libui-ng-windows-x64-ucrt-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
     {zip: "libui-ng-windows-x64-ucrt-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
-  ],
-  # Legacy MINGW64 assets from the pinned libui-ng release; new GNU-style builds use UCRT64.
-  mingw_x64: [
-    {zip: "libui-ng-windows-x64-mingw-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
-    {zip: "libui-ng-windows-x64-mingw-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
 }
 
@@ -270,16 +253,11 @@ begin
     {% raise "Unsupported MSVC architecture. Supported: x86_64, i386" %}
   {% end %}
   {% elsif flag?(:win32) && flag?(:gnu) %}
-  windows_flavor = windows_flavor_from_msystem
   {% if flag?(:x86_64) %}
-    case windows_flavor
-    when "ucrt"
-      process_platform(PLATFORM_CONFIG[:ucrt_x64])
-    when "mingw64"
-      process_platform(PLATFORM_CONFIG[:mingw_x64])
-    else
+    unless ENV["MSYSTEM"]?.to_s.upcase == "UCRT64"
       raise "Unsupported MSYS2 environment: #{ENV["MSYSTEM"]?}. Use UCRT64."
     end
+    process_platform(PLATFORM_CONFIG[:ucrt_x64])
   {% elsif flag?(:i386) %}
     raise "MinGW x86 assets are not available"
   {% else %}

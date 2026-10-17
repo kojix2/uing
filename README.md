@@ -44,8 +44,8 @@ You get windows, buttons, text boxes, menus, dialogs, drawing areas, and other s
 - Linux: x86_64 (64-bit), ARM64
 - Windows: x86_64 (64-bit, MSVC and MSYS2 UCRT64)
 
-The pinned libui-ng release still provides legacy MinGW64 assets, but the
-MinGW64 environment is no longer covered by CI.
+MinGW64 is no longer supported; use the MSYS2 UCRT64 environment for
+GNU-style builds.
 
 ## Installation
 
