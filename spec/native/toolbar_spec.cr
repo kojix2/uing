@@ -20,10 +20,10 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       window.toolbar = toolbar
 
       UIng::Toolbar::DisplayMode.values.each do |from|
-        UIng::Toolbar::DisplayMode.values.each do |to|
+        UIng::Toolbar::DisplayMode.values.each do |target_mode|
           toolbar.display_mode = from
-          toolbar.display_mode = to
-          toolbar.display_mode.should eq(to)
+          toolbar.display_mode = target_mode
+          toolbar.display_mode.should eq(target_mode)
           toolbar.to_unsafe.should eq(toolbar_ptr)
           item.to_unsafe.should eq(item_ptr)
           item.text.should eq("Pinned")
