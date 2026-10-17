@@ -232,6 +232,20 @@ describe "lifetime safety" do
     item.callback_was_retained_when_cleared?.should be_true
   end
 
+  it "clears a MenuItem click callback without invalidating its wrapper" do
+    item = LifetimeSafetyMenuItem.new
+
+    item.clear_on_clicked
+
+    item.callback_clear_count.should eq(1)
+    item.callback_was_retained_when_cleared?.should be_true
+    item.callback_retained?.should be_false
+    item.to_unsafe.null?.should be_true
+
+    item.on_clicked(nil)
+    item.callback_clear_count.should eq(1)
+  end
+
   it "does not touch the native callback when a MenuItem has no registered callback" do
     item = LifetimeSafetyMenuItem.new(callback_registered: false)
 

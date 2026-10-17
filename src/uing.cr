@@ -136,6 +136,12 @@ module UIng
     @@callback_mutex.synchronize { @@error_handler = nil }
   end
 
+  @[Experimental]
+  # Equivalent to `on_error(nil)`.
+  def self.clear_on_error : Nil
+    on_error(nil)
+  end
+
   # Handle callback errors by printing the error message and backtrace, then
   # invoking the application-defined policy when one has been configured.
   def self.handle_callback_error(ex : Exception, ctx : String = "callback")
@@ -301,6 +307,16 @@ module UIng
         end, boxed_data)
       end
     end
+  end
+
+  # Restores the default behavior of rejecting application-wide quit requests.
+  # Equivalent to `on_should_quit(nil)`.
+  def self.clear_on_should_quit : Nil
+    @@lifecycle_mutex.synchronize { reset_should_quit_callback }
+  end
+
+  def self.on_should_quit(callback : Nil) : Nil
+    clear_on_should_quit
   end
 
   private def self.reset_should_quit_callback : Nil

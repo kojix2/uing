@@ -31,6 +31,7 @@ MenuはアプリケーションメニューとOS標準のメニュー項目を�
 
 - 最初のWindowを作る前にすべてのMenuを構築し、Windowへ<code>menubar: true</code>を指定します。
 - プラットフォーム側の操作ではWindowがない場合があるため、コールバックには省略可能なWindowが渡されます。
+- `item.clear_on_clicked`は`item.on_clicked(nil)`と同じです。クリック時のコールバックを解放し、項目は引き続き使用できます。どちらもメニューから項目を削除しません。Quit項目には代わりに`UIng.clear_on_should_quit`を使います。
 - <code>Preferences</code>、<code>About</code>、<code>Quit</code>はOSごとのメニュー規約を吸収する標準項目です。表示名、配置、区切り線はOSによって異なり、追加したMenu内の順序どおりに表示されるとは限りません。
 - <code>append_preferences_item</code>、<code>append_about_item</code>、<code>append_quit_item</code>は、それぞれアプリケーション全体で1つだけ追加できます。
 

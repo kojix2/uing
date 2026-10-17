@@ -70,4 +70,23 @@ describe "Area event wrappers" do
     crossed.should eq([false, true])
     {handled, unhandled}.should eq({1, 0})
   end
+
+  it "stops invoking cleared Area callbacks through the native handler" do
+    handler = UIng::Area::Handler.new
+    crossed = false
+    handler.mouse_crossed { |_area, _left| crossed = true }
+    handler.key_event { |_area, _event| true }
+
+    handler.clear_mouse_crossed
+    handler.key_event(nil)
+    handler_ptr = handler.to_unsafe
+    area_ptr = Pointer(UIng::LibUI::Area).null
+    key_event = UIng::LibUI::AreaKeyEvent.new
+
+    handler_ptr.value.mouse_crossed.call(handler_ptr, area_ptr, 1)
+    handled = handler_ptr.value.key_event.call(handler_ptr, area_ptr, pointerof(key_event))
+
+    crossed.should be_false
+    handled.should eq(0)
+  end
 end

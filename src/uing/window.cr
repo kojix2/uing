@@ -320,6 +320,46 @@ module UIng
       LibUI.msg_box_error(ref_ptr, title, description)
     end
 
+    # Clears the callback; equivalent to `on_position_changed(nil)`.
+    def clear_on_position_changed : Nil
+      LibUI.window_on_position_changed(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_position_changed_box = nil
+    end
+
+    def on_position_changed(callback : Nil) : Nil
+      clear_on_position_changed
+    end
+
+    # Clears the callback; equivalent to `on_content_size_changed(nil)`.
+    def clear_on_content_size_changed : Nil
+      LibUI.window_on_content_size_changed(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_content_size_changed_box = nil
+    end
+
+    def on_content_size_changed(callback : Nil) : Nil
+      clear_on_content_size_changed
+    end
+
+    # Clears the callback; equivalent to `on_closing(nil)`.
+    def clear_on_closing : Nil
+      LibUI.window_on_closing(ref_ptr, ->(_sender, _data) : LibC::Int { 0_i32 }, Pointer(Void).null)
+      @on_closing_box = nil
+    end
+
+    def on_closing(callback : Nil) : Nil
+      clear_on_closing
+    end
+
+    # Clears the callback; equivalent to `on_focus_changed(nil)`.
+    def clear_on_focus_changed : Nil
+      LibUI.window_on_focus_changed(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_focus_changed_box = nil
+    end
+
+    def on_focus_changed(callback : Nil) : Nil
+      clear_on_focus_changed
+    end
+
     def to_unsafe
       ref_ptr
     end

@@ -144,9 +144,27 @@ module UIng
         @extended_handler.draw_box = @draw_box
       end
 
+      def clear_draw : Nil
+        @extended_handler.draw_box = Pointer(Void).null
+        @draw_box = Pointer(Void).null
+      end
+
+      def draw(callback : Nil) : Nil
+        clear_draw
+      end
+
       def mouse_event(&block : (Area, Area::MouseEvent) -> Nil)
         @mouse_event_box = ::Box.box(block)
         @extended_handler.mouse_event_box = @mouse_event_box
+      end
+
+      def clear_mouse_event : Nil
+        @extended_handler.mouse_event_box = Pointer(Void).null
+        @mouse_event_box = Pointer(Void).null
+      end
+
+      def mouse_event(callback : Nil) : Nil
+        clear_mouse_event
       end
 
       def mouse_crossed(&block : (Area, Bool) -> Nil)
@@ -154,14 +172,41 @@ module UIng
         @extended_handler.mouse_crossed_box = @mouse_crossed_box
       end
 
+      def clear_mouse_crossed : Nil
+        @extended_handler.mouse_crossed_box = Pointer(Void).null
+        @mouse_crossed_box = Pointer(Void).null
+      end
+
+      def mouse_crossed(callback : Nil) : Nil
+        clear_mouse_crossed
+      end
+
       def drag_broken(&block : (Area) -> Nil)
         @drag_broken_box = ::Box.box(block)
         @extended_handler.drag_broken_box = @drag_broken_box
       end
 
+      def clear_drag_broken : Nil
+        @extended_handler.drag_broken_box = Pointer(Void).null
+        @drag_broken_box = Pointer(Void).null
+      end
+
+      def drag_broken(callback : Nil) : Nil
+        clear_drag_broken
+      end
+
       def key_event(&block : (Area, Area::KeyEvent) -> Bool)
         @key_event_box = ::Box.box(block)
         @extended_handler.key_event_box = @key_event_box
+      end
+
+      def clear_key_event : Nil
+        @extended_handler.key_event_box = Pointer(Void).null
+        @key_event_box = Pointer(Void).null
+      end
+
+      def key_event(callback : Nil) : Nil
+        clear_key_event
       end
 
       def to_unsafe

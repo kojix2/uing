@@ -108,6 +108,46 @@ module UIng
       end
     end
 
+    # Clears the callback; equivalent to `on_row_clicked(nil)`.
+    def clear_on_row_clicked : Nil
+      LibUI.table_on_row_clicked(ref_ptr, ->(_sender, _row, _data) : Nil { }, Pointer(Void).null)
+      @on_row_clicked_box = nil
+    end
+
+    def on_row_clicked(callback : Nil) : Nil
+      clear_on_row_clicked
+    end
+
+    # Clears the callback; equivalent to `on_row_double_clicked(nil)`.
+    def clear_on_row_double_clicked : Nil
+      LibUI.table_on_row_double_clicked(ref_ptr, ->(_sender, _row, _data) : Nil { }, Pointer(Void).null)
+      @on_row_double_clicked_box = nil
+    end
+
+    def on_row_double_clicked(callback : Nil) : Nil
+      clear_on_row_double_clicked
+    end
+
+    # Clears the callback; equivalent to `on_header_clicked(nil)`.
+    def clear_on_header_clicked : Nil
+      LibUI.table_header_on_clicked(ref_ptr, ->(_sender, _column, _data) : Nil { }, Pointer(Void).null)
+      @on_header_clicked_box = nil
+    end
+
+    def on_header_clicked(callback : Nil) : Nil
+      clear_on_header_clicked
+    end
+
+    # Clears the callback; equivalent to `on_selection_changed(nil)`.
+    def clear_on_selection_changed : Nil
+      LibUI.table_on_selection_changed(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_selection_changed_box = nil
+    end
+
+    def on_selection_changed(callback : Nil) : Nil
+      clear_on_selection_changed
+    end
+
     def to_unsafe
       ref_ptr
     end

@@ -52,6 +52,16 @@ module UIng
       end
     end
 
+    # Clears the callback; equivalent to `on_changed(nil)`.
+    def clear_on_changed : Nil
+      LibUI.spinbox_on_changed(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_changed_box = nil
+    end
+
+    def on_changed(callback : Nil) : Nil
+      clear_on_changed
+    end
+
     def to_unsafe
       ref_ptr
     end

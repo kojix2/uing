@@ -208,6 +208,16 @@ module UIng
           @extended_handler.set_cell_value_box = @set_cell_value_box
         end
 
+        # Removes the optional edit/click callback; equivalent to `set_cell_value(nil)`.
+        def clear_set_cell_value : Nil
+          @extended_handler.set_cell_value_box = Pointer(Void).null
+          @set_cell_value_box = Pointer(Void).null
+        end
+
+        def set_cell_value(callback : Nil) : Nil
+          clear_set_cell_value
+        end
+
         def to_unsafe
           seal_schema
           # Return pointer to the extended handler, but cast to base handler type

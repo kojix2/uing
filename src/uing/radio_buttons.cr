@@ -58,6 +58,16 @@ module UIng
       end
     end
 
+    # Clears the callback; equivalent to `on_selected(nil)`.
+    def clear_on_selected : Nil
+      LibUI.radio_buttons_on_selected(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_selected_box = nil
+    end
+
+    def on_selected(callback : Nil) : Nil
+      clear_on_selected
+    end
+
     def to_unsafe
       ref_ptr
     end

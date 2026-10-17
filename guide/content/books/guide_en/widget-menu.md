@@ -31,6 +31,7 @@ Menu creates application menu bars and native standard menu items.
 
 - Finalize all menus before creating the first Window, and set <code>menubar: true</code>.
 - Menu callbacks receive an optional Window because some platform-level actions may not have one.
+- `item.clear_on_clicked` is the same as `item.on_clicked(nil)`: it releases the click callback while keeping the item usable. Neither call removes the item from its menu. Quit items use `UIng.clear_on_should_quit` instead.
 - <code>Preferences</code>, <code>About</code>, and <code>Quit</code> are standard items that follow OS menu conventions. Their label, placement, and surrounding separators vary by OS, so they may not appear in the Menu or order where you add them.
 - You can add only one <code>append_preferences_item</code>, <code>append_about_item</code>, and <code>append_quit_item</code> item per application.
 

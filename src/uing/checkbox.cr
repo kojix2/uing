@@ -55,6 +55,16 @@ module UIng
       end
     end
 
+    # Clears the callback; equivalent to `on_toggled(nil)`.
+    def clear_on_toggled : Nil
+      LibUI.checkbox_on_toggled(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_toggled_box = nil
+    end
+
+    def on_toggled(callback : Nil) : Nil
+      clear_on_toggled
+    end
+
     def to_unsafe
       ref_ptr
     end

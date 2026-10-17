@@ -24,6 +24,27 @@ end
 Callbacks expose values when useful. For example, `Entry#on_changed` yields
 the current text and `Slider#on_changed` yields the current integer value.
 
+## Clearing callbacks
+
+Each `on_*` registration has a matching `clear_on_*` method. For example,
+`button.clear_on_clicked` is the same as `button.on_clicked(nil)`, and
+`entry.clear_on_changed` is the same as `entry.on_changed(nil)`. Clearing a
+callback releases its Crystal closure and leaves the control available for a
+later registration. The same convention applies to MenuItem, ToolbarItem,
+Table, Window, and `UIng.clear_on_should_quit`. `Area::Handler` uses
+`clear_draw`, `clear_mouse_event`, and similar names; these are equivalent to
+passing `nil` to the corresponding registration method.
+`MultilineEntry#clear_on_changed` and `#clear_on_changed_with_text` both clear
+the same change callback slot. `Table::Model::Handler#clear_set_cell_value` is
+equivalent to `set_cell_value(nil)` for the optional edit callback.
+`UIng.clear_on_error` is equivalent to `UIng.on_error(nil)`.
+
+Native callbacks remain installed as harmless defaults where libui-ng requires
+a non-null callback. After `window.clear_on_closing`, a close request is
+rejected, matching a newly created Window without a closing handler. After
+`UIng.clear_on_should_quit`, an application-wide quit request is rejected.
+Register a new handler when the application should respond to either request.
+
 ## Updating the interface
 
 Native controls should be read and changed on the UI thread. If work performed

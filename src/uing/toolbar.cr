@@ -210,6 +210,16 @@ module UIng
       end
     end
 
+    # Clears the click callback; equivalent to `on_clicked(nil)`.
+    def clear_on_clicked : Nil
+      LibUI.toolbar_item_on_clicked(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_clicked_box = nil
+    end
+
+    def on_clicked(callback : Nil) : Nil
+      clear_on_clicked
+    end
+
     def to_unsafe
       ref_ptr
     end

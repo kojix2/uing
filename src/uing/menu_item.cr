@@ -38,8 +38,7 @@ module UIng
     # by libui-ng, so this does not remove the native item from its menu.
     def destroy : Nil
       return if @released
-      clear_native_callback if @on_clicked_box
-      @on_clicked_box = nil
+      clear_on_clicked
       @released = true
     end
 
@@ -99,6 +98,19 @@ module UIng
           boxed_data
         )
       end
+    end
+
+    # Clears the click callback without removing or invalidating the menu item.
+    # Equivalent to `on_clicked(nil)`.
+    def clear_on_clicked : Nil
+      check_available
+      return if @kind.quit?
+      clear_native_callback if @on_clicked_box
+      @on_clicked_box = nil
+    end
+
+    def on_clicked(callback : Nil) : Nil
+      clear_on_clicked
     end
 
     private def window_from_native(window : Pointer(LibUI::Window)) : Window?

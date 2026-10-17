@@ -35,6 +35,13 @@ UIng.init do
 end
 </code></pre>
 
+The block form pairs `init` with `uninit`, including when the block raises an
+exception. It does not destroy windows or other resources created inside the
+block. Destroy every top-level window before leaving the block, including on
+error paths, and free standalone resources according to their ownership rules
+below. An exception during setup can otherwise reach `uninit` while a window
+is still alive.
+
 ## Closing a single window
 
 Normally, you do not need to destroy controls yourself. Stop the event loop

@@ -62,6 +62,19 @@ describe UIng::Table::Model::Handler do
     received.should eq({2, 3, nil})
   end
 
+  it "stops invoking a cleared set-cell callback" do
+    calls = 0
+    handler = UIng::Table::Model::Handler.new
+    handler.set_cell_value { |_row, _column, _value| calls += 1 }
+
+    handler.clear_set_cell_value
+    call_set_cell_value(handler, 0, 0, Pointer(UIng::LibUI::TableValue).null)
+    handler.set_cell_value(nil)
+    call_set_cell_value(handler, 0, 0, Pointer(UIng::LibUI::TableValue).null)
+
+    calls.should eq(0)
+  end
+
   it "wraps a non-NULL set-cell value as borrowed" do
     value_ptr = Pointer(UIng::LibUI::TableValue).new(0x200_u64)
     received_value = nil
