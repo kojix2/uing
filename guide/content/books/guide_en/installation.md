@@ -48,9 +48,9 @@ and Apple Silicon are supported.
 
 ### Windows
 
-UIng supports MSVC, MinGW64, and UCRT64. Use the same toolchain as Crystal.
+UIng supports MSVC and MSYS2 UCRT64. Use the same toolchain as Crystal.
 Run MSVC builds from a developer shell such as Developer PowerShell, and use
-the matching MSYS2 shell for MinGW64 or UCRT64.
+the MSYS2 UCRT64 shell for UCRT64 builds.
 
 The post-install script downloads both `/MD` and `/MT` MSVC libraries. Normal
 Crystal builds use `/MD`; builds made with `--static` use `/MT`.
@@ -60,7 +60,7 @@ Crystal builds use `/MD`; builds made with `--static` use `/MT`.
 GUI executables built on Windows may open a console window. Select the Windows
 GUI subsystem when building the final executable.
 
-MinGW64 or UCRT64:
+UCRT64:
 
 <pre><code class="bash">
 crystal build app.cr --link-flags "-mwindows"

@@ -89,7 +89,7 @@ PLATFORM_CONFIG = {
     {zip: "libui-ng-windows-x64-ucrt-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
     {zip: "libui-ng-windows-x64-ucrt-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
   ],
-  # Windows MinGW x86_64
+  # Legacy MINGW64 assets from the pinned libui-ng release; new GNU-style builds use UCRT64.
   mingw_x64: [
     {zip: "libui-ng-windows-x64-mingw-static-release.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/release/libui.a")},
     {zip: "libui-ng-windows-x64-mingw-static-debug.zip", src: LIBUI_SOURCE, dest: File.join(PROJECT_DIR, "libui/debug/libui.a")},
@@ -275,8 +275,10 @@ begin
     case windows_flavor
     when "ucrt"
       process_platform(PLATFORM_CONFIG[:ucrt_x64])
-    else
+    when "mingw64"
       process_platform(PLATFORM_CONFIG[:mingw_x64])
+    else
+      raise "Unsupported MSYS2 environment: #{ENV["MSYSTEM"]?}. Use UCRT64."
     end
   {% elsif flag?(:i386) %}
     raise "MinGW x86 assets are not available"

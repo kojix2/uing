@@ -28,22 +28,22 @@ shards build
 
 **Note**: On macOS, the video player uses mpv's "gpu" output driver for hardware-accelerated rendering with Vulkan/Metal backend.
 
-### Windows (MSVC/RIDK)
+### Windows (RubyInstaller Devkit UCRT64)
 
 ```bash
-ridk enable
-ridk exec pacman -S mingw-w64-x86_64-mpv
+ridk enable ucrt64
+ridk exec pacman -S mingw-w64-ucrt-x86_64-mpv
 cd examples/video_player
 ridk exec shards install
 ridk exec shards build
 ```
 
-### Windows (MinGW/MSYS2)
+### Windows (MSYS2 UCRT64)
 
 ```bash
-# Open MSYS2 MinGW 64-bit shell
+# Open the MSYS2 UCRT64 shell
 pacman -Syu
-pacman -S mingw-w64-x86_64-crystal mingw-w64-x86_64-mpv
+pacman -S mingw-w64-ucrt-x86_64-crystal mingw-w64-ucrt-x86_64-mpv
 cd /path/to/your/clone/examples/video_player
 shards install
 shards build

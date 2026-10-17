@@ -47,8 +47,8 @@ Intel MacとApple Siliconの両方に対応しています。
 
 ### Windows
 
-UIngはMSVC、MinGW64、UCRT64に対応しています。Crystalと同じツールチェーンを使います。
-MSVCではDeveloper PowerShellなどの開発者シェル、MinGW64とUCRT64では対応するMSYS2
+UIngはMSVCとMSYS2 UCRT64に対応しています。Crystalと同じツールチェーンを使います。
+MSVCではDeveloper PowerShellなどの開発者シェル、UCRT64では対応するMSYS2
 シェルから実行してください。
 
 インストール後のスクリプトは、MSVC用の`/MD`版と`/MT`版を両方ダウンロードします。
@@ -59,7 +59,7 @@ MSVCではDeveloper PowerShellなどの開発者シェル、MinGW64とUCRT64で�
 WindowsでビルドしたGUI実行ファイルは、コンソールウィンドウを開く場合があります。
 配布用の実行ファイルではWindows GUIサブシステムを指定します。
 
-MinGW64またはUCRT64:
+UCRT64:
 
 <pre><code class="bash">
 crystal build app.cr --link-flags "-mwindows"
