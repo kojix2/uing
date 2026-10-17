@@ -82,10 +82,11 @@ module UIng
         String.new(str_ptr)
       end
 
-      def image : Pointer(LibUI::Image)
+      # Returns the image's borrowed native pointer, or a null pointer for an
+      # empty image cell. The image is owned by its creator, not this Value;
+      # do not free the pointer or use it after the source image is freed.
+      def image_pointer : Pointer(LibUI::Image)
         check_type(Type::Image)
-        # Return the raw pointer - DO NOT create new Image object
-        # The returned pointer is borrowed from libui-ng and should not be freed
         LibUI.table_value_image(@ref_ptr)
       end
 
@@ -100,10 +101,12 @@ module UIng
         {r, g, b, a}
       end
 
+      # Returns the typed value. For image values, this returns the same
+      # borrowed native pointer as `#image_pointer`.
       def value
         case type
         when .string? then string
-        when .image?  then image
+        when .image?  then image_pointer
         when .int?    then int
         when .color?  then color
         else

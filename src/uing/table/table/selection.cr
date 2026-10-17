@@ -39,10 +39,6 @@ module UIng
         @rows.dup
       end
 
-      def rows_ptr : Pointer(Int32)
-        @ptr.value.rows
-      end
-
       def to_unsafe
         @ptr
       end

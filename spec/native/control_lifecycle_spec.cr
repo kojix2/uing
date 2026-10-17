@@ -640,7 +640,7 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
       int_value.int.should eq(7)
       string_value.string.should eq("seven")
-      image_value.image.null?.should be_true
+      image_value.image_pointer.null?.should be_true
       table_color_value.color.should eq({0.7, 0.8, 0.9, 1.0})
       family_attribute.family.should eq("Sans")
       size_attribute.size.should eq(12.0)
