@@ -525,7 +525,7 @@ WINDOW.child = vbox
 UIng.timer((1000.0 / Config::FPS).to_i) do
   GAME.update
   AREA.queue_redraw_all
-  1
+  true
 end
 
 UIng.main

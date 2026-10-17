@@ -581,8 +581,8 @@ class ReversiUI
     generation = @ai_turn_generation
 
     # Use timer to make AI move after a short delay
-    UIng.timer(500) do
-      next 0 unless generation == @ai_turn_generation
+    UIng.timer(500.milliseconds) do
+      next false unless generation == @ai_turn_generation
 
       if move = Reversi.search_best_move(@game.pos, @game.ai_depth)
         row, col = move
@@ -594,7 +594,7 @@ class ReversiUI
       @game.ai_thinking = false
       update_status
       area_ref.try(&.queue_redraw_all)
-      0 # Stop timer
+      false # Stop timer
     end
   end
 

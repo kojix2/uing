@@ -57,6 +57,32 @@ UIng.queue_main do
 end
 </code></pre>
 
+## Timers
+
+`UIng.timer` accepts a `Time::Span` or an integer number of milliseconds and
+runs its block on the UI thread. Both overloads return the same timer handle.
+Return `true` to repeat or `false` to stop. The returned timer can also be
+stopped from another UI callback:
+
+<pre><code class="crystal">
+clock = UIng.timer(250.milliseconds) do
+  status.text = Time.local.to_s
+  true
+end
+
+button.on_clicked { clock.stop }
+</code></pre>
+
+`clock.stopped?` becomes true as soon as it is stopped. `stop` prevents further
+user callbacks, while libui-ng removes its native timer at the next tick.
+Call `UIng.timer` after `UIng.init` and before `UIng.uninit`. `Time::Span`
+intervals shorter than one millisecond are rounded up. Integer intervals must
+be between 1 and `Int32::MAX` milliseconds.
+
+For code written against the former integer-millisecond API, keep the interval
+and change the block result: `UIng.timer(250) { true }` repeats, while
+`UIng.timer(250) { false }` stops. The old results `1` and `0` no longer compile.
+
 Keep referenced controls and application data alive for as long as a callback
 may use them. Callback exceptions are logged by UIng instead of crossing the
 native callback boundary.

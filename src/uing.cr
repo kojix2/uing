@@ -34,6 +34,7 @@ require "./uing/slider"
 require "./uing/spinbox"
 require "./uing/tab"
 require "./uing/table/table"
+require "./uing/timer"
 require "./uing/text_italic"
 require "./uing/text_stretch"
 require "./uing/text_weight"
@@ -71,9 +72,10 @@ module UIng
   # Set Size field for future libui-ng compatibility (currently unused)
   @@init_options.value.size = LibC::SizeT.new(sizeof(LibUI::InitOptions))
 
-  # Global storage for timer callback boxes to prevent GC collection
-  # timer callbacks accumulate due to LibUI specification limitations
-  @@timer_callback_boxes = [] of Pointer(Void)
+  # Keep managed timer callback data alive until libui-ng observes a stop or
+  # uiUninit() cancels its native timers. A stopped Timer drops its user Proc
+  # immediately, but its Box must remain valid until then.
+  @@managed_timer_boxes = {} of Pointer(Void) => Timer
 
   # Temporary storage for queue_main callback boxes (automatically cleaned up)
   @@queue_callback_boxes = [] of Pointer(Void)
@@ -200,9 +202,10 @@ module UIng
         # fiber could initialize libui-ng between native uninit and invalidating
         # wrappers retained from the previous runtime.
         Menu.reset_after_uninit
-        # Clear global callback arrays on uninit to prevent memory leaks.
+        # Clear global callback storage after native shutdown.
         @@callback_mutex.synchronize do
-          @@timer_callback_boxes.clear
+          @@managed_timer_boxes.each_value(&.stop)
+          @@managed_timer_boxes.clear
           @@queue_callback_boxes.clear
         end
         @@initialized = false
@@ -255,37 +258,49 @@ module UIng
     end, boxed_data)
   end
 
-  def self.timer(sender : Int, &callback : -> LibC::Int) : Nil
-    unless sender > 0 && sender <= Int32::MAX
+  # Schedules a repeating callback on the UI thread at an interval given in
+  # milliseconds. Return `true` to keep running or `false` to stop.
+  def self.timer(milliseconds : Int, &callback : -> Bool) : Timer
+    unless milliseconds > 0 && milliseconds <= Int32::MAX
       raise ArgumentError.new("timer interval must be between 1 and Int32::MAX milliseconds")
     end
-    milliseconds = sender.to_i32
 
-    boxed_data = ::Box.box(callback)
-    # Store in global array to prevent GC collection during callback execution
-    # NOTE: Timer callback removal behavior is not standardized in LibUI
-    # See: https://github.com/andlabs/libui/pull/277
-    @@callback_mutex.synchronize do
-      @@timer_callback_boxes << boxed_data
+    timer(milliseconds.to_i32.milliseconds, &callback)
+  end
+
+  # Schedules a repeating callback on the UI thread. Return `true` to keep
+  # running or `false` to stop. The interval is rounded up to whole
+  # milliseconds because libui-ng accepts only integer milliseconds.
+  def self.timer(interval : Time::Span, &callback : -> Bool) : Timer
+    unless interval > Time::Span.zero && interval <= Int32::MAX.milliseconds
+      raise ArgumentError.new("timer interval must be positive and at most Int32::MAX milliseconds")
     end
-    LibUI.timer(milliseconds, ->(data) : LibC::Int do
+    milliseconds = interval.total_milliseconds.ceil.to_i32
+
+    timer = Timer.__create__(callback)
+    boxed_data = ::Box.box(timer)
+
+    @@lifecycle_mutex.synchronize do
+      raise RuntimeError.new("UIng must be initialized before registering a timer") unless @@initialized
+
+      @@callback_mutex.synchronize { @@managed_timer_boxes[boxed_data] = timer }
       begin
-        data_as_callback = ::Box(typeof(callback)).unbox(data)
-        result = data_as_callback.call
-        if result == 0
-          @@callback_mutex.synchronize do
-            @@timer_callback_boxes.delete(data)
+        LibUI.timer(milliseconds, ->(data) : LibC::Int do
+          managed_timer = ::Box(Timer).unbox(data)
+          keep_running = managed_timer.__tick__
+          unless keep_running
+            @@callback_mutex.synchronize { @@managed_timer_boxes.delete(data) }
           end
-        end
-        result
-      rescue e
-        UIng.handle_callback_error(e, "UIng.timer")
-        @@callback_mutex.synchronize do
-          @@timer_callback_boxes.delete(data)
-        end
-        0_i32
+          keep_running ? 1_i32 : 0_i32
+        end, boxed_data)
+      rescue error
+        @@callback_mutex.synchronize { @@managed_timer_boxes.delete(boxed_data) }
+        timer.stop
+        raise error
       end
-    end, boxed_data)
+    end
+
+    timer
   end
 
   def self.on_should_quit(&callback : -> Bool) : Nil

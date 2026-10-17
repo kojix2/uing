@@ -751,13 +751,13 @@ end
 
 def start_animation_3d
   SIMULATION3D.animation_running = true
-  UIng.timer(16) do
+  UIng.timer(16.milliseconds) do
     if SIMULATION3D.animation_running?
       SIMULATION3D.update_simulation
       AREA3D.queue_redraw_all
-      1 # Continue timer
+      true # Continue timer
     else
-      0 # Stop timer
+      false # Stop timer
     end
   end
 end

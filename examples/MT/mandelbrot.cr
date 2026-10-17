@@ -384,9 +384,9 @@ class MandelbrotRenderer
   end
 
   def run
-    UIng.timer(16) do
+    UIng.timer(16.milliseconds) do
       process_messages
-      1
+      true
     end
 
     @window.show

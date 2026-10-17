@@ -55,6 +55,31 @@ UIng.queue_main do
 end
 </code></pre>
 
+## タイマー
+
+`UIng.timer`には`Time::Span`または整数ミリ秒を渡します。どちらも同じタイマーハンドルを
+返します。ブロックはUIスレッドで実行され、
+`true`で継続、`false`で停止します。戻り値のタイマーは別のUIコールバックからも
+停止できます。
+
+<pre><code class="crystal">
+clock = UIng.timer(250.milliseconds) do
+  status.text = Time.local.to_s
+  true
+end
+
+button.on_clicked { clock.stop }
+</code></pre>
+
+停止すると`clock.stopped?`は直ちに`true`になります。`stop`後は利用者の
+ブロックを呼ばず、libui-ngのネイティブタイマーは次の通知時に解除されます。
+`UIng.timer`は`UIng.init`の後、`UIng.uninit`の前に呼びます。`Time::Span`で指定した
+1ミリ秒未満の間隔は切り上げます。整数で指定する場合は1から`Int32::MAX`ミリ秒までです。
+
+以前の整数ミリ秒版を使っていたコードは、間隔をそのまま使い、ブロックの戻り値を
+変更します。`UIng.timer(250) { true }`で継続し、`UIng.timer(250) { false }`で停止します。
+以前の`1`と`0`はコンパイルできません。
+
 コールバックが参照する可能性のあるコントロールとアプリケーションデータは、
 コールバックが使われる間は保持してください。コールバック内の例外はネイティブな
 コールバック境界を越えず、UIngによってログに記録されます。

@@ -99,14 +99,14 @@ module AirHockey
       area = active_area
 
       UIng.timer(Config::TICK_MS) do
-        next 0 if @shutting_down || area.released?
+        next false if @shutting_down || area.released?
 
         Log.tick
         apply_pending_mouse
         @game.update
         @game.drain_sound_events.each { |event| @audio.play(event) }
         area.queue_redraw_all unless area.released?
-        1
+        true
       end
       Log.info("timer registered")
     end

@@ -108,7 +108,7 @@ class VideoPlayerApp
 
   def process_mpv_events
     player = @mpv_player
-    return 1 unless player
+    return true unless player
 
     player.process_events do |event|
       puts "MPV Event: #{player.event_name(event.event_id.to_i32)}"
@@ -118,11 +118,11 @@ class VideoPlayerApp
 
     refresh_playback_ui(player)
 
-    1
+    true
   rescue ex
     puts "Error processing MPV events: #{ex.message}"
 
-    1 # Continue timer
+    true # Continue timer
   end
 
   def update_size_label
@@ -349,7 +349,7 @@ class VideoPlayerApp
   private def configure_player(player : MPVPlayer)
     player.set_window_handle_from_area(video_area)
     player.initialize_player
-    UIng.timer(350) { process_mpv_events }
+    UIng.timer(350.milliseconds) { process_mpv_events }
     player.observe_property("media-title", LibMPV::MPVFormat::None)
     player.set_volume(INITIAL_VOLUME)
   end

@@ -124,7 +124,7 @@ window.child = UIng::Box.new(:vertical, padded: true).tap(&.append(area, stretch
 window.show
 
 # Higher FPS for smooth sweep second hand (reduce to 33ms if CPU load is a concern)
-UIng.timer(16) { area.queue_redraw_all; 1 }
+UIng.timer(16.milliseconds) { area.queue_redraw_all; true }
 
 UIng.main
 UIng.uninit
