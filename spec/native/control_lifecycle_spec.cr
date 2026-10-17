@@ -754,8 +754,13 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       tables.first.selection = UIng::Table::Selection.new([0])
       selection = tables.first.selection
       selection.rows.should eq([0])
+      selected_row_indices = [] of Int32
+      tables.first.each_selected_index { |row_index| selected_row_indices << row_index }
+      selected_row_indices.should eq([0])
       tables.first.selection = UIng::Table::Selection.new([] of Int32)
       tables.first.selection.rows.should be_empty
+      tables.first.each_selected_index { |row_index| selected_row_indices << row_index }
+      selected_row_indices.should eq([0])
       selection.rows.should eq([0])
       destroy_was_requested = false
 

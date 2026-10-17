@@ -69,6 +69,16 @@ table.on_row_double_clicked do |row|
 end
 ```
 
+選択行の番号を一度だけ順に処理する場合は`each_selected_index`を使えます。ネイティブの
+選択結果を直接走査するため、行番号をCrystalの配列へコピーしません。ネイティブの
+選択結果は、途中で例外が発生しても列挙後に解放されます。
+
+```crystal
+table.each_selected_index do |row_index|
+  puts rows[row_index]
+end
+```
+
 ヘッダークリックや行クリックのイベントも利用できます。ソートを実装する場合は元データを並べ替えた後、表示に変更を通知します。
 
 発展例は[advanced_table.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/advanced_table.cr)を参照してください。

@@ -259,8 +259,21 @@ module UIng
       Selection.new(selection_ptr)
     end
 
-    def selection(& : Selection -> Nil) : Nil
-      yield selection
+    # Yields each selected row index without copying the native row array into
+    # a Crystal Array. The native selection snapshot is freed after iteration,
+    # including when the block raises. Use `selection` to retain a snapshot.
+    def each_selected_index(&block : Int32 -> _) : Nil
+      selection_ptr = LibUI.table_get_selection(ref_ptr)
+      begin
+        native_selection = selection_ptr.value
+        rows_ptr = native_selection.rows
+        native_selection.num_rows.times do |index|
+          block.call(rows_ptr[index])
+        end
+      ensure
+        LibUI.free_table_selection(selection_ptr)
+      end
+      nil
     end
 
     def selection=(selection : Selection) : Nil

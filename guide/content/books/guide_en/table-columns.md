@@ -70,6 +70,16 @@ table.on_row_double_clicked do |row|
 end
 ```
 
+Use `each_selected_index` to process selected row indices once without copying
+them into a Crystal array. It walks the native selection result directly
+and frees that result after iteration, even if the block raises.
+
+```crystal
+table.each_selected_index do |row_index|
+  puts rows[row_index]
+end
+```
+
 Header, row-click, and row-double-click events are also available. When sorting, reorder backing data first, then notify the displayed Model of the change.
 
 See [advanced_table.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/advanced_table.cr) for a larger example.
