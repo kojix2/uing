@@ -30,6 +30,8 @@ MenuはアプリケーションメニューとOS標準のメニュー項目を�
   | 区切り | <code>append_separator</code> | 関連する項目のグループを視覚的に分けます。 |
 
 - 最初のWindowを作る前にすべてのMenuを構築し、Windowへ<code>menubar: true</code>を指定します。
+- 最初のWindowを作る前に`item.set_shortcut('O', UIng::Modifiers::Primary)`でショートカットを設定できます。`Primary`はmacOSではCommand、Windows/LinuxではControlです。解除には`item.clear_shortcut`を使います。
+- キーにはASCIIの英字・数字、`UIng::ExtKey::F1`～`F12`、`Delete`、矢印キーを指定できます。F1～F12以外には`Primary`、`Ctrl`、`Alt`のいずれかが必要で、`Shift`を追加できます。`Super`、`Primary | Ctrl`、重複するショートカットは使用できません。
 - プラットフォーム側の操作ではWindowがない場合があるため、コールバックには省略可能なWindowが渡されます。
 - `item.clear_on_clicked`は`item.on_clicked(nil)`と同じです。クリック時のコールバックを解放し、項目は引き続き使用できます。どちらもメニューから項目を削除しません。Quit項目には代わりに`UIng.clear_on_should_quit`を使います。
 - <code>Preferences</code>、<code>About</code>、<code>Quit</code>はOSごとのメニュー規約を吸収する標準項目です。表示名、配置、区切り線はOSによって異なり、追加したMenu内の順序どおりに表示されるとは限りません。

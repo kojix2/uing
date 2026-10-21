@@ -136,10 +136,14 @@ class ControlGalleryApp
 
   private def setup_menus : Nil
     UIng::Menu.new("File") do
-      append_item("Open").on_clicked do |window|
+      open_item = append_item("Open")
+      open_item.set_shortcut('O', UIng::Modifiers::Primary)
+      open_item.on_clicked do |window|
         puts window.try &.open_file
       end
-      append_item("Save").on_clicked do |window|
+      save_item = append_item("Save")
+      save_item.set_shortcut('S', UIng::Modifiers::Primary)
+      save_item.on_clicked do |window|
         puts window.try &.save_file
       end
       append_separator
@@ -167,14 +171,19 @@ class ControlGalleryApp
     end
 
     UIng::Menu.new("Edit") do
-      append_check_item("Checkable Item_")
+      checkable_item = append_check_item("Checkable Item_")
+      checkable_item.set_shortcut('C', UIng::Modifiers::Primary | UIng::Modifiers::Shift)
       append_separator
       disabled_item = append_item("Disabled Item_")
       disabled_item.disable
     end
 
     UIng::Menu.new("Help") do
-      append_item("Help")
+      help_item = append_item("Help")
+      help_item.set_shortcut(UIng::ExtKey::F1)
+      help_item.on_clicked do |window|
+        window.try &.msg_box("Help", "This is the control gallery example.")
+      end
       append_about_item.on_clicked do |window|
         window.try &.msg_box("About", "This is a control gallery example.\nVersion: #{UIng::VERSION}")
       end

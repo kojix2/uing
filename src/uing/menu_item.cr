@@ -54,6 +54,55 @@ module UIng
       LibUI.menu_item_disable(@ref_ptr)
     end
 
+    # Assigns a menu shortcut before the first Window is created.
+    # Letters, digits, Delete, and arrow keys require Primary, Ctrl, or Alt.
+    # F1 through F12 may be used without modifiers. ASCII lowercase letters
+    # are converted to uppercase. libui-ng rejects duplicate shortcuts.
+    def set_shortcut(key : Char, modifiers : Modifiers = Modifiers::None) : Nil
+      check_available
+      code = key.ord
+      code -= 32 if 'a'.ord <= code <= 'z'.ord
+      unless ('A'.ord <= code <= 'Z'.ord) || ('0'.ord <= code <= '9'.ord)
+        raise ArgumentError.new("menu shortcut key must be an ASCII letter or digit")
+      end
+      set_validated_shortcut(code.to_u32, false, modifiers)
+    end
+
+    # Assigns a supported extended key as a menu shortcut.
+    def set_shortcut(key : ExtKey, modifiers : Modifiers = Modifiers::None) : Nil
+      check_available
+      code = key.value
+      is_function_key = ExtKey::F1.value <= code <= ExtKey::F12.value
+      unless is_function_key || key == ExtKey::Delete ||
+             (ExtKey::Up.value <= code <= ExtKey::Right.value)
+        raise ArgumentError.new("unsupported extended menu shortcut key: #{key}")
+      end
+      set_validated_shortcut(code.to_u32, is_function_key, modifiers)
+    end
+
+    # Removes a menu shortcut before the first Window is created.
+    def clear_shortcut : Nil
+      check_available
+      LibUI.menu_item_set_shortcut(@ref_ptr, 0_u32, Modifiers::None)
+    end
+
+    private def set_validated_shortcut(key_code : UInt32, function_key : Bool, modifiers : Modifiers) : Nil
+      allowed = (Modifiers::Primary | Modifiers::Ctrl | Modifiers::Alt | Modifiers::Shift).value
+      if (modifiers.value & ~allowed) != 0
+        raise ArgumentError.new("menu shortcuts support only Primary, Ctrl, Alt, and Shift modifiers")
+      end
+      if modifiers.includes?(Modifiers::Primary) && modifiers.includes?(Modifiers::Ctrl)
+        raise ArgumentError.new("Primary and Ctrl cannot be combined in a menu shortcut")
+      end
+      if !function_key && !(modifiers.includes?(Modifiers::Primary) ||
+         modifiers.includes?(Modifiers::Ctrl) ||
+         modifiers.includes?(Modifiers::Alt))
+        raise ArgumentError.new("this menu shortcut key requires Primary, Ctrl, or Alt")
+      end
+
+      LibUI.menu_item_set_shortcut(@ref_ptr, key_code, modifiers)
+    end
+
     def checked? : Bool
       check_available
       check_check_item

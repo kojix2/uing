@@ -30,6 +30,8 @@ Menu creates application menu bars and native standard menu items.
   | Separator | <code>append_separator</code> | Visually separates related groups of items. |
 
 - Finalize all menus before creating the first Window, and set <code>menubar: true</code>.
+- Assign a shortcut before creating the first Window with `item.set_shortcut('O', UIng::Modifiers::Primary)`. `Primary` means Command on macOS and Control on Windows/Linux. Use `item.clear_shortcut` to remove it.
+- Shortcut keys are ASCII letters or digits, `UIng::ExtKey::F1`–`F12`, `Delete`, or arrow keys. F1–F12 may be unmodified; other keys need `Primary`, `Ctrl`, or `Alt`. `Shift` may be added. `Super`, `Primary | Ctrl`, and duplicate shortcuts are invalid.
 - Menu callbacks receive an optional Window because some platform-level actions may not have one.
 - `item.clear_on_clicked` is the same as `item.on_clicked(nil)`: it releases the click callback while keeping the item usable. Neither call removes the item from its menu. Quit items use `UIng.clear_on_should_quit` instead.
 - <code>Preferences</code>, <code>About</code>, and <code>Quit</code> are standard items that follow OS menu conventions. Their label, placement, and surrounding separators vary by OS, so they may not appear in the Menu or order where you add them.

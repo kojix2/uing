@@ -684,6 +684,7 @@ UIng.init
 # Create menus BEFORE any windows
 file_menu = UIng::Menu.new("File")
 new_item = file_menu.append_item("New")
+new_item.set_shortcut('N', UIng::Modifiers::Primary)
 file_menu.append_separator
 file_menu.append_quit_item
 

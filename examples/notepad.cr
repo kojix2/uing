@@ -16,8 +16,11 @@ class NotepadApp
     # Create menus and menu items BEFORE creating any windows
     file_menu = UIng::Menu.new("File")
     open_item = file_menu.append_item("Open")
+    open_item.set_shortcut('O', UIng::Modifiers::Primary)
     save_item = file_menu.append_item("Save")
+    save_item.set_shortcut('S', UIng::Modifiers::Primary)
     save_as_item = file_menu.append_item("Save As")
+    save_as_item.set_shortcut('S', UIng::Modifiers::Primary | UIng::Modifiers::Shift)
     file_menu.append_separator
     file_menu.append_quit_item
 

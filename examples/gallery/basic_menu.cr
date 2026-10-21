@@ -3,7 +3,9 @@ require "../../src/uing"
 UIng.init
 
 UIng::Menu.new("File") do
-  append_item("Open").on_clicked do |window|
+  open_item = append_item("Open")
+  open_item.set_shortcut('O', UIng::Modifiers::Primary)
+  open_item.on_clicked do |window|
     window.try &.open_file
   end
   append_separator
