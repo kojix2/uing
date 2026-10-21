@@ -8,7 +8,7 @@ module UIng
       down : LibC::Int
       up : LibC::Int
       count : LibC::Int
-      modifiers : UIng::Area::Modifiers
+      modifiers : UIng::Modifiers
       held1_to64 : UInt64
     end
   end

@@ -1,4 +1,6 @@
 require "./uing/version"
+require "./uing/ext_key"
+require "./uing/modifiers"
 require "./uing/lib_ui/lib_ui"
 require "./uing/numeric_value"
 require "./uing/tm"

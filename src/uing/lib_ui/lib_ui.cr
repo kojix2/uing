@@ -273,6 +273,7 @@ module UIng
     fun new_multiline_entry = uiNewMultilineEntry : Pointer(MultilineEntry)
     fun new_non_wrapping_multiline_entry = uiNewNonWrappingMultilineEntry : Pointer(MultilineEntry)
     alias MenuItem = Void
+    fun menu_item_set_shortcut = uiMenuItemSetShortcut(item : Pointer(MenuItem), key : LibC::UInt, modifiers : UIng::Modifiers)
     fun menu_item_enable = uiMenuItemEnable(m : Pointer(MenuItem))
     fun menu_item_disable = uiMenuItemDisable(m : Pointer(MenuItem))
     fun menu_item_on_clicked = uiMenuItemOnClicked(m : Pointer(MenuItem), f : (Pointer(MenuItem), Pointer(Window), Pointer(Void) -> Void), data : Pointer(Void))
