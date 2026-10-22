@@ -137,6 +137,8 @@ Images are automatically generated and stored in the `screenshots` branch.
 
 Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and may change.
 
+If you're looking for icons under the MIT license, try [icon-viewer](https://github.com/kojix2/icon-viewer).
+
 ### Control
 
 <table>
