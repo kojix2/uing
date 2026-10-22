@@ -1,8 +1,6 @@
 module UIng
   class Image
     @released : Bool = false
-    @width = 0.0
-    @height = 0.0
     @representations = [] of Tuple(Bytes, Int32, Int32, Int32)
 
     protected def initialize(@ref_ptr : Pointer(LibUI::Image))
@@ -12,8 +10,21 @@ module UIng
       logical_width = checked_logical_dimension(width, "width")
       logical_height = checked_logical_dimension(height, "height")
       @ref_ptr = LibUI.new_image(logical_width, logical_height)
-      @width = logical_width
-      @height = logical_height
+    end
+
+    # Returns the image's logical dimensions in points.
+    def size : {Float64, Float64}
+      check_available
+      LibUI.image_get_size(@ref_ptr, out width, out height)
+      {width, height}
+    end
+
+    def width : Float64
+      size[0]
+    end
+
+    def height : Float64
+      size[1]
     end
 
     def append(pixels : Bytes, pixel_width : Int32, pixel_height : Int32, byte_stride : Int32) : Nil
@@ -41,7 +52,8 @@ module UIng
     # Returns an independent native image with the same pixel representations.
     def copy : Image
       check_available
-      copy = Image.new(@width, @height)
+      width, height = size
+      copy = Image.new(width, height)
       begin
         @representations.each do |representation|
           copy.append_stored_representation(representation)

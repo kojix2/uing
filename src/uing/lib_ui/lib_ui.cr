@@ -419,6 +419,7 @@ module UIng
     fun new_grid = uiNewGrid : Pointer(Grid)
     alias Image = Void
     fun new_image = uiNewImage(width : LibC::Double, height : LibC::Double) : Pointer(Image)
+    fun image_get_size = uiImageGetSize(i : Pointer(Image), width : Pointer(LibC::Double), height : Pointer(LibC::Double))
     fun free_image = uiFreeImage(i : Pointer(Image))
     fun image_append = uiImageAppend(i : Pointer(Image), pixels : Pointer(Void), pixel_width : LibC::Int, pixel_height : LibC::Int, byte_stride : LibC::Int)
 

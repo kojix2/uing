@@ -9,6 +9,7 @@ Create and retain a `UIng::Image`, then call `context.draw_image` inside `draw`.
 | API | Purpose |
 | --- | --- |
 | `Image.new(width, height)` | Creates an empty image with logical dimensions |
+| `image.size` / `image.width` / `image.height` | Returns logical dimensions in points |
 | `image.append(pixels, pixel_width, pixel_height, byte_stride)` | Adds premultiplied RGBA pixels |
 | `draw_image(image, x, y, width, height)` | Draws into a rectangle |
 | `image.free` | Releases an unused image |

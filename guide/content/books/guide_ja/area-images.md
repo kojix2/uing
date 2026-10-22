@@ -9,6 +9,7 @@
 | API | 用途 |
 | --- | --- |
 | `Image.new(width, height)` | 論理サイズを指定して空の画像を作る |
+| `image.size` / `image.width` / `image.height` | ポイント単位の論理サイズを取得する |
 | `image.append(pixels, pixel_width, pixel_height, byte_stride)` | premultiplied RGBAピクセルを追加する |
 | `draw_image(image, x, y, width, height)` | 指定した矩形へ描画する |
 | `image.free` | 不要になった画像を解放する |
