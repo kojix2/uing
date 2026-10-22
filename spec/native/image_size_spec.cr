@@ -7,7 +7,6 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
     it "reads logical dimensions from libui-ng and preserves them in a copy" do
       image = UIng::Image.new(12.5, 7.5)
-      copy = nil
       begin
         image.size.should eq({12.5, 7.5})
         image.width.should eq(12.5)
@@ -17,9 +16,12 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         image.size.should eq({12.5, 7.5})
 
         copy = image.copy
-        copy.size.should eq({12.5, 7.5})
+        begin
+          copy.size.should eq({12.5, 7.5})
+        ensure
+          copy.free
+        end
       ensure
-        copy.try &.free
         image.free
       end
 
