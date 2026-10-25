@@ -93,7 +93,7 @@ jobs:
           echo "APP_NAMES=$apps" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Take screenshots for all examples
-        uses: kojix2/window-screenshot-action@af1c8dde9926c6e359f39e5e429db855a6028d6e
+        uses: kojix2/window-screenshot-action@main
         with:
           os: ${{ matrix.os }}
           app-names: ${{ env.APP_NAMES }}
