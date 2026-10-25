@@ -7,7 +7,6 @@ on:
       - "examples/gallery/**"
       - "examples/crimage/**"
       - "download.cr"
-      - ".github/actions/screenshot/**"
       - ".github/workflows/screenshot.yml"
   pull_request:
     paths:
@@ -15,7 +14,6 @@ on:
       - "examples/gallery/**"
       - "examples/crimage/**"
       - "download.cr"
-      - ".github/actions/screenshot/**"
       - ".github/workflows/screenshot.yml"
   workflow_dispatch:
 
@@ -37,10 +35,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Workaround
-        if: matrix.os == 'ubuntu'
-        run: sudo apt-get update -y
-      
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
         with:
@@ -50,7 +44,7 @@ jobs:
         if: matrix.os == 'ubuntu'
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libgtk-3-dev xvfb imagemagick openbox wmctrl
+          sudo apt-get install -y libgtk-3-dev xvfb xauth imagemagick openbox wmctrl
 
       - name: Setup Windows Developer Command Prompt
         if: matrix.os == 'windows'
@@ -84,30 +78,26 @@ jobs:
             crystal build $_.FullName -o $name
           }
 
-      - name: Generate app-names and output-files
+      - name: Generate app names
         if: matrix.os != 'windows'
         shell: bash
         run: |
           APPS=$(for f in examples/gallery/*.cr examples/crimage/*.cr; do basename "$f" .cr; done | xargs)
-          OUTPUTS=$(for f in examples/gallery/*.cr examples/crimage/*.cr; do basename "$f" .cr; done | xargs -I{} echo -n "{}-${{ matrix.os }}.png ")
           echo "APP_NAMES=$APPS" >> $GITHUB_ENV
-          echo "OUTPUT_FILES=$OUTPUTS" >> $GITHUB_ENV
 
-      - name: Generate app-names and output-files (Windows)
+      - name: Generate app names (Windows)
         if: matrix.os == 'windows'
         shell: pwsh
         run: |
           $apps = (Get-ChildItem examples/gallery/*.cr, examples/crimage/*.cr | ForEach-Object { $_.BaseName }) -join ' '
-          $outputs = (Get-ChildItem examples/gallery/*.cr, examples/crimage/*.cr | ForEach-Object { "$($_.BaseName)-${{ matrix.os }}.png" }) -join ' '
           echo "APP_NAMES=$apps" | Out-File -FilePath $env:GITHUB_ENV -Append
-          echo "OUTPUT_FILES=$outputs" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Take screenshots for all examples
-        uses: ./.github/actions/screenshot
+        uses: kojix2/window-screenshot-action@af1c8dde9926c6e359f39e5e429db855a6028d6e
         with:
           os: ${{ matrix.os }}
           app-names: ${{ env.APP_NAMES }}
-          output-files: ${{ env.OUTPUT_FILES }}
+          output-pattern: "{name}-${{ matrix.os }}.png"
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v7
@@ -122,6 +112,8 @@ jobs:
     needs: screenshot
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
