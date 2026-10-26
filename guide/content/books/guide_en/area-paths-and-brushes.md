@@ -60,6 +60,7 @@ Start a figure with `new_figure` or `new_figure_with_arc`. `add_rectangle` adds 
 | Shape | Method |
 | --- | --- |
 | Rectangle | `add_rectangle(x, y, width, height)` |
+| Rounded rectangle | `add_rounded_rectangle(x, y, width, height, radius)` |
 | Line | `new_figure(x, y)` → `line_to(x, y)` |
 | Cubic Bézier curve | `bezier_to(c1x, c1y, c2x, c2y, end_x, end_y)` |
 | Start with an arc | `new_figure_with_arc(x, y, radius, start_angle, sweep, negative)` |

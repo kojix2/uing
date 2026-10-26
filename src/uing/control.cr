@@ -194,6 +194,18 @@ module UIng
       LibUI.control_disable(UIng.to_control(self))
     end
 
+    # Requests keyboard focus if this control is attached to a visible,
+    # enabled window and supports input. Native focus rules may reject it.
+    def focus : Nil
+      LibUI.control_set_focus(UIng.to_control(ref_ptr))
+    end
+
+    # Reports whether this control owns keyboard focus, including its internal
+    # widgets. Window#focused? separately reports window activation.
+    def focused? : Bool
+      LibUI.control_focused(UIng.to_control(ref_ptr)) != 0
+    end
+
     # Overrides the minimum size this control requests from its parent.
     #
     # Each axis is independent. Pass `-1` to restore its normal minimum-size

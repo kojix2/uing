@@ -104,6 +104,22 @@ module UIng
           self
         end
 
+        # Adds a rectangle with corners rounded by radius. The native API
+        # limits large radii to half the shorter side.
+        def add_rounded_rectangle(x : Number, y : Number, width : Number, height : Number, radius : Number) : self
+          ensure_not_ended
+          x = NumericValue.finite(x, "path rounded rectangle x")
+          y = NumericValue.finite(y, "path rounded rectangle y")
+          width = NumericValue.finite(width, "path rounded rectangle width")
+          height = NumericValue.finite(height, "path rounded rectangle height")
+          radius = NumericValue.finite(radius, "path rounded rectangle radius")
+          raise ArgumentError.new("path rounded rectangle width must be nonnegative") if width < 0
+          raise ArgumentError.new("path rounded rectangle height must be nonnegative") if height < 0
+          raise ArgumentError.new("path rounded rectangle radius must be nonnegative") if radius < 0
+          LibUI.draw_path_add_rounded_rectangle(@ref_ptr, x, y, width, height, radius)
+          self
+        end
+
         def ended? : Bool
           @ended
         end

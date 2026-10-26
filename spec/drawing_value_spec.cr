@@ -29,6 +29,16 @@ describe "Area drawing values" do
     end
   end
 
+  it "rejects invalid rounded rectangle geometry before calling libui-ng" do
+    path = UIng::Area::Draw::Path.from_native_for_spec(Pointer(UIng::LibUI::DrawPath).null)
+
+    expect_raises(ArgumentError, /x must be finite/) { path.add_rounded_rectangle(Float64::NAN, 0, 1, 1, 1) }
+    expect_raises(ArgumentError, /width must be nonnegative/) { path.add_rounded_rectangle(0, 0, -1, 1, 1) }
+    expect_raises(ArgumentError, /height must be nonnegative/) { path.add_rounded_rectangle(0, 0, 1, -1, 1) }
+    expect_raises(ArgumentError, /radius must be nonnegative/) { path.add_rounded_rectangle(0, 0, 1, 1, -1) }
+    expect_raises(ArgumentError, /radius must be finite/) { path.add_rounded_rectangle(0, 0, 1, 1, Float64::INFINITY) }
+  end
+
   it "keeps an independent native gradient-stop buffer" do
     stop = UIng::Area::Draw::Brush::GradientStop.new(pos: 0.25, r: 0.5, g: 0.6, b: 0.7, a: 0.8)
     brush = UIng::Area::Draw::Brush.new(UIng::Area::Draw::Brush::Type::LinearGradient, stops: [stop])

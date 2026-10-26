@@ -60,6 +60,7 @@ radial = UIng::Area::Draw::Brush.new(
 | 図形 | メソッド |
 | --- | --- |
 | 矩形 | `add_rectangle(x, y, width, height)` |
+| 角丸矩形 | `add_rounded_rectangle(x, y, width, height, radius)` |
 | 直線 | `new_figure(x, y)` → `line_to(x, y)` |
 | 3次ベジェ曲線 | `bezier_to(c1x, c1y, c2x, c2y, end_x, end_y)` |
 | 円弧から開始 | `new_figure_with_arc(x, y, radius, start_angle, sweep, negative)` |
