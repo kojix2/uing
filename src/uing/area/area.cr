@@ -195,7 +195,7 @@ module UIng
     private def owned_handler(method : String) : Handler
       check_available
       raise ArgumentError.new("Area##{method} requires an Area created without an explicit Handler") unless @owns_handler
-      @area_handler.not_nil!
+      @area_handler || raise "Area Handler is unavailable"
     end
   end
 end

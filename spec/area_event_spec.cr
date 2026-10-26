@@ -8,7 +8,8 @@ private class CallbackAreaForSpec < UIng::Area
   end
 
   def handler_ptr : UIng::LibUI::AreaHandler*
-    @area_handler.not_nil!.to_unsafe
+    handler = @area_handler || raise "Area Handler is unavailable"
+    handler.to_unsafe
   end
 
   def retains_handler? : Bool

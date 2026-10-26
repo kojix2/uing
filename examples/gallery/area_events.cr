@@ -377,7 +377,7 @@ module AreaEvents
       y = (event.y - offset_y) / scale
       return if (y - CONTROL_Y).abs > CONTROL_RADIUS
       return :theme if (x - THEME_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
-      return :visibility if (x - VISIBILITY_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
+      :visibility if (x - VISIBILITY_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
     end
 
     private def update_pointer(event : UIng::Area::MouseEvent, now : Time::Instant)
@@ -565,25 +565,7 @@ module AreaEvents
       draw_control(ctx, @theme_button, theme_color, fill, hover_fill, outline, @hover_control == :theme)
       draw_control(ctx, @visibility_button, visibility_color, fill, hover_fill, outline, @hover_control == :visibility)
 
-      if @dark_mode
-        ctx.fill_path(AreaEvents.brush(theme_color)) do |path|
-          path.new_figure_with_arc(THEME_X - 0.5, CONTROL_Y + 0.5, 8.5, 0, 2 * Math::PI, false)
-        end
-        ctx.fill_path(AreaEvents.brush(@hover_control == :theme ? hover_fill : fill)) do |path|
-          path.new_figure_with_arc(THEME_X + 3.5, CONTROL_Y - 2.5, 8, 0, 2 * Math::PI, false)
-        end
-      else
-        ctx.fill_path(AreaEvents.brush(theme_color)) do |path|
-          path.new_figure_with_arc(THEME_X, CONTROL_Y, 5.2, 0, 2 * Math::PI, false)
-        end
-        ctx.stroke_path(AreaEvents.brush(theme_color), thickness: 1.7, cap: :round) do |path|
-          8.times do |i|
-            angle = i * Math::PI / 4
-            path.new_figure(THEME_X + Math.cos(angle) * 8.5, CONTROL_Y + Math.sin(angle) * 8.5)
-            path.line_to(THEME_X + Math.cos(angle) * 11.5, CONTROL_Y + Math.sin(angle) * 11.5)
-          end
-        end
-      end
+      draw_theme_icon(ctx, theme_color, fill, hover_fill)
 
       ctx.fill_path(AreaEvents.brush(visibility_color)) do |path|
         path.new_figure(VISIBILITY_X - 4.5, CONTROL_Y - 8)
@@ -605,6 +587,28 @@ module AreaEvents
           ctx.stroke_path(brush, thickness: i == 0 ? 4.2 : 1.8, cap: :round) do |path|
             path.new_figure(VISIBILITY_X - 8, CONTROL_Y + 8)
             path.line_to(VISIBILITY_X + 8, CONTROL_Y - 8)
+          end
+        end
+      end
+    end
+
+    private def draw_theme_icon(ctx : Draw::Context, theme_color, fill, hover_fill)
+      if @dark_mode
+        ctx.fill_path(AreaEvents.brush(theme_color)) do |path|
+          path.new_figure_with_arc(THEME_X - 0.5, CONTROL_Y + 0.5, 8.5, 0, 2 * Math::PI, false)
+        end
+        ctx.fill_path(AreaEvents.brush(@hover_control == :theme ? hover_fill : fill)) do |path|
+          path.new_figure_with_arc(THEME_X + 3.5, CONTROL_Y - 2.5, 8, 0, 2 * Math::PI, false)
+        end
+      else
+        ctx.fill_path(AreaEvents.brush(theme_color)) do |path|
+          path.new_figure_with_arc(THEME_X, CONTROL_Y, 5.2, 0, 2 * Math::PI, false)
+        end
+        ctx.stroke_path(AreaEvents.brush(theme_color), thickness: 1.7, cap: :round) do |path|
+          8.times do |i|
+            angle = i * Math::PI / 4
+            path.new_figure(THEME_X + Math.cos(angle) * 8.5, CONTROL_Y + Math.sin(angle) * 8.5)
+            path.line_to(THEME_X + Math.cos(angle) * 11.5, CONTROL_Y + Math.sin(angle) * 11.5)
           end
         end
       end
