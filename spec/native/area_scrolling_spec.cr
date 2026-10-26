@@ -7,7 +7,10 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
     it "rejects scrolling calls on an ordinary Area before entering libui-ng" do
       window = UIng::Window.new("Area mode check", 300, 200)
-      area = UIng::Area.new(UIng::Area::Handler.new)
+      area = UIng::Area.new do
+        on_draw { |_params| }
+        on_mouse_event { |_event| }
+      end
       window.child = area
       begin
         expect_raises(ArgumentError, /set_size requires a scrolling Area/) { area.set_size(200, 100) }
@@ -19,7 +22,9 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
 
     it "allows both calls on a scrolling Area" do
       window = UIng::Window.new("Scrolling Area mode check", 300, 200)
-      area = UIng::Area.new(UIng::Area::Handler.new, 200, 100)
+      area = UIng::Area.new(200, 100) do
+        on_draw { |_params| }
+      end
       window.child = area
       begin
         area.set_size(300, 150)
