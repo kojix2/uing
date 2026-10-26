@@ -8,7 +8,7 @@ require "../../src/uing"
 # Rainbow trails show motion and pink trails show dragging inside the mouse;
 # colored rings show the click count (up to 3). The outline pulses on enter/leave,
 # and a coral cross marks interrupted capture.
-# Area has no wheel-scroll callback (the wheel drawing shows the middle button).
+# The wheel glows on scroll and middle-button presses.
 module AreaEvents
   alias Draw = UIng::Area::Draw
 
@@ -95,16 +95,7 @@ module AreaEvents
 
   def self.rounded_rectangle(x, y, width, height, radius) : Draw::Path
     path = Draw::Path.new(:winding)
-    path.new_figure(x + radius, y)
-    path.line_to(x + width - radius, y)
-    path.arc_to(x + width - radius, y + radius, radius, -Math::PI / 2, Math::PI / 2, false)
-    path.line_to(x + width, y + height - radius)
-    path.arc_to(x + width - radius, y + height - radius, radius, 0, Math::PI / 2, false)
-    path.line_to(x + radius, y + height)
-    path.arc_to(x + radius, y + height - radius, radius, Math::PI / 2, Math::PI / 2, false)
-    path.line_to(x, y + radius)
-    path.arc_to(x + radius, y + radius, radius, Math::PI, Math::PI / 2, false)
-    path.close_figure
+    path.add_rounded_rectangle(x, y, width, height, radius)
     path.end_path
     path
   end
@@ -408,6 +399,10 @@ module AreaEvents
       @pointer = nil unless left
     end
 
+    def scroll_event(event : UIng::Area::ScrollEvent)
+      @flashes["wheel_scroll"] = Time.instant if event.delta_x != 0 || event.delta_y != 0
+    end
+
     def drag_broken
       now = Time.instant
       @control_pressed = false
@@ -492,7 +487,7 @@ module AreaEvents
       {1, 3}.each_with_index do |button, side|
         AreaEvents.glow(ctx, @mouse_buttons[side], BUTTON_COLORS[button - 1], light("mouse#{button}", now))
       end
-      AreaEvents.glow(ctx, @wheel, GOLD, light("mouse2", now))
+      AreaEvents.glow(ctx, @wheel, GOLD, Math.max(light("mouse2", now), light("wheel_scroll", now)))
       draw_pointer(ctx, now)
     end
 
@@ -631,6 +626,11 @@ end
 handler.drag_broken do |area|
   visualizer.drag_broken
   area.queue_redraw_all
+end
+handler.scroll_event do |area, event|
+  visualizer.scroll_event(event)
+  area.queue_redraw_all
+  true
 end
 
 area = UIng::Area.new(handler)

@@ -28,6 +28,11 @@ handler = UIng::Area::Handler.new do
     area.queue_redraw_all if handled
     handled
   end
+
+  scroll_event do |area, event|
+    puts "スクロール: #{event.delta_x}, #{event.delta_y}"
+    true # イベントを消費する。スクロールAreaで通常のスクロールを続けるならfalse。
+  end
 end
 
 area = UIng::Area.new(handler)
@@ -39,6 +44,11 @@ area = UIng::Area.new(handler)
 - `mouse_crossed`はポインタがAreaへ出入りしたことを受け取ります。
 - `drag_broken`はドラッグ操作が中断されたときに状態を戻すために使えます。
 - `key_event`は処理済みなら`true`、処理しなければ`false`を返します。
+- `scroll_event`はホイールとトラックパッドの移動量を`delta_x`、`delta_y`で受け取ります。解除には`handler.scroll_event(nil)`を使います。
+
+スクロール量は符号付きのデバイス値で、描画座標ではありません。大きさはデバイスやOSによって異なり、正の値は右・下を表します。
+
+可視ウィンドウに追加した後、`area.focus`でキーボードフォーカスを要求できます。必要なら`area.focused?`で結果を確認します。OS側の規則により要求が拒否される場合もあります。
 
 `begin_user_window_move`と`begin_user_window_resize`は、`mouse_event`内かつ`event.down != 0`のときだけ呼びます。アニメーションでは、描画資源の生成を毎フレーム繰り返さず、変更された状態だけを再描画します。
 

@@ -28,6 +28,11 @@ handler = UIng::Area::Handler.new do
     area.queue_redraw_all if handled
     handled
   end
+
+  scroll_event do |area, event|
+    puts "Scroll: #{event.delta_x}, #{event.delta_y}"
+    true # Consume the event; return false for normal scrolling in a scrolling Area.
+  end
 end
 
 area = UIng::Area.new(handler)
@@ -39,6 +44,11 @@ area = UIng::Area.new(handler)
 - `mouse_crossed` receives pointer enter/leave changes.
 - `drag_broken` can restore state when a drag is interrupted.
 - `key_event` returns `true` when it handled the key and `false` otherwise.
+- `scroll_event` receives wheel and trackpad movement in `delta_x` and `delta_y`; call `handler.scroll_event(nil)` to clear it.
+
+Scroll deltas are signed device amounts, not drawing coordinates. Their size varies by device and platform. Positive values mean right and down.
+
+Call `area.focus` to request keyboard focus after attaching it to a visible window. Check `area.focused?` if needed; the native window system may reject the request.
 
 Call `begin_user_window_move` and `begin_user_window_resize` only inside `mouse_event` while `event.down != 0`. For animation, avoid creating drawing resources every frame and redraw only after state changes.
 
