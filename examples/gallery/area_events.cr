@@ -1,9 +1,10 @@
 require "../../src/uing"
 
 # A US ANSI keyboard and mouse, drawn entirely in one Area.
-# Click anywhere in the black area to focus it, then use the physical keyboard.
+# Click the Area to focus it, then use the physical keyboard.
 # Only events delivered to this Area are shown; OS shortcuts may be intercepted.
-# Nothing is drawn at rest. Held keys/buttons glow in color and fade on release.
+# The circular controls switch light/dark mode and persistent key/mouse outlines.
+# Keys and mouse outlines are visible at rest; held inputs glow and fade on release.
 # Rainbow trails show motion and pink trails show dragging inside the mouse;
 # colored rings show the click count (up to 3). The outline pulses on enter/leave,
 # and a coral cross marks interrupted capture.
@@ -11,15 +12,21 @@ require "../../src/uing"
 module AreaEvents
   alias Draw = UIng::Area::Draw
 
-  WIDTH  = 1144.0
-  HEIGHT =  356.0
-  UNIT   =   40.0
-  FADE   = 0.7.seconds
-  PINK   = {1.0, 0.18, 0.55}
-  GOLD   = {1.0, 0.72, 0.12}
-  CYAN   = {0.10, 0.82, 1.0}
-  MINT   = {0.12, 1.0, 0.58}
-  CORAL  = {1.0, 0.28, 0.16}
+  WIDTH          = 1144.0
+  HEIGHT         =  356.0
+  UNIT           =   40.0
+  FADE           = 0.7.seconds
+  PINK           = {1.0, 0.18, 0.55}
+  GOLD           = {1.0, 0.72, 0.12}
+  CYAN           = {0.10, 0.82, 1.0}
+  MINT           = {0.12, 1.0, 0.58}
+  CORAL          = {1.0, 0.28, 0.16}
+  LIGHT_SUN      = {1.0, 0.84, 0.0}
+  LIGHT_PIN      = {0.27, 0.32, 0.80}
+  THEME_X        = 1028.0
+  VISIBILITY_X   = 1088.0
+  CONTROL_Y      =   53.0
+  CONTROL_RADIUS =   19.0
 
   PALETTE       = {PINK, GOLD, {0.55, 1.0, 0.16}, MINT, CYAN, {0.46, 0.25, 1.0}, {0.95, 0.20, 1.0}}
   BUTTON_COLORS = {PINK, GOLD, CYAN}
@@ -47,6 +54,20 @@ module AreaEvents
 
   def self.brush(color : Tuple(Float64, Float64, Float64), alpha : Float64 = 1.0)
     Draw::Brush.new(:solid, *color, alpha)
+  end
+
+  def self.gray(value : Float64) : Tuple(Float64, Float64, Float64)
+    {value, value, value}
+  end
+
+  def self.vertical_gradient(x : Float64, y : Float64, height : Float64,
+                             top : Tuple(Float64, Float64, Float64),
+                             bottom : Tuple(Float64, Float64, Float64), alpha : Float64 = 1.0) : Draw::Brush
+    stops = [
+      Draw::Brush::GradientStop.new(0, *top, alpha),
+      Draw::Brush::GradientStop.new(1, *bottom, alpha),
+    ]
+    Draw::Brush.new(:linear_gradient, x0: x, y0: y, x1: x, y1: y + height, stops: stops)
   end
 
   def self.spectrum(position : Float64) : Tuple(Float64, Float64, Float64)
@@ -78,6 +99,13 @@ module AreaEvents
     path
   end
 
+  def self.circle(x, y, radius) : Draw::Path
+    path = Draw::Path.new(:winding)
+    path.new_figure_with_arc(x, y, radius, 0, 2 * Math::PI, false)
+    path.end_path
+    path
+  end
+
   def self.text_layout(label, width, font, color, alpha = 1.0) : Draw::TextLayout
     UIng::Area::AttributedString.open(label) do |text|
       text.set_attribute(UIng::Area::Attribute.new_color(*color, alpha), 0, text.len) unless label.empty?
@@ -94,31 +122,55 @@ module AreaEvents
     ctx.draw_stroke(path, brush(color, 0.95 * light), thickness: 1.3)
   end
 
-  # Cache geometry and full-brightness labels; draw only active keys.
+  # Cache geometry, gradients, and labels for both themes.
   class Key
     getter id : String
     @path : Draw::Path
-    @text : Draw::TextLayout
     @text_y : Float64
     @color : Tuple(Float64, Float64, Float64)
+    @active_top : Tuple(Float64, Float64, Float64)
+    @active_bottom : Tuple(Float64, Float64, Float64)
     @label_color : Tuple(Float64, Float64, Float64)
+    @light_label_color : Tuple(Float64, Float64, Float64)
 
     def initialize(@id : String, @label : String, @x : Float64, @y : Float64,
-                   @width : Float64, height : Float64, @font : UIng::FontDescriptor)
-      @path = AreaEvents.rounded_rectangle(@x, @y, @width, height, 5.0)
+                   @width : Float64, @height : Float64, @font : UIng::FontDescriptor)
+      @path = AreaEvents.rounded_rectangle(@x, @y, @width, @height, 5.0)
       @color = AreaEvents.spectrum((@x - 28) / (15 * UNIT) + (@y - 48) / (6 * UNIT) * 0.08)
+      @active_top = @color.map { |component| 0.08 + component * 0.58 }
+      @active_bottom = @color.map { |component| 0.40 + component * 0.60 }
+      @gradients = {
+        dark_idle:  AreaEvents.vertical_gradient(@x, @y, @height, AreaEvents.gray(0.07), AreaEvents.gray(0.20)),
+        light_idle: AreaEvents.vertical_gradient(@x, @y, @height, AreaEvents.gray(0.90), AreaEvents.gray(1.0)),
+        active:     AreaEvents.vertical_gradient(@x, @y, @height, @active_top, @active_bottom),
+      }
       @label_color = @color.map { |component| 0.55 + component * 0.45 }
-      @text = AreaEvents.text_layout(@label, @width, @font, @label_color)
-      @text_y = @y + (height - @text.extents[1]) / 2
+      @light_label_color = @color.map { |component| component * 0.45 }
+      @texts = {
+        dark:       AreaEvents.text_layout(@label, @width, @font, @label_color),
+        light:      AreaEvents.text_layout(@label, @width, @font, @light_label_color),
+        dark_idle:  AreaEvents.text_layout(@label, @width, @font, AreaEvents.gray(0.58)),
+        light_idle: AreaEvents.text_layout(@label, @width, @font, AreaEvents.gray(0.42)),
+      }
+      @text_y = @y + (@height - @texts[:dark].extents[1]) / 2
     end
 
-    def draw(ctx : Draw::Context, light : Float64)
+    def draw(ctx : Draw::Context, light : Float64, show_idle : Bool, dark_mode : Bool)
+      if show_idle
+        outline = AreaEvents.gray(dark_mode ? 0.27 : 0.72)
+        ctx.draw_fill(@path, dark_mode ? @gradients[:dark_idle] : @gradients[:light_idle])
+        ctx.draw_stroke(@path, AreaEvents.brush(outline), thickness: 1)
+        ctx.draw_text_layout(dark_mode ? @texts[:dark_idle] : @texts[:light_idle], @x, @text_y)
+      end
       return if light <= 0
       AreaEvents.glow(ctx, @path, @color, light)
+      gradient = light == 1.0 ? @gradients[:active] : AreaEvents.vertical_gradient(@x, @y, @height, @active_top, @active_bottom, light)
+      ctx.draw_fill(@path, gradient)
       if light == 1.0
-        ctx.draw_text_layout(@text, @x, @text_y)
+        ctx.draw_text_layout(dark_mode ? @texts[:dark] : @texts[:light], @x, @text_y)
       elsif !@label.empty?
-        bright = AreaEvents.text_layout(@label, @width, @font, @label_color, light)
+        color = dark_mode ? @label_color : @light_label_color
+        bright = AreaEvents.text_layout(@label, @width, @font, color, light)
         begin
           ctx.draw_text_layout(bright, @x, @text_y)
         ensure
@@ -129,7 +181,7 @@ module AreaEvents
 
     def free
       @path.free
-      @text.free
+      @texts.each { |_name, layout| layout.free }
     end
   end
 
@@ -139,13 +191,21 @@ module AreaEvents
     @pressed = Set(String).new
     @held_buttons = 0_u64
     @inside = false
+    @dark_mode = true
+    @show_idle = true
+    @hover_control : Symbol?
+    @control_pressed = false
     @pointer : Tuple(Float64, Float64)?
     @trail = [] of PointerSample
     @click_count = 0
     @font = UIng::FontDescriptor.new(size: 12)
+    @medium_font = UIng::FontDescriptor.new(size: 10)
+    @small_font = UIng::FontDescriptor.new(size: 9)
     @character_font = UIng::FontDescriptor.new(size: 18)
     @mouse_body = AreaEvents.rounded_rectangle(1004.0, 100.0, 108.0, 168.0, 49.0)
     @wheel = AreaEvents.rounded_rectangle(1051.0, 119.0, 14.0, 36.0, 7.0)
+    @theme_button = AreaEvents.circle(THEME_X, CONTROL_Y, CONTROL_RADIUS)
+    @visibility_button = AreaEvents.circle(VISIBILITY_X, CONTROL_Y, CONTROL_RADIUS)
     @mouse_buttons : Array(Draw::Path)
 
     def initialize
@@ -174,7 +234,15 @@ module AreaEvents
 
     private def add_key(id, x, y, width = 1.0, height = 1.0, label = nil)
       label ||= LABELS[id]? || (id.starts_with?('n') && id.size == 2 ? id[1..] : id.upcase)
-      font = label.size == 1 ? @character_font : @font
+      font = if label.size == 1
+               @character_font
+             elsif width == 1.0 && label.size >= 5
+               @small_font
+             elsif width == 1.0 && label.size == 4
+               @medium_font
+             else
+               @font
+             end
       @keys << Key.new(id, label, 28.0 + x * UNIT, 48.0 + y * UNIT,
         width * UNIT - 4.0, height * UNIT - 4.0, font)
     end
@@ -266,6 +334,17 @@ module AreaEvents
 
     def mouse_event(event : UIng::Area::MouseEvent)
       now = Time.instant
+      @hover_control = control_at(event)
+      if event.down == 1 && @hover_control
+        @dark_mode = !@dark_mode if @hover_control == :theme
+        @show_idle = !@show_idle if @hover_control == :visibility
+        @control_pressed = true
+        return
+      end
+      if @control_pressed
+        @control_pressed = false if event.up == 1
+        return
+      end
       # Held1To64 excludes the button changing in this event. Add Down and
       # remove Up explicitly so button chords and releases during drags work.
       @held_buttons = event.held1_to64
@@ -280,6 +359,17 @@ module AreaEvents
         @click_count = event.count.clamp(1, 3)
         @flashes["click"] = now
       end
+    end
+
+    private def control_at(event : UIng::Area::MouseEvent) : Symbol?
+      return if event.area_width <= 0 || event.area_height <= 0
+      scale = Math.min(event.area_width / WIDTH, event.area_height / HEIGHT)
+      return if scale <= 0
+      x = (event.x - (event.area_width - WIDTH * scale) / 2) / scale
+      y = (event.y - (event.area_height - HEIGHT * scale) / 2) / scale
+      return if (y - CONTROL_Y).abs > CONTROL_RADIUS
+      return :theme if (x - THEME_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
+      return :visibility if (x - VISIBILITY_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
     end
 
     private def update_pointer(event : UIng::Area::MouseEvent, now : Time::Instant)
@@ -299,8 +389,9 @@ module AreaEvents
 
     def mouse_crossed(left : Bool)
       @inside = !left
-      @flashes.delete(left ? "enter" : "leave")
-      @flashes[left ? "leave" : "enter"] = Time.instant
+      @hover_control = nil if left
+      @flashes.delete(left ? "pointer_enter" : "pointer_leave")
+      @flashes[left ? "pointer_leave" : "pointer_enter"] = Time.instant
       # Do not join positions on either side of a trip outside the Area.
       @trail.clear unless left
       @pointer = nil unless left
@@ -308,6 +399,7 @@ module AreaEvents
 
     def drag_broken
       now = Time.instant
+      @control_pressed = false
       @held_buttons = 0_u64
       (1..3).each { |button| set_pressed("mouse#{button}", false, now) }
       @trail.clear
@@ -316,6 +408,8 @@ module AreaEvents
 
     def focus_lost
       drag_broken unless @held_buttons == 0
+      @control_pressed = false
+      @hover_control = nil
       now = Time.instant
       @pressed.each { |id| @flashes[id] = now }
       @pressed.clear
@@ -345,7 +439,8 @@ module AreaEvents
 
     def draw(params : UIng::Area::Draw::Params)
       ctx = params.context
-      ctx.fill_path(AreaEvents.brush({0.0, 0.0, 0.0})) do |path|
+      background = AreaEvents.gray(@dark_mode ? 0.018 : 1.0)
+      ctx.fill_path(AreaEvents.brush(background)) do |path|
         path.add_rectangle(0, 0, params.area_width, params.area_height)
       end
       return if params.area_width <= 0 || params.area_height <= 0
@@ -359,15 +454,25 @@ module AreaEvents
       begin
         ctx.transform(matrix)
         now = Time.instant
-        @keys.each { |key| key.draw(ctx, light(key.id, now)) }
+        @keys.each { |key| key.draw(ctx, light(key.id, now), @show_idle, @dark_mode) }
         draw_mouse(ctx, now)
+        draw_controls(ctx)
       ensure
         ctx.restore
       end
     end
 
     private def draw_mouse(ctx : Draw::Context, now : Time::Instant)
-      {"enter" => MINT, "leave" => GOLD}.each do |id, color|
+      if @show_idle
+        fill = AreaEvents.gray(@dark_mode ? 0.07 : 0.93)
+        outline = AreaEvents.gray(@dark_mode ? 0.27 : 0.72)
+        ctx.draw_fill(@mouse_body, AreaEvents.brush(fill))
+        ctx.draw_stroke(@mouse_body, AreaEvents.brush(outline), thickness: 1.2)
+        @mouse_buttons.each { |button| ctx.draw_stroke(button, AreaEvents.brush(outline), thickness: 1) }
+        ctx.draw_fill(@wheel, AreaEvents.brush(outline, 0.55))
+        ctx.draw_stroke(@wheel, AreaEvents.brush(outline), thickness: 1)
+      end
+      {"pointer_enter" => MINT, "pointer_leave" => GOLD}.each do |id, color|
         pulse = light(id, now)
         if pulse > 0
           ctx.draw_stroke(@mouse_body, AreaEvents.brush(color, 0.07 * pulse), thickness: 10)
@@ -379,6 +484,68 @@ module AreaEvents
       end
       AreaEvents.glow(ctx, @wheel, GOLD, light("mouse2", now))
       draw_pointer(ctx, now)
+    end
+
+    private def draw_controls(ctx : Draw::Context)
+      fill = AreaEvents.gray(@dark_mode ? 0.10 : 1.0)
+      hover_fill = AreaEvents.gray(@dark_mode ? 0.18 : 0.91)
+      outline = AreaEvents.gray(@dark_mode ? 0.42 : 0.65)
+      neutral_color = AreaEvents.gray(@dark_mode ? 0.72 : 0.40)
+      theme_color = @dark_mode ? CYAN : LIGHT_SUN
+      visibility_color = @dark_mode ? (@show_idle ? MINT : neutral_color) : LIGHT_PIN
+
+      draw_control(ctx, @theme_button, theme_color, fill, hover_fill, outline, @hover_control == :theme)
+      draw_control(ctx, @visibility_button, visibility_color, fill, hover_fill, outline, @hover_control == :visibility)
+
+      if @dark_mode
+        ctx.fill_path(AreaEvents.brush(theme_color)) do |path|
+          path.new_figure_with_arc(THEME_X - 0.5, CONTROL_Y + 0.5, 8.5, 0, 2 * Math::PI, false)
+        end
+        ctx.fill_path(AreaEvents.brush(@hover_control == :theme ? hover_fill : fill)) do |path|
+          path.new_figure_with_arc(THEME_X + 3.5, CONTROL_Y - 2.5, 8, 0, 2 * Math::PI, false)
+        end
+      else
+        ctx.fill_path(AreaEvents.brush(theme_color)) do |path|
+          path.new_figure_with_arc(THEME_X, CONTROL_Y, 5.2, 0, 2 * Math::PI, false)
+        end
+        ctx.stroke_path(AreaEvents.brush(theme_color), thickness: 1.7, cap: :round) do |path|
+          8.times do |i|
+            angle = i * Math::PI / 4
+            path.new_figure(THEME_X + Math.cos(angle) * 8.5, CONTROL_Y + Math.sin(angle) * 8.5)
+            path.line_to(THEME_X + Math.cos(angle) * 11.5, CONTROL_Y + Math.sin(angle) * 11.5)
+          end
+        end
+      end
+
+      ctx.fill_path(AreaEvents.brush(visibility_color)) do |path|
+        path.new_figure(VISIBILITY_X - 4.5, CONTROL_Y - 8)
+        path.line_to(VISIBILITY_X + 4.5, CONTROL_Y - 8)
+        path.line_to(VISIBILITY_X + 3.2, CONTROL_Y - 4)
+        path.line_to(VISIBILITY_X + 3.2, CONTROL_Y + 1)
+        path.line_to(VISIBILITY_X + 6, CONTROL_Y + 3)
+        path.line_to(VISIBILITY_X - 6, CONTROL_Y + 3)
+        path.line_to(VISIBILITY_X - 3.2, CONTROL_Y + 1)
+        path.line_to(VISIBILITY_X - 3.2, CONTROL_Y - 4)
+        path.close_figure
+      end
+      ctx.stroke_path(AreaEvents.brush(visibility_color), thickness: 1.7, cap: :round) do |path|
+        path.new_figure(VISIBILITY_X, CONTROL_Y + 3)
+        path.line_to(VISIBILITY_X, CONTROL_Y + 10)
+      end
+      unless @show_idle
+        {AreaEvents.brush(@hover_control == :visibility ? hover_fill : fill), AreaEvents.brush(visibility_color)}.each_with_index do |brush, i|
+          ctx.stroke_path(brush, thickness: i == 0 ? 4.2 : 1.8, cap: :round) do |path|
+            path.new_figure(VISIBILITY_X - 8, CONTROL_Y + 8)
+            path.line_to(VISIBILITY_X + 8, CONTROL_Y - 8)
+          end
+        end
+      end
+    end
+
+    private def draw_control(ctx : Draw::Context, path : Draw::Path,
+                             color, fill, hover_fill, outline, hovered : Bool)
+      ctx.draw_fill(path, AreaEvents.brush(hovered ? hover_fill : fill))
+      ctx.draw_stroke(path, AreaEvents.brush(hovered ? color : outline), thickness: hovered ? 1.8 : 1.2)
     end
 
     private def pointer_color(x : Float64, y : Float64)
@@ -427,9 +594,8 @@ module AreaEvents
 
     def free
       @keys.each(&.free)
-      @mouse_body.free
+      {@mouse_body, @wheel, @theme_button, @visibility_button}.each(&.free)
       @mouse_buttons.each(&.free)
-      @wheel.free
     end
   end
 end
@@ -459,7 +625,9 @@ end
 
 area = UIng::Area.new(handler)
 window = UIng::Window.new("Area Events", AreaEvents::WIDTH.to_i, AreaEvents::HEIGHT.to_i)
-window.child = area
+box = UIng::Box.new(:vertical)
+box.append(area, stretchy: true)
+window.child = box
 window.on_focus_changed do |focused|
   unless focused || area.released?
     visualizer.focus_lost
