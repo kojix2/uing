@@ -42,4 +42,4 @@ area = UIng::Area.new(handler)
 
 `begin_user_window_move`と`begin_user_window_resize`は、`mouse_event`内かつ`event.down != 0`のときだけ呼びます。アニメーションでは、描画資源の生成を毎フレーム繰り返さず、変更された状態だけを再描画します。
 
-[area_analog_clock.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_analog_clock.cr)と[reversi.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/reversi.cr)は、状態と再描画を組み合わせた例です。
+[area_events.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_events.cr)はキーボードとマウスの入力を可視化します。[area_analog_clock.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_analog_clock.cr)と[reversi.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/reversi.cr)は、状態と再描画を組み合わせた例です。

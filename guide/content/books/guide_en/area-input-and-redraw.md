@@ -42,4 +42,4 @@ area = UIng::Area.new(handler)
 
 Call `begin_user_window_move` and `begin_user_window_resize` only inside `mouse_event` while `event.down != 0`. For animation, avoid creating drawing resources every frame and redraw only after state changes.
 
-[area_analog_clock.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_analog_clock.cr) and [reversi.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/reversi.cr) combine state with redraws.
+[area_events.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_events.cr) visualizes keyboard and mouse input. [area_analog_clock.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_analog_clock.cr) and [reversi.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/reversi.cr) combine state with redraws.

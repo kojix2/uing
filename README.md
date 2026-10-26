@@ -354,6 +354,12 @@ If you're looking for icons under the MIT license, try [icon-viewer](https://git
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_area-macos.png" alt="basic_area-macos"></td>
     </tr>
     <tr>
+      <td><a href="examples/gallery/area_events.cr">area_events</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_events-ubuntu.png" alt="area_events-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_events-windows.png" alt="area_events-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_events-macos.png" alt="area_events-macos"></td>
+    </tr>
+    <tr>
       <td><a href="examples/gallery/area_basic_shapes.cr">area_basic_shapes</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_basic_shapes-ubuntu.png" alt="area_basic_shapes-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_basic_shapes-windows.png" alt="area_basic_shapes-windows"></td>
