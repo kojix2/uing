@@ -27,6 +27,10 @@ module AreaEvents
   VISIBILITY_X   = 1088.0
   CONTROL_Y      =   53.0
   CONTROL_RADIUS =   19.0
+  POINTER_X      = 1028.0
+  POINTER_Y      =  198.0
+  POINTER_WIDTH  =   60.0
+  POINTER_HEIGHT =   46.0
 
   PALETTE       = {PINK, GOLD, {0.55, 1.0, 0.16}, MINT, CYAN, {0.46, 0.25, 1.0}, {0.95, 0.20, 1.0}}
   BUTTON_COLORS = {PINK, GOLD, CYAN}
@@ -58,6 +62,12 @@ module AreaEvents
 
   def self.gray(value : Float64) : Tuple(Float64, Float64, Float64)
     {value, value, value}
+  end
+
+  # Drawing and hit testing must use the same scale and letterbox offsets.
+  def self.viewport(width : Float64, height : Float64) : {Float64, Float64, Float64}
+    scale = Math.min(width / WIDTH, height / HEIGHT)
+    {scale, (width - WIDTH * scale) / 2, (height - HEIGHT * scale) / 2}
   end
 
   def self.vertical_gradient(x : Float64, y : Float64, height : Float64,
@@ -292,6 +302,7 @@ module AreaEvents
         return ext.to_s.downcase
       end
       return unless key = event.key
+      # Convert shifted punctuation back to the physical keycap label.
       case key
       when '\r', '\n'     then "enter"
       when '\t'           then "tab"
@@ -363,10 +374,10 @@ module AreaEvents
 
     private def control_at(event : UIng::Area::MouseEvent) : Symbol?
       return if event.area_width <= 0 || event.area_height <= 0
-      scale = Math.min(event.area_width / WIDTH, event.area_height / HEIGHT)
+      scale, offset_x, offset_y = AreaEvents.viewport(event.area_width, event.area_height)
       return if scale <= 0
-      x = (event.x - (event.area_width - WIDTH * scale) / 2) / scale
-      y = (event.y - (event.area_height - HEIGHT * scale) / 2) / scale
+      x = (event.x - offset_x) / scale
+      y = (event.y - offset_y) / scale
       return if (y - CONTROL_Y).abs > CONTROL_RADIUS
       return :theme if (x - THEME_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
       return :visibility if (x - VISIBILITY_X)**2 + (y - CONTROL_Y)**2 <= CONTROL_RADIUS**2
@@ -376,8 +387,8 @@ module AreaEvents
       return if event.area_width <= 0 || event.area_height <= 0
       @inside = (0...event.area_width).includes?(event.x) && (0...event.area_height).includes?(event.y)
       position = {
-        1028.0 + 60.0 * (event.x / event.area_width).clamp(0.0, 1.0),
-        198.0 + 46.0 * (event.y / event.area_height).clamp(0.0, 1.0),
+        POINTER_X + POINTER_WIDTH * (event.x / event.area_width).clamp(0.0, 1.0),
+        POINTER_Y + POINTER_HEIGHT * (event.y / event.area_height).clamp(0.0, 1.0),
       }
       if position != @pointer
         @trail << PointerSample.new(*position, @held_buttons != 0, now)
@@ -445,10 +456,9 @@ module AreaEvents
       end
       return if params.area_width <= 0 || params.area_height <= 0
 
-      # One shared transform preserves the keyboard layout when resizing.
-      scale = Math.min(params.area_width / WIDTH, params.area_height / HEIGHT)
+      scale, offset_x, offset_y = AreaEvents.viewport(params.area_width, params.area_height)
       matrix = Draw::Matrix.new.set_identity
-      matrix.translate((params.area_width - WIDTH * scale) / 2, (params.area_height - HEIGHT * scale) / 2)
+      matrix.translate(offset_x, offset_y)
       matrix.scale(0, 0, scale, scale)
       ctx.save
       begin
@@ -549,7 +559,7 @@ module AreaEvents
     end
 
     private def pointer_color(x : Float64, y : Float64)
-      AreaEvents.spectrum((x - 1028) / 60 + (y - 198) / 46 * 0.2)
+      AreaEvents.spectrum((x - POINTER_X) / POINTER_WIDTH + (y - POINTER_Y) / POINTER_HEIGHT * 0.2)
     end
 
     private def draw_pointer(ctx : Draw::Context, now : Time::Instant)
@@ -625,6 +635,7 @@ end
 
 area = UIng::Area.new(handler)
 window = UIng::Window.new("Area Events", AreaEvents::WIDTH.to_i, AreaEvents::HEIGHT.to_i)
+# GTK may allocate a directly attached Area at its 1px natural width.
 box = UIng::Box.new(:vertical)
 box.append(area, stretchy: true)
 window.child = box
