@@ -17,10 +17,23 @@ module UIng
   #     draw { |area, params| puts "Drawing..." }
   #     mouse_event { |area, event| puts "Mouse event" }
   #     key_event { |area, event| true } # Return true if handled
+  #     scroll_event { |area, event| true } # Return true if handled
   #   end
   class Area < Control
     class Handler
       include BlockConstructor; block_constructor
+
+      SCROLL_CALLBACK = ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, event : LibUI::AreaScrollEvent*) : LibC::Int {
+        begin
+          extended = ah.as(LibUI::AreaHandlerExtended*)
+          callback = ::Box(Proc(Area, Area::ScrollEvent, Bool)).unbox(extended.value.scroll_event_box)
+          area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
+          callback.call(area_wrapper, Area::ScrollEvent.new(event)) ? 1_i32 : 0_i32
+        rescue e
+          UIng.handle_callback_error(e, "Area scroll_event")
+          0_i32
+        end
+      }
 
       # Store the extended handler structure and individual boxes for GC protection
       @extended_handler : LibUI::AreaHandlerExtended
@@ -29,6 +42,7 @@ module UIng
       @mouse_crossed_box : Pointer(Void)
       @drag_broken_box : Pointer(Void)
       @key_event_box : Pointer(Void)
+      @scroll_event_box : Pointer(Void)
 
       # Ameba counts branches inside the five C callback closures as branches
       # of this initializer even though each closure is an independent handler.
@@ -40,6 +54,7 @@ module UIng
         @mouse_crossed_box = Pointer(Void).null
         @drag_broken_box = Pointer(Void).null
         @key_event_box = Pointer(Void).null
+        @scroll_event_box = Pointer(Void).null
 
         # Create extended handler with static callback functions
         @extended_handler = uninitialized LibUI::AreaHandlerExtended
@@ -123,7 +138,8 @@ module UIng
               UIng.handle_callback_error(e, "Area key_event")
               0_i32
             end
-          }
+          },
+          scroll_event: nil
         )
 
         # Initialize the box pointers in the extended handler
@@ -132,6 +148,7 @@ module UIng
         @extended_handler.mouse_crossed_box = @mouse_crossed_box
         @extended_handler.drag_broken_box = @drag_broken_box
         @extended_handler.key_event_box = @key_event_box
+        @extended_handler.scroll_event_box = @scroll_event_box
       end
 
       # ameba:enable Metrics/CyclomaticComplexity
@@ -207,6 +224,24 @@ module UIng
 
       def key_event(callback : Nil) : Nil
         clear_key_event
+      end
+
+      # Receives wheel and trackpad movement. Return true to consume it, or
+      # false to allow a scrolling Area to scroll normally.
+      def scroll_event(&block : (Area, Area::ScrollEvent) -> Bool)
+        @scroll_event_box = ::Box.box(block)
+        @extended_handler.scroll_event_box = @scroll_event_box
+        @extended_handler.base_handler.scroll_event = SCROLL_CALLBACK
+      end
+
+      def clear_scroll_event : Nil
+        @extended_handler.base_handler.scroll_event = nil
+        @extended_handler.scroll_event_box = Pointer(Void).null
+        @scroll_event_box = Pointer(Void).null
+      end
+
+      def scroll_event(callback : Nil) : Nil
+        clear_scroll_event
       end
 
       def to_unsafe

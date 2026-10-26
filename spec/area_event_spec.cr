@@ -1,6 +1,21 @@
 require "./spec_helper"
 
 describe "Area event wrappers" do
+  it "copies scroll event values from the native callback structure" do
+    native = UIng::LibUI::AreaScrollEvent.new(
+      x: 12.5,
+      y: 7.25,
+      delta_x: -0.5,
+      delta_y: 1.25,
+      modifiers: UIng::Area::Modifiers::Shift
+    )
+    event = UIng::Area::ScrollEvent.from_native_for_spec(pointerof(native))
+    native.delta_y = 10.0
+
+    {event.x, event.y, event.delta_x, event.delta_y}.should eq({12.5, 7.25, -0.5, 1.25})
+    event.modifiers.should eq(UIng::Area::Modifiers::Shift)
+  end
+
   it "copies mouse event values from the native callback structure" do
     native = UIng::LibUI::AreaMouseEvent.new(
       x: 12.5,
@@ -69,6 +84,28 @@ describe "Area event wrappers" do
 
     crossed.should eq([false, true])
     {handled, unhandled}.should eq({1, 0})
+  end
+
+  it "converts scroll callback results and stops invoking a cleared callback" do
+    handler = UIng::Area::Handler.new
+    handler.to_unsafe.value.scroll_event.pointer.null?.should be_true
+    received = [] of Tuple(Float64, Float64)
+    handler.scroll_event do |_area, event|
+      received << {event.delta_x, event.delta_y}
+      event.delta_y > 0
+    end
+    handler_ptr = handler.to_unsafe
+    area_ptr = Pointer(UIng::LibUI::Area).null
+    scroll_event = UIng::LibUI::AreaScrollEvent.new(delta_x: -0.5, delta_y: 1.25)
+
+    handled = handler_ptr.value.scroll_event.call(handler_ptr, area_ptr, pointerof(scroll_event))
+    scroll_event.delta_y = -1.25
+    unhandled = handler_ptr.value.scroll_event.call(handler_ptr, area_ptr, pointerof(scroll_event))
+    handler.scroll_event(nil)
+
+    received.should eq([{-0.5, 1.25}, {-0.5, -1.25}])
+    {handled, unhandled}.should eq({1, 0})
+    handler_ptr.value.scroll_event.pointer.null?.should be_true
   end
 
   it "stops invoking cleared Area callbacks through the native handler" do

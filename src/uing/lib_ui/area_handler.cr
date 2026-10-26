@@ -6,6 +6,7 @@ module UIng
       mouse_crossed : (Pointer(AreaHandler), Pointer(Area), LibC::Int -> Void)
       drag_broken : (Pointer(AreaHandler), Pointer(Area) -> Void)
       key_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaKeyEvent) -> LibC::Int)
+      scroll_event : (Pointer(AreaHandler), Pointer(Area), Pointer(AreaScrollEvent) -> LibC::Int)
     end
 
     # Extended handler structure that contains the base AreaHandler
@@ -19,6 +20,7 @@ module UIng
       mouse_crossed_box : Pointer(Void)
       drag_broken_box : Pointer(Void)
       key_event_box : Pointer(Void)
+      scroll_event_box : Pointer(Void)
     end
   end
 end

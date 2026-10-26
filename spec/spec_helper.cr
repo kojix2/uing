@@ -21,6 +21,12 @@ class UIng::Area::MouseEvent
   end
 end
 
+class UIng::Area::ScrollEvent
+  def self.from_native_for_spec(ref_ptr : UIng::LibUI::AreaScrollEvent*) : self
+    new(ref_ptr)
+  end
+end
+
 class UIng::Area::KeyEvent
   def self.from_native_for_spec(ref_ptr : UIng::LibUI::AreaKeyEvent*) : self
     new(ref_ptr)
