@@ -6,8 +6,9 @@ require "../../src/uing"
 # The circular controls switch light/dark mode and persistent key/mouse outlines.
 # Keys and mouse outlines are visible at rest; held inputs glow and fade on release.
 # Rainbow trails show motion and pink trails show dragging inside the mouse;
-# colored rings show the click count (up to 3). The outline pulses on enter/leave,
-# and a coral cross marks interrupted capture.
+# colored rings show the click count (up to 3). Multiple clicks also send
+# expanding rings from the matching mouse button. Scroll chevrons show direction.
+# The outline pulses on enter/leave, and a coral cross marks interrupted capture.
 # The wheel glows on scroll and middle-button presses.
 module AreaEvents
   alias Draw = UIng::Area::Draw
@@ -16,6 +17,7 @@ module AreaEvents
   HEIGHT         =  356.0
   UNIT           =   40.0
   FADE           = 0.7.seconds
+  FEEDBACK_FADE  = 1.2.seconds
   PINK           = {1.0, 0.18, 0.55}
   GOLD           = {1.0, 0.72, 0.12}
   CYAN           = {0.10, 0.82, 1.0}
@@ -199,6 +201,9 @@ module AreaEvents
     @pointer : Tuple(Float64, Float64)?
     @trail = [] of PointerSample
     @click_count = 0
+    @multi_click : Tuple(Int32, Int32, Time::Instant)?
+    @scroll_x : Tuple(Float64, Time::Instant)?
+    @scroll_y : Tuple(Float64, Time::Instant)?
     @font = UIng::FontDescriptor.new(size: 12)
     @medium_font = UIng::FontDescriptor.new(size: 10)
     @small_font = UIng::FontDescriptor.new(size: 9)
@@ -360,6 +365,7 @@ module AreaEvents
       if event.down != 0
         @click_count = event.count.clamp(1, 3)
         @flashes["click"] = now
+        @multi_click = event.count >= 2 ? {event.count, event.down, now} : nil
       end
     end
 
@@ -400,7 +406,11 @@ module AreaEvents
     end
 
     def scroll_event(event : UIng::Area::ScrollEvent)
-      @flashes["wheel_scroll"] = Time.instant if event.delta_x != 0 || event.delta_y != 0
+      return if event.delta_x == 0 && event.delta_y == 0
+      now = Time.instant
+      @flashes["wheel_scroll"] = now
+      @scroll_x = {event.delta_x, now} if event.delta_x != 0
+      @scroll_y = {event.delta_y, now} if event.delta_y != 0
     end
 
     def drag_broken
@@ -424,10 +434,13 @@ module AreaEvents
     end
 
     def tick(area : UIng::Area)
-      return if @flashes.empty? && @trail.empty?
+      return if @flashes.empty? && @trail.empty? && !@multi_click && !@scroll_x && !@scroll_y
       now = Time.instant
       @flashes.reject! { |_id, started| now - started >= FADE }
       @trail.reject! { |sample| now - sample.time >= FADE }
+      @multi_click = nil if (click = @multi_click) && now - click[2] >= FEEDBACK_FADE
+      @scroll_x = nil if (scroll = @scroll_x) && now - scroll[1] >= FEEDBACK_FADE
+      @scroll_y = nil if (scroll = @scroll_y) && now - scroll[1] >= FEEDBACK_FADE
       # Also repaint the last frame so every expired glow is erased.
       area.queue_redraw_all
     end
@@ -438,8 +451,8 @@ module AreaEvents
       fade(started, now)
     end
 
-    private def fade(started : Time::Instant, now : Time::Instant) : Float64
-      remaining = (1.0 - (now - started) / FADE).clamp(0.0, 1.0)
+    private def fade(started : Time::Instant, now : Time::Instant, duration = FADE) : Float64
+      remaining = (1.0 - (now - started) / duration).clamp(0.0, 1.0)
       remaining * remaining
     end
 
@@ -488,7 +501,57 @@ module AreaEvents
         AreaEvents.glow(ctx, @mouse_buttons[side], BUTTON_COLORS[button - 1], light("mouse#{button}", now))
       end
       AreaEvents.glow(ctx, @wheel, GOLD, Math.max(light("mouse2", now), light("wheel_scroll", now)))
+      draw_scroll_feedback(ctx, now)
+      draw_click_feedback(ctx, now)
       draw_pointer(ctx, now)
+    end
+
+    private def draw_scroll_feedback(ctx : Draw::Context, now : Time::Instant)
+      if scroll = @scroll_x
+        delta, started = scroll
+        alpha = fade(started, now, FEEDBACK_FADE)
+        draw_scroll_arrow(ctx, delta > 0 ? 1084.0 : 1032.0, 137.0, delta > 0 ? :right : :left, CYAN, alpha)
+      end
+      if scroll = @scroll_y
+        delta, started = scroll
+        alpha = fade(started, now, FEEDBACK_FADE)
+        draw_scroll_arrow(ctx, 1058.0, delta > 0 ? 167.0 : 108.0, delta > 0 ? :down : :up, GOLD, alpha)
+      end
+    end
+
+    private def draw_scroll_arrow(ctx : Draw::Context, x : Float64, y : Float64,
+                                  direction : Symbol, color, alpha : Float64)
+      dx, dy = case direction
+               when :right then {5.0, 0.0}
+               when :left  then {-5.0, 0.0}
+               when :down  then {0.0, 5.0}
+               else             {0.0, -5.0}
+               end
+      ctx.stroke_path(AreaEvents.brush(color, alpha), thickness: 2.4, cap: :round) do |path|
+        path.new_figure(x - dx - dy, y - dy + dx)
+        path.line_to(x, y)
+        path.line_to(x - dx + dy, y - dy - dx)
+      end
+    end
+
+    private def draw_click_feedback(ctx : Draw::Context, now : Time::Instant)
+      return unless click = @multi_click
+      count, button, started = click
+      alpha = fade(started, now, FEEDBACK_FADE)
+      x, y, path, color = case button
+                          when 1 then {1032.0, 137.0, @mouse_buttons[0], PINK}
+                          when 2 then {1058.0, 137.0, @wheel, GOLD}
+                          when 3 then {1084.0, 137.0, @mouse_buttons[1], CYAN}
+                          else        return
+                          end
+      ctx.draw_stroke(path, AreaEvents.brush(color, alpha), thickness: 2.5)
+      progress = 1.0 - Math.sqrt(alpha)
+      count.clamp(2, 3).times do |i|
+        radius = 8.0 + i * 8.0 + progress * 18.0
+        ctx.stroke_path(AreaEvents.brush(color, alpha * (1.0 - i * 0.18)), thickness: 2.2) do |ring|
+          ring.new_figure_with_arc(x, y, radius, 0, 2 * Math::PI, false)
+        end
+      end
     end
 
     private def draw_controls(ctx : Draw::Context)
