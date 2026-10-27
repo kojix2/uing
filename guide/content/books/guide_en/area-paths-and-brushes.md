@@ -129,4 +129,5 @@ context.restore
 
 When using `Path.open`, call `end_path` before drawing; the path is freed at the end of the block. `params.clip_x`, `clip_y`, `clip_width`, and `clip_height` identify the region that needs repainting.
 
-See [area_basic_shapes.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_basic_shapes.cr) and [area_colors_and_brushes.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_colors_and_brushes.cr).
+See [area_basic_shapes.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_basic_shapes.cr) and [area_colors_and_brushes.cr](https://github.com/kojix2/uing/blob/main/examples/crimage/area_colors_and_brushes.cr).
+The colors and brushes example uses the optional CrImage integration for color operations.

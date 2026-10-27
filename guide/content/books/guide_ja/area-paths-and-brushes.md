@@ -129,4 +129,5 @@ context.restore
 
 `Path.open`を使う場合は、描画前に`end_path`を呼びます。ブロックを抜けるとパスは解放されます。`params.clip_x`、`clip_y`、`clip_width`、`clip_height`は、再描画が必要な範囲です。
 
-[area_basic_shapes.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_basic_shapes.cr)と[area_colors_and_brushes.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_colors_and_brushes.cr)も参照してください。
+[area_basic_shapes.cr](https://github.com/kojix2/uing/blob/main/examples/gallery/area_basic_shapes.cr)と[area_colors_and_brushes.cr](https://github.com/kojix2/uing/blob/main/examples/crimage/area_colors_and_brushes.cr)も参照してください。
+色とブラシの例では、色の操作に任意依存のCrImage連携を使っています。

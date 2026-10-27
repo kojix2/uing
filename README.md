@@ -366,7 +366,7 @@ If you're looking for icons under the MIT license, try [icon-viewer](https://git
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_basic_shapes-macos.png" alt="area_basic_shapes-macos"></td>
     </tr>
     <tr>
-      <td><a href="examples/gallery/area_colors_and_brushes.cr">area_colors_and_brushes</a></td>
+      <td><a href="examples/crimage/area_colors_and_brushes.cr">area_colors_and_brushes</a></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_colors_and_brushes-ubuntu.png" alt="area_colors_and_brushes-ubuntu"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_colors_and_brushes-windows.png" alt="area_colors_and_brushes-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/area_colors_and_brushes-macos.png" alt="area_colors_and_brushes-macos"></td>
