@@ -42,6 +42,6 @@ model = UIng::Table::Model.new(handler)
 
 `cell_value`は呼ばれるたびに**新しい**`Table::Value`を返します。返した値の所有権はlibui-ngへ移るため、再利用や`free`はしません。一方、`set_cell_value`で受け取る値は借用値であり、そのコールバック内だけで読み取ります。
 
-`Handler`は`Model`が保持します。ただし、Handlerのクロージャが参照する元データは、Tableを使う間はアプリケーション側でも有効に保ちます。
+`Model`がHandlerとクロージャを保持するため、捕捉したCrystalオブジェクトも保持されます。ネイティブ資源は使用中に`free`しないでください。
 
 次は、モデル列をネイティブの表示列へ対応付け、編集と選択を追加します: [列・編集・選択](table-columns.html)。

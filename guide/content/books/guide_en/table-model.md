@@ -43,6 +43,6 @@ The type returned by `column_type` must match the `Table::Value` returned by `ce
 
 Return a **new** `Table::Value` every time `cell_value` runs. Ownership transfers to libui-ng, so do not reuse or `free` that value. Conversely, a value received by `set_cell_value` is borrowed and may be read only during that callback.
 
-The Model retains its Handler. Your application must also keep the backing data captured by the Handler usable while the Table is in use.
+The Model retains its Handler and closures, including captured Crystal objects. Keep captured native resources unfreed while used.
 
 Next, map model columns to native display columns and add editing and selection: [Columns, editing, and selection](table-columns.html).

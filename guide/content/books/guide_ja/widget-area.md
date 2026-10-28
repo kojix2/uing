@@ -18,7 +18,7 @@ AreaはArea::Handlerで描画と入力を処理するカスタム描画領域で
 
 ## 基本構成
 
-`Area::Handler`を作り、`draw`コールバックを登録してから、Handlerを`Area.new`に渡します。Areaは、自身が存在する間Handlerへの参照を保持します。
+描画用の`Area::Handler`を`Area.new`へ渡します。AreaがHandlerとクロージャを保持するため、GC対策の別参照は不要です。
 
 ```crystal
 handler = UIng::Area::Handler.new do

@@ -18,7 +18,7 @@ Area is a custom drawing surface driven by an Area::Handler.
 
 ## Basic setup
 
-Create an `Area::Handler`, register a `draw` callback, then pass the handler to `Area.new`. The handler is retained by the Area for as long as the Area exists.
+Pass a configured `Area::Handler` to `Area.new`. The Area retains its Handler and closures until native destruction.
 
 ```crystal
 handler = UIng::Area::Handler.new do

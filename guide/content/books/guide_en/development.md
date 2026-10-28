@@ -40,28 +40,17 @@ visual styles.
 
 ## Memory safety
 
-UIng uses several mechanisms to bridge Crystal's garbage-collected runtime and
-the native C API safely:
+- The control registry retains wrappers until native destruction; parent
+  references mirror the control tree.
+- Area and Table::Model retain their Handlers, which retain closures and captured
+  Crystal objects. Captured native resources must remain valid.
+- Callbacks recover boxed closures through `data`. Area and Table model callbacks
+  recover the Handler through the public `UserData` field (`user_data` in LibUI).
+- Borrowed callback values are invalidated when the callback returns.
 
-- A control registry keeps wrappers alive until native destruction, while
-  parent references mirror the native control tree.
-- Boxed callbacks remain referenced for as long as native code can invoke
-  them.
-- Extended handler structures for `Area` and `Table` store callback data next
-  to the native-compatible base handler. Static trampolines recover that data
-  before invoking Crystal closures.
-- Borrowed callback-only wrappers are invalidated when their callback returns.
-
-User-facing ownership and cleanup rules are documented in
-[Runtime and Lifetime](runtime-and-lifetime.md).
-
-## Closures in low-level contexts
-
-Most libui-ng callbacks accept a `data` pointer, which UIng uses to retain and
-recover Crystal closures. Some function pointers stored directly in native
-structures have no such parameter. For those APIs, UIng extends the handler
-structure with boxed data and casts back to it from a C-compatible trampoline.
-`Table` and `Area` use this pattern.
+Direct LibUI callers must retain their handlers and callback context. Native
+libraries must match the FFI layout; update the release and checksums in
+`download.cr` together. See [Runtime and Lifetime](runtime-and-lifetime.md).
 
 ## Use of generative AI
 

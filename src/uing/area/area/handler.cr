@@ -1,32 +1,29 @@
 module UIng
-  # Area::Handler provides callbacks for Area events with closure support.
-  #
-  # DESIGN PHILOSOPHY: UI Event Handling (Object-Oriented Approach)
-  # - Callbacks receive Area parameter to enable direct UI manipulation
-  # - Supports stateful operations like triggering redraws, cursor changes, etc.
-  # - Emphasizes interactive UI patterns where callbacks modify UI state
-  # - Area parameter enables fine-grained control over UI behavior
-  #
-  # CRITICAL MEMORY MANAGEMENT WARNINGS:
-  # 1. Area::Handler MUST remain alive while Area exists
-  # 2. Callbacks become invalid if handler is GC'd - causes crashes
-  # 3. Use closures safely - they can capture external data and variables
-  #
-  # Closure-friendly callback pattern:
-  #   handler = Area::Handler.new do
-  #     draw { |area, params| puts "Drawing..." }
-  #     mouse_event { |area, event| puts "Mouse event" }
-  #     key_event { |area, event| true } # Return true if handled
-  #     scroll_event { |area, event| true } # Return true if handled
-  #   end
   class Area < Control
+    # Drawing and input callbacks with closure support.
+    # Area retains the Handler and its Procs; native UserData points back to it.
+    # Keep captured native resources unfreed while callbacks use them.
+    # Direct LibUI callers must retain the Handler themselves.
+    #
+    #   handler = Area::Handler.new do
+    #     draw { |area, params| puts "Drawing..." }
+    #     key_event { |area, event| true } # Return true if handled
+    #   end
     class Handler
       include BlockConstructor; block_constructor
 
+      @native = LibUI::AreaHandler.new
+      protected getter draw_callback : Proc(Area, Area::Draw::Params, Nil)?
+      protected getter mouse_event_callback : Proc(Area, Area::MouseEvent, Nil)?
+      protected getter mouse_crossed_callback : Proc(Area, Bool, Nil)?
+      protected getter drag_broken_callback : Proc(Area, Nil)?
+      protected getter key_event_callback : Proc(Area, Area::KeyEvent, Bool)?
+      protected getter scroll_event_callback : Proc(Area, Area::ScrollEvent, Bool)?
+
       SCROLL_CALLBACK = ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, event : LibUI::AreaScrollEvent*) : LibC::Int {
         begin
-          extended = ah.as(LibUI::AreaHandlerExtended*)
-          callback = ::Box(Proc(Area, Area::ScrollEvent, Bool)).unbox(extended.value.scroll_event_box)
+          handler = ::Box(Handler).unbox(ah.value.user_data)
+          callback = handler.scroll_event_callback || return 0_i32
           area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
           callback.call(area_wrapper, Area::ScrollEvent.new(event)) ? 1_i32 : 0_i32
         rescue e
@@ -35,38 +32,13 @@ module UIng
         end
       }
 
-      # Store the extended handler structure and individual boxes for GC protection
-      @extended_handler : LibUI::AreaHandlerExtended
-      @draw_box : Pointer(Void)
-      @mouse_event_box : Pointer(Void)
-      @mouse_crossed_box : Pointer(Void)
-      @drag_broken_box : Pointer(Void)
-      @key_event_box : Pointer(Void)
-      @scroll_event_box : Pointer(Void)
-
-      # Ameba counts branches inside the five C callback closures as branches
-      # of this initializer even though each closure is an independent handler.
       # ameba:disable Metrics/CyclomaticComplexity
       def initialize
-        # Initialize instance variables
-        @draw_box = Pointer(Void).null
-        @mouse_event_box = Pointer(Void).null
-        @mouse_crossed_box = Pointer(Void).null
-        @drag_broken_box = Pointer(Void).null
-        @key_event_box = Pointer(Void).null
-        @scroll_event_box = Pointer(Void).null
-
-        # Create extended handler with static callback functions
-        @extended_handler = uninitialized LibUI::AreaHandlerExtended
-
-        # Initialize the base handler with static callbacks
-        @extended_handler.base_handler = LibUI::AreaHandler.new(
+        @native = LibUI::AreaHandler.new(
           draw: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, params : LibUI::AreaDrawParams*) {
             begin
-              # Cast the handler pointer to our extended structure
-              extended = ah.as(LibUI::AreaHandlerExtended*)
-              if !extended.value.draw_box.null?
-                callback = ::Box(Proc(Area, Area::Draw::Params, Nil)).unbox(extended.value.draw_box)
+              handler = ::Box(Handler).unbox(ah.value.user_data)
+              if callback = handler.draw_callback
                 # Create wrapper instances for type-safe access
                 area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
                 params_wrapper = Area::Draw::Params.borrowed(params)
@@ -82,9 +54,8 @@ module UIng
           },
           mouse_event: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, event : LibUI::AreaMouseEvent*) {
             begin
-              extended = ah.as(LibUI::AreaHandlerExtended*)
-              if !extended.value.mouse_event_box.null?
-                callback = ::Box(Proc(Area, Area::MouseEvent, Nil)).unbox(extended.value.mouse_event_box)
+              handler = ::Box(Handler).unbox(ah.value.user_data)
+              if callback = handler.mouse_event_callback
                 # Create wrapper instances for type-safe access
                 area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
                 event_wrapper = Area::MouseEvent.new(event)
@@ -96,9 +67,8 @@ module UIng
           },
           mouse_crossed: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, left : LibC::Int) {
             begin
-              extended = ah.as(LibUI::AreaHandlerExtended*)
-              if !extended.value.mouse_crossed_box.null?
-                callback = ::Box(Proc(Area, Bool, Nil)).unbox(extended.value.mouse_crossed_box)
+              handler = ::Box(Handler).unbox(ah.value.user_data)
+              if callback = handler.mouse_crossed_callback
                 # Create wrapper instances for type-safe access
                 area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
                 left_bool = left != 0
@@ -110,9 +80,8 @@ module UIng
           },
           drag_broken: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*) {
             begin
-              extended = ah.as(LibUI::AreaHandlerExtended*)
-              if !extended.value.drag_broken_box.null?
-                callback = ::Box(Proc(Area, Nil)).unbox(extended.value.drag_broken_box)
+              handler = ::Box(Handler).unbox(ah.value.user_data)
+              if callback = handler.drag_broken_callback
                 # Create wrapper instances for type-safe access
                 area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
                 callback.call(area_wrapper)
@@ -123,9 +92,8 @@ module UIng
           },
           key_event: ->(ah : LibUI::AreaHandler*, area : LibUI::Area*, event : LibUI::AreaKeyEvent*) : LibC::Int {
             begin
-              extended = ah.as(LibUI::AreaHandlerExtended*)
-              if !extended.value.key_event_box.null?
-                callback = ::Box(Proc(Area, Area::KeyEvent, Bool)).unbox(extended.value.key_event_box)
+              handler = ::Box(Handler).unbox(ah.value.user_data)
+              if callback = handler.key_event_callback
                 # Create wrapper instances for type-safe access
                 area_wrapper = ControlRegistry.lookup(area).as?(Area) || Area.new(area, borrowed: true)
                 event_wrapper = Area::KeyEvent.new(event)
@@ -139,31 +107,21 @@ module UIng
               0_i32
             end
           },
-          scroll_event: nil
+          scroll_event: nil,
+          user_data: ::Box.box(self)
         )
-
-        # Initialize the box pointers in the extended handler
-        @extended_handler.draw_box = @draw_box
-        @extended_handler.mouse_event_box = @mouse_event_box
-        @extended_handler.mouse_crossed_box = @mouse_crossed_box
-        @extended_handler.drag_broken_box = @drag_broken_box
-        @extended_handler.key_event_box = @key_event_box
-        @extended_handler.scroll_event_box = @scroll_event_box
       end
 
       # ameba:enable Metrics/CyclomaticComplexity
 
       # Convenience methods for setting individual callbacks
-      # Each method boxes the callback individually for type safety and efficiency
 
       def draw(&block : (Area, Area::Draw::Params) -> Nil)
-        @draw_box = ::Box.box(block)
-        @extended_handler.draw_box = @draw_box
+        @draw_callback = block
       end
 
       def clear_draw : Nil
-        @extended_handler.draw_box = Pointer(Void).null
-        @draw_box = Pointer(Void).null
+        @draw_callback = nil
       end
 
       def draw(callback : Nil) : Nil
@@ -171,13 +129,11 @@ module UIng
       end
 
       def mouse_event(&block : (Area, Area::MouseEvent) -> Nil)
-        @mouse_event_box = ::Box.box(block)
-        @extended_handler.mouse_event_box = @mouse_event_box
+        @mouse_event_callback = block
       end
 
       def clear_mouse_event : Nil
-        @extended_handler.mouse_event_box = Pointer(Void).null
-        @mouse_event_box = Pointer(Void).null
+        @mouse_event_callback = nil
       end
 
       def mouse_event(callback : Nil) : Nil
@@ -185,13 +141,11 @@ module UIng
       end
 
       def mouse_crossed(&block : (Area, Bool) -> Nil)
-        @mouse_crossed_box = ::Box.box(block)
-        @extended_handler.mouse_crossed_box = @mouse_crossed_box
+        @mouse_crossed_callback = block
       end
 
       def clear_mouse_crossed : Nil
-        @extended_handler.mouse_crossed_box = Pointer(Void).null
-        @mouse_crossed_box = Pointer(Void).null
+        @mouse_crossed_callback = nil
       end
 
       def mouse_crossed(callback : Nil) : Nil
@@ -199,13 +153,11 @@ module UIng
       end
 
       def drag_broken(&block : (Area) -> Nil)
-        @drag_broken_box = ::Box.box(block)
-        @extended_handler.drag_broken_box = @drag_broken_box
+        @drag_broken_callback = block
       end
 
       def clear_drag_broken : Nil
-        @extended_handler.drag_broken_box = Pointer(Void).null
-        @drag_broken_box = Pointer(Void).null
+        @drag_broken_callback = nil
       end
 
       def drag_broken(callback : Nil) : Nil
@@ -213,13 +165,11 @@ module UIng
       end
 
       def key_event(&block : (Area, Area::KeyEvent) -> Bool)
-        @key_event_box = ::Box.box(block)
-        @extended_handler.key_event_box = @key_event_box
+        @key_event_callback = block
       end
 
       def clear_key_event : Nil
-        @extended_handler.key_event_box = Pointer(Void).null
-        @key_event_box = Pointer(Void).null
+        @key_event_callback = nil
       end
 
       def key_event(callback : Nil) : Nil
@@ -229,15 +179,13 @@ module UIng
       # Receives wheel and trackpad movement. Return true to consume it, or
       # false to allow a scrolling Area to scroll normally.
       def scroll_event(&block : (Area, Area::ScrollEvent) -> Bool)
-        @scroll_event_box = ::Box.box(block)
-        @extended_handler.scroll_event_box = @scroll_event_box
-        @extended_handler.base_handler.scroll_event = SCROLL_CALLBACK
+        @scroll_event_callback = block
+        @native.scroll_event = SCROLL_CALLBACK
       end
 
       def clear_scroll_event : Nil
-        @extended_handler.base_handler.scroll_event = nil
-        @extended_handler.scroll_event_box = Pointer(Void).null
-        @scroll_event_box = Pointer(Void).null
+        @native.scroll_event = nil
+        @scroll_event_callback = nil
       end
 
       def scroll_event(callback : Nil) : Nil
@@ -245,9 +193,7 @@ module UIng
       end
 
       def to_unsafe
-        # Return pointer to the extended handler, but cast to base handler type
-        # This maintains the extended structure layout while providing C compatibility
-        pointerof(@extended_handler).as(LibUI::AreaHandler*)
+        pointerof(@native)
       end
     end
   end

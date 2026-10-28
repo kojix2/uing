@@ -1,78 +1,34 @@
 module UIng
-  # Table::Model::Handler provides callbacks for Table data operations with closure support.
-  #
-  # DESIGN PHILOSOPHY: Pure Data Access (Functional Approach)
-  # - Callbacks are pure functions focused on data retrieval and computation
-  # - No Table::Model parameter passed to avoid side effects and maintain data purity
-  # - Emphasizes immutable data access patterns
-  # - Callbacks should not modify external state beyond returning requested data
-  #
-  # CRITICAL MEMORY MANAGEMENT WARNINGS:
-  # 1. Table::Model::Handler MUST remain alive while Table::Model exists
-  # 2. Callbacks become invalid if handler is GC'd - causes crashes
-  # 3. Use closures safely - they can capture external data and variables
-  #
-  # Closure-friendly callback pattern:
-  #   data = ["row1", "row2", "row3"]
-  #   handler = Table::Model::Handler.new do
-  #     num_rows { data.size }
-  #     cell_value { |row, col| Value.new(data[row][col]) }
-  #   end
-  #
-  # cell_value callbacks must return a newly-created owned Value. UIng transfers
-  # that value to libui, which will free it when the table is done with it.
-  # They may return nil where libui-ng permits a NULL cell value. Likewise,
-  # set_cell_value receives nil for special notifications such as button clicks.
-  # A non-nil Value passed to set_cell_value is borrowed and only valid until
-  # that callback returns.
-  # The column count and types are evaluated and sealed when this handler is
-  # first passed to libui-ng.
   class Table < Control
     class Model
+      # Table model callbacks with closure support.
+      # Model retains the Handler and its Procs; native UserData points back to it.
+      # Direct LibUI callers must retain the Handler themselves.
+      #
+      # Column count and types are sealed when first passed to libui-ng.
+      # cell_value returns a new owned Value (or nil where allowed), transferred
+      # to libui-ng. set_cell_value receives a borrowed Value?, valid only during
+      # that callback. Keep captured native resources unfreed while used.
       class Handler
         include BlockConstructor; block_constructor
 
-        # Store the extended handler structure and individual boxes for GC protection
-        @extended_handler : LibUI::TableModelHandlerExtended
-        @num_columns_box : Pointer(Void)
-        @column_type_box : Pointer(Void)
-        @num_rows_box : Pointer(Void)
-        @cell_value_box : Pointer(Void)
-        @set_cell_value_box : Pointer(Void)
+        @native = LibUI::TableModelHandler.new
         @num_columns_callback : Proc(Int32)?
         @column_type_callback : Proc(LibC::Int, Value::Type)?
         @column_types : Array(Value::Type)?
+        protected getter num_rows_callback : Proc(Int32)?
+        protected getter cell_value_callback : Proc(LibC::Int, LibC::Int, Value?)?
+        protected getter set_cell_value_callback : Proc(LibC::Int, LibC::Int, Value?, Nil)?
 
         # Ameba counts branches inside the C callback closures as branches of
         # this initializer even though each closure is an independent handler.
         # ameba:disable Metrics/CyclomaticComplexity
         def initialize
-          # Initialize instance variables
-          @num_columns_box = Pointer(Void).null
-          @column_type_box = Pointer(Void).null
-          @num_rows_box = Pointer(Void).null
-          @cell_value_box = Pointer(Void).null
-          @set_cell_value_box = Pointer(Void).null
-          @num_columns_callback = nil
-          @column_type_callback = nil
-          @column_types = nil
-
-          # Create extended handler with static callback functions
-          @extended_handler = uninitialized LibUI::TableModelHandlerExtended
-
-          # Initialize the base handler with static callbacks
-          @extended_handler.base_handler = LibUI::TableModelHandler.new(
+          @native = LibUI::TableModelHandler.new(
             num_columns: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*) {
               begin
-                # Cast the handler pointer to our extended structure
-                extended = mh.as(LibUI::TableModelHandlerExtended*)
-                if !extended.value.num_columns_box.null?
-                  callback = ::Box(Proc(Int32)).unbox(extended.value.num_columns_box)
-                  result = callback.call
-                  result.as(LibC::Int)
-                else
-                  0_i32
-                end
+                handler = ::Box(Handler).unbox(mh.value.user_data)
+                handler.sealed_column_types.size
               rescue e
                 UIng.handle_callback_error(e, "Table::Model::Handler num_columns")
                 0_i32
@@ -80,8 +36,8 @@ module UIng
             },
             column_type: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, column : LibC::Int) {
               begin
-                extended = mh.as(LibUI::TableModelHandlerExtended*)
-                column_types = ::Box(Array(Value::Type)).unbox(extended.value.column_type_box)
+                handler = ::Box(Handler).unbox(mh.value.user_data)
+                column_types = handler.sealed_column_types
                 if column >= 0 && column < column_types.size
                   column_types[column]
                 else
@@ -94,9 +50,8 @@ module UIng
             },
             num_rows: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*) {
               begin
-                extended = mh.as(LibUI::TableModelHandlerExtended*)
-                if !extended.value.num_rows_box.null?
-                  callback = ::Box(Proc(Int32)).unbox(extended.value.num_rows_box)
+                handler = ::Box(Handler).unbox(mh.value.user_data)
+                if callback = handler.num_rows_callback
                   result = callback.call
                   result.as(LibC::Int)
                 else
@@ -111,8 +66,8 @@ module UIng
             # exceptions to cross the C boundary.
             # ameba:disable Metrics/CyclomaticComplexity
             cell_value: ->(mh : LibUI::TableModelHandler*, _model : LibUI::TableModel*, row : LibC::Int, column : LibC::Int) {
-              extended = mh.as(LibUI::TableModelHandlerExtended*)
-              column_types = ::Box(Array(Value::Type)).unbox(extended.value.column_type_box)
+              handler = ::Box(Handler).unbox(mh.value.user_data)
+              column_types = handler.sealed_column_types
               expected_type = if column >= 0 && column < column_types.size
                                 column_types[column]
                               else
@@ -120,8 +75,7 @@ module UIng
                               end
 
               value_ptr = begin
-                if !extended.value.cell_value_box.null?
-                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value?)).unbox(extended.value.cell_value_box)
+                if callback = handler.cell_value_callback
                   if result = callback.call(row, column)
                     actual_type = result.type
                     if actual_type != expected_type
@@ -154,9 +108,8 @@ module UIng
             },
             set_cell_value: ->(mh : LibUI::TableModelHandler*, _m : LibUI::TableModel*, row : LibC::Int, column : LibC::Int, value : Pointer(UIng::LibUI::TableValue)) {
               begin
-                extended = mh.as(LibUI::TableModelHandlerExtended*)
-                if !extended.value.set_cell_value_box.null?
-                  callback = ::Box(Proc(LibC::Int, LibC::Int, Value?, Nil)).unbox(extended.value.set_cell_value_box)
+                handler = ::Box(Handler).unbox(mh.value.user_data)
+                if callback = handler.set_cell_value_callback
                   table_value = value.null? ? nil : Value.borrowed(value)
                   begin
                     callback.call(row, column, table_value)
@@ -167,21 +120,14 @@ module UIng
               rescue e
                 UIng.handle_callback_error(e, "Table::Model::Handler set_cell_value")
               end
-            }
+            },
+            user_data: ::Box.box(self)
           )
-
-          # Initialize the box pointers to null in the extended handler
-          @extended_handler.num_columns_box = Pointer(Void).null
-          @extended_handler.column_type_box = Pointer(Void).null
-          @extended_handler.num_rows_box = Pointer(Void).null
-          @extended_handler.cell_value_box = Pointer(Void).null
-          @extended_handler.set_cell_value_box = Pointer(Void).null
         end
 
         # ameba:enable Metrics/CyclomaticComplexity
 
         # Convenience methods for setting individual callbacks
-        # Each method boxes the callback individually for type safety and efficiency
 
         def num_columns(&block : -> Int32)
           raise "Cannot change table schema after it has been sealed" if @column_types
@@ -194,24 +140,20 @@ module UIng
         end
 
         def num_rows(&block : -> Int32)
-          @num_rows_box = ::Box.box(block)
-          @extended_handler.num_rows_box = @num_rows_box
+          @num_rows_callback = block
         end
 
         def cell_value(&block : LibC::Int, LibC::Int -> Value?)
-          @cell_value_box = ::Box.box(block)
-          @extended_handler.cell_value_box = @cell_value_box
+          @cell_value_callback = block
         end
 
         def set_cell_value(&block : LibC::Int, LibC::Int, Value? -> Nil)
-          @set_cell_value_box = ::Box.box(block)
-          @extended_handler.set_cell_value_box = @set_cell_value_box
+          @set_cell_value_callback = block
         end
 
         # Removes the optional edit/click callback; equivalent to `set_cell_value(nil)`.
         def clear_set_cell_value : Nil
-          @extended_handler.set_cell_value_box = Pointer(Void).null
-          @set_cell_value_box = Pointer(Void).null
+          @set_cell_value_callback = nil
         end
 
         def set_cell_value(callback : Nil) : Nil
@@ -220,9 +162,7 @@ module UIng
 
         def to_unsafe
           seal_schema
-          # Return pointer to the extended handler, but cast to base handler type
-          # This maintains the extended structure layout while providing C compatibility
-          pointerof(@extended_handler).as(LibUI::TableModelHandler*)
+          pointerof(@native)
         end
 
         protected def sealed_column_types : Array(Value::Type)
@@ -241,11 +181,6 @@ module UIng
           end
           @column_types = column_types
 
-          stable_num_columns = -> { num_columns }
-          @num_columns_box = ::Box.box(stable_num_columns)
-          @column_type_box = ::Box.box(column_types)
-          @extended_handler.num_columns_box = @num_columns_box
-          @extended_handler.column_type_box = @column_type_box
           column_types
         end
       end

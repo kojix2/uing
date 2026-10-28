@@ -83,6 +83,5 @@ For code written against the former integer-millisecond API, keep the interval
 and change the block result: `UIng.timer(250) { true }` repeats, while
 `UIng.timer(250) { false }` stops. The old results `1` and `0` no longer compile.
 
-Keep referenced controls and application data alive for as long as a callback
-may use them. Callback exceptions are logged by UIng instead of crossing the
-native callback boundary.
+Closures retain captured Crystal objects. Keep their native resources unfreed while
+callbacks use them. UIng logs callback exceptions without unwinding into C.
