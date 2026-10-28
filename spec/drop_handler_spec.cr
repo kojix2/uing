@@ -23,6 +23,96 @@ private class DropWindowForSpec < UIng::Window
   end
 end
 
+describe "drop callback shortcuts" do
+  it "dispatches closures without a target argument and clears each callback" do
+    window = DropWindowForSpec.new
+    window.clear_on_drop
+    window.clear_on_drop_over
+    window.clear_on_drop_leave
+    received = [] of String
+    leaves = 0
+    window.on_drop(accepts: :text) { |event| received << (event.text || ""); true }
+    window.on_drop_over { |info| info.x > 0 }
+    window.on_drop_leave { leaves += 1 }
+    GC.collect
+    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text, x: -1.0)
+    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "hello".to_unsafe, text_length: LibC::SizeT.new(5))
+    native = window.native_handler
+    data = window.user_data
+    native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
+    native.leave.call(data)
+    window.on_drop_over(nil)
+    window.clear_on_drop_leave
+    native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
+    native.leave.call(data)
+    native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Accepted)
+    received.should eq(["hello"])
+    leaves.should eq(1)
+    window.on_drop(nil)
+    window.drop_handler.should be_nil
+  ensure
+    window.try &.destroy
+  end
+
+  it "replaces the callback group and preserves it on native registration failure" do
+    window = DropWindowForSpec.new
+    window.on_drop(accepts: :text) { |_event| true }
+    window.on_drop_over { |_info| false }
+    original = window.drop_handler
+    window.status = UIng::LibUI::DropStatus::NativeError
+    expect_raises(UIng::Drop::Error) { window.on_drop(accepts: :files) { |_event| false } }
+    expect_raises(UIng::Drop::Error) { window.clear_on_drop }
+    window.drop_handler.should be(original)
+    window.status = UIng::LibUI::DropStatus::OK
+    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+    window.native_handler.over.call(pointerof(info), window.user_data).should eq(UIng::LibUI::DropAction::None)
+    window.on_drop(accepts: :files) { |_event| false }
+    window.drop_handler.should_not be(original)
+    window.drop_handler.should_not be_nil
+    window.native_handler.over.call(pointerof(info), window.user_data).should eq(UIng::LibUI::DropAction::Copy)
+  ensure
+    window.try &.destroy
+  end
+
+  it "requires on_drop before hover callbacks and protects explicit Handlers" do
+    window = DropWindowForSpec.new
+    expect_raises(ArgumentError, /on_drop/) { window.on_drop_over { |_info| true } }
+    expect_raises(ArgumentError, /on_drop/) { window.on_drop_leave { } }
+    explicit = UIng::Drop::Handler.new { drop { |_target, _event| true } }
+    window.drop_handler = explicit
+    expect_raises(ArgumentError, /explicit Handler/) { window.on_drop { |_event| true } }
+    expect_raises(ArgumentError, /explicit Handler/) { window.on_drop_over { |_info| true } }
+    expect_raises(ArgumentError, /explicit Handler/) { window.clear_on_drop_leave }
+    expect_raises(ArgumentError, /explicit Handler/) { window.clear_on_drop }
+    window.drop_handler.should be(explicit)
+    window.clear_drop_handler
+    window.on_drop { |_event| true }
+    window.destroy
+    expect_raises(Exception, /destroyed/) { window.on_drop { |_event| true } }
+    expect_raises(Exception, /destroyed/) { window.clear_on_drop_over }
+  ensure
+    window.try &.destroy
+  end
+
+  it "can unregister itself and collect garbage while retaining the received data" do
+    window = DropWindowForSpec.new
+    received = nil.as(UIng::Drop::Event?)
+    window.on_drop(accepts: :text) do |event|
+      window.clear_on_drop
+      GC.collect
+      received = event
+      true
+    end
+    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "".to_unsafe)
+    window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Accepted)
+    received.should be_a(UIng::Drop::Event)
+    window.drop_handler.should be_nil
+  ensure
+    window.try &.destroy
+  end
+end
+
 private def install_drop_closures_for_spec(window : DropWindowForSpec) : Array(String)
   count = 0
   log = [] of String
