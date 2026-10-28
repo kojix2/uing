@@ -155,6 +155,53 @@ module UIng
           LibUI.draw_image(to_unsafe, img.to_unsafe, draw_x, draw_y, draw_width, draw_height)
         end
 
+        # Direct wrapper for uiDrawImageBuffer. Only valid inside Draw.
+        def draw_image_buffer(buffer : UIng::ImageBuffer,
+                              x : Number, y : Number, width : Number, height : Number,
+                              interpolation : UIng::ImageBuffer::Interpolation = UIng::ImageBuffer::Interpolation::Smooth) : Nil
+          params = ImageBufferParams.new(
+            source_x: 0, source_y: 0,
+            source_width: buffer.width, source_height: buffer.height,
+            x: x, y: y, width: width, height: height, interpolation: interpolation)
+          native = checked_image_buffer_params(buffer, params)
+          LibUI.draw_image_buffer(to_unsafe, buffer.to_unsafe, native.x, native.y,
+            native.width, native.height, native.interpolation)
+        end
+
+        # Direct wrapper for uiDrawImageBufferWithParams. Smooth interpolation
+        # can sample outside the source rectangle; use Nearest for atlas edges.
+        def draw_image_buffer_with_params(buffer : UIng::ImageBuffer, params : ImageBufferParams) : Nil
+          native = checked_image_buffer_params(buffer, params)
+          LibUI.draw_image_buffer_with_params(to_unsafe, buffer.to_unsafe, pointerof(native))
+        end
+
+        # Convenience API; delegates to the C-shaped wrappers above.
+        def draw_image(buffer : UIng::ImageBuffer,
+                       x : Number, y : Number, width : Number, height : Number, *,
+                       source : UIng::ImageBuffer::SourceRect? = nil,
+                       interpolation : UIng::ImageBuffer::Interpolation = UIng::ImageBuffer::Interpolation::Smooth) : Nil
+          if region = source
+            params = ImageBufferParams.new(
+              source_x: region[:x], source_y: region[:y],
+              source_width: region[:width], source_height: region[:height],
+              x: x, y: y, width: width, height: height, interpolation: interpolation)
+            draw_image_buffer_with_params(buffer, params)
+          else
+            draw_image_buffer(buffer, x, y, width, height, interpolation)
+          end
+        end
+
+        private def checked_image_buffer_params(buffer : UIng::ImageBuffer, params : ImageBufferParams) : LibUI::DrawImageBufferParams
+          native = params.to_unsafe.value
+          pixel_width, pixel_height = buffer.size
+          unless native.source_x <= pixel_width && native.source_y <= pixel_height &&
+                 native.source_width <= pixel_width - native.source_x &&
+                 native.source_height <= pixel_height - native.source_y
+            raise ArgumentError.new("source rectangle must fit inside the image buffer")
+          end
+          native
+        end
+
         def to_unsafe
           @callback_scope.try &.check_available
           @ref_ptr
