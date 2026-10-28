@@ -16,12 +16,9 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       area = UIng::Area.new(UIng::Area::Handler.new)
       window.child = area
       received = [] of String
-      leaves = 0
       targets = [window, area] of UIng::Drop::Target
       targets.each do |target|
         target.on_drop(accepts: :text) { |event| received << (event.text || ""); true }
-        target.on_drop_over { |info| info.x > 0 }
-        target.on_drop_leave { leaves += 1 }
       end
       GC.collect
       info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text, x: -1.0)
@@ -30,18 +27,13 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
         handler = target.drop_handler || raise "missing drop handler"
         native = handler.to_unsafe.value
         data = target.drop_user_data_for_spec
-        native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
-        target.clear_on_drop_over
         native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
-        native.leave.call(data)
-        target.on_drop_leave(nil)
         native.leave.call(data)
         native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Accepted)
         target.on_drop(nil)
         target.drop_handler.should be_nil
       end
       received.should eq(["hello", "hello"])
-      leaves.should eq(2)
     ensure
       window.try { |owner| owner.destroy unless owner.released? }
     end

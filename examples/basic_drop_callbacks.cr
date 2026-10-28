@@ -20,11 +20,6 @@ window.on_drop(accepts: :files) do |event|
     false
   end
 end
-window.on_drop_over do |info|
-  status.text = "Release to drop at (#{info.x.round(1)}, #{info.y.round(1)})"
-  true
-end
-window.on_drop_leave { status.text = "Drop files here." }
 
 window.show
 
