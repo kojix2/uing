@@ -10,6 +10,7 @@ module UIng
     @[Link("D2d1")]
     @[Link("Windowscodecs")]
     @[Link("Uuid")]
+    @[Link("Ole32")]
     @[Link("Winmm")]
     # @[Link(ldflags: "/SUBSYSTEM:WINDOWS")]
     {% if flag?(:debug) && !flag?(:release) %}
@@ -41,6 +42,7 @@ module UIng
     @[Link("Dwrite")]
     @[Link("WindowsCodecs")]
     @[Link("Uuid")]
+    @[Link("Ole32")]
     @[Link("Winmm")]
     @[Link("Uxtheme")]
     # @[Link(ldflags: "-mwindows")]
@@ -476,5 +478,11 @@ module UIng
     fun new_image_view = uiNewImageView : Pointer(ImageView)
     fun image_view_set_image = uiImageViewSetImage(iv : Pointer(ImageView), image : Pointer(Image))
     fun image_view_set_content_mode = uiImageViewSetContentMode(iv : Pointer(ImageView), mode : UIng::ImageView::ContentMode)
+
+    fun window_set_drop_handler = uiWindowSetDropHandler(window : Pointer(Window), accepted_formats : LibC::UInt, handler : Pointer(DropHandler), user_data : Pointer(Void)) : DropStatus
+    fun area_set_drop_handler = uiAreaSetDropHandler(area : Pointer(Area), accepted_formats : LibC::UInt, handler : Pointer(DropHandler), user_data : Pointer(Void)) : DropStatus
+
+    fun drop_data_copy_text = uiDropDataCopyText(payload : Pointer(DropData)) : Pointer(LibC::Char)
+    fun drop_data_copy_files = uiDropDataCopyFiles(payload : Pointer(DropData)) : Pointer(Pointer(LibC::Char))
   end
 end

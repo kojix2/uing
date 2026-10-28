@@ -1,10 +1,12 @@
 require "../control"
+require "../drop"
 require "./area/*"
 require "./area/draw/*"
 require "./area/attribute/*"
 
 module UIng
   class Area < Control
+    include Drop::Target
     block_constructor
 
     @borrowed : Bool = false
@@ -61,7 +63,13 @@ module UIng
     end
 
     protected def after_destroy : Nil
+      @drop_handler = nil
+      @drop_context = nil
       @area_handler = nil
+    end
+
+    protected def set_native_drop_handler(formats : LibC::UInt, handler : LibUI::DropHandler*, data : Void*) : LibUI::DropStatus
+      LibUI.area_set_drop_handler(ref_ptr, formats, handler, data)
     end
 
     # Registers a draw callback for an Area created without an explicit handler.

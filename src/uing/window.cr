@@ -1,7 +1,9 @@
 require "./control"
+require "./drop"
 
 module UIng
   class Window < Control
+    include Drop::Target
     block_constructor
 
     # Mutex
@@ -41,6 +43,8 @@ module UIng
     end
 
     protected def after_destroy : Nil
+      @drop_handler = nil
+      @drop_context = nil
       if toolbar = @toolbar_ref
         toolbar.__detached_by__(self)
         toolbar.free
@@ -54,6 +58,10 @@ module UIng
       @on_closing_box = nil
       @on_focus_changed_box = nil
       @child_ref = nil
+    end
+
+    protected def set_native_drop_handler(formats : LibC::UInt, handler : LibUI::DropHandler*, data : Void*) : LibUI::DropStatus
+      LibUI.window_set_drop_handler(ref_ptr, formats, handler, data)
     end
 
     def delete(child : Control)
