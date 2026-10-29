@@ -1,9 +1,5 @@
-require "../../src/uing"
+require "../../src/uing/crimage"
 
-# Run: crystal run examples/image_buffer/gray_scott.cr
-# Requires ImageBuffer-capable libui-ng (dev da49cf29 or later).
-# Equations, stencil, and presets: https://www.karlsims.com/rd.html
-# Additional presets: https://github.com/evoluteur/reaction-diffusion
 # du/dt = Du * laplacian(u) - u*v*v + feed*(1-u)
 # dv/dt = Dv * laplacian(v) + u*v*v - (feed+kill)*v
 module GrayScott
@@ -21,39 +17,34 @@ module GrayScott
     {"Chaos", 0.0260, 0.0510},
     {"U-skate", 0.0620, 0.0609},
   }
-  # Build reusable lookup tables once; changing colors does not touch the fields.
+  # Sample CrImage gradients once; changing colors does not touch the fields.
   PALETTES = [
-    {"Teal & Gold", { {8, 16, 32}, {16, 160, 180}, {255, 224, 128} }},
-    {"Ember", { {16, 8, 24}, {224, 64, 32}, {255, 240, 160} }},
-    {"Ocean", { {4, 12, 36}, {24, 100, 200}, {176, 248, 240} }},
-    {"Violet", { {20, 8, 40}, {152, 64, 208}, {255, 208, 240} }},
-    {"Grayscale", { {0, 0, 0}, {128, 128, 128}, {255, 255, 255} }},
-    {"Ink", { {250, 248, 240}, {116, 108, 100}, {20, 20, 24} }},
-  ].map do |name, stops|
-    colors = Array.new(256) do |index|
-      t = index / 255.0
-      from, to, amount = if t < 0.5
-                           {stops[0], stops[1], t * 2}
-                         else
-                           {stops[1], stops[2], (t - 0.5) * 2}
-                         end
-      {0, 1, 2}.map { |channel| (from[channel] + (to[channel] - from[channel]) * amount).to_u8 }
+    {"Teal & Gold", ["#081020", "#10A0B4", "#FFE080"]},
+    {"Ember", ["#100818", "#E04020", "#FFF0A0"]},
+    {"Ocean", ["#040C24", "#1864C8", "#B0F8F0"]},
+    {"Violet", ["#140828", "#9840D0", "#FFD0F0"]},
+    {"Grayscale", ["#000000", "#808080", "#FFFFFF"]},
+    {"Ink", ["#FAF8F0", "#746C64", "#141418"]},
+  ].map do |name, colors|
+    stops = colors.map_with_index do |hex, index|
+      CrImage::Draw::ColorStop.new(index / (colors.size - 1).to_f64, CrImage::Color.parse(hex))
     end
-    {name, colors}
+    gradient = CrImage::Draw::LinearGradient.new(CrImage.point(0, 0), CrImage.point(255, 0), stops)
+    {name, Array.new(256) { |index| gradient.color_at(index / 255.0).to_rgba8 }}
   end
 
   class Model
     getter feed : Float64 = PRESETS[0][1]
     getter kill : Float64 = PRESETS[0][2]
     getter steps = 0
-    property palette : Array({UInt8, UInt8, UInt8}) = PALETTES[0][1]
+    property palette : Array(CrImage::Color::RGBA) = PALETTES[0][1]
 
     def initialize
       @u = Slice(Float64).new(CELLS, 1.0)
       @v = Slice(Float64).new(CELLS, 0.0)
       @next_u = Slice(Float64).new(CELLS)
       @next_v = Slice(Float64).new(CELLS)
-      @pixels = Bytes.new(CELLS * 4, 255_u8)
+      @frame = CrImage.rgba(SIZE, SIZE)
       reset
     end
 
@@ -124,16 +115,15 @@ module GrayScott
       @steps += count
     end
 
-    # Reuse one opaque RGBA byte slice; ImageBuffer#update copies it on return.
+    # Reuse an opaque CrImage frame; ImageBuffer#update copies its RGBA pixels.
     def render : Bytes
-      CELLS.times do |i|
-        color = @palette[(@v[i] * 3.0 * 255).clamp(0.0, 255.0).to_i]
-        offset = i * 4
-        @pixels[offset] = color[0]
-        @pixels[offset + 1] = color[1]
-        @pixels[offset + 2] = color[2]
+      SIZE.times do |y|
+        SIZE.times do |x|
+          color = @palette[(@v[y * SIZE + x] * 3.0 * 255).clamp(0.0, 255.0).to_i]
+          @frame.set_rgba(x, y, color)
+        end
       end
-      @pixels
+      @frame.pix
     end
   end
 
@@ -180,14 +170,11 @@ module GrayScott
           refresh_status = -> { status.text = "Steps: #{model.steps}   ·   Drag to add V" }
           refresh_status.call
 
-          background = UIng::Area::Draw::Brush.new(:solid)
+          background = UIng::Area::Draw::Brush.solid(model.palette.first)
           area.on_draw do |params|
             x, y, size = viewport(params.area_width, params.area_height)
             next unless size > 0
             context = params.context
-            background.r = model.palette[0][0] / 255.0
-            background.g = model.palette[0][1] / 255.0
-            background.b = model.palette[0][2] / 255.0
             context.fill_path(background) do |path|
               path.add_rectangle(0, 0, params.area_width, params.area_height)
             end
@@ -222,6 +209,7 @@ module GrayScott
           end
           palettes.on_selected do |index|
             model.palette = PALETTES[index][1]
+            background = UIng::Area::Draw::Brush.solid(model.palette.first)
             image.update(model.render)
             area.queue_redraw_all
           end
