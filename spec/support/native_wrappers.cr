@@ -1,4 +1,3 @@
-require "./native_wrappers"
 require "../spec_helper"
 
 # Test-only entry points for exercising native wrapper behavior without making

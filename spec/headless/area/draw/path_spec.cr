@@ -15,6 +15,17 @@ private class BlockConstructionPath < UIng::Area::Draw::Path
 end
 
 describe UIng::Area::Draw::Path do
+  it "rejects non-finite coordinates and arc radii before calling libui-ng" do
+    path = UIng::Area::Draw::Path.from_native_for_spec(Pointer(UIng::LibUI::DrawPath).null)
+
+    expect_raises(ArgumentError, /path y must be finite/) do
+      path.new_figure(0, Float64::INFINITY)
+    end
+    expect_raises(ArgumentError, /path arc radius must be finite/) do
+      path.arc_to(0, 0, Float64::NAN, 0, Math::PI, false)
+    end
+  end
+
   it "frees a Path on failure and preserves the original exception" do
     constructed = nil
     original = Exception.new("path construction failed")

@@ -1,6 +1,18 @@
 require "../../../spec_helper"
 
 describe UIng::Area::Draw::StrokeParams do
+  it "converts accepted Number inputs to Float64" do
+    params = UIng::Area::Draw::StrokeParams.new(thickness: 2, dash_phase: -1)
+
+    {params.thickness, params.dash_phase}.should eq({2.0, -1.0})
+  end
+
+  it "rejects zero thickness" do
+    expect_raises(ArgumentError, /stroke thickness must be finite and positive/) do
+      UIng::Area::Draw::StrokeParams.new(thickness: 0)
+    end
+  end
+
   it "synchronizes dash values with its native structure" do
     params = UIng::Area::Draw::StrokeParams.new(
       cap: UIng::Area::Draw::LineCap::Round,

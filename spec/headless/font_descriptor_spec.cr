@@ -1,6 +1,18 @@
 require "../spec_helper"
 
 describe UIng::FontDescriptor do
+  it "rejects zero font size" do
+    expect_raises(ArgumentError, /font descriptor size must be finite and positive/) do
+      UIng::FontDescriptor.new(
+        family: "Inter",
+        size: 0,
+        weight: UIng::TextWeight::Normal,
+        italic: UIng::TextItalic::Normal,
+        stretch: UIng::TextStretch::Normal
+      )
+    end
+  end
+
   it "configures FontDescriptor through its block and preserves the instance" do
     yielded = nil
     font = UIng::FontDescriptor.new(

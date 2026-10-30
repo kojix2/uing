@@ -1,4 +1,3 @@
-require "./callback_errors"
 require "../spec_helper"
 
 module UIng
