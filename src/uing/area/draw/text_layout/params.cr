@@ -25,8 +25,9 @@ module UIng
           end
 
           def string=(value : AttributedString)
+            string_ptr = value.to_unsafe
             @attributed_string = value
-            @cstruct.string = value.to_unsafe
+            @cstruct.string = string_ptr
           end
 
           def default_font : FontDescriptor
@@ -34,8 +35,9 @@ module UIng
           end
 
           def default_font=(value : FontDescriptor)
+            font_ptr = value.to_unsafe
             @font_descriptor = value
-            @cstruct.default_font = value.to_unsafe
+            @cstruct.default_font = font_ptr
           end
 
           def width : Float64
