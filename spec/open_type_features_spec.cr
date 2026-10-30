@@ -1,6 +1,20 @@
 require "./spec_helper"
 
 describe UIng::OpenTypeFeatures do
+  it "builds feature sets with an implicit receiver and returns the configured instance" do
+    yielded = nil
+    features = UIng::OpenTypeFeatures.new do |value|
+      yielded = value
+      add("liga")
+      add("kern", 0_u32)
+      :ignored
+    end
+
+    features.should be(yielded)
+    features.get("liga").should eq(1_u32)
+    features.get("kern").should eq(0_u32)
+  end
+
   it "distinguishes absent features from features with value zero" do
     features = UIng::OpenTypeFeatures.new
     features.get("liga").should be_nil

@@ -1,5 +1,7 @@
 module UIng
   class Image
+    include BlockConstructor; block_constructor
+
     @released : Bool = false
     @representations = [] of Tuple(Bytes, Int32, Int32, Int32)
 
@@ -67,9 +69,17 @@ module UIng
 
     def free : Nil
       return if @released
-      LibUI.free_image(@ref_ptr)
+      free_native
       @released = true
       @representations.clear
+    end
+
+    protected def free_native : Nil
+      LibUI.free_image(@ref_ptr)
+    end
+
+    protected def __block_constructor_failed__ : Nil
+      free
     end
 
     private def check_available : Nil

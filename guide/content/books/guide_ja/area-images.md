@@ -22,6 +22,27 @@ handler.draw do |_area, params|
 end
 ```
 
+## 構築ブロック
+
+`Image.new`では、ブロック内で画像の表現を追加できます。
+
+```crystal
+image = UIng::Image.new(16, 16) do
+  append(pixels_1x, 16, 16, 64)
+  append(pixels_2x, 32, 32, 128)
+end
+```
+
+`ImageBuffer.new`も、固定解像度のバッファを作成して初期ピクセルを設定するブロックを受け取れます。CrImage画像を渡す`ImageBuffer.new(source)`でも同じ形式が使えます。
+
+```crystal
+buffer = UIng::ImageBuffer.new(1, 1) do
+  update(Bytes[255, 0, 0, 255])
+end
+```
+
+どちらも`|image|`や`|buffer|`で生成したオブジェクトを受け取れます。戻り値はブロックの結果によらずそのオブジェクトです。設定ブロックが例外終了すると解放します。正常終了後は呼び出し側が所有し、不要になったら`free`します。`ImageBuffer.open`は通常の引数渡しで、ブロック終了時に解放する形式です。
+
 ## ファイルから読み込む
 
 `require "uing/crimage"`を使うと、ファイルまたはCrImageの画像から`UIng::Image`を作れます。

@@ -35,6 +35,26 @@ end
 
 ## Attributes
 
+`FontDescriptor.new` also accepts a configuration block. Use the block argument for property assignments.
+
+```crystal
+font = UIng::FontDescriptor.new(family: "Sans", size: 14) do |descriptor|
+  descriptor.weight = :bold
+end
+```
+
+Build a set of OpenType features inside an `OpenTypeFeatures.new` block.
+
+```crystal
+features = UIng::OpenTypeFeatures.new do
+  add("liga")
+  add("kern")
+end
+text.set_attribute(UIng::Area::Attribute.new_features(features), 0, text.len)
+```
+
+Both `new` methods return the created object. These objects are managed by Crystal and require no manual release.
+
 `set_attribute(attribute, start, end_)` applies an attribute to a byte range. For UTF-8 text, do not use character counts as byte positions; use `String#bytesize`, `AttributedString#len`, `byte_index_to_grapheme`, and `grapheme_to_byte_index` to work at valid boundaries.
 
 | Attribute constructor | Purpose |

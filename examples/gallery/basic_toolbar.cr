@@ -19,10 +19,10 @@ end
 def new_icon(data : String) : UIng::Image
   pixels = decode_icon(data)
 
-  image = UIng::Image.new(16, 16)
-  image.append(pixels[0, 1024], 16, 16, 64)
-  image.append(pixels[1024, 4096], 32, 32, 128)
-  image
+  UIng::Image.new(16, 16) do
+    append(pixels[0, 1024], 16, 16, 64)
+    append(pixels[1024, 4096], 32, 32, 128)
+  end
 end
 
 UIng.init

@@ -1,6 +1,8 @@
 module UIng
   # A Crystal-managed set of OpenType feature tags and values.
   class OpenTypeFeatures
+    include BlockConstructor; block_constructor
+
     private class NativeCopyState
       getter values = {} of String => UInt32
       property error : Exception? = nil

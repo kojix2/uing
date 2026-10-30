@@ -22,6 +22,27 @@ handler.draw do |_area, params|
 end
 ```
 
+## Construction blocks
+
+Use an `Image.new` block to add image representations.
+
+```crystal
+image = UIng::Image.new(16, 16) do
+  append(pixels_1x, 16, 16, 64)
+  append(pixels_2x, 32, 32, 128)
+end
+```
+
+`ImageBuffer.new` also accepts a block to configure a fixed-resolution buffer's initial pixels. The same form works with `ImageBuffer.new(source)` for CrImage images.
+
+```crystal
+buffer = UIng::ImageBuffer.new(1, 1) do
+  update(Bytes[255, 0, 0, 255])
+end
+```
+
+Both forms also pass the new object as `|image|` or `|buffer|`. They return that object regardless of the block's result and free it if the configuration block raises. After successful construction, the caller owns the object and must call `free` when finished. `ImageBuffer.open` uses ordinary block arguments and frees the buffer on block exit.
+
 ## Loading from a file
 
 With `require "uing/crimage"`, create a `UIng::Image` from a file or CrImage image.

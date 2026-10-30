@@ -2,6 +2,8 @@ module UIng
   # A Crystal-managed font description. FontButton results and callback values
   # can be retained without manual freeing.
   class FontDescriptor
+    include BlockConstructor; block_constructor
+
     @family_string : String = ""
 
     def initialize(

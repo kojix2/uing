@@ -5,6 +5,8 @@ module UIng
   # Requires ImageBuffer-capable libui-ng (dev da49cf29 or later); the binary
   # currently pinned in download.cr predates this API.
   class ImageBuffer
+    include BlockConstructor; block_constructor
+
     alias Format = LibUI::ImageBufferFormat
     alias Interpolation = LibUI::ImageBufferInterpolation
     alias SourceRect = NamedTuple(x: Int32, y: Int32, width: Int32, height: Int32)
@@ -93,9 +95,17 @@ module UIng
     # Idempotent. Already submitted draws remain valid after this call.
     def free : Nil
       return if @released
-      LibUI.free_image_buffer(@ref_ptr)
+      free_native
       @released = true
       @ref_ptr = Pointer(LibUI::ImageBuffer).null
+    end
+
+    protected def free_native : Nil
+      LibUI.free_image_buffer(@ref_ptr)
+    end
+
+    protected def __block_constructor_failed__ : Nil
+      free
     end
 
     def to_unsafe : Pointer(LibUI::ImageBuffer)

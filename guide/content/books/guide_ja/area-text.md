@@ -35,6 +35,26 @@ end
 
 ## 属性
 
+`FontDescriptor.new`も設定ブロックを受け取れます。プロパティの代入にはブロック引数を使います。
+
+```crystal
+font = UIng::FontDescriptor.new(family: "Sans", size: 14) do |descriptor|
+  descriptor.weight = :bold
+end
+```
+
+OpenType機能の集合は`OpenTypeFeatures.new`のブロック内で構築できます。
+
+```crystal
+features = UIng::OpenTypeFeatures.new do
+  add("liga")
+  add("kern")
+end
+text.set_attribute(UIng::Area::Attribute.new_features(features), 0, text.len)
+```
+
+どちらの`new`も生成したオブジェクトを返します。これらのオブジェクトはCrystalが管理するため、手動の解放は不要です。
+
 `set_attribute(attribute, start, end_)`は、バイト範囲へ属性を適用します。UTF-8文字列では文字数をバイト位置として使わず、`String#bytesize`、`AttributedString#len`、`byte_index_to_grapheme`、`grapheme_to_byte_index`で境界を扱います。
 
 | 属性の生成 | 用途 |

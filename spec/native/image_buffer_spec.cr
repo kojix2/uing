@@ -9,6 +9,32 @@ require "../spec_helper"
     before_all { UIng.init }
     after_all { UIng.uninit }
 
+    it "returns a live buffer after configuration and frees it when configuration raises" do
+      normal = UIng::ImageBuffer.new(1, 1) do
+        update(Bytes[255, 0, 0, 255])
+      end
+      normal.released?.should be_false
+      normal.free
+
+      [false, true].each do |free_early|
+        escaped = nil
+        expect_raises(Exception, "buffer configuration failed") do
+          UIng::ImageBuffer.new(1, 1) do |buffer|
+            escaped = buffer
+            update(Bytes[255, 0, 0, 255])
+            buffer.free if free_early
+            raise "buffer configuration failed"
+          end
+        end
+
+        buffer = escaped.should_not be_nil
+        buffer.released?.should be_true
+        buffer.free
+      end
+    ensure
+      normal.try &.free
+    end
+
     it "owns a fixed-size buffer in each input format" do
       UIng::ImageBuffer::Format.each do |format|
         UIng::ImageBuffer.open(3, 2, format: format) do |buffer|
@@ -68,7 +94,11 @@ require "../spec_helper"
         {nrgba, UIng::ImageBuffer::Format::RGBA8Straight},
         {nrgba64, UIng::ImageBuffer::Format::RGBA8Straight},
       ].each do |source, expected_format|
-        buffer = UIng::ImageBuffer.new(source)
+        buffer = UIng::ImageBuffer.new(source) do
+          size.should eq({1, 1})
+          format.should eq(expected_format)
+          update(source)
+        end
         begin
           buffer.size.should eq({1, 1})
           buffer.format.should eq(expected_format)
@@ -80,6 +110,22 @@ require "../spec_helper"
       UIng::ImageBuffer.open(rgba, format: :rgba8_straight) do |buffer|
         buffer.format.should eq(UIng::ImageBuffer::Format::RGBA8Straight)
       end
+    end
+
+    it "frees a buffer created from CrImage when its configuration block raises" do
+      source = CrImage.rgba(1, 1)
+      escaped = nil
+      expect_raises(Exception, "CrImage configuration failed") do
+        UIng::ImageBuffer.new(source) do |buffer|
+          escaped = buffer
+          format.should eq(UIng::ImageBuffer::Format::RGBA8Premultiplied)
+          raise "CrImage configuration failed"
+        end
+      end
+
+      buffer = escaped.should_not be_nil
+      buffer.released?.should be_true
+      buffer.free
     end
 
     it "frees image-based open buffers on normal and exceptional block exit" do

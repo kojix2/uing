@@ -1,6 +1,24 @@
 require "./spec_helper"
 
 describe "public value objects" do
+  it "configures FontDescriptor through its block and preserves the instance" do
+    yielded = nil
+    font = UIng::FontDescriptor.new(
+      family: "Inter", size: 14, weight: UIng::TextWeight::Normal,
+      italic: UIng::TextItalic::Normal, stretch: UIng::TextStretch::Normal
+    ) do |descriptor|
+      yielded = descriptor
+      family.should eq("Inter")
+      descriptor.size = 18
+      descriptor.weight = :bold
+      :ignored
+    end
+
+    font.should be(yielded)
+    font.size.should eq(18)
+    font.weight.should eq(UIng::TextWeight::Bold)
+  end
+
   it "maps FontDescriptor properties without native allocation" do
     descriptor = UIng::FontDescriptor.new(
       family: "Inter",
