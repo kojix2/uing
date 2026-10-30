@@ -38,13 +38,4 @@ module UIng
       LibUI.free_text_array(array_ptr)
     end
   end
-
-  # Init errors use libui-ng's dedicated deallocator rather than free_text.
-  private def self.free_init_error(err) : Nil
-    LibUI.free_init_error(err)
-  end
-
-  private def self.free_text(text) : Nil
-    LibUI.free_text(text)
-  end
 end
