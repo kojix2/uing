@@ -43,37 +43,6 @@ require "../support/toolbar_items"
       image.try &.free
     end
 
-    it "releases copied icons and items when a Toolbar configuration block raises" do
-      window = UIng::Window.new("Failed Toolbar DSL", 400, 200)
-      source = UIng::Image.new(1, 1)
-      source.append(Bytes[255, 255, 255, 255], 1, 1, 4)
-      constructed = nil
-      configured_item = nil
-      icon_copy = nil
-      expect_raises(Exception, "configuration failed") do
-        UIng::Toolbar.new do |bar|
-          constructed = bar
-          configured_item = append_button("Action", source) do |item|
-            icon_copy = item.retained_icon_for_spec
-            on_clicked { |_clicked| }
-          end
-          window.toolbar = bar
-          raise "configuration failed"
-        end
-      end
-
-      window.toolbar.should be_nil
-      constructed.should_not(be_nil).released?.should be_true
-      item = configured_item.should_not be_nil
-      copied_icon = icon_copy.should_not be_nil
-      expect_raises(Exception, /already been released/) { item.text }
-      expect_raises(Exception, /already been released/) { copied_icon.to_unsafe }
-    ensure
-      window.try &.destroy
-      source.try &.free
-      constructed.try &.free
-    end
-
     it "changes modes while attached and detached without replacing the public items" do
       window = UIng::Window.new("Toolbar modes", 400, 200)
       toolbar = UIng::Toolbar.new
@@ -142,6 +111,37 @@ require "../support/toolbar_items"
       window.try &.destroy
       toolbar.try &.free
       image.try &.free
+    end
+
+    it "releases copied icons and items when a Toolbar configuration block raises" do
+      window = UIng::Window.new("Failed Toolbar DSL", 400, 200)
+      source = UIng::Image.new(1, 1)
+      source.append(Bytes[255, 255, 255, 255], 1, 1, 4)
+      constructed = nil
+      configured_item = nil
+      icon_copy = nil
+      expect_raises(Exception, "configuration failed") do
+        UIng::Toolbar.new do |bar|
+          constructed = bar
+          configured_item = append_button("Action", source) do |item|
+            icon_copy = item.retained_icon_for_spec
+            on_clicked { |_clicked| }
+          end
+          window.toolbar = bar
+          raise "configuration failed"
+        end
+      end
+
+      window.toolbar.should be_nil
+      constructed.should_not(be_nil).released?.should be_true
+      item = configured_item.should_not be_nil
+      copied_icon = icon_copy.should_not be_nil
+      expect_raises(Exception, /already been released/) { item.text }
+      expect_raises(Exception, /already been released/) { copied_icon.to_unsafe }
+    ensure
+      window.try &.destroy
+      source.try &.free
+      constructed.try &.free
     end
   end
 {% end %}

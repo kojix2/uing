@@ -2,18 +2,6 @@ require "../spec_helper"
 require "../support/callback_errors"
 
 describe UIng::Timer do
-  it "stops before the first tick without invoking the user callback" do
-    calls = 0
-    timer = UIng::Timer.__create__(-> { calls += 1; true })
-
-    timer.stop
-    timer.stop
-
-    timer.stopped?.should be_true
-    timer.__tick__.should be_false
-    calls.should eq(0)
-  end
-
   it "continues on true and stops on false" do
     calls = 0
     timer = UIng::Timer.__create__(-> { calls += 1; calls < 2 })
@@ -24,6 +12,18 @@ describe UIng::Timer do
     timer.stopped?.should be_true
     timer.__tick__.should be_false
     calls.should eq(2)
+  end
+
+  it "stops before the first tick without invoking the user callback" do
+    calls = 0
+    timer = UIng::Timer.__create__(-> { calls += 1; true })
+
+    timer.stop
+    timer.stop
+
+    timer.stopped?.should be_true
+    timer.__tick__.should be_false
+    calls.should eq(0)
   end
 
   it "honors stop called from inside the callback" do

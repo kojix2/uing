@@ -30,6 +30,15 @@ describe UIng::Area::Draw::ImageBufferParams do
     native.interpolation.should eq(UIng::ImageBuffer::Interpolation::Smooth)
   end
 
+  it "supports the established parameter block constructor" do
+    params = UIng::Area::Draw::ImageBufferParams.new(
+      source_x: 0, source_y: 0, source_width: 1, source_height: 1,
+      x: 0, y: 0, width: 1, height: 1) do |value|
+      value.width = 20
+    end
+    params.width.should eq(20)
+  end
+
   it "rejects invalid source coordinates and sizes without changing the fields" do
     params = image_buffer_params
     expect_raises(ArgumentError, /source_x must be nonnegative/) { params.source_x = -1 }
@@ -66,14 +75,5 @@ describe UIng::Area::Draw::ImageBufferParams do
     expect_raises(ArgumentError, /destination edges/) { params.to_unsafe }
     params.y = 0
     params.to_unsafe.value.width.should eq(1)
-  end
-
-  it "supports the established parameter block constructor" do
-    params = UIng::Area::Draw::ImageBufferParams.new(
-      source_x: 0, source_y: 0, source_width: 1, source_height: 1,
-      x: 0, y: 0, width: 1, height: 1) do |value|
-      value.width = 20
-    end
-    params.width.should eq(20)
   end
 end

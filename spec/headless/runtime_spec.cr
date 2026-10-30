@@ -1,11 +1,6 @@
 require "../spec_helper"
 
 describe UIng do
-  it "does not invoke native shutdown when the runtime is already inactive" do
-    UIng.uninit
-    UIng.uninit
-  end
-
   it "uninitializes UIng when its init block raises" do
     output = IO::Memory.new
     error = IO::Memory.new
@@ -13,5 +8,10 @@ describe UIng do
     status = Process.run(ENV["CRYSTAL"]? || "crystal", ["run", fixture], output: output, error: error)
 
     status.success?.should be_true, "#{output}\n#{error}"
+  end
+
+  it "does not invoke native shutdown when the runtime is already inactive" do
+    UIng.uninit
+    UIng.uninit
   end
 end

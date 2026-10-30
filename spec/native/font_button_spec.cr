@@ -6,6 +6,18 @@ require "../spec_helper"
     after_all { UIng.uninit }
     after_each { UIng.on_error(nil) }
 
+    it "returns a managed FontButton descriptor" do
+      button = UIng::FontButton.new
+      descriptor = button.font
+      button.destroy
+
+      descriptor.family.empty?.should be_false
+      descriptor.size.should be > 0
+      String.new(descriptor.to_unsafe.value.family).should eq(descriptor.family)
+    ensure
+      button.try { |control| control.destroy unless control.released? }
+    end
+
     it "keeps FontButton descriptor snapshots independent" do
       button = UIng::FontButton.new
       retained = button.font
@@ -18,18 +30,6 @@ require "../spec_helper"
       snapshot.family.should_not eq("Changed")
     ensure
       button.try &.destroy
-    end
-
-    it "returns a managed FontButton descriptor" do
-      button = UIng::FontButton.new
-      descriptor = button.font
-      button.destroy
-
-      descriptor.family.empty?.should be_false
-      descriptor.size.should be > 0
-      String.new(descriptor.to_unsafe.value.family).should eq(descriptor.family)
-    ensure
-      button.try { |control| control.destroy unless control.released? }
     end
   end
 {% end %}

@@ -2,20 +2,14 @@ require "../spec_helper"
 require "../support/containers"
 
 describe UIng::Group do
-  it "preserves Group ownership when child replacement is attempted while destruction is pending" do
+  it "supports the Group child block DSL" do
     group = SpecSupport::DetachableGroup.new
-    old_child = SpecSupport::DetachableControl.new
-    new_child = SpecSupport::DetachableControl.new
-    group.child = old_child
-    group.destroy
+    child = SpecSupport::DetachableControl.new
 
-    expect_raises(Exception, /already been destroyed/) do
-      group.child = new_child
-    end
+    group.child { child }
 
-    group.child.should be(old_child)
-    old_child.parent.should be(group)
-    new_child.parent.should be_nil
+    group.child.should be(child)
+    child.parent.should be(group)
   end
 
   it "clears and detaches a Group child" do
@@ -31,13 +25,19 @@ describe UIng::Group do
     group.native_child_cleared?.should be_true
   end
 
-  it "supports the Group child block DSL" do
+  it "preserves Group ownership when child replacement is attempted while destruction is pending" do
     group = SpecSupport::DetachableGroup.new
-    child = SpecSupport::DetachableControl.new
+    old_child = SpecSupport::DetachableControl.new
+    new_child = SpecSupport::DetachableControl.new
+    group.child = old_child
+    group.destroy
 
-    group.child { child }
+    expect_raises(Exception, /already been destroyed/) do
+      group.child = new_child
+    end
 
-    group.child.should be(child)
-    child.parent.should be(group)
+    group.child.should be(old_child)
+    old_child.parent.should be(group)
+    new_child.parent.should be_nil
   end
 end

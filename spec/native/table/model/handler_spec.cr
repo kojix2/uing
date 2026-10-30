@@ -57,20 +57,20 @@ require "../../../support/native_wrappers"
     after_all { UIng.uninit }
     after_each { UIng.on_error(nil) }
 
-    it "uses a type-correct fallback for every table column after callback failure" do
+    it "accepts NULL table cells only for color columns" do
       types = UIng::Table::Value::Type.values
       errors = [] of Exception
       handler = UIng::Table::Model::Handler.new
       handler.num_columns { types.size }
       handler.column_type { |column| types[column] }
-      handler.cell_value { |_row, _column| raise "cell lookup failed" }
+      handler.cell_value { |_row, _column| nil }
       UIng.on_error { |error, _context| errors << error }
 
       types.each_with_index do |expected_type, column|
         verify_native_table_fallback(native_call_cell_value(handler, column), expected_type)
       end
 
-      errors.size.should eq(types.size)
+      errors.size.should eq(types.size - 1)
     end
 
     it "releases mismatched table values and returns type-correct fallbacks" do
@@ -94,20 +94,20 @@ require "../../../support/native_wrappers"
       end
     end
 
-    it "accepts NULL table cells only for color columns" do
+    it "uses a type-correct fallback for every table column after callback failure" do
       types = UIng::Table::Value::Type.values
       errors = [] of Exception
       handler = UIng::Table::Model::Handler.new
       handler.num_columns { types.size }
       handler.column_type { |column| types[column] }
-      handler.cell_value { |_row, _column| nil }
+      handler.cell_value { |_row, _column| raise "cell lookup failed" }
       UIng.on_error { |error, _context| errors << error }
 
       types.each_with_index do |expected_type, column|
         verify_native_table_fallback(native_call_cell_value(handler, column), expected_type)
       end
 
-      errors.size.should eq(types.size - 1)
+      errors.size.should eq(types.size)
     end
   end
 {% end %}

@@ -20,229 +20,235 @@ private def install_drop_closures_for_spec(window : SpecSupport::DropWindowForSp
 end
 
 describe UIng::Drop::Handler do
-  it "retains captured state after its defining method returns and during self-removal" do
-    window = SpecSupport::DropWindowForSpec.new
-    log = install_drop_closures_for_spec(window)
-    GC.collect
-    native = window.native_handler
-    data = window.user_data
-    native.release_user_data.pointer.null?.should be_true
-    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
-    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "hello".to_unsafe, text_length: LibC::SizeT.new(5))
-    native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
-    native.leave.call(data)
-    GC.collect
-    native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Accepted)
-    log.should eq(["over:1", "leave:2", "drop:3:hello"])
-    window.drop_handler.should be_nil
-  ensure
-    window.try &.destroy
-  end
-
-  it "copies metadata and UTF-8 text into a retainable event" do
-    window = SpecSupport::DropWindowForSpec.new
-    received = nil.as(UIng::Drop::Event?)
-    handler = UIng::Drop::Handler.new(accepts: :text) do
-      drop { |_target, event| received = event; true }
-    end
-    window.drop_handler = handler
-    text = "日本語".to_slice.dup
-    info = UIng::LibUI::DropInfo.new(formats: 3_u32, format: UIng::LibUI::DropFormat::Text, x: 12.5, y: 7.25)
-    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: text.to_unsafe, text_length: LibC::SizeT.new(text.size))
-    result = window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data)
-    text.fill(0_u8)
-    info.x = 100.0
-    window.destroy
-
-    result.should eq(UIng::LibUI::DropResult::Accepted)
-    event = received.should be_a(UIng::Drop::Event)
-    event.text.should eq("日本語")
-    event.files.should be_nil
-    event.formats.should eq(UIng::Drop::Format::All)
-    event.format.should eq(UIng::Drop::Format::Text)
-    {event.x, event.y}.should eq({12.5, 7.25})
-  ensure
-    window.try &.destroy
-  end
-
-  it "copies file paths including non-UTF-8 bytes and preserves their order" do
-    window = SpecSupport::DropWindowForSpec.new
-    received = nil.as(UIng::Drop::Event?)
-    handler = UIng::Drop::Handler.new(accepts: :files) do
-      drop { |_target, event| received = event; false }
-    end
-    window.drop_handler = handler
-    first = Bytes[47, 255, 0]
-    second = Bytes[47, 100, 105, 114, 0]
-    paths = [first.to_unsafe, second.to_unsafe, Pointer(LibC::Char).null]
-    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Files)
-    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Files, files: paths.to_unsafe, file_count: LibC::SizeT.new(2))
-    window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Rejected)
-    first.fill(0_u8)
-    second.fill(0_u8)
-    window.destroy
-
-    event = received.should be_a(UIng::Drop::Event)
-    event.text.should be_nil
-    files = event.files.should be_a(Array(String))
-    files.first.bytes.should eq([47_u8, 255_u8])
-    files.last.should eq("/dir")
-    files.clear
-    event.files.should eq([String.new(Bytes[47, 255]), "/dir"])
-  ensure
-    window.try &.destroy
-  end
-
-  it "dispatches and clears hover callbacks and accepts compatible offers by default" do
-    window = SpecSupport::DropWindowForSpec.new
-    handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }
-    window.drop_handler = handler
-    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Files, x: 20.0)
-    native = window.native_handler
-    data = window.user_data
-    native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
-    positions = [] of Float64
-    handler.over { |_target, offer| positions << offer.x; false }
-    native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
-    positions.should eq([20.0])
-    handler.over(nil)
-    native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
-
-    leaves = 0
-    handler.leave { |_target| leaves += 1 }
-    native.leave.call(data)
-    handler.leave(nil)
-    native.leave.call(data)
-    leaves.should eq(1)
-    handler.drop(nil)
-    native.drop.call(Pointer(UIng::LibUI::DropInfo).null, Pointer(UIng::LibUI::DropData).null, data).should eq(UIng::LibUI::DropResult::Rejected)
-  ensure
-    window.try &.destroy
-  end
-
-  it "preserves the current handler on failure and clears it on destruction" do
-    window = SpecSupport::DropWindowForSpec.new
-    handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }
-    other = UIng::Drop::Handler.new { drop { |_target, _event| false } }
-    window.drop_handler = handler
-    window.status = UIng::LibUI::DropStatus::NativeError
-    error = expect_raises(UIng::Drop::Error) { window.drop_handler = other }
-    error.status.should eq(UIng::LibUI::DropStatus::NativeError)
-    window.drop_handler.should be(handler)
-    expect_raises(UIng::Drop::Error) { window.clear_drop_handler }
-    window.drop_handler.should be(handler)
-
-    window.status = UIng::LibUI::DropStatus::OK
-    window.drop_handler = other
-    window.drop_handler.should be(other)
-    window.drop_handler = nil
-    window.drop_handler.should be_nil
-    window.clear_drop_handler
-    window.drop_handler = handler
-    window.destroy
-    expect_raises(Exception, /destroyed/) { window.drop_handler = handler }
-    expect_raises(Exception, /destroyed/) { window.clear_drop_handler }
-  ensure
-    window.try &.destroy
-  end
-
-  it "supports shared handlers and self-removal while a callback is running" do
-    first = SpecSupport::DropWindowForSpec.new
-    second = SpecSupport::DropWindowForSpec.new
-    calls = 0
-    targets = [] of UIng::Control
-    handler = UIng::Drop::Handler.new do
-      drop do |target, _event|
-        targets << target
-        target.clear_drop_handler
-        GC.collect
-        calls += 1
-        true
+  describe "drop events" do
+    it "copies metadata and UTF-8 text into a retainable event" do
+      window = SpecSupport::DropWindowForSpec.new
+      received = nil.as(UIng::Drop::Event?)
+      handler = UIng::Drop::Handler.new(accepts: :text) do
+        drop { |_target, event| received = event; true }
       end
-    end
-    first.drop_handler = handler
-    second.drop_handler = handler
-    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
-    text = ""
-    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: text.to_unsafe)
-    first.native_handler.drop.call(pointerof(info), pointerof(payload), first.user_data).should eq(UIng::LibUI::DropResult::Accepted)
-    first.drop_handler.should be_nil
-    second.drop_handler.should be(handler)
-    second.native_handler.drop.call(pointerof(info), pointerof(payload), second.user_data).should eq(UIng::LibUI::DropResult::Accepted)
-    second.drop_handler.should be_nil
-    calls.should eq(2)
-    handler.drop do |target, event|
-      targets << target
-      target.destroy
-      GC.collect
-      event.text == ""
-    end
-    second.drop_handler = handler
-    second.native_handler.drop.call(pointerof(info), pointerof(payload), second.user_data).should eq(UIng::LibUI::DropResult::Accepted)
-    targets.should eq([first, second, second])
-  ensure
-    first.try &.destroy
-    second.try &.destroy
-  end
+      window.drop_handler = handler
+      text = "日本語".to_slice.dup
+      info = UIng::LibUI::DropInfo.new(formats: 3_u32, format: UIng::LibUI::DropFormat::Text, x: 12.5, y: 7.25)
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: text.to_unsafe, text_length: LibC::SizeT.new(text.size))
+      result = window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data)
+      text.fill(0_u8)
+      info.x = 100.0
+      window.destroy
 
-  it "keeps the executing callback and its target stable during replacement" do
-    window = SpecSupport::DropWindowForSpec.new
-    calls = [] of String
-    replacement = UIng::Drop::Handler.new do
-      drop { |target, _event| calls << "new"; target.clear_drop_handler; true }
+      result.should eq(UIng::LibUI::DropResult::Accepted)
+      event = received.should be_a(UIng::Drop::Event)
+      event.text.should eq("日本語")
+      event.files.should be_nil
+      event.formats.should eq(UIng::Drop::Format::All)
+      event.format.should eq(UIng::Drop::Format::Text)
+      {event.x, event.y}.should eq({12.5, 7.25})
+    ensure
+      window.try &.destroy
     end
-    window.drop_handler = UIng::Drop::Handler.new do
-      drop do |target, _event|
-        target.drop_handler = replacement
-        GC.collect
-        calls << "old"
-        true
+
+    it "copies file paths including non-UTF-8 bytes and preserves their order" do
+      window = SpecSupport::DropWindowForSpec.new
+      received = nil.as(UIng::Drop::Event?)
+      handler = UIng::Drop::Handler.new(accepts: :files) do
+        drop { |_target, event| received = event; false }
       end
+      window.drop_handler = handler
+      first = Bytes[47, 255, 0]
+      second = Bytes[47, 100, 105, 114, 0]
+      paths = [first.to_unsafe, second.to_unsafe, Pointer(LibC::Char).null]
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Files)
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Files, files: paths.to_unsafe, file_count: LibC::SizeT.new(2))
+      window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Rejected)
+      first.fill(0_u8)
+      second.fill(0_u8)
+      window.destroy
+
+      event = received.should be_a(UIng::Drop::Event)
+      event.text.should be_nil
+      files = event.files.should be_a(Array(String))
+      files.first.bytes.should eq([47_u8, 255_u8])
+      files.last.should eq("/dir")
+      files.clear
+      event.files.should eq([String.new(Bytes[47, 255]), "/dir"])
+    ensure
+      window.try &.destroy
     end
-    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
-    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "".to_unsafe)
-    window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Accepted)
-    window.drop_handler.should be(replacement)
-    window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Accepted)
-    calls.should eq(["old", "new"])
-  ensure
-    window.try &.destroy
   end
 
-  it "rejects missing drop callbacks and invalid accepted formats" do
-    expect_raises(ArgumentError) { UIng::Drop::Handler.new(accepts: :none) }
-    expect_raises(ArgumentError) { UIng::Drop::Handler.new(accepts: UIng::Drop::Format.new(4_u32)) }
-    window = SpecSupport::DropWindowForSpec.new
-    expect_raises(ArgumentError, /drop callback/) { window.drop_handler = UIng::Drop::Handler.new }
-    window.drop_handler.should be_nil
-  ensure
-    window.try &.destroy
-  end
-
-  it "reports callback errors and returns rejection without unwinding into C" do
-    window = SpecSupport::DropWindowForSpec.new
-    handler = UIng::Drop::Handler.new do
-      drop { |_target, _event| raise "drop failed" }
-      over { |_target, _info| raise "over failed" }
-      leave { |_target| raise "leave failed" }
-    end
-    window.drop_handler = handler
-    errors = [] of String
-    UIng.on_error { |_error, context| errors << context }
-    info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
-    payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "".to_unsafe)
-    native = window.native_handler
-    data = window.user_data
-    UIng.expect_callback_error_log("drop failed", "Drop drop") do
-      native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Rejected)
-    end
-    UIng.expect_callback_error_log("over failed", "Drop over") do
+  describe "handler registration" do
+    it "dispatches and clears hover callbacks and accepts compatible offers by default" do
+      window = SpecSupport::DropWindowForSpec.new
+      handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }
+      window.drop_handler = handler
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Files, x: 20.0)
+      native = window.native_handler
+      data = window.user_data
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
+      positions = [] of Float64
+      handler.over { |_target, offer| positions << offer.x; false }
       native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
+      positions.should eq([20.0])
+      handler.over(nil)
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
+
+      leaves = 0
+      handler.leave { |_target| leaves += 1 }
+      native.leave.call(data)
+      handler.leave(nil)
+      native.leave.call(data)
+      leaves.should eq(1)
+      handler.drop(nil)
+      native.drop.call(Pointer(UIng::LibUI::DropInfo).null, Pointer(UIng::LibUI::DropData).null, data).should eq(UIng::LibUI::DropResult::Rejected)
+    ensure
+      window.try &.destroy
     end
-    UIng.expect_callback_error_log("leave failed", "Drop leave") { native.leave.call(data) }
-    errors.should eq(["Drop drop", "Drop over", "Drop leave"])
-  ensure
-    UIng.on_error(nil)
-    window.try &.destroy
+
+    it "rejects missing drop callbacks and invalid accepted formats" do
+      expect_raises(ArgumentError) { UIng::Drop::Handler.new(accepts: :none) }
+      expect_raises(ArgumentError) { UIng::Drop::Handler.new(accepts: UIng::Drop::Format.new(4_u32)) }
+      window = SpecSupport::DropWindowForSpec.new
+      expect_raises(ArgumentError, /drop callback/) { window.drop_handler = UIng::Drop::Handler.new }
+      window.drop_handler.should be_nil
+    ensure
+      window.try &.destroy
+    end
+
+    it "preserves the current handler on failure and clears it on destruction" do
+      window = SpecSupport::DropWindowForSpec.new
+      handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }
+      other = UIng::Drop::Handler.new { drop { |_target, _event| false } }
+      window.drop_handler = handler
+      window.status = UIng::LibUI::DropStatus::NativeError
+      error = expect_raises(UIng::Drop::Error) { window.drop_handler = other }
+      error.status.should eq(UIng::LibUI::DropStatus::NativeError)
+      window.drop_handler.should be(handler)
+      expect_raises(UIng::Drop::Error) { window.clear_drop_handler }
+      window.drop_handler.should be(handler)
+
+      window.status = UIng::LibUI::DropStatus::OK
+      window.drop_handler = other
+      window.drop_handler.should be(other)
+      window.drop_handler = nil
+      window.drop_handler.should be_nil
+      window.clear_drop_handler
+      window.drop_handler = handler
+      window.destroy
+      expect_raises(Exception, /destroyed/) { window.drop_handler = handler }
+      expect_raises(Exception, /destroyed/) { window.clear_drop_handler }
+    ensure
+      window.try &.destroy
+    end
+  end
+
+  describe "callback execution" do
+    it "supports shared handlers and self-removal while a callback is running" do
+      first = SpecSupport::DropWindowForSpec.new
+      second = SpecSupport::DropWindowForSpec.new
+      calls = 0
+      targets = [] of UIng::Control
+      handler = UIng::Drop::Handler.new do
+        drop do |target, _event|
+          targets << target
+          target.clear_drop_handler
+          GC.collect
+          calls += 1
+          true
+        end
+      end
+      first.drop_handler = handler
+      second.drop_handler = handler
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+      text = ""
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: text.to_unsafe)
+      first.native_handler.drop.call(pointerof(info), pointerof(payload), first.user_data).should eq(UIng::LibUI::DropResult::Accepted)
+      first.drop_handler.should be_nil
+      second.drop_handler.should be(handler)
+      second.native_handler.drop.call(pointerof(info), pointerof(payload), second.user_data).should eq(UIng::LibUI::DropResult::Accepted)
+      second.drop_handler.should be_nil
+      calls.should eq(2)
+      handler.drop do |target, event|
+        targets << target
+        target.destroy
+        GC.collect
+        event.text == ""
+      end
+      second.drop_handler = handler
+      second.native_handler.drop.call(pointerof(info), pointerof(payload), second.user_data).should eq(UIng::LibUI::DropResult::Accepted)
+      targets.should eq([first, second, second])
+    ensure
+      first.try &.destroy
+      second.try &.destroy
+    end
+
+    it "keeps the executing callback and its target stable during replacement" do
+      window = SpecSupport::DropWindowForSpec.new
+      calls = [] of String
+      replacement = UIng::Drop::Handler.new do
+        drop { |target, _event| calls << "new"; target.clear_drop_handler; true }
+      end
+      window.drop_handler = UIng::Drop::Handler.new do
+        drop do |target, _event|
+          target.drop_handler = replacement
+          GC.collect
+          calls << "old"
+          true
+        end
+      end
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "".to_unsafe)
+      window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Accepted)
+      window.drop_handler.should be(replacement)
+      window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Accepted)
+      calls.should eq(["old", "new"])
+    ensure
+      window.try &.destroy
+    end
+
+    it "retains captured state after its defining method returns and during self-removal" do
+      window = SpecSupport::DropWindowForSpec.new
+      log = install_drop_closures_for_spec(window)
+      GC.collect
+      native = window.native_handler
+      data = window.user_data
+      native.release_user_data.pointer.null?.should be_true
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "hello".to_unsafe, text_length: LibC::SizeT.new(5))
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
+      native.leave.call(data)
+      GC.collect
+      native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Accepted)
+      log.should eq(["over:1", "leave:2", "drop:3:hello"])
+      window.drop_handler.should be_nil
+    ensure
+      window.try &.destroy
+    end
+
+    it "reports callback errors and returns rejection without unwinding into C" do
+      window = SpecSupport::DropWindowForSpec.new
+      handler = UIng::Drop::Handler.new do
+        drop { |_target, _event| raise "drop failed" }
+        over { |_target, _info| raise "over failed" }
+        leave { |_target| raise "leave failed" }
+      end
+      window.drop_handler = handler
+      errors = [] of String
+      UIng.on_error { |_error, context| errors << context }
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "".to_unsafe)
+      native = window.native_handler
+      data = window.user_data
+      UIng.expect_callback_error_log("drop failed", "Drop drop") do
+        native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Rejected)
+      end
+      UIng.expect_callback_error_log("over failed", "Drop over") do
+        native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
+      end
+      UIng.expect_callback_error_log("leave failed", "Drop leave") { native.leave.call(data) }
+      errors.should eq(["Drop drop", "Drop over", "Drop leave"])
+    ensure
+      UIng.on_error(nil)
+      window.try &.destroy
+    end
   end
 end

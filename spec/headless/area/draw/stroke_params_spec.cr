@@ -7,12 +7,6 @@ describe UIng::Area::Draw::StrokeParams do
     {params.thickness, params.dash_phase}.should eq({2.0, -1.0})
   end
 
-  it "rejects zero thickness" do
-    expect_raises(ArgumentError, /stroke thickness must be finite and positive/) do
-      UIng::Area::Draw::StrokeParams.new(thickness: 0)
-    end
-  end
-
   it "synchronizes dash values with its native structure" do
     params = UIng::Area::Draw::StrokeParams.new(
       cap: UIng::Area::Draw::LineCap::Round,
@@ -31,5 +25,11 @@ describe UIng::Area::Draw::StrokeParams do
     float_dashes = [2.0, 4.0]
     params.dashes = float_dashes
     params.dashes.should be(float_dashes)
+  end
+
+  it "rejects zero thickness" do
+    expect_raises(ArgumentError, /stroke thickness must be finite and positive/) do
+      UIng::Area::Draw::StrokeParams.new(thickness: 0)
+    end
   end
 end

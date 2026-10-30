@@ -47,28 +47,6 @@ describe UIng::Toolbar do
     toolbar.native_free_calls.should eq(1)
   end
 
-  it "detaches and frees a Toolbar if construction raises after attachment" do
-    window = ToolbarDslWindow.new
-    constructed = nil
-    original = Exception.new("toolbar construction failed")
-    error = expect_raises(Exception, original.message) do
-      BlockToolbarForSpec.new do |bar|
-        constructed = bar
-        window.toolbar = bar
-        raise original
-      end
-    end
-
-    error.should be(original)
-    toolbar = constructed.should_not be_nil
-    window.toolbar.should be_nil
-    toolbar.released?.should be_true
-    toolbar.native_free_calls.should eq(1)
-    toolbar.free
-    window.release_for_spec
-    toolbar.native_free_calls.should eq(1)
-  end
-
   it "preserves ownership when attachment to a second Window fails" do
     first = ToolbarDslWindow.new
     second = ToolbarDslWindow.new
@@ -84,19 +62,6 @@ describe UIng::Toolbar do
     first.release_for_spec
     second.release_for_spec
     toolbar.native_free_calls.should eq(1)
-  end
-
-  it "rejects a destroyed Window before constructing a Toolbar" do
-    window = ToolbarDslWindow.new
-    window.release_for_spec
-    called = false
-    expect_raises(Exception, /already been destroyed/) do
-      window.toolbar do
-        called = true
-        BlockToolbarForSpec.new
-      end
-    end
-    called.should be_false
   end
 
   it "keeps the current Toolbar when construction of a replacement fails" do
@@ -119,5 +84,40 @@ describe UIng::Toolbar do
     replacement.should_not(be_nil).native_free_calls.should eq(1)
     window.release_for_spec
     current.native_free_calls.should eq(1)
+  end
+
+  it "detaches and frees a Toolbar if construction raises after attachment" do
+    window = ToolbarDslWindow.new
+    constructed = nil
+    original = Exception.new("toolbar construction failed")
+    error = expect_raises(Exception, original.message) do
+      BlockToolbarForSpec.new do |bar|
+        constructed = bar
+        window.toolbar = bar
+        raise original
+      end
+    end
+
+    error.should be(original)
+    toolbar = constructed.should_not be_nil
+    window.toolbar.should be_nil
+    toolbar.released?.should be_true
+    toolbar.native_free_calls.should eq(1)
+    toolbar.free
+    window.release_for_spec
+    toolbar.native_free_calls.should eq(1)
+  end
+
+  it "rejects a destroyed Window before constructing a Toolbar" do
+    window = ToolbarDslWindow.new
+    window.release_for_spec
+    called = false
+    expect_raises(Exception, /already been destroyed/) do
+      window.toolbar do
+        called = true
+        BlockToolbarForSpec.new
+      end
+    end
+    called.should be_false
   end
 end

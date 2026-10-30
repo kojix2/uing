@@ -22,17 +22,6 @@ require "../spec_helper"
     before_all { UIng.init }
     after_all { UIng.uninit }
 
-    it "rejects a freed source before allocating a native view" do
-      image = UIng::Image.new(1, 1)
-      image.free
-
-      expect_raises(Exception, /already been released/) { AllocationObservedImageView.new(image) }
-
-      AllocationObservedImageView.allocated_before_failure?.should be_false
-    ensure
-      image.try &.free
-    end
-
     it "keeps its image usable after the source is freed" do
       image = UIng::Image.new(1, 1)
       image.append(Bytes[255, 0, 0, 255], 1, 1, 4)
@@ -46,6 +35,17 @@ require "../spec_helper"
       view.image = nil
     ensure
       window.try &.destroy
+      image.try &.free
+    end
+
+    it "rejects a freed source before allocating a native view" do
+      image = UIng::Image.new(1, 1)
+      image.free
+
+      expect_raises(Exception, /already been released/) { AllocationObservedImageView.new(image) }
+
+      AllocationObservedImageView.allocated_before_failure?.should be_false
+    ensure
       image.try &.free
     end
   end

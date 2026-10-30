@@ -15,6 +15,20 @@ private class BlockConstructedImage < UIng::Image
 end
 
 describe UIng::Image do
+  it "returns a live Image and supports implicit and explicit receivers" do
+    yielded = nil
+    image = BlockConstructedImage.new(1, 1) do |value|
+      yielded = value
+      to_unsafe.should eq(value.to_unsafe)
+      :ignored
+    end
+
+    image.should be(yielded)
+    image.native_free_calls.should eq(0)
+    image.free
+    image.native_free_calls.should eq(1)
+  end
+
   it "rejects invalid logical dimensions before creating a native image" do
     invalid_dimensions = [0.0, -1.0, Float64::NAN, Float64::INFINITY, Int32::MAX.to_f64 + 1]
 
@@ -46,20 +60,6 @@ describe UIng::Image do
     expect_raises(ArgumentError, /expected at least 16 bytes, got 15/) do
       image.append(pixels, 2, 2, 8)
     end
-  end
-
-  it "returns a live Image and supports implicit and explicit receivers" do
-    yielded = nil
-    image = BlockConstructedImage.new(1, 1) do |value|
-      yielded = value
-      to_unsafe.should eq(value.to_unsafe)
-      :ignored
-    end
-
-    image.should be(yielded)
-    image.native_free_calls.should eq(0)
-    image.free
-    image.native_free_calls.should eq(1)
   end
 
   it "frees a failed Image construction once and preserves the original error" do

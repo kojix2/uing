@@ -6,30 +6,6 @@ require "../../spec_helper"
     after_all { UIng.uninit }
     after_each { UIng.on_error(nil) }
 
-    it "rejects every AttributedString operation after free" do
-      string = UIng::Area::AttributedString.new("abc")
-      attribute = UIng::Area::Attribute.new_size(12)
-      string.free
-      attribute.free
-
-      expect_raises(Exception, /already been released/) { string.string }
-      expect_raises(Exception, /already been released/) { string.len }
-      expect_raises(Exception, /already been released/) { string.append_unattributed("x") }
-      expect_raises(Exception, /already been released/) { string.insert_at_unattributed("x", 0) }
-      expect_raises(Exception, /already been released/) { string.delete(0, 0) }
-      expect_raises(Exception, /already been released/) { string.set_attribute(attribute, 0, 0) }
-      expect_raises(Exception, /already been released/) do
-        string.each_attribute { |_attribute, _start, _end| }
-      end
-      expect_raises(Exception, /already been released/) { string.num_graphemes }
-      expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }
-      expect_raises(Exception, /already been released/) { string.grapheme_to_byte_index(0) }
-      expect_raises(Exception, /already been released/) { string.to_unsafe }
-    ensure
-      attribute.try &.free
-      string.try &.free
-    end
-
     it "validates AttributedString boundaries without transferring invalid attributes" do
       string = UIng::Area::AttributedString.new("Aé🙂B")
       empty_string = UIng::Area::AttributedString.new("")
@@ -105,6 +81,30 @@ require "../../spec_helper"
       limited_visits.should eq(1)
     ensure
       UIng.on_error(nil)
+      string.try &.free
+    end
+
+    it "rejects every AttributedString operation after free" do
+      string = UIng::Area::AttributedString.new("abc")
+      attribute = UIng::Area::Attribute.new_size(12)
+      string.free
+      attribute.free
+
+      expect_raises(Exception, /already been released/) { string.string }
+      expect_raises(Exception, /already been released/) { string.len }
+      expect_raises(Exception, /already been released/) { string.append_unattributed("x") }
+      expect_raises(Exception, /already been released/) { string.insert_at_unattributed("x", 0) }
+      expect_raises(Exception, /already been released/) { string.delete(0, 0) }
+      expect_raises(Exception, /already been released/) { string.set_attribute(attribute, 0, 0) }
+      expect_raises(Exception, /already been released/) do
+        string.each_attribute { |_attribute, _start, _end| }
+      end
+      expect_raises(Exception, /already been released/) { string.num_graphemes }
+      expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }
+      expect_raises(Exception, /already been released/) { string.grapheme_to_byte_index(0) }
+      expect_raises(Exception, /already been released/) { string.to_unsafe }
+    ensure
+      attribute.try &.free
       string.try &.free
     end
   end

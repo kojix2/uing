@@ -26,6 +26,16 @@ describe UIng::Area::Draw::Path do
     end
   end
 
+  it "rejects invalid rounded rectangle geometry before calling libui-ng" do
+    path = UIng::Area::Draw::Path.from_native_for_spec(Pointer(UIng::LibUI::DrawPath).null)
+
+    expect_raises(ArgumentError, /x must be finite/) { path.add_rounded_rectangle(Float64::NAN, 0, 1, 1, 1) }
+    expect_raises(ArgumentError, /width must be nonnegative/) { path.add_rounded_rectangle(0, 0, -1, 1, 1) }
+    expect_raises(ArgumentError, /height must be nonnegative/) { path.add_rounded_rectangle(0, 0, 1, -1, 1) }
+    expect_raises(ArgumentError, /radius must be nonnegative/) { path.add_rounded_rectangle(0, 0, 1, 1, -1) }
+    expect_raises(ArgumentError, /radius must be finite/) { path.add_rounded_rectangle(0, 0, 1, 1, Float64::INFINITY) }
+  end
+
   it "frees a Path on failure and preserves the original exception" do
     constructed = nil
     original = Exception.new("path construction failed")
@@ -39,15 +49,5 @@ describe UIng::Area::Draw::Path do
     error.should be(original)
     constructed.should_not(be_nil).free_calls.should eq(1)
     BlockConstructionPath.new { }.free_calls.should eq(0)
-  end
-
-  it "rejects invalid rounded rectangle geometry before calling libui-ng" do
-    path = UIng::Area::Draw::Path.from_native_for_spec(Pointer(UIng::LibUI::DrawPath).null)
-
-    expect_raises(ArgumentError, /x must be finite/) { path.add_rounded_rectangle(Float64::NAN, 0, 1, 1, 1) }
-    expect_raises(ArgumentError, /width must be nonnegative/) { path.add_rounded_rectangle(0, 0, -1, 1, 1) }
-    expect_raises(ArgumentError, /height must be nonnegative/) { path.add_rounded_rectangle(0, 0, 1, -1, 1) }
-    expect_raises(ArgumentError, /radius must be nonnegative/) { path.add_rounded_rectangle(0, 0, 1, 1, -1) }
-    expect_raises(ArgumentError, /radius must be finite/) { path.add_rounded_rectangle(0, 0, 1, 1, Float64::INFINITY) }
   end
 end

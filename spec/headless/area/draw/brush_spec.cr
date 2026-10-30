@@ -1,12 +1,6 @@
 require "../../../spec_helper"
 
 describe UIng::Area::Draw::Brush do
-  it "rejects color components outside normalized ranges" do
-    expect_raises(ArgumentError, /brush red must be finite and between 0 and 1/) do
-      UIng::Area::Draw::Brush.new(UIng::Area::Draw::Brush::Type::Solid, r: -0.01)
-    end
-  end
-
   it "accepts integer and floating-point drawing values" do
     stop = UIng::Area::Draw::Brush::GradientStop.new(pos: 0.5, r: 1)
     brush = UIng::Area::Draw::Brush.new(
@@ -18,6 +12,17 @@ describe UIng::Area::Draw::Brush do
     brush.outer_radius = 4
 
     {brush.x1, brush.outer_radius}.should eq({10.0, 4.0})
+  end
+
+  it "supports block construction without replacing the instance" do
+    yielded = nil
+    brush = UIng::Area::Draw::Brush.new(UIng::Area::Draw::Brush::Type::Solid) do |instance|
+      yielded = instance
+      instance.r = 0.4
+    end
+
+    yielded.should be(brush)
+    brush.r.should eq(0.4)
   end
 
   it "keeps an independent native gradient-stop buffer" do
@@ -34,14 +39,9 @@ describe UIng::Area::Draw::Brush do
     brush.to_unsafe.value.stops.null?.should be_true
   end
 
-  it "supports block construction without replacing the instance" do
-    yielded = nil
-    brush = UIng::Area::Draw::Brush.new(UIng::Area::Draw::Brush::Type::Solid) do |instance|
-      yielded = instance
-      instance.r = 0.4
+  it "rejects color components outside normalized ranges" do
+    expect_raises(ArgumentError, /brush red must be finite and between 0 and 1/) do
+      UIng::Area::Draw::Brush.new(UIng::Area::Draw::Brush::Type::Solid, r: -0.01)
     end
-
-    yielded.should be(brush)
-    brush.r.should eq(0.4)
   end
 end

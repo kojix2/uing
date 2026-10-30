@@ -30,6 +30,19 @@ describe UIng::ImageBuffer do
     buffer.native_free_calls.should eq(1)
   end
 
+  it "keeps ImageBuffer.open returning its block result and freeing the buffer" do
+    yielded = nil
+    result = BlockConstructedImageBuffer.open(1, 1) do |buffer|
+      yielded = buffer
+      buffer.size.should eq({1, 1})
+      :result
+    end
+
+    result.should eq(:result)
+    yielded.should_not(be_nil).released?.should be_true
+    yielded.should_not(be_nil).native_free_calls.should eq(1)
+  end
+
   it "frees a failed ImageBuffer construction once and preserves the original error" do
     [false, true].each do |free_early|
       constructed = nil
@@ -48,18 +61,5 @@ describe UIng::ImageBuffer do
       buffer.free
       buffer.native_free_calls.should eq(1)
     end
-  end
-
-  it "keeps ImageBuffer.open returning its block result and freeing the buffer" do
-    yielded = nil
-    result = BlockConstructedImageBuffer.open(1, 1) do |buffer|
-      yielded = buffer
-      buffer.size.should eq({1, 1})
-      :result
-    end
-
-    result.should eq(:result)
-    yielded.should_not(be_nil).released?.should be_true
-    yielded.should_not(be_nil).native_free_calls.should eq(1)
   end
 end

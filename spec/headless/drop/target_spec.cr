@@ -44,22 +44,6 @@ describe UIng::Drop::Target do
     window.try &.destroy
   end
 
-  it "protects explicit Handlers and rejects calls after destruction" do
-    window = SpecSupport::DropWindowForSpec.new
-    explicit = UIng::Drop::Handler.new { drop { |_target, _event| true } }
-    window.drop_handler = explicit
-    expect_raises(ArgumentError, /explicit Handler/) { window.on_drop { |_event| true } }
-    expect_raises(ArgumentError, /explicit Handler/) { window.clear_on_drop }
-    window.drop_handler.should be(explicit)
-    window.clear_drop_handler
-    window.on_drop { |_event| true }
-    window.destroy
-    expect_raises(Exception, /destroyed/) { window.on_drop { |_event| true } }
-    expect_raises(Exception, /destroyed/) { window.clear_on_drop }
-  ensure
-    window.try &.destroy
-  end
-
   it "can unregister itself and collect garbage while retaining the received data" do
     window = SpecSupport::DropWindowForSpec.new
     received = nil.as(UIng::Drop::Event?)
@@ -74,6 +58,22 @@ describe UIng::Drop::Target do
     window.native_handler.drop.call(pointerof(info), pointerof(payload), window.user_data).should eq(UIng::LibUI::DropResult::Accepted)
     received.should be_a(UIng::Drop::Event)
     window.drop_handler.should be_nil
+  ensure
+    window.try &.destroy
+  end
+
+  it "protects explicit Handlers and rejects calls after destruction" do
+    window = SpecSupport::DropWindowForSpec.new
+    explicit = UIng::Drop::Handler.new { drop { |_target, _event| true } }
+    window.drop_handler = explicit
+    expect_raises(ArgumentError, /explicit Handler/) { window.on_drop { |_event| true } }
+    expect_raises(ArgumentError, /explicit Handler/) { window.clear_on_drop }
+    window.drop_handler.should be(explicit)
+    window.clear_drop_handler
+    window.on_drop { |_event| true }
+    window.destroy
+    expect_raises(Exception, /destroyed/) { window.on_drop { |_event| true } }
+    expect_raises(Exception, /destroyed/) { window.clear_on_drop }
   ensure
     window.try &.destroy
   end

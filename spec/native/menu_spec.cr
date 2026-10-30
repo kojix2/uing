@@ -4,32 +4,6 @@ require "../spec_helper"
   describe UIng::Menu do
     after_each { UIng.on_error(nil) }
 
-    it "sets and clears letter and extended-key shortcuts" do
-      UIng.init
-      menu = UIng::Menu.new("File")
-      item = menu.append_item("Open")
-      item.set_shortcut('o', UIng::Modifiers::Primary)
-      item.clear_shortcut
-      item.set_shortcut(UIng::ExtKey::F1)
-    ensure
-      UIng.uninit
-    end
-
-    it "clears a Quit MenuItem callback without touching its forbidden callback API" do
-      UIng.init
-      menu = UIng::Menu.new("Application")
-      item = menu.append_quit_item
-
-      expect_raises(ArgumentError, /UIng\.on_should_quit/) do
-        item.on_clicked { |_window| }
-      end
-
-      item.clear_on_clicked
-      item.to_unsafe.null?.should be_false
-    ensure
-      UIng.uninit
-    end
-
     it "configures retained items and returns each item instead of its block value" do
       UIng.init
       begin
@@ -65,6 +39,32 @@ require "../spec_helper"
       ensure
         UIng.uninit
       end
+    end
+
+    it "sets and clears letter and extended-key shortcuts" do
+      UIng.init
+      menu = UIng::Menu.new("File")
+      item = menu.append_item("Open")
+      item.set_shortcut('o', UIng::Modifiers::Primary)
+      item.clear_shortcut
+      item.set_shortcut(UIng::ExtKey::F1)
+    ensure
+      UIng.uninit
+    end
+
+    it "clears a Quit MenuItem callback without touching its forbidden callback API" do
+      UIng.init
+      menu = UIng::Menu.new("Application")
+      item = menu.append_quit_item
+
+      expect_raises(ArgumentError, /UIng\.on_should_quit/) do
+        item.on_clicked { |_window| }
+      end
+
+      item.clear_on_clicked
+      item.to_unsafe.null?.should be_false
+    ensure
+      UIng.uninit
     end
   end
 {% end %}
