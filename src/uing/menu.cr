@@ -31,6 +31,14 @@ module UIng
       item
     end
 
+    # Configures the new item with the item as the block receiver and argument.
+    # Returns the item regardless of the block's return value.
+    def append_item(name : String, &) : MenuItem
+      item = append_item(name)
+      with item yield item
+      item
+    end
+
     def append_check_item(name : String) : MenuItem
       check_available
       ref_ptr = LibUI.menu_append_check_item(@ref_ptr, name)
@@ -45,6 +53,18 @@ module UIng
       item
     end
 
+    def append_check_item(name : String, &) : MenuItem
+      item = append_check_item(name)
+      with item yield item
+      item
+    end
+
+    def append_check_item(name : String, checked : Bool, &) : MenuItem
+      item = append_check_item(name, checked)
+      with item yield item
+      item
+    end
+
     def append_quit_item : MenuItem
       check_available
       raise "Quit item already exists" if @@has_quit_item
@@ -52,6 +72,12 @@ module UIng
       item = MenuItem.__new_for_menu__(ref_ptr, :quit)
       @menu_items << item
       @@has_quit_item = true
+      item
+    end
+
+    def append_quit_item(&) : MenuItem
+      item = append_quit_item
+      with item yield item
       item
     end
 
@@ -65,6 +91,12 @@ module UIng
       item
     end
 
+    def append_preferences_item(&) : MenuItem
+      item = append_preferences_item
+      with item yield item
+      item
+    end
+
     def append_about_item : MenuItem
       check_available
       raise "About item already exists" if @@has_about_item
@@ -72,6 +104,12 @@ module UIng
       item = MenuItem.__new_for_menu__(ref_ptr, :about)
       @menu_items << item
       @@has_about_item = true
+      item
+    end
+
+    def append_about_item(&) : MenuItem
+      item = append_about_item
+      with item yield item
       item
     end
 

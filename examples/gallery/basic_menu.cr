@@ -3,32 +3,41 @@ require "../../src/uing"
 UIng.init
 
 UIng::Menu.new("File") do
-  open_item = append_item("Open")
-  open_item.set_shortcut('O', UIng::Modifiers::Primary)
-  open_item.on_clicked do |window|
-    window.try &.open_file
+  append_item("Open") do
+    set_shortcut('O', UIng::Modifiers::Primary)
+    on_clicked do |window|
+      window.try &.open_file
+    end
   end
   append_separator
-  append_preferences_item.on_clicked do |window|
-    window.try &.msg_box("Preferences", "Preferences clicked")
+  append_preferences_item do
+    on_clicked do |window|
+      window.try &.msg_box("Preferences", "Preferences clicked")
+    end
   end
   append_separator
   append_quit_item
 end
 
 UIng::Menu.new("Edit") do
-  append_check_item("Check", checked: false).on_clicked do |_menu_window|
-    # No-op
+  append_check_item("Check", checked: false) do
+    on_clicked do |_menu_window|
+      # No-op
+    end
   end
   append_separator
-  append_item("Click").on_clicked do |window|
-    window.try &.msg_box("Click", "Click menu clicked")
+  append_item("Click") do
+    on_clicked do |window|
+      window.try &.msg_box("Click", "Click menu clicked")
+    end
   end
 end
 
 UIng::Menu.new("Help") do
-  append_about_item.on_clicked do |window|
-    window.try &.msg_box("About", "Menu example")
+  append_about_item do
+    on_clicked do |window|
+      window.try &.msg_box("About", "Menu example")
+    end
   end
 end
 

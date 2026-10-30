@@ -29,6 +29,19 @@ MenuはアプリケーションメニューとOS標準のメニュー項目を�
   | Quit項目 | <code>append_quit_item</code> | アプリケーションを終了します。終了処理は<code>UIng.on_should_quit</code>で設定します。 |
   | 区切り | <code>append_separator</code> | 関連する項目のグループを視覚的に分けます。 |
 
+`append_item`、`append_check_item`、`append_preferences_item`、`append_about_item`、`append_quit_item`には、生成したMenuItemを設定するブロックも渡せます。ブロック内ではMenuItemのメソッドを直接呼べ、必要なら`|item|`で項目を受け取れます。戻り値はブロックの結果によらずMenuItemです。
+
+```crystal
+UIng::Menu.new("File") do
+  append_item("Open") do
+    set_shortcut('O', UIng::Modifiers::Primary)
+    on_clicked { |window| window.try &.open_file }
+  end
+end
+```
+
+チェック項目は`append_check_item("Labels", checked: true) do ... end`で初期状態を指定できます。Quit項目の設定ブロックでも`on_clicked`は使用できず、終了処理は`UIng.on_should_quit`で設定します。
+
 - 最初のWindowを作る前にすべてのMenuを構築し、Windowへ<code>menubar: true</code>を指定します。
 - 最初のWindowを作る前に`item.set_shortcut('O', UIng::Modifiers::Primary)`でショートカットを設定できます。`Primary`はmacOSではCommand、Windows/LinuxではControlです。解除には`item.clear_shortcut`を使います。
 - キーにはASCIIの英字・数字、`UIng::ExtKey::F1`～`F12`、`Delete`、矢印キーを指定できます。F1～F12以外には`Primary`、`Ctrl`、`Alt`のいずれかが必要で、`Shift`を追加できます。`Super`、`Primary | Ctrl`、重複するショートカットは使用できません。

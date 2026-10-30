@@ -289,6 +289,9 @@ describe "lifetime safety" do
     item.callback_retained?.should be_false
     expect_raises(Exception, /already been released/) { menu.to_unsafe }
     expect_raises(Exception, /already been released/) { menu.append_item("Item") }
+    expect_raises(Exception, /already been released/) do
+      menu.append_item("Item") { raise "must not configure a released menu" }
+    end
     expect_raises(Exception, /already been released/) { item.to_unsafe }
     expect_raises(Exception, /already been released/) { item.enable }
   end
