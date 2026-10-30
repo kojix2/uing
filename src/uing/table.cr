@@ -1,0 +1,314 @@
+require "./control"
+require "./table/*"
+
+module UIng
+  class Table < Control
+    block_constructor
+
+    # Store callback boxes to prevent GC collection
+    @on_row_clicked_box : Pointer(Void)?
+    @on_row_double_clicked_box : Pointer(Void)?
+    @on_header_clicked_box : Pointer(Void)?
+    @on_selection_changed_box : Pointer(Void)?
+
+    # Store Model reference to prevent GC collection
+    @table_model_ref : Model?
+
+    # IMPORTANT: This method accepts Table::Model instead of Table::Params
+    def initialize(model : Model, row_background_color_model_column : LibC::Int = -1)
+      model.validate_optional_color_column(row_background_color_model_column, "row background color")
+      table_params = Params.new(model, row_background_color_model_column)
+      @ref_ptr = LibUI.new_table(table_params)
+      @table_model_ref = model
+      model.register(self)
+      register_control
+    end
+
+    protected def after_destroy : Nil
+      @on_row_clicked_box = nil
+      @on_row_double_clicked_box = nil
+      @on_header_clicked_box = nil
+      @on_selection_changed_box = nil
+      if model = @table_model_ref
+        model.unregister(self)
+        @table_model_ref = nil
+      end
+    end
+
+    def on_row_clicked(&block : LibC::Int -> Nil) : Nil
+      @on_row_clicked_box = ::Box.box(block)
+      if boxed_data = @on_row_clicked_box
+        LibUI.table_on_row_clicked(
+          ref_ptr,
+          ->(_table, row, data) : Nil {
+            begin
+              callback = ::Box(typeof(block)).unbox(data)
+              callback.call(row)
+            rescue e
+              UIng.handle_callback_error(e, "Table on_row_clicked")
+            end
+          },
+          boxed_data
+        )
+      end
+    end
+
+    def on_row_double_clicked(&block : LibC::Int -> Nil) : Nil
+      @on_row_double_clicked_box = ::Box.box(block)
+      if boxed_data = @on_row_double_clicked_box
+        LibUI.table_on_row_double_clicked(
+          ref_ptr,
+          ->(_table, row, data) : Nil {
+            begin
+              callback = ::Box(typeof(block)).unbox(data)
+              callback.call(row)
+            rescue e
+              UIng.handle_callback_error(e, "Table on_row_double_clicked")
+            end
+          },
+          boxed_data
+        )
+      end
+    end
+
+    def on_header_clicked(&block : LibC::Int -> Nil) : Nil
+      @on_header_clicked_box = ::Box.box(block)
+      if boxed_data = @on_header_clicked_box
+        LibUI.table_header_on_clicked(
+          ref_ptr,
+          ->(_table, column, data) : Nil {
+            begin
+              callback = ::Box(typeof(block)).unbox(data)
+              callback.call(column)
+            rescue e
+              UIng.handle_callback_error(e, "Table on_header_clicked")
+            end
+          },
+          boxed_data
+        )
+      end
+    end
+
+    def on_selection_changed(&block : Selection -> Nil) : Nil
+      @on_selection_changed_box = ::Box.box(block)
+      if boxed_data = @on_selection_changed_box
+        LibUI.table_on_selection_changed(
+          ref_ptr,
+          ->(table, data) : Nil {
+            begin
+              callback = ::Box(typeof(block)).unbox(data)
+              selection = Selection.new(LibUI.table_get_selection(table))
+              callback.call(selection)
+            rescue e
+              UIng.handle_callback_error(e, "Table on_selection_changed")
+            end
+          },
+          boxed_data
+        )
+      end
+    end
+
+    # Clears the callback; equivalent to `on_row_clicked(nil)`.
+    def clear_on_row_clicked : Nil
+      LibUI.table_on_row_clicked(ref_ptr, ->(_sender, _row, _data) : Nil { }, Pointer(Void).null)
+      @on_row_clicked_box = nil
+    end
+
+    def on_row_clicked(callback : Nil) : Nil
+      clear_on_row_clicked
+    end
+
+    # Clears the callback; equivalent to `on_row_double_clicked(nil)`.
+    def clear_on_row_double_clicked : Nil
+      LibUI.table_on_row_double_clicked(ref_ptr, ->(_sender, _row, _data) : Nil { }, Pointer(Void).null)
+      @on_row_double_clicked_box = nil
+    end
+
+    def on_row_double_clicked(callback : Nil) : Nil
+      clear_on_row_double_clicked
+    end
+
+    # Clears the callback; equivalent to `on_header_clicked(nil)`.
+    def clear_on_header_clicked : Nil
+      LibUI.table_header_on_clicked(ref_ptr, ->(_sender, _column, _data) : Nil { }, Pointer(Void).null)
+      @on_header_clicked_box = nil
+    end
+
+    def on_header_clicked(callback : Nil) : Nil
+      clear_on_header_clicked
+    end
+
+    # Clears the callback; equivalent to `on_selection_changed(nil)`.
+    def clear_on_selection_changed : Nil
+      LibUI.table_on_selection_changed(ref_ptr, ->(_sender, _data) : Nil { }, Pointer(Void).null)
+      @on_selection_changed_box = nil
+    end
+
+    def on_selection_changed(callback : Nil) : Nil
+      clear_on_selection_changed
+    end
+
+    def to_unsafe
+      ref_ptr
+    end
+
+    def header_visible=(value : Bool)
+      LibUI.table_header_set_visible(ref_ptr, value ? 1 : 0)
+    end
+
+    # `editable` can be `:never`, `:always`, or a model column whose values
+    # control editability for each row.
+    def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      validate_text_column(text_model_column, editable)
+      LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), nil)
+    end
+
+    def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      validate_text_column(text_model_column, editable, table_text_column_optional_params)
+      LibUI.table_append_text_column(ref_ptr, name, text_model_column, model_column(editable), table_text_column_optional_params)
+    end
+
+    def append_text_column(name : String, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
+      table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
+      append_text_column(name, text_model_column, editable, table_text_column_optional_params)
+    end
+
+    def append_image_column(name : String, image_model_column : Int32) : Nil
+      model.validate_data_column(image_model_column, Value::Type::Image, "image")
+      LibUI.table_append_image_column(ref_ptr, name, image_model_column)
+    end
+
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      validate_image_text_column(image_model_column, text_model_column, editable)
+      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), nil)
+    end
+
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      validate_image_text_column(image_model_column, text_model_column, editable, table_text_column_optional_params)
+      LibUI.table_append_image_text_column(ref_ptr, name, image_model_column, text_model_column, model_column(editable), table_text_column_optional_params)
+    end
+
+    def append_image_text_column(name : String, image_model_column : Int32, text_model_column : Int32, editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
+      table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
+      append_image_text_column(name, image_model_column, text_model_column, editable, table_text_column_optional_params)
+    end
+
+    def append_checkbox_column(name : String, checkbox_model_column : Int32, editable : Int32 | ModelColumn) : Nil
+      model.validate_data_column(checkbox_model_column, Value::Type::Int, "checkbox")
+      model.validate_state_column(model_column(editable), "checkbox editability")
+      LibUI.table_append_checkbox_column(ref_ptr, name, checkbox_model_column, model_column(editable))
+    end
+
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn) : Nil
+      validate_checkbox_text_column(checkbox_model_column, checkbox_editable, text_model_column, text_editable)
+      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), nil)
+    end
+
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, table_text_column_optional_params : TextColumnOptionalParams) : Nil
+      validate_checkbox_text_column(checkbox_model_column, checkbox_editable, text_model_column, text_editable, table_text_column_optional_params)
+      LibUI.table_append_checkbox_text_column(ref_ptr, name, checkbox_model_column, model_column(checkbox_editable), text_model_column, model_column(text_editable), table_text_column_optional_params)
+    end
+
+    def append_checkbox_text_column(name : String, checkbox_model_column : Int32, checkbox_editable : Int32 | ModelColumn, text_model_column : Int32, text_editable : Int32 | ModelColumn, color_model_column : Int32) : Nil
+      table_text_column_optional_params = TextColumnOptionalParams.new(color_model_column)
+      append_checkbox_text_column(name, checkbox_model_column, checkbox_editable, text_model_column, text_editable, table_text_column_optional_params)
+    end
+
+    def append_progress_bar_column(name : String, progress_model_column : Int32) : Nil
+      model.validate_data_column(progress_model_column, Value::Type::Int, "progress")
+      LibUI.table_append_progress_bar_column(ref_ptr, name, progress_model_column)
+    end
+
+    # `clickable` follows the same rules as column editability.
+    def append_button_column(name : String, button_model_column : Int32, clickable : Int32 | ModelColumn) : Nil
+      model.validate_data_column(button_model_column, Value::Type::String, "button")
+      model.validate_state_column(model_column(clickable), "button clickability")
+      LibUI.table_append_button_column(ref_ptr, name, button_model_column, model_column(clickable))
+    end
+
+    def header_visible? : Bool
+      LibUI.table_header_visible(ref_ptr) != 0
+    end
+
+    def header_set_sort_indicator(column : Int32, sort_indicator : SortIndicator) : Nil
+      LibUI.table_header_set_sort_indicator(ref_ptr, column, sort_indicator)
+    end
+
+    def header_sort_indicator(column : Int32) : SortIndicator
+      LibUI.table_header_sort_indicator(ref_ptr, column)
+    end
+
+    def column_width(column : Int32) : Int32
+      LibUI.table_column_width(ref_ptr, column)
+    end
+
+    def column_set_width(column : Int32, width : Int32) : Nil
+      LibUI.table_column_set_width(ref_ptr, column, width)
+    end
+
+    def selection_mode : Selection::Mode
+      LibUI.table_get_selection_mode(ref_ptr)
+    end
+
+    def selection_mode=(mode : Selection::Mode) : Nil
+      LibUI.table_set_selection_mode(ref_ptr, mode)
+    end
+
+    def selection : Selection
+      selection_ptr = LibUI.table_get_selection(ref_ptr)
+      Selection.new(selection_ptr)
+    end
+
+    # Yields each selected row index without copying the native row array into
+    # a Crystal Array. The native selection snapshot is freed after iteration,
+    # including when the block raises. Use `selection` to retain a snapshot.
+    def each_selected_index(&block : Int32 -> _) : Nil
+      selection_ptr = LibUI.table_get_selection(ref_ptr)
+      begin
+        native_selection = selection_ptr.value
+        rows_ptr = native_selection.rows
+        native_selection.num_rows.times do |index|
+          block.call(rows_ptr[index])
+        end
+      ensure
+        LibUI.free_table_selection(selection_ptr)
+      end
+      nil
+    end
+
+    def selection=(selection : Selection) : Nil
+      LibUI.table_set_selection(ref_ptr, selection.to_unsafe)
+    end
+
+    private def model_column(column : Int32 | ModelColumn) : Int32
+      column.is_a?(ModelColumn) ? column.value : column
+    end
+
+    private def model : Model
+      @table_model_ref || raise "Table model is no longer available"
+    end
+
+    private def validate_text_column(text_column : Int32, editable : Int32 | ModelColumn, params : TextColumnOptionalParams? = nil) : Nil
+      model.validate_data_column(text_column, Value::Type::String, "text")
+      model.validate_state_column(model_column(editable), "text editability")
+      validate_text_params(params)
+    end
+
+    private def validate_image_text_column(image_column : Int32, text_column : Int32, editable : Int32 | ModelColumn, params : TextColumnOptionalParams? = nil) : Nil
+      model.validate_data_column(image_column, Value::Type::Image, "image")
+      validate_text_column(text_column, editable, params)
+    end
+
+    private def validate_checkbox_text_column(checkbox_column : Int32, checkbox_editable : Int32 | ModelColumn, text_column : Int32, text_editable : Int32 | ModelColumn, params : TextColumnOptionalParams? = nil) : Nil
+      model.validate_data_column(checkbox_column, Value::Type::Int, "checkbox")
+      model.validate_state_column(model_column(checkbox_editable), "checkbox editability")
+      validate_text_column(text_column, text_editable, params)
+    end
+
+    private def validate_text_params(params : TextColumnOptionalParams?) : Nil
+      params.try do |value|
+        model.validate_optional_color_column(value.color_model_column, "text color")
+      end
+    end
+  end
+end

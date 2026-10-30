@@ -1,44 +1,50 @@
 # Test architecture
 
-UIng tests are split by the boundary they exercise. A regression should live at
-the lowest layer that can reproduce it, with a higher-layer test added only when
-the native event loop or rendered UI is part of the behavior.
+Tests are grouped by execution requirements, then by the type they exercise:
 
-## Default suite
+| Directory | Purpose |
+| --- | --- |
+| `headless/` | State, ownership, conversion, and C callback tests without GUI initialization |
+| `native/` | Tests requiring native GUI initialization or the event loop |
+| `support/` | Explicitly required shared fakes and test accessors |
+| `fixtures/` | Programs that run in a separate process |
+
+## Running tests
 
 ```sh
 crystal spec
-```
-
-The specs directly under `spec/` cover Crystal state, ownership rules, value
-conversion, and deterministic C callback boundaries. They require the linked
-libui-ng library but do not initialize a desktop session. This suite runs on all
-supported compiler and OS jobs.
-
-## Native GUI suite
-
-```sh
+crystal spec spec/headless
+crystal spec spec/headless -- --order 12345
 UING_NATIVE_GUI_TESTS=1 crystal spec spec/native
 ```
 
-Specs under `spec/native/` initialize libui-ng and pump its real event loop.
-They cover behavior that cannot be established with fake pointers, especially
-deferred destruction and native destruction notifications. They are opt-in so
-local and headless runs of the default suite remain predictable. The GUI
-suite runs once per native backend in the existing Linux x64, macOS ARM64, and
-Windows MSVC jobs. Linux uses Xvfb; macOS and Windows use their hosted desktop
-sessions. It is deliberately kept out of the substantially heavier screenshot
-workflow. The other architecture and Windows toolchain jobs retain the default
-suite without duplicating the same backend-level scenarios.
+All tests require the linked libui-ng library. Native flags must be set at
+compile time. On Linux without a display, prefix the native command with
+`xvfb-run -a env`.
 
-Native GUI tests must have an internal deadline and must not depend on screen
-coordinates, animation timing, fonts, or pixel output. Visual rendering belongs
-to the screenshot workflow; interactive behavior should be driven through the
-public API whenever possible.
+ImageBuffer tests also require a compatible library and the additional flag:
 
-## Visual suite
+```sh
+xvfb-run -a env UING_NATIVE_GUI_TESTS=1 UING_IMAGE_BUFFER_TESTS=1 crystal spec spec/native
+```
 
-The gallery screenshot workflow checks that examples build, launch, and render
-on Linux, Windows, and macOS. Screenshots are diagnostic artifacts rather than
-pixel-perfect golden tests, because native themes, fonts, and DPI change outside
-the library.
+A single file can be run with `crystal spec path/to/type_spec.cr`, using the
+same flags required by its suite. CI runs headless tests on all supported jobs
+and native tests on Linux x64, macOS ARM64, and Windows MSVC.
+
+## Placement rules
+
+- Follow source namespaces: `area/draw/context_spec.cr` tests `Area::Draw::Context`.
+- Keep lifetime, validation, conversion, and DSL cases with their owning type.
+- Test shared Control/container contracts separately from type-specific rules.
+- Keep local fakes beside their cases; explicitly require shared support.
+- Each spec must run independently and must not require another spec.
+- Native features own initialization and shutdown. Menu cases use a fresh
+  runtime and create menus before any Window. Event-loop waits need deadlines.
+
+The public entry points are `uing` and `uing/crimage`. Source types use a
+`type.cr` file with nested types under `type/`.
+
+Coverage is behavioral, not exhaustive for every accessor or OS interaction.
+The gallery screenshot workflow checks rendered appearance across platforms;
+these screenshots are diagnostic artifacts, not pixel-perfect golden tests.

@@ -6,7 +6,7 @@ module UIng::Drop::Target
   end
 end
 
-if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
+{% if env("UING_NATIVE_GUI_TESTS") == "1" %}
   describe "native drop handlers" do
     before_all { UIng.init }
     after_all { UIng.uninit }
@@ -94,4 +94,4 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       window.try { |owner| owner.destroy unless owner.released? }
     end
   end
-end
+{% end %}

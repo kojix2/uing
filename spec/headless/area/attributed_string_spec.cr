@@ -1,0 +1,127 @@
+require "../../spec_helper"
+require "../../support/attributes"
+
+private class BoundaryAttributedString < UIng::Area::AttributedString
+  getter? freed = false
+
+  def initialize(@contents : String)
+    super(Pointer(UIng::LibUI::AttributedString).null)
+  end
+
+  def free : Nil
+    @freed = true
+  end
+
+  protected def native_len : LibC::SizeT
+    LibC::SizeT.new(@contents.bytesize)
+  end
+
+  protected def native_string : Pointer(LibC::Char)
+    @contents.to_unsafe
+  end
+end
+
+private class BoundaryAttribute < UIng::Area::Attribute
+  def initialize
+    super(Pointer(UIng::LibUI::Attribute).null)
+  end
+
+  def free : Nil
+    @released = true
+  end
+end
+
+private class ReleasedLifetimeSafetyAttributedString < UIng::Area::AttributedString
+  def initialize
+    super(Pointer(UIng::LibUI::AttributedString).null)
+    @released = true
+  end
+end
+
+describe UIng::Area::AttributedString do
+  it "rejects every AttributedString operation after free" do
+    string = ReleasedLifetimeSafetyAttributedString.new
+    attribute = SpecSupport::ReleasedLifetimeSafetyAttribute.new
+
+    expect_raises(Exception, /already been released/) { string.string }
+    expect_raises(Exception, /already been released/) { string.len }
+    expect_raises(Exception, /already been released/) { string.append_unattributed("x") }
+    expect_raises(Exception, /already been released/) { string.insert_at_unattributed("x", 0) }
+    expect_raises(Exception, /already been released/) { string.delete(0, 0) }
+    expect_raises(Exception, /already been released/) { string.set_attribute(attribute, 0, 0) }
+    expect_raises(Exception, /already been released/) do
+      string.each_attribute { |_attribute, _start, _end| }
+    end
+    expect_raises(Exception, /already been released/) { string.num_graphemes }
+    expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }
+    expect_raises(Exception, /already been released/) { string.grapheme_to_byte_index(0) }
+    expect_raises(Exception, /already been released/) { string.to_unsafe }
+  end
+
+  it "returns the block result and frees the string after the block" do
+    scoped = nil
+    result = BoundaryAttributedString.open("abc") do |string|
+      scoped = string
+      string.len.to_i
+    end
+
+    result.should eq(3)
+    scoped.try(&.freed?).should be_true
+  end
+
+  it "frees the string when an open block raises" do
+    scoped = nil
+    expect_raises(Exception, "block failed") do
+      BoundaryAttributedString.open("abc") do |string|
+        scoped = string
+        raise "block failed"
+      end
+    end
+
+    scoped.try(&.freed?).should be_true
+  end
+
+  it "rejects insertion positions outside the string or inside a UTF-8 codepoint" do
+    string = BoundaryAttributedString.new("Aé🙂B")
+
+    expect_raises(ArgumentError, /insertion position is out of bounds/) do
+      string.insert_at_unattributed("x", 9)
+    end
+    [2, 4, 5, 6].each do |position|
+      expect_raises(ArgumentError, /insertion position is not on a UTF-8 codepoint boundary/) do
+        string.insert_at_unattributed("x", LibC::SizeT.new(position))
+      end
+    end
+  end
+
+  it "rejects invalid deletion ranges and identifies the invalid endpoint" do
+    string = BoundaryAttributedString.new("Aé🙂B")
+
+    expect_raises(ArgumentError, /deletion range start is after its end/) { string.delete(3, 1) }
+    expect_raises(ArgumentError, /deletion range is out of bounds/) { string.delete(0, 9) }
+    expect_raises(ArgumentError, /deletion range start is not on a UTF-8/) { string.delete(2, 3) }
+    expect_raises(ArgumentError, /deletion range end is not on a UTF-8/) { string.delete(1, 2) }
+  end
+
+  it "rejects invalid attribute ranges before inspecting or transferring the Attribute" do
+    string = BoundaryAttributedString.new("Aé🙂B")
+    attribute = BoundaryAttribute.new
+
+    expect_raises(ArgumentError, /attribute range start is not on a UTF-8/) do
+      string.set_attribute(attribute, 2, 3)
+    end
+
+    attribute.released?.should be_false
+  end
+
+  it "validates byte and grapheme conversion positions" do
+    string = BoundaryAttributedString.new("Aé🙂B")
+
+    expect_raises(ArgumentError, /byte index is out of bounds/) { string.byte_index_to_grapheme(9) }
+    [2, 4, 5, 6].each do |position|
+      expect_raises(ArgumentError, /byte index is not on a UTF-8/) do
+        string.byte_index_to_grapheme(LibC::SizeT.new(position))
+      end
+    end
+  end
+end

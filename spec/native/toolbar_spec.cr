@@ -1,16 +1,11 @@
 require "../spec_helper"
-require "../../src/uing/crimage"
+require "../support/toolbar_items"
 
-class UIng::ToolbarItem
-  def retained_icon_for_spec : UIng::Image?
-    @icon_copy
-  end
-end
-
-if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
-  describe "native toolbar display modes" do
+{% if env("UING_NATIVE_GUI_TESTS") == "1" %}
+  describe UIng::Toolbar do
     before_all { UIng.init }
     after_all { UIng.uninit }
+    after_each { UIng.on_error(nil) }
 
     it "builds and attaches configured items through the block DSL" do
       window = UIng::Window.new("Toolbar DSL", 400, 200)
@@ -148,50 +143,5 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
       toolbar.try &.free
       image.try &.free
     end
-
-    it "copies CrImage icons for buttons, toggle buttons, and icon replacements" do
-      toolbar = UIng::Toolbar.new
-      source = CrImage.rgba(2, 3)
-      button = toolbar.append_button("Action", source) do |item|
-        item.tooltip = "CrImage action"
-        on_clicked { |_clicked| }
-      end
-      toggle = toolbar.append_toggle_button("Pinned", source) do |item|
-        item.checked = true
-      end
-      button.tooltip.should eq("CrImage action")
-      first_icon = button.retained_icon_for_spec || raise "missing button icon"
-      toggle_icon = toggle.retained_icon_for_spec || raise "missing toggle icon"
-      first_icon.size.should eq({2.0, 3.0})
-      toggle_icon.size.should eq({2.0, 3.0})
-      toggle.checked = true
-      toggle.checked?.should be_true
-
-      replacement = CrImage::NRGBA.new(CrImage.rect(5, 7, 9, 12))
-      button.icon = replacement
-      expect_raises(Exception, /already been released/) { first_icon.to_unsafe }
-      replacement_icon = button.retained_icon_for_spec || raise "missing replacement icon"
-      replacement_icon.size.should eq({4.0, 5.0})
-      button.icon = nil
-      expect_raises(Exception, /already been released/) { replacement_icon.to_unsafe }
-      toolbar.free
-      expect_raises(Exception, /already been released/) { toggle_icon.to_unsafe }
-      expect_raises(Exception, /already been released/) { button.icon = source }
-      expect_raises(Exception, /already been released/) { toolbar.append_button("Late", source) }
-    ensure
-      toolbar.try &.free
-    end
-
-    it "frees temporary native images when a CrImage conversion block raises" do
-      temporary = nil
-      expect_raises(Exception, "icon failure") do
-        UIng::CrImageAdapter.with_image(CrImage.rgba(1, 1)) do |image|
-          temporary = image
-          raise "icon failure"
-        end
-      end
-      image = temporary || raise "conversion block did not run"
-      expect_raises(Exception, /already been released/) { image.to_unsafe }
-    end
   end
-end
+{% end %}

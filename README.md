@@ -515,6 +515,8 @@ Note: Image display is a feature introduced in `kojix2/libui-ng`. This feature i
 
 ## Contributing
 
+See [testing](spec/README.md) for test commands and placement rules.
+
 See the [development and contribution guide](https://kojix2.github.io/uing/books/guide_en/development.html). Bug reports, pull requests, and articles about UIng are welcome.
 
 ## License
