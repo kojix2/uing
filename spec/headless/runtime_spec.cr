@@ -1,6 +1,10 @@
 require "../spec_helper"
 
 describe UIng do
+  it "reports the linked libui-ng version" do
+    UIng.libui_version.should match(/\A(?:(?:commit-[0-9a-f]+(?:-experimental)?|[0-9a-f]+)(?:-dirty)?|unknown)\z/)
+  end
+
   it "uninitializes UIng when its init block raises" do
     output = IO::Memory.new
     error = IO::Memory.new
