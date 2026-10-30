@@ -4,6 +4,8 @@ module UIng
   # Toolbar is not a Control. An attached toolbar is freed when its window is
   # destroyed. Detach it first to keep using it. Item icons are copied.
   class Toolbar
+    include BlockConstructor; block_constructor
+
     enum DisplayMode
       IconOnly              = 0
       IconAndTextHorizontal = 1
@@ -25,9 +27,22 @@ module UIng
       append_item(text, icon, toggle: false)
     end
 
+    # Configures the new item and returns it, regardless of the block result.
+    def append_button(text : String, icon : Image? = nil, &) : ToolbarItem
+      item = append_button(text, icon)
+      with item yield item
+      item
+    end
+
     def append_toggle_button(text : String, icon : Image? = nil) : ToolbarItem
       check_mutable
       append_item(text, icon, toggle: true)
+    end
+
+    def append_toggle_button(text : String, icon : Image? = nil, &) : ToolbarItem
+      item = append_toggle_button(text, icon)
+      with item yield item
+      item
     end
 
     def append_separator : Nil
@@ -56,14 +71,26 @@ module UIng
     def free : Nil
       return if @released
       raise "Cannot free a Toolbar while it is attached to a Window" if @attached_window
-      LibUI.free_toolbar(@ref_ptr)
+      free_native
       @released = true
       @items.each &.__release__
       @items.clear
     end
 
+    protected def free_native : Nil
+      LibUI.free_toolbar(@ref_ptr)
+    end
+
     def released? : Bool
       @released
+    end
+
+    protected def __block_constructor_failed__ : Nil
+      return if released?
+      if window = @attached_window
+        window.toolbar = nil
+      end
+      free
     end
 
     def to_unsafe

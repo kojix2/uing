@@ -20,6 +20,26 @@ Toolbarは`kojix2/libui-ng`固有の実験的な機能であり、今後変更�
 
 ## 使い方
 
+`Toolbar.new`で項目を構築し、`window.toolbar`のブロックが返すToolbarをWindowへ取り付けられます。Window側のブロックでは受け手を切り替えません。
+
+```crystal
+window.toolbar do
+  UIng::Toolbar.new do
+    append_button("Open") do |item|
+      item.tooltip = "Open document"
+      on_clicked { |_clicked| puts "Open clicked" }
+    end
+    append_toggle_button("Pinned") do |item|
+      item.checked = true
+    end
+  end
+end
+```
+
+項目の設定ブロックではToolbarItemのメソッドを直接呼べます。代入には`|item|`を使います。`Toolbar.new`は生成したToolbar、`append_button`と`append_toggle_button`は生成したToolbarItemを返します。CrImageのアイコンを指定する形式でも同じ設定ブロックが使えます。
+
+`Toolbar.new`のブロックが例外終了すると、取り付け済みならWindowから外してToolbarと項目を解放し、元の例外を再送出します。既存Toolbarへの項目追加ブロックだけが例外終了した場合、その項目は追加済みのまま残ります。
+
 - すべての項目は、ToolbarをWindowへ初めて取り付ける前に追加します。一度取り付けた後は、取り外しても項目を追加できません。
 - <code>display_mode</code>は取り付け後も変更できます。変更時には、既存の項目、クリック時のコールバック、有効・無効状態、トグルの選択状態が維持されます。
 - Toolbarは一度に1つのWindowにのみ取り付けられます。Windowを破棄すると、取り付け中のToolbarも解放されます。Toolbarを再利用する場合は、Windowの破棄前に<code>window.toolbar</code>へ<code>nil</code>を代入してください。取り外したToolbarは引き続き<code>free</code>が必要です。

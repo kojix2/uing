@@ -20,6 +20,26 @@ Toolbar is an experimental feature specific to `kojix2/libui-ng` and may change.
 
 ## Usage notes
 
+Build items with `Toolbar.new`, then attach the Toolbar returned by the `window.toolbar` block. The Window block keeps its outer receiver.
+
+```crystal
+window.toolbar do
+  UIng::Toolbar.new do
+    append_button("Open") do |item|
+      item.tooltip = "Open document"
+      on_clicked { |_clicked| puts "Open clicked" }
+    end
+    append_toggle_button("Pinned") do |item|
+      item.checked = true
+    end
+  end
+end
+```
+
+Item configuration blocks allow direct calls to ToolbarItem methods. Use `|item|` for property assignments. `Toolbar.new` returns the Toolbar; `append_button` and `append_toggle_button` return the ToolbarItem. The same blocks are supported when passing CrImage icons.
+
+If a `Toolbar.new` block raises, the Toolbar is detached if necessary, the Toolbar and its items are freed, and the original exception is re-raised. If only an item configuration block on an existing Toolbar raises, the item remains appended.
+
 - Add every item before attaching the Toolbar to a Window for the first time. After its first attachment, items cannot be added even if the Toolbar is detached.
 - <code>display_mode</code> can be changed after attachment. Existing items, click callbacks, enabled states, and toggle checked states are preserved when the mode changes.
 - A Toolbar can be attached to only one Window at a time. Destroying that Window also frees its attached Toolbar. Assign <code>nil</code> to <code>window.toolbar</code> before destroying the Window if you want to reuse the Toolbar. A detached Toolbar still needs <code>free</code>.

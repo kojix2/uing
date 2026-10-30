@@ -12,6 +12,73 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     before_all { UIng.init }
     after_all { UIng.uninit }
 
+    it "builds and attaches configured items through the block DSL" do
+      window = UIng::Window.new("Toolbar DSL", 400, 200)
+      image = UIng::Image.new(1, 1)
+      image.append(Bytes[255, 255, 255, 255], 1, 1, 4)
+      configured = nil
+      button = nil
+      toggle = nil
+      window.toolbar do
+        UIng::Toolbar.new do |bar|
+          configured = bar
+          button = append_button("Action", icon: image) do |item|
+            item.tooltip = "Run action"
+            disable
+            on_clicked { |_clicked| }
+            :ignored
+          end
+          toggle = append_toggle_button("Pinned") do |item|
+            item.checked = true
+          end
+        end
+      end
+      image.free
+
+      window.toolbar.should be(configured)
+      configured_button = button.should_not be_nil
+      configured_button.tooltip.should eq("Run action")
+      configured_button.enabled?.should be_false
+      toggle.should_not(be_nil).checked?.should be_true
+      window.destroy
+      configured.should_not(be_nil).released?.should be_true
+      expect_raises(Exception, /already been released/) { configured_button.text }
+    ensure
+      window.try &.destroy
+      image.try &.free
+    end
+
+    it "releases copied icons and items when a Toolbar configuration block raises" do
+      window = UIng::Window.new("Failed Toolbar DSL", 400, 200)
+      source = UIng::Image.new(1, 1)
+      source.append(Bytes[255, 255, 255, 255], 1, 1, 4)
+      constructed = nil
+      configured_item = nil
+      icon_copy = nil
+      expect_raises(Exception, "configuration failed") do
+        UIng::Toolbar.new do |bar|
+          constructed = bar
+          configured_item = append_button("Action", source) do |item|
+            icon_copy = item.retained_icon_for_spec
+            on_clicked { |_clicked| }
+          end
+          window.toolbar = bar
+          raise "configuration failed"
+        end
+      end
+
+      window.toolbar.should be_nil
+      constructed.should_not(be_nil).released?.should be_true
+      item = configured_item.should_not be_nil
+      copied_icon = icon_copy.should_not be_nil
+      expect_raises(Exception, /already been released/) { item.text }
+      expect_raises(Exception, /already been released/) { copied_icon.to_unsafe }
+    ensure
+      window.try &.destroy
+      source.try &.free
+      constructed.try &.free
+    end
+
     it "changes modes while attached and detached without replacing the public items" do
       window = UIng::Window.new("Toolbar modes", 400, 200)
       toolbar = UIng::Toolbar.new
@@ -85,8 +152,14 @@ if ENV["UING_NATIVE_GUI_TESTS"]? == "1"
     it "copies CrImage icons for buttons, toggle buttons, and icon replacements" do
       toolbar = UIng::Toolbar.new
       source = CrImage.rgba(2, 3)
-      button = toolbar.append_button("Action", source)
-      toggle = toolbar.append_toggle_button("Pinned", source)
+      button = toolbar.append_button("Action", source) do |item|
+        item.tooltip = "CrImage action"
+        on_clicked { |_clicked| }
+      end
+      toggle = toolbar.append_toggle_button("Pinned", source) do |item|
+        item.checked = true
+      end
+      button.tooltip.should eq("CrImage action")
       first_icon = button.retained_icon_for_spec || raise "missing button icon"
       toggle_icon = toggle.retained_icon_for_spec || raise "missing toggle icon"
       first_icon.size.should eq({2.0, 3.0})

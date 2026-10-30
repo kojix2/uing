@@ -35,30 +35,36 @@ icons = [
 ]
 
 window = UIng::Window.new("Toolbar", 400, 100)
-toolbar = UIng::Toolbar.new
-toolbar.display_mode = UIng::Toolbar::DisplayMode::IconAndTextVertical
+window.toolbar do
+  UIng::Toolbar.new do |bar|
+    bar.display_mode = UIng::Toolbar::DisplayMode::IconAndTextVertical
 
-new_item = toolbar.append_button("New", icons[0])
-new_item.tooltip = "New document"
-new_item.on_clicked { puts "New clicked" }
+    append_button("New", icons[0]) do |item|
+      item.tooltip = "New document"
+      on_clicked { puts "New clicked" }
+    end
 
-open_item = toolbar.append_button("Open", icons[1])
-open_item.tooltip = "Open document"
-open_item.on_clicked { puts "Open clicked" }
+    append_button("Open", icons[1]) do |item|
+      item.tooltip = "Open document"
+      on_clicked { puts "Open clicked" }
+    end
 
-toolbar.append_separator
+    append_separator
 
-pinned_item = toolbar.append_toggle_button("Pinned", icons[2])
-pinned_item.tooltip = "Pin document"
-pinned_item.on_clicked { |item| puts "Pinned: #{item.checked? ? "yes" : "no"}" }
+    append_toggle_button("Pinned", icons[2]) do |item|
+      item.tooltip = "Pin document"
+      on_clicked { |clicked| puts "Pinned: #{clicked.checked? ? "yes" : "no"}" }
+    end
 
-toolbar.append_separator
+    append_separator
 
-help_item = toolbar.append_button("Help", icons[3])
-help_item.tooltip = "Show help"
-help_item.on_clicked { puts "Help clicked" }
-
-window.toolbar = toolbar
+    append_button("Help", icons[3]) do |item|
+      item.tooltip = "Show help"
+      on_clicked { puts "Help clicked" }
+    end
+  end
+end
+toolbar = window.toolbar || raise "Toolbar was not attached"
 icons.each &.free
 
 display_modes = UIng::Toolbar::DisplayMode.values

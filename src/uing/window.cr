@@ -165,12 +165,18 @@ module UIng
       @toolbar_ref
     end
 
+    # Builds a Toolbar before attaching it; the block keeps its outer receiver.
+    def toolbar(&block : -> Toolbar) : Nil
+      check_available
+      self.toolbar = block.call
+    end
+
     def toolbar=(toolbar : Toolbar) : Nil
       check_available
       return if @toolbar_ref.same?(toolbar)
       toolbar.__ensure_attachable__(self)
       previous_toolbar = @toolbar_ref
-      LibUI.window_set_toolbar(ref_ptr, toolbar.to_unsafe)
+      set_native_toolbar(toolbar.to_unsafe)
       previous_toolbar.try &.__detached_by__(self)
       @toolbar_ref = toolbar
       toolbar.__attached_by__(self)
@@ -179,9 +185,13 @@ module UIng
     def toolbar=(toolbar : Nil) : Nil
       check_available
       return unless previous_toolbar = @toolbar_ref
-      LibUI.window_set_toolbar(ref_ptr, Pointer(LibUI::Toolbar).null)
+      set_native_toolbar(Pointer(LibUI::Toolbar).null)
       @toolbar_ref = nil
       previous_toolbar.__detached_by__(self)
+    end
+
+    protected def set_native_toolbar(toolbar : Pointer(LibUI::Toolbar)) : Nil
+      LibUI.window_set_toolbar(ref_ptr, toolbar)
     end
 
     def margined? : Bool

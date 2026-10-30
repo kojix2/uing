@@ -203,9 +203,21 @@ module UIng
       CrImageAdapter.with_image(icon) { |image| append_button(text, image) }
     end
 
+    def append_button(text : String, icon : CrImage::Image, &) : ToolbarItem
+      item = append_button(text, icon)
+      with item yield item
+      item
+    end
+
     def append_toggle_button(text : String, icon : CrImage::Image) : ToolbarItem
       check_mutable
       CrImageAdapter.with_image(icon) { |image| append_toggle_button(text, image) }
+    end
+
+    def append_toggle_button(text : String, icon : CrImage::Image, &) : ToolbarItem
+      item = append_toggle_button(text, icon)
+      with item yield item
+      item
     end
   end
 
