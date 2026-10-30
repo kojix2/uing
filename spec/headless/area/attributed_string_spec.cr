@@ -31,69 +31,73 @@ private class BoundaryAttribute < UIng::Area::Attribute
 end
 
 describe UIng::Area::AttributedString do
-  it "returns the block result and frees the string after the block" do
-    scoped = nil
-    result = BoundaryAttributedString.open("abc") do |string|
-      scoped = string
-      string.len.to_i
-    end
-
-    result.should eq(3)
-    scoped.try(&.freed?).should be_true
-  end
-
-  it "frees the string when an open block raises" do
-    scoped = nil
-    expect_raises(Exception, "block failed") do
-      BoundaryAttributedString.open("abc") do |string|
+  describe "block lifetime" do
+    it "returns the block result and frees the string after the block" do
+      scoped = nil
+      result = BoundaryAttributedString.open("abc") do |string|
         scoped = string
-        raise "block failed"
+        string.len.to_i
+      end
+
+      result.should eq(3)
+      scoped.try(&.freed?).should be_true
+    end
+
+    it "frees the string when an open block raises" do
+      scoped = nil
+      expect_raises(Exception, "block failed") do
+        BoundaryAttributedString.open("abc") do |string|
+          scoped = string
+          raise "block failed"
+        end
+      end
+
+      scoped.try(&.freed?).should be_true
+    end
+  end
+
+  describe "UTF-8 boundaries" do
+    it "rejects insertion positions outside the string or inside a UTF-8 codepoint" do
+      string = BoundaryAttributedString.new("Aé🙂B")
+
+      expect_raises(ArgumentError, /insertion position is out of bounds/) do
+        string.insert_at_unattributed("x", 9)
+      end
+      [2, 4, 5, 6].each do |position|
+        expect_raises(ArgumentError, /insertion position is not on a UTF-8 codepoint boundary/) do
+          string.insert_at_unattributed("x", LibC::SizeT.new(position))
+        end
       end
     end
 
-    scoped.try(&.freed?).should be_true
-  end
+    it "rejects invalid deletion ranges and identifies the invalid endpoint" do
+      string = BoundaryAttributedString.new("Aé🙂B")
 
-  it "rejects insertion positions outside the string or inside a UTF-8 codepoint" do
-    string = BoundaryAttributedString.new("Aé🙂B")
-
-    expect_raises(ArgumentError, /insertion position is out of bounds/) do
-      string.insert_at_unattributed("x", 9)
+      expect_raises(ArgumentError, /deletion range start is after its end/) { string.delete(3, 1) }
+      expect_raises(ArgumentError, /deletion range is out of bounds/) { string.delete(0, 9) }
+      expect_raises(ArgumentError, /deletion range start is not on a UTF-8/) { string.delete(2, 3) }
+      expect_raises(ArgumentError, /deletion range end is not on a UTF-8/) { string.delete(1, 2) }
     end
-    [2, 4, 5, 6].each do |position|
-      expect_raises(ArgumentError, /insertion position is not on a UTF-8 codepoint boundary/) do
-        string.insert_at_unattributed("x", LibC::SizeT.new(position))
+
+    it "rejects invalid attribute ranges before inspecting or transferring the Attribute" do
+      string = BoundaryAttributedString.new("Aé🙂B")
+      attribute = BoundaryAttribute.new
+
+      expect_raises(ArgumentError, /attribute range start is not on a UTF-8/) do
+        string.set_attribute(attribute, 2, 3)
       end
-    end
-  end
 
-  it "rejects invalid deletion ranges and identifies the invalid endpoint" do
-    string = BoundaryAttributedString.new("Aé🙂B")
-
-    expect_raises(ArgumentError, /deletion range start is after its end/) { string.delete(3, 1) }
-    expect_raises(ArgumentError, /deletion range is out of bounds/) { string.delete(0, 9) }
-    expect_raises(ArgumentError, /deletion range start is not on a UTF-8/) { string.delete(2, 3) }
-    expect_raises(ArgumentError, /deletion range end is not on a UTF-8/) { string.delete(1, 2) }
-  end
-
-  it "rejects invalid attribute ranges before inspecting or transferring the Attribute" do
-    string = BoundaryAttributedString.new("Aé🙂B")
-    attribute = BoundaryAttribute.new
-
-    expect_raises(ArgumentError, /attribute range start is not on a UTF-8/) do
-      string.set_attribute(attribute, 2, 3)
+      attribute.released?.should be_false
     end
 
-    attribute.released?.should be_false
-  end
+    it "validates byte and grapheme conversion positions" do
+      string = BoundaryAttributedString.new("Aé🙂B")
 
-  it "validates byte and grapheme conversion positions" do
-    string = BoundaryAttributedString.new("Aé🙂B")
-
-    expect_raises(ArgumentError, /byte index is out of bounds/) { string.byte_index_to_grapheme(9) }
-    [2, 4, 5, 6].each do |position|
-      expect_raises(ArgumentError, /byte index is not on a UTF-8/) do
-        string.byte_index_to_grapheme(LibC::SizeT.new(position))
+      expect_raises(ArgumentError, /byte index is out of bounds/) { string.byte_index_to_grapheme(9) }
+      [2, 4, 5, 6].each do |position|
+        expect_raises(ArgumentError, /byte index is not on a UTF-8/) do
+          string.byte_index_to_grapheme(LibC::SizeT.new(position))
+        end
       end
     end
   end

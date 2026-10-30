@@ -33,7 +33,11 @@ and native tests on Linux x64, macOS ARM64, and Windows MSVC.
 - Test shared Control/container contracts separately from type-specific rules.
 - Keep local fakes beside their cases; explicitly require shared support.
 - Order examples to explain the type's contract, keeping related operations,
-  constraints, and failure cases together. Group longer specs by behavior.
+  constraints, and failure cases together. In specs covering several behaviors,
+  use nested `describe` groups named for those behaviors (for example,
+  `"callback registration"` or `"buffer lifetime"`). Keep valid operations and
+  their rejection cases in the same behavior group; short, focused specs can
+  remain flat.
 - Each spec must run independently and must not require another spec.
 - Native features own initialization and shutdown. Menu cases use a fresh
   runtime and create menus before any Window. Event-loop waits need deadlines.
