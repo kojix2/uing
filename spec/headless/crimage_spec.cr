@@ -2,7 +2,7 @@ require "../spec_helper"
 require "../../src/uing/crimage"
 
 # Capture the byte upload boundary without allocating a native image buffer.
-class CrImageBufferForSpec < UIng::ImageBuffer
+private class CrImageBufferForSpec < UIng::ImageBuffer
   getter uploaded : Bytes?
   getter uploaded_pointer : Pointer(UInt8)?
   getter uploaded_stride = 0_i64
