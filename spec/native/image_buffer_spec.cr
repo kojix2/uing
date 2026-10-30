@@ -1,9 +1,7 @@
 require "../spec_helper"
 require "../support/native_wrappers"
 
-# Requires ImageBuffer-capable libui-ng and both UING_NATIVE_GUI_TESTS=1 and
-# UING_IMAGE_BUFFER_TESTS=1 at compile time. Then run crystal spec spec/native.
-{% if env("UING_NATIVE_GUI_TESTS") == "1" && env("UING_IMAGE_BUFFER_TESTS") == "1" %}
+{% if env("UING_NATIVE_GUI_TESTS") == "1" %}
   require "../../src/uing/crimage"
 
   describe UIng::ImageBuffer do

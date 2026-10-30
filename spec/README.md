@@ -18,15 +18,9 @@ crystal spec spec/headless -- --order 12345
 UING_NATIVE_GUI_TESTS=1 crystal spec spec/native
 ```
 
-All tests require the linked libui-ng library. Native flags must be set at
-compile time. On Linux without a display, prefix the native command with
-`xvfb-run -a env`.
-
-ImageBuffer tests also require a compatible library and the additional flag:
-
-```sh
-xvfb-run -a env UING_NATIVE_GUI_TESTS=1 UING_IMAGE_BUFFER_TESTS=1 crystal spec spec/native
-```
+All tests require the linked libui-ng library. Set `UING_NATIVE_GUI_TESTS=1`
+at compile time to run the native suite, including ImageBuffer. On Linux
+without a display, prefix the native command with `xvfb-run -a env`.
 
 A single file can be run with `crystal spec path/to/type_spec.cr`, using the
 same flags required by its suite. CI runs headless tests on all supported jobs

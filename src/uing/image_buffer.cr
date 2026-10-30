@@ -2,8 +2,8 @@ module UIng
   # A mutable, fixed-resolution RGBA image. All native operations must run on
   # the UI thread between UIng.init and UIng.uninit. Call free explicitly or
   # use open; native resources are not released by a GC finalizer.
-  # Requires ImageBuffer-capable libui-ng (dev da49cf29 or later); the binary
-  # currently pinned in download.cr predates this API.
+  # Requires ImageBuffer-capable libui-ng (dev da49cf29 or later), included in
+  # the release pinned in download.cr.
   class ImageBuffer
     include BlockConstructor; block_constructor
 
