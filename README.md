@@ -466,6 +466,26 @@ these helpers must declare `crimage` in their own `shard.yml`. Plain
 [`examples/crimage/`](examples/crimage/). See the [ImageView guide](guide/content/books/guide_en/widget-image-view.md)
 for usage and image ownership rules.
 
+The optional integration also provides these overloads:
+
+| API | Behavior |
+| --- | --- |
+| `ImageBuffer.new(frame)` / `ImageBuffer.open(frame) { ... }` | Creates and fills a buffer using the image dimensions and alpha format. |
+| `buffer.update(frame)` | Copies an image with matching dimensions, converting alpha format as needed. |
+| `buffer.update_rect(x, y, patch)` | Replaces a region using the patch's visible dimensions. The patch must fit inside the buffer. |
+| `toolbar.append_button(text, icon)` / `append_toggle_button(text, icon)` | Accepts CrImage icons and manages temporary native images. |
+| `item.icon = icon` | Replaces a toolbar icon with a copy of a CrImage image. |
+| `brush.color = color` / `stop.color = color` | Changes color from a CrImage color while preserving geometry and stop position. |
+| `Brush.from_crimage(gradient)` | Copies a CrImage linear or radial gradient into a native brush. |
+| `GradientStop.new(color_stop)` | Copies a CrImage gradient stop. |
+
+Image-based buffer constructors default to straight alpha for NRGBA/NRGBA64 and
+premultiplied alpha for other image types; `format:` can override this choice.
+`open(frame)` frees the buffer when its block exits, so keep the event loop
+inside the block when callbacks use it. Buffer updates do not request redraws.
+Gradient conversion uses native interpolation and requires a positive radial
+radius; its rasterized output can differ from CrImage's renderer.
+
 <table>
   <thead>
     <tr>

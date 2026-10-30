@@ -3,6 +3,8 @@ require "../spec_helper"
 # Requires ImageBuffer-capable libui-ng and both UING_NATIVE_GUI_TESTS=1 and
 # UING_IMAGE_BUFFER_TESTS=1 at compile time. Then run crystal spec spec/native.
 {% if env("UING_NATIVE_GUI_TESTS") == "1" && env("UING_IMAGE_BUFFER_TESTS") == "1" %}
+  require "../../src/uing/crimage"
+
   describe UIng::ImageBuffer do
     before_all { UIng.init }
     after_all { UIng.uninit }
@@ -41,6 +43,73 @@ require "../spec_helper"
           UIng::ImageBuffer.new(Int32::MAX, 1)
         end
       {% end %}
+    end
+
+    it "updates from CrImage images in either input format" do
+      premultiplied = CrImage::RGBA.from_buffer(Bytes[128, 0, 0, 128], 1, 1)
+      straight = CrImage::NRGBA.new(CrImage.rect(0, 0, 1, 1))
+      straight.set_nrgba(0, 0, CrImage::Color::NRGBA.new(255, 0, 0, 128))
+      UIng::ImageBuffer::Format.each do |format|
+        UIng::ImageBuffer.open(1, 1, format: format) do |buffer|
+          buffer.update(premultiplied).should be_nil
+          buffer.update(straight).should be_nil
+        end
+      end
+    end
+
+    it "creates a filled buffer with dimensions and format inferred from the source" do
+      rgba = CrImage::RGBA.from_buffer(Bytes[128, 0, 0, 128], 1, 1)
+      nrgba = CrImage::NRGBA.new(CrImage.rect(5, 7, 6, 8))
+      nrgba.set_nrgba(5, 7, CrImage::Color::NRGBA.new(255, 0, 0, 128))
+      nrgba64 = CrImage::NRGBA64.new(CrImage.rect(0, 0, 1, 1))
+      nrgba64.set_nrgba64(0, 0, CrImage::Color::NRGBA64.new(65535, 0, 0, 32768))
+      [
+        {rgba, UIng::ImageBuffer::Format::RGBA8Premultiplied},
+        {nrgba, UIng::ImageBuffer::Format::RGBA8Straight},
+        {nrgba64, UIng::ImageBuffer::Format::RGBA8Straight},
+      ].each do |source, expected_format|
+        buffer = UIng::ImageBuffer.new(source)
+        begin
+          buffer.size.should eq({1, 1})
+          buffer.format.should eq(expected_format)
+          buffer.update(source).should be_nil
+        ensure
+          buffer.free
+        end
+      end
+      UIng::ImageBuffer.open(rgba, format: :rgba8_straight) do |buffer|
+        buffer.format.should eq(UIng::ImageBuffer::Format::RGBA8Straight)
+      end
+    end
+
+    it "frees image-based open buffers on normal and exceptional block exit" do
+      source = CrImage.rgba(1, 1)
+      normal = nil
+      result = UIng::ImageBuffer.open(source) { |buffer| normal = buffer; 42 }
+      result.should eq(42)
+      normal.not_nil!.released?.should be_true
+      exceptional = nil
+      expect_raises(Exception, "CrImage block failure") do
+        UIng::ImageBuffer.open(source) do |buffer|
+          exceptional = buffer
+          raise "CrImage block failure"
+        end
+      end
+      exceptional.not_nil!.released?.should be_true
+      malformed = CrImage::RGBA.new(Bytes.new(4), 4, CrImage.rect(0, 0, 1, 2))
+      expect_raises(ArgumentError, /does not cover its bounds/) { UIng::ImageBuffer.new(malformed) }
+    end
+
+    it "updates a CrImage patch and rejects destinations outside the buffer" do
+      patch = CrImage::NRGBA.new(CrImage.rect(5, 7, 6, 8))
+      patch.set_nrgba(5, 7, CrImage::Color::NRGBA.new(255, 0, 0, 128))
+      UIng::ImageBuffer.open(CrImage.rgba(3, 2)) do |buffer|
+        buffer.update_rect(2, 1, patch).should be_nil
+        expect_raises(ArgumentError, /update rectangle/) { buffer.update_rect(3, 1, patch) }
+        expect_raises(ArgumentError, /update rectangle/) { buffer.update_rect(-1, 0, patch) }
+        buffer.free
+        expect_raises(RuntimeError, /already been released/) { buffer.update_rect(0, 0, patch) }
+      end
     end
 
     it "rejects short input, invalid stride, and span overflow before native updates" do

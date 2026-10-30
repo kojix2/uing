@@ -116,14 +116,14 @@ module GrayScott
     end
 
     # Reuse an opaque CrImage frame; ImageBuffer#update copies its RGBA pixels.
-    def render : Bytes
+    def render : CrImage::RGBA
       SIZE.times do |y|
         SIZE.times do |x|
           color = @palette[(@v[y * SIZE + x] * 3.0 * 255).clamp(0.0, 255.0).to_i]
           @frame.set_rgba(x, y, color)
         end
       end
-      @frame.pix
+      @frame
     end
   end
 
@@ -141,11 +141,10 @@ module GrayScott
 
   def self.run : Nil
     UIng.init do
+      model = Model.new
       # Both the timer and the window are closed before open frees the image,
       # and the image is freed before UIng.init's block uninitializes libui-ng.
-      UIng::ImageBuffer.open(SIZE, SIZE) do |image|
-        model = Model.new
-        image.update(model.render)
+      UIng::ImageBuffer.open(model.render) do |image|
         window = UIng::Window.new("Gray–Scott reaction–diffusion", 480, 540, margined: true)
         timer : UIng::Timer? = nil
         begin

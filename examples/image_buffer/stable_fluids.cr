@@ -209,7 +209,7 @@ module StableFluids
     end
 
     # Reuse an opaque CrImage frame; ImageBuffer#update copies its RGBA pixels.
-    def render : Bytes
+    def render : CrImage::RGBA
       colors = PALETTES[@palette][1]
       @size.times do |y|
         @size.times do |x|
@@ -224,7 +224,7 @@ module StableFluids
           @frame.set_rgba(x, y, color)
         end
       end
-      @frame.pix
+      @frame
     end
   end
 
@@ -277,11 +277,10 @@ module StableFluids
 
   def self.run : Nil
     UIng.init do
-      UIng::ImageBuffer.open(SIZE, SIZE) do |image|
-        model = Model.new
-        # Start with developed curls rather than an empty field.
-        240.times { model.advance }
-        image.update(model.render)
+      model = Model.new
+      # Start with developed curls rather than an empty field.
+      240.times { model.advance }
+      UIng::ImageBuffer.open(model.render) do |image|
         window = UIng::Window.new("Stable Fluids · Ink in motion", 760, 850, margined: true)
         timer : UIng::Timer? = nil
         begin

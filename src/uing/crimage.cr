@@ -20,18 +20,18 @@ module UIng
       {width.to_i32, height.to_i32}
     end
 
-    def with_pixels(source : CrImage::Image, &) : Nil
+    def with_pixels(source : CrImage::Image, *, premultiplied : Bool = true, &) : Nil
       width, height = dimensions(source)
       row_bytes = width * 4
 
-      if source.is_a?(CrImage::RGBA)
+      if source.is_a?(CrImage::RGBA) || source.is_a?(CrImage::NRGBA)
         stride = source.stride
         visible_bytes = (height.to_i64 - 1) * stride + row_bytes
         if stride < row_bytes || visible_bytes > source.pix.size
           raise ArgumentError.new("CrImage RGBA pixel buffer does not cover its bounds")
         end
 
-        if source.pix.size.to_i64 >= stride.to_i64 * height
+        if source.is_a?(CrImage::RGBA) == premultiplied && source.pix.size.to_i64 >= stride.to_i64 * height
           yield source.pix, width, height, stride
           return
         end
@@ -41,7 +41,8 @@ module UIng
       bounds = source.bounds
       height.times do |y|
         width.times do |x|
-          color = source.at(bounds.min.x + x, bounds.min.y + y).to_rgba8
+          color = source.at(bounds.min.x + x, bounds.min.y + y)
+          color = premultiplied ? color.to_rgba8 : CrImage::Color.nrgba_model.convert(color).as(CrImage::Color::NRGBA)
           offset = y * row_bytes + x * 4
           pixels[offset] = color.r
           pixels[offset + 1] = color.g
@@ -60,6 +61,69 @@ module UIng
 
     def byte(value : Float64) : UInt8
       (value * 255.0).round.to_i.clamp(0, 255).to_u8
+    end
+
+    def image_buffer_format(source : CrImage::Image) : ImageBuffer::Format
+      if source.is_a?(CrImage::NRGBA) || source.is_a?(CrImage::NRGBA64)
+        ImageBuffer::Format::RGBA8Straight
+      else
+        ImageBuffer::Format::RGBA8Premultiplied
+      end
+    end
+
+    def with_image(source : CrImage::Image, &)
+      image = Image.from_crimage(source)
+      begin
+        yield image
+      ensure
+        image.free
+      end
+    end
+  end
+
+  class ImageBuffer
+    # Creates and fills a buffer. NRGBA/NRGBA64 use straight alpha; other image
+    # types use premultiplied alpha. An explicit format overrides that choice.
+    def initialize(source : CrImage::Image, *, format : Format = CrImageAdapter.image_buffer_format(source))
+      width, height = CrImageAdapter.dimensions(source)
+      initialize(width, height, format: format)
+      begin
+        update(source)
+      rescue error
+        free
+        raise error
+      end
+    end
+
+    # Keeps the event loop inside the block and frees the buffer on every exit.
+    def self.open(source : CrImage::Image, *, format : Format = CrImageAdapter.image_buffer_format(source), &)
+      buffer = new(source, format: format)
+      begin
+        yield buffer
+      ensure
+        buffer.free
+      end
+    end
+
+    # Copies a CrImage image with matching dimensions. Alpha representation and
+    # stride are adapted to this buffer's format. Does not request a redraw.
+    def update(source : CrImage::Image) : Nil
+      buffer_size = size
+      unless CrImageAdapter.dimensions(source) == buffer_size
+        raise ArgumentError.new("CrImage dimensions must match the image buffer")
+      end
+      CrImageAdapter.with_pixels(source, premultiplied: @format == Format::RGBA8Premultiplied) do |pixels, _width, _height, stride|
+        update(pixels, byte_stride: stride)
+      end
+    end
+
+    # Copies the entire patch at destination (x, y), using its visible bounds
+    # for the patch dimensions. Pixels outside the destination are preserved.
+    def update_rect(x : Int32, y : Int32, source : CrImage::Image) : Nil
+      check_available
+      CrImageAdapter.with_pixels(source, premultiplied: @format == Format::RGBA8Premultiplied) do |pixels, width, height, stride|
+        update_rect(x, y, width, height, pixels, byte_stride: stride)
+      end
     end
   end
 
@@ -133,6 +197,26 @@ module UIng
     end
   end
 
+  class Toolbar
+    def append_button(text : String, icon : CrImage::Image) : ToolbarItem
+      check_mutable
+      CrImageAdapter.with_image(icon) { |image| append_button(text, image) }
+    end
+
+    def append_toggle_button(text : String, icon : CrImage::Image) : ToolbarItem
+      check_mutable
+      CrImageAdapter.with_image(icon) { |image| append_toggle_button(text, image) }
+    end
+  end
+
+  class ToolbarItem
+    # Toolbar items copy their icons; the temporary native image is freed here.
+    def icon=(source : CrImage::Image) : Nil
+      ref_ptr
+      CrImageAdapter.with_image(source) { |image| self.icon = image }
+    end
+  end
+
   class Area < Control
     class Attribute
       def self.new_color(color : CrImage::Color::Color) : Attribute
@@ -154,9 +238,47 @@ module UIng
           new(Type::Solid, *CrImageAdapter.rgba(color))
         end
 
+        def color=(color : CrImage::Color::Color) : Nil
+          red, green, blue, alpha = CrImageAdapter.rgba(color)
+          self.r = red
+          self.g = green
+          self.b = blue
+          self.a = alpha
+        end
+
+        # Copies geometry and color stops. Interpolation uses the native backend.
+        def self.from_crimage(gradient : CrImage::Draw::LinearGradient) : Brush
+          CrImage::InputValidation.validate_color_stops(gradient.stops)
+          new(Type::LinearGradient,
+            x0: gradient.start_point.x, y0: gradient.start_point.y,
+            x1: gradient.end_point.x, y1: gradient.end_point.y,
+            stops: gradient.stops.map { |stop| GradientStop.new(stop) })
+        end
+
+        def self.from_crimage(gradient : CrImage::Draw::RadialGradient) : Brush
+          CrImage::InputValidation.validate_color_stops(gradient.stops)
+          radius = NumericValue.positive(gradient.radius, "radial gradient radius")
+          new(Type::RadialGradient,
+            x0: gradient.center.x, y0: gradient.center.y,
+            x1: gradient.center.x, y1: gradient.center.y, outer_radius: radius,
+            stops: gradient.stops.map { |stop| GradientStop.new(stop) })
+        end
+
         class GradientStop
           def initialize(pos : Number, color : CrImage::Color::Color)
             initialize(pos, *CrImageAdapter.rgba(color))
+          end
+
+          def initialize(stop : CrImage::Draw::ColorStop)
+            initialize(stop.position, stop.color)
+          end
+
+          def color=(color : CrImage::Color::Color) : Nil
+            red, green, blue, alpha = CrImageAdapter.rgba(color)
+            self.r = red
+            self.g = green
+            self.b = blue
+            self.a = alpha
           end
         end
       end
