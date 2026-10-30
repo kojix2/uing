@@ -148,6 +148,10 @@ module UIng
           @ref_ptr = Pointer(LibUI::DrawPath).null
         end
 
+        protected def __block_constructor_failed__ : Nil
+          free
+        end
+
         def to_unsafe
           ensure_not_released
           @ref_ptr

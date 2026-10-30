@@ -44,6 +44,10 @@ module UIng
           @released = true
         end
 
+        protected def __block_constructor_failed__ : Nil
+          free
+        end
+
         def extents : {Float64, Float64}
           check_available
           LibUI.draw_text_layout_extents(@ref_ptr, out width, out height)
