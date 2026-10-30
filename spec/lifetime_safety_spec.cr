@@ -148,7 +148,16 @@ describe "lifetime safety" do
     handler = UIng::Area::Handler.new
     handler.draw do |_area, params|
       saved_params = params
-      saved_context = params.context
+      saved_context = params.context do |context|
+        to_unsafe.should eq(context.to_unsafe)
+        context.to_unsafe.should eq(params.context.to_unsafe)
+        context
+      end
+      typeof(params.context do
+        fill_path(UIng::Area::Draw::Brush.new(:solid)) do
+          add_rectangle(0, 0, 10, 10)
+        end
+      end).should eq(Nil)
     end
 
     handler_ptr = handler.to_unsafe
@@ -161,6 +170,7 @@ describe "lifetime safety" do
     params = saved_params.should_not be_nil
     context = saved_context.should_not be_nil
     expect_raises(Exception, /no longer available/) { params.context }
+    expect_raises(Exception, /no longer available/) { params.context { to_unsafe } }
     expect_raises(Exception, /no longer available/) { params.to_unsafe }
     expect_raises(Exception, /no longer available/) { context.to_unsafe }
     params.area_width.should eq(640.0)

@@ -1,6 +1,23 @@
 require "./spec_helper"
 
 describe "Area drawing values" do
+  it "supports implicit Path receivers and existing block forms in path builders" do
+    context = UIng::Area::Draw::Context.from_native_for_spec(Pointer(UIng::LibUI::DrawContext).null)
+    brush = UIng::Area::Draw::Brush.new(:solid)
+    stroke = UIng::Area::Draw::StrokeParams.new
+
+    # Instantiate the drawing blocks without calling libui-ng with a null context.
+    typeof(context.fill_path(brush) { add_rectangle(0, 0, 10, 10) }).should eq(Nil)
+    typeof(context.stroke_path(brush) { new_figure(0, 0); line_to(10, 10) }).should eq(Nil)
+    typeof(context.stroke_path(brush, stroke) { new_figure(0, 0); line_to(10, 10) }).should eq(Nil)
+    typeof(context.clip_path { add_rectangle(0, 0, 10, 10) }).should eq(Nil)
+    typeof(context.draw_path(fill_brush: brush) { add_rectangle(0, 0, 10, 10) }).should eq(Nil)
+
+    typeof(context.fill_path(brush) { |path| path.add_rectangle(0, 0, 10, 10) }).should eq(Nil)
+    builder = ->(path : UIng::Area::Draw::Path) { path.add_rectangle(0, 0, 10, 10); nil }
+    typeof(context.stroke_path(brush, &builder)).should eq(Nil)
+  end
+
   it "infers the return type of TextLayout.open from its block" do
     result_type = typeof(UIng::Area::Draw::TextLayout.open(
       UIng::Area::AttributedString.new("abc"),
