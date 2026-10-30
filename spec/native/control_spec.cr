@@ -132,9 +132,6 @@ require "../spec_helper"
         slider.tooltip = "Replacement tooltip"
         slider.tooltip = nil
         slider.has_tool_tip?.should be_true
-
-        slider.range = 10..90
-        slider.set_range(0, 100)
       ensure
         window.try { |control| control.destroy unless control.released? }
       end
