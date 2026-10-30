@@ -1,17 +1,6 @@
 require "../../spec_helper"
 
 describe UIng::Table::Params do
-  it "keeps and returns the original Model from Table::Params" do
-    model = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x210_u64))
-    replacement = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x220_u64))
-    params = UIng::Table::Params.new(model)
-
-    params.model.same?(model).should be_true
-
-    params.model = replacement
-    params.model.same?(replacement).should be_true
-  end
-
   it "keeps Table::Params model and row-color fields synchronized" do
     first = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x210_u64))
     second = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x220_u64))
