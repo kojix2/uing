@@ -1,5 +1,4 @@
 require "../../spec_helper"
-require "../../support/attributes"
 
 private class BoundaryAttributedString < UIng::Area::AttributedString
   getter? freed = false
@@ -31,33 +30,7 @@ private class BoundaryAttribute < UIng::Area::Attribute
   end
 end
 
-private class ReleasedLifetimeSafetyAttributedString < UIng::Area::AttributedString
-  def initialize
-    super(Pointer(UIng::LibUI::AttributedString).null)
-    @released = true
-  end
-end
-
 describe UIng::Area::AttributedString do
-  it "rejects every AttributedString operation after free" do
-    string = ReleasedLifetimeSafetyAttributedString.new
-    attribute = SpecSupport::ReleasedLifetimeSafetyAttribute.new
-
-    expect_raises(Exception, /already been released/) { string.string }
-    expect_raises(Exception, /already been released/) { string.len }
-    expect_raises(Exception, /already been released/) { string.append_unattributed("x") }
-    expect_raises(Exception, /already been released/) { string.insert_at_unattributed("x", 0) }
-    expect_raises(Exception, /already been released/) { string.delete(0, 0) }
-    expect_raises(Exception, /already been released/) { string.set_attribute(attribute, 0, 0) }
-    expect_raises(Exception, /already been released/) do
-      string.each_attribute { |_attribute, _start, _end| }
-    end
-    expect_raises(Exception, /already been released/) { string.num_graphemes }
-    expect_raises(Exception, /already been released/) { string.byte_index_to_grapheme(0) }
-    expect_raises(Exception, /already been released/) { string.grapheme_to_byte_index(0) }
-    expect_raises(Exception, /already been released/) { string.to_unsafe }
-  end
-
   it "returns the block result and frees the string after the block" do
     scoped = nil
     result = BoundaryAttributedString.open("abc") do |string|

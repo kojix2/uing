@@ -6,6 +6,21 @@ require "../../../spec_helper"
     after_all { UIng.uninit }
     after_each { UIng.on_error(nil) }
 
+    it "rejects every TextLayout operation after free" do
+      UIng::Area::AttributedString.open("abc") do |string|
+        layout = UIng::Area::Draw::TextLayout.new(string: string,
+          default_font: UIng::FontDescriptor.new(family: "sans-serif"), width: 100)
+        begin
+          layout.free
+
+          expect_raises(Exception, /already been released/) { layout.extents }
+          expect_raises(Exception, /already been released/) { layout.to_unsafe }
+        ensure
+          layout.free
+        end
+      end
+    end
+
     it "releases a native TextLayout even if it was freed before the block raises" do
       UIng::Area::AttributedString.open("cleanup") do |string|
         [false, true].each do |free_early|

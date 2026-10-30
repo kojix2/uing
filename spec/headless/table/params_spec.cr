@@ -1,10 +1,9 @@
 require "../../spec_helper"
-require "../../support/table_models"
 
 describe UIng::Table::Params do
   it "keeps and returns the original Model from Table::Params" do
-    model = SpecSupport::LifetimeSafetyModel.new
-    replacement = SpecSupport::LifetimeSafetyModel.new
+    model = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x210_u64))
+    replacement = UIng::Table::Model.unsafe_wrap(Pointer(UIng::LibUI::TableModel).new(0x220_u64))
     params = UIng::Table::Params.new(model)
 
     params.model.same?(model).should be_true

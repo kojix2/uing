@@ -13,21 +13,7 @@ private class BlockConstructionTextLayout < UIng::Area::Draw::TextLayout
   end
 end
 
-private class ReleasedLifetimeSafetyTextLayout < UIng::Area::Draw::TextLayout
-  def initialize
-    @ref_ptr = Pointer(UIng::LibUI::DrawTextLayout).null
-    @released = true
-  end
-end
-
 describe UIng::Area::Draw::TextLayout do
-  it "rejects every TextLayout operation after free" do
-    layout = ReleasedLifetimeSafetyTextLayout.new
-
-    expect_raises(Exception, /already been released/) { layout.extents }
-    expect_raises(Exception, /already been released/) { layout.to_unsafe }
-  end
-
   it "frees a TextLayout created with keywords on failure" do
     constructed = nil
     original = Exception.new("layout construction failed")
