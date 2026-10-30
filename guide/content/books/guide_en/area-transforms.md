@@ -24,6 +24,17 @@ ensure
 end
 ```
 
+Use `saved` to express the save/restore scope as a block. Drawing state is restored even when the block raises or exits with `break`.
+
+```crystal
+context.saved do
+  transform(matrix)
+  draw_image(image, 0, 0, 80, 80)
+end
+```
+
+Inside the block, call Context methods directly or receive the same Context as `|ctx|`. `saved` returns the block's result and supports nesting. It saves and restores state such as transforms and clipping; it does not undo drawing already performed.
+
 ## Matrix operations
 
 | Method | Effect |

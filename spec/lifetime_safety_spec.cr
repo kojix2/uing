@@ -154,8 +154,10 @@ describe "lifetime safety" do
         context
       end
       typeof(params.context do
-        fill_path(UIng::Area::Draw::Brush.new(:solid)) do
-          add_rectangle(0, 0, 10, 10)
+        saved do
+          fill_path(UIng::Area::Draw::Brush.new(:solid)) do
+            add_rectangle(0, 0, 10, 10)
+          end
         end
       end).should eq(Nil)
     end
@@ -173,6 +175,7 @@ describe "lifetime safety" do
     expect_raises(Exception, /no longer available/) { params.context { to_unsafe } }
     expect_raises(Exception, /no longer available/) { params.to_unsafe }
     expect_raises(Exception, /no longer available/) { context.to_unsafe }
+    expect_raises(Exception, /no longer available/) { context.saved { raise "must not draw" } }
     params.area_width.should eq(640.0)
   end
 

@@ -158,6 +158,17 @@ module UIng
           LibUI.draw_restore(to_unsafe)
         end
 
+        # Runs a drawing block with this Context as receiver and argument.
+        # Restores the saved state on block exit and returns the block's value.
+        def saved(&)
+          save
+          begin
+            with self yield self
+          ensure
+            restore
+          end
+        end
+
         # Text drawing (libui uiDrawText equivalent)
         def draw_text_layout(text_layout : TextLayout, x : Number, y : Number) : Nil
           draw_x = NumericValue.finite(x, "text draw x")

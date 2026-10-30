@@ -24,6 +24,17 @@ ensure
 end
 ```
 
+`saved`を使うと、保存と復元の範囲をブロックで表せます。例外や`break`で抜けても描画状態が復元されます。
+
+```crystal
+context.saved do
+  transform(matrix)
+  draw_image(image, 0, 0, 80, 80)
+end
+```
+
+ブロック内ではContextのメソッドを直接呼べ、`|ctx|`で同じContextを受け取ることもできます。`saved`はブロックの結果を返し、入れ子でも使えます。保存・復元するのは座標変換やクリッピングなどの状態で、描画済みの内容を巻き戻す操作ではありません。
+
 ## Matrixの操作
 
 | メソッド | 効果 |
