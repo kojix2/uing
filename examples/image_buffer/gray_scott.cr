@@ -132,6 +132,13 @@ module GrayScott
     {(width - size) / 2, (height - size) / 2, size}
   end
 
+  def self.seed_position(event : UIng::Area::MouseEvent) : {Int32, Int32}?
+    return unless event.down == 1 || (event.held1_to64 & 1_u64) != 0
+    x, y, size = viewport(event.area_width, event.area_height)
+    return unless size > 0 && event.x >= x && event.y >= y && event.x < x + size && event.y < y + size
+    {((event.x - x) * SIZE / size).to_i, ((event.y - y) * SIZE / size).to_i}
+  end
+
   def self.run : Nil
     UIng.init do
       # Both the timer and the window are closed before open frees the image,
@@ -181,10 +188,8 @@ module GrayScott
             context.draw_image(image, x, y, size, size, interpolation: :smooth)
           end
           area.on_mouse_event do |event|
-            next unless event.down == 1 || (event.held1_to64 & 1_u64) != 0
-            x, y, size = viewport(event.area_width, event.area_height)
-            next unless size > 0 && event.x >= x && event.y >= y && event.x < x + size && event.y < y + size
-            model.seed(((event.x - x) * SIZE / size).to_i, ((event.y - y) * SIZE / size).to_i)
+            next unless position = seed_position(event)
+            model.seed(*position)
             image.update(model.render)
             area.queue_redraw_all
           end

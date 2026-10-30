@@ -26,44 +26,44 @@ module UIng
         end
 
         {% for field in [:source_x, :source_y] %}
-          def {{field.id}} : Int32
-            @cstruct.{{field.id}}
+          def {{ field.id }} : Int32
+            @cstruct.{{ field.id }}
           end
 
-          def {{field.id}}=(value : Int32)
-            raise ArgumentError.new("image buffer {{field.id}} must be nonnegative") unless value >= 0
-            @cstruct.{{field.id}} = value
+          def {{ field.id }}=(value : Int32)
+            raise ArgumentError.new("image buffer {{ field.id }} must be nonnegative") unless value >= 0
+            @cstruct.{{ field.id }} = value
           end
         {% end %}
 
         {% for field in [:source_width, :source_height] %}
-          def {{field.id}} : Int32
-            @cstruct.{{field.id}}
+          def {{ field.id }} : Int32
+            @cstruct.{{ field.id }}
           end
 
-          def {{field.id}}=(value : Int32)
-            raise ArgumentError.new("image buffer {{field.id}} must be positive") unless value > 0
-            @cstruct.{{field.id}} = value
+          def {{ field.id }}=(value : Int32)
+            raise ArgumentError.new("image buffer {{ field.id }} must be positive") unless value > 0
+            @cstruct.{{ field.id }} = value
           end
         {% end %}
 
         {% for field in [:x, :y] %}
-          def {{field.id}} : Float64
-            @cstruct.{{field.id}}
+          def {{ field.id }} : Float64
+            @cstruct.{{ field.id }}
           end
 
-          def {{field.id}}=(value : Number)
-            @cstruct.{{field.id}} = NumericValue.finite(value, "image buffer draw {{field.id}}")
+          def {{ field.id }}=(value : Number)
+            @cstruct.{{ field.id }} = NumericValue.finite(value, "image buffer draw {{ field.id }}")
           end
         {% end %}
 
         {% for field in [:width, :height] %}
-          def {{field.id}} : Float64
-            @cstruct.{{field.id}}
+          def {{ field.id }} : Float64
+            @cstruct.{{ field.id }}
           end
 
-          def {{field.id}}=(value : Number)
-            @cstruct.{{field.id}} = NumericValue.positive(value, "image buffer draw {{field.id}}")
+          def {{ field.id }}=(value : Number)
+            @cstruct.{{ field.id }} = NumericValue.positive(value, "image buffer draw {{ field.id }}")
           end
         {% end %}
 
