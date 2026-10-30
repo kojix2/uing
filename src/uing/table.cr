@@ -36,6 +36,7 @@ module UIng
     end
 
     def on_row_clicked(&block : LibC::Int -> Nil) : Nil
+      check_available
       @on_row_clicked_box = ::Box.box(block)
       if boxed_data = @on_row_clicked_box
         LibUI.table_on_row_clicked(
@@ -54,6 +55,7 @@ module UIng
     end
 
     def on_row_double_clicked(&block : LibC::Int -> Nil) : Nil
+      check_available
       @on_row_double_clicked_box = ::Box.box(block)
       if boxed_data = @on_row_double_clicked_box
         LibUI.table_on_row_double_clicked(
@@ -72,6 +74,7 @@ module UIng
     end
 
     def on_header_clicked(&block : LibC::Int -> Nil) : Nil
+      check_available
       @on_header_clicked_box = ::Box.box(block)
       if boxed_data = @on_header_clicked_box
         LibUI.table_header_on_clicked(
@@ -90,6 +93,7 @@ module UIng
     end
 
     def on_selection_changed(&block : Selection -> Nil) : Nil
+      check_available
       @on_selection_changed_box = ::Box.box(block)
       if boxed_data = @on_selection_changed_box
         LibUI.table_on_selection_changed(

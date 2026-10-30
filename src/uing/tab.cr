@@ -91,6 +91,7 @@ module UIng
     end
 
     def on_selected(&block : Int32 -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         idx = selected
         block.call(idx)

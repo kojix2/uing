@@ -53,6 +53,7 @@ module UIng
     end
 
     def on_selected(&block : Int32 -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         idx = selected || raise "Combobox selection callback fired without a selection"
         block.call(idx)

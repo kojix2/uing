@@ -31,6 +31,7 @@ module UIng
     end
 
     def on_changed(&block : Int32 -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         v = value
         block.call(v)

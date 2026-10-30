@@ -43,6 +43,7 @@ module UIng
     end
 
     def on_changed(&block : String -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         current_text = text || ""
         block.call(current_text)

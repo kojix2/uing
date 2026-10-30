@@ -220,6 +220,7 @@ module UIng
     end
 
     def on_position_changed(&block : (Int32, Int32) -> Nil)
+      check_available
       wrapper = -> : Nil {
         x, y = position
         block.call(x, y)
@@ -241,6 +242,7 @@ module UIng
     end
 
     def on_content_size_changed(&block : (Int32, Int32) -> Nil)
+      check_available
       wrapper = -> : Nil {
         x, y = content_size
         block.call(x, y)
@@ -262,6 +264,7 @@ module UIng
     end
 
     def on_closing(&block : -> Bool)
+      check_available
       wrapper = -> : Bool {
         handle_closing(block)
       }
@@ -291,6 +294,7 @@ module UIng
     end
 
     def on_focus_changed(&block : Bool -> Nil)
+      check_available
       wrapper = -> : Nil { block.call(focused?) }
       if boxed_data = (@on_focus_changed_box = ::Box.box(wrapper))
         LibUI.window_on_focus_changed(

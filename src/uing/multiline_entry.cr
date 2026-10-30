@@ -67,6 +67,7 @@ module UIng
     end
 
     def on_changed(&block : -> Nil) : Nil
+      check_available
       @on_changed_box = ::Box.box(block)
       if boxed_data = @on_changed_box
         LibUI.multiline_entry_on_changed(
@@ -88,6 +89,7 @@ module UIng
     # it is heavy to get the text in the callback, so a separate method is provided.
 
     def on_changed_with_text(&block : String -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         current_text = text || ""
         block.call(current_text)

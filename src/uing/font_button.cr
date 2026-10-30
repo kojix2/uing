@@ -18,6 +18,7 @@ module UIng
 
     # Registers a callback that receives a retainable FontDescriptor.
     def on_changed(&block : FontDescriptor -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         block.call(font)
       }

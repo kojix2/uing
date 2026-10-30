@@ -30,6 +30,7 @@ module UIng
     end
 
     def on_changed(&block : Float64, Float64, Float64, Float64 -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         r, g, b, a = color
         block.call(r, g, b, a)

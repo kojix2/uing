@@ -64,6 +64,7 @@ module UIng
     # Invokes the block with the displayed wall-clock value in
     # `Time::Location.local`.
     def on_changed(&block : Time -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         LibUI.date_time_picker_time(ref_ptr, @tm)
         @tm.capture_native_zone

@@ -75,11 +75,12 @@ module UIng
     end
 
     def on_clicked(&block : ToolbarItem -> Nil) : Nil
+      item = ref_ptr
       wrapper = -> { block.call(self) }
       @on_clicked_box = ::Box.box(wrapper)
       if boxed_data = @on_clicked_box
         LibUI.toolbar_item_on_clicked(
-          ref_ptr,
+          item,
           ->(_sender, data) : Nil {
             begin
               callback = ::Box(typeof(wrapper)).unbox(data)

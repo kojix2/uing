@@ -34,6 +34,7 @@ module UIng
     end
 
     def on_toggled(&block : Bool -> Nil) : Nil
+      check_available
       wrapper = -> : Nil {
         checked = checked?
         block.call(checked)
