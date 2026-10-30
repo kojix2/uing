@@ -40,6 +40,16 @@ module UIng
       control.take_ownership(self)
     end
 
+    # Adds the Control returned by the block, using the same layout options.
+    def append(left : Int32, top : Int32,
+               xspan : Int32 = 1, yspan : Int32 = 1,
+               hexpand : Bool = false, halign : UIng::Align = UIng::Align::Fill,
+               vexpand : Bool = false, valign : UIng::Align = UIng::Align::Fill,
+               &block : -> Control) : Nil
+      control = block.call
+      append(control, left, top, xspan, yspan, hexpand, halign, vexpand, valign)
+    end
+
     def insert_at(control, existing, at : At,
                   xspan : Int32 = 1, yspan : Int32 = 1,
                   hexpand : Bool = false, halign : UIng::Align = UIng::Align::Fill,
@@ -52,6 +62,16 @@ module UIng
       LibUI.grid_insert_at(ref_ptr, UIng.to_control(control), UIng.to_control(existing), at, xspan, yspan, hexpand, halign, vexpand, valign)
       @children_refs << control
       control.take_ownership(self)
+    end
+
+    # Inserts the Control returned by the block relative to an existing child.
+    def insert_at(existing, at : At,
+                  xspan : Int32 = 1, yspan : Int32 = 1,
+                  hexpand : Bool = false, halign : UIng::Align = UIng::Align::Fill,
+                  vexpand : Bool = false, valign : UIng::Align = UIng::Align::Fill,
+                  &block : -> Control) : Nil
+      control = block.call
+      insert_at(control, existing, at, xspan, yspan, hexpand, halign, vexpand, valign)
     end
 
     def padded? : Bool

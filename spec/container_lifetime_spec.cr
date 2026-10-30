@@ -239,6 +239,49 @@ describe "container lifetime" do
     child.parent.should be_nil
   end
 
+  it "preserves Grid validation and ownership through the block DSL" do
+    grid = DetachableGrid.new
+    anchor = DetachableControl.new
+    grid.adopt(anchor)
+    child = DetachableControl.new
+
+    expect_raises(ArgumentError, /xspan must be at least 1/) do
+      grid.append(left: 0, top: 0, xspan: 0) { child }
+    end
+    expect_raises(ArgumentError, /yspan must be at least 1/) do
+      grid.insert_at(anchor, :trailing, yspan: 0) { child }
+    end
+    expect_raises(ArgumentError, /does not belong to this Grid/) do
+      grid.insert_at(DetachableControl.new, :leading) { child }
+    end
+
+    child.parent.should be_nil
+    anchor.parent.should be(grid)
+  end
+
+  it "keeps containers unchanged when a child construction block raises" do
+    grid = DetachableGrid.new
+    anchor = DetachableControl.new
+    grid.adopt(anchor)
+    tab = DetachableTab.new
+    tab_child = DetachableControl.new
+    tab.adopt(tab_child)
+
+    expect_raises(Exception, "child construction failed") do
+      grid.append(left: 0, top: 0) { raise "child construction failed" }
+    end
+    expect_raises(Exception, "child construction failed") do
+      grid.insert_at(anchor, :trailing) { raise "child construction failed" }
+    end
+    expect_raises(Exception, "child construction failed") do
+      tab.insert_at("new", 1) { raise "child construction failed" }
+    end
+
+    anchor.parent.should be(grid)
+    tab.child_refs.should eq([tab_child])
+    tab_child.parent.should be(tab)
+  end
+
   it "preserves Window ownership when child replacement is attempted while destruction is pending" do
     window = DetachableWindow.new
     old_child = DetachableControl.new
@@ -379,6 +422,21 @@ describe "container lifetime" do
       empty_tab.child_refs.should be_empty
       inserted_child.parent.should be_nil
     end
+  end
+
+  it "preserves Tab insertion validation through the block DSL" do
+    tab = DetachableTab.new
+    existing = DetachableControl.new
+    tab.adopt(existing)
+
+    [-1, 2].each do |index|
+      child = DetachableControl.new
+      expect_raises(IndexError) { tab.insert_at("invalid", index, margined: true) { child } }
+
+      child.parent.should be_nil
+      tab.child_refs.should eq([existing])
+    end
+    existing.parent.should be(tab)
   end
 
   it "rejects invalid Tab margin indices" do

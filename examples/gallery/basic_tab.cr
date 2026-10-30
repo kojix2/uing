@@ -10,7 +10,9 @@ end
 
 tab = UIng::Tab.new
 tab.append("Tab 1", UIng::Label.new("This is Tab 1"))
-tab.append("Tab 2", UIng::Label.new("This is Tab 2"))
+tab.insert_at("Tab 2", index: 1, margined: true) do
+  UIng::Label.new("This is Tab 2")
+end
 tab.on_selected do |idx|
   window.msg_box("Tab Changed", "Selected index: #{idx}")
 end

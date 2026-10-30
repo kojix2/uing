@@ -29,6 +29,16 @@ tab.append("Details", UIng::Form.new, margined: true)
 tab.selected = 1
 ```
 
+`append` and `insert_at` also accept a block that returns the page's child Control. The insertion `index` is zero-based; using the current page count appends at the end.
+
+```crystal
+tab.insert_at("Advanced", index: 1, margined: true) do
+  UIng::Box.new(:vertical, padded: true) do
+    append { UIng::Label.new("Advanced settings") }
+  end
+end
+```
+
 `selected` is a zero-based page index; `on_selected` reports changes. Set margins per page with `margined: true`, or change them later with `set_margined(index, true)`.
 
 [API reference](../../api/UIng/Tab.html) · [Gallery source](https://github.com/kojix2/uing/blob/main/examples/gallery/basic_tab.cr)

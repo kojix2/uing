@@ -27,6 +27,16 @@ grid = UIng::Grid.new(padded: true)
 grid.append(UIng::Button.new("Span"), left: 0, top: 1, xspan: 2, hexpand: true)
 ```
 
+`append`と`insert_at`は、ブロックが返すControlを子として追加する形式も使えます。`insert_at`の基準になるControlは、同じGridの子を指定します。
+
+```crystal
+anchor = UIng::Label.new("Name")
+grid.append(left: 0, top: 0) { anchor }
+grid.insert_at(anchor, :trailing, hexpand: true) do
+  UIng::Entry.new
+end
+```
+
 既定値は`xspan: 1`、`yspan: 1`、`hexpand: false`、`vexpand: false`、
 両方向の配置は`:fill`です。スパンは1以上を指定します。`insert_at`も同じ既定値です。
 

@@ -42,6 +42,12 @@ module UIng
       set_margined(index, margined) if margined
     end
 
+    # Inserts the Control returned by the block at the specified page index.
+    def insert_at(name : String, index : Int32, margined : Bool = false, &block : -> Control) : Nil
+      control = block.call
+      insert_at(name, index, control, margined)
+    end
+
     def delete(index : Int32) : Nil
       check_page_index(index)
       child = @children_refs[index]

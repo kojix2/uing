@@ -27,6 +27,16 @@ grid = UIng::Grid.new(padded: true)
 grid.append(UIng::Button.new("Span"), left: 0, top: 1, xspan: 2, hexpand: true)
 ```
 
+`append` and `insert_at` also accept a block that returns the child Control. The anchor passed to `insert_at` must already be a child of the same Grid.
+
+```crystal
+anchor = UIng::Label.new("Name")
+grid.append(left: 0, top: 0) { anchor }
+grid.insert_at(anchor, :trailing, hexpand: true) do
+  UIng::Entry.new
+end
+```
+
 The defaults are `xspan: 1`, `yspan: 1`, `hexpand: false`, `vexpand: false`,
 and `:fill` for both alignments. Spans must be at least 1. `insert_at` uses the
 same defaults.

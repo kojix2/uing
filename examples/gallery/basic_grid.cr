@@ -21,8 +21,9 @@ labels.each_with_index do |text, index|
   row = index // 3
   col = index % 3
 
-  label = UIng::Label.new(text)
-  grid.append(label, left: col, top: row, hexpand: true, vexpand: true)
+  grid.append(left: col, top: row, hexpand: true, vexpand: true) do
+    UIng::Label.new(text)
+  end
 end
 
 # Add a button that spans 2 columns at the bottom
@@ -33,11 +34,13 @@ end
 grid.append(button, left: 0, top: 3, xspan: 2, hexpand: true)
 
 # Add another button in the remaining space
-another_button = UIng::Button.new("Single")
-another_button.on_clicked do
-  window.msg_box("Grid Demo", "Single column button!")
+grid.insert_at(button, :trailing, hexpand: true) do
+  UIng::Button.new("Single") do
+    on_clicked do
+      window.msg_box("Grid Demo", "Single column button!")
+    end
+  end
 end
-grid.append(another_button, left: 2, top: 3, hexpand: true)
 
 window.child = grid
 window.show
