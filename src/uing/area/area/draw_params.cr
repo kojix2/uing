@@ -45,6 +45,11 @@ module UIng
           end
         end
 
+        def context(&)
+          draw_context = context
+          with draw_context yield draw_context
+        end
+
         def area_width : Float64
           @cstruct.area_width
         end
