@@ -44,10 +44,13 @@ module UIng
 
         # High-level: build a path in a block, end it, and stroke
         def stroke_path(brush : Brush, stroke_params : StrokeParams, mode : FillMode = FillMode::Winding, &)
-          Path.open(mode) do |path|
-            yield path
+          path = Path.new(mode)
+          begin
+            with path yield path
             path.end_path
             draw_stroke(path, brush, stroke_params)
+          ensure
+            path.free
           end
         end
 
@@ -59,7 +62,7 @@ module UIng
                         dash_phase : Number = 0.0,
                         dashes : Enumerable(Number)? = nil,
                         mode : FillMode = FillMode::Winding,
-                        &block : Path -> Nil) : Nil
+                        &) : Nil
           stroke_params = StrokeParams.new(
             cap: cap,
             join: join,
@@ -68,7 +71,14 @@ module UIng
             dash_phase: dash_phase,
             dashes: dashes
           )
-          stroke_path(brush, stroke_params, mode, &block)
+          path = Path.new(mode)
+          begin
+            with path yield path
+            path.end_path
+            draw_stroke(path, brush, stroke_params)
+          ensure
+            path.free
+          end
         end
 
         # Low-level: fill an ended path
@@ -79,10 +89,13 @@ module UIng
 
         # High-level: build a path in a block, end it, and fill
         def fill_path(brush : Brush, mode : FillMode = FillMode::Winding, &)
-          Path.open(mode) do |path|
-            yield path
+          path = Path.new(mode)
+          begin
+            with path yield path
             path.end_path
             draw_fill(path, brush)
+          ensure
+            path.free
           end
         end
 
@@ -99,10 +112,13 @@ module UIng
 
         # High-level clipping: build a path in a block, end it, and clip
         def clip_path(mode : FillMode = FillMode::Winding, &)
-          Path.open(mode) do |path|
-            yield path
+          path = Path.new(mode)
+          begin
+            with path yield path
             path.end_path
             clip(path)
+          ensure
+            path.free
           end
         end
 
@@ -113,8 +129,9 @@ module UIng
                       fill_brush : Brush? = nil,
                       stroke_brush : Brush? = nil,
                       stroke_params : StrokeParams? = nil, &)
-          Path.open(mode) do |path|
-            yield path
+          path = Path.new(mode)
+          begin
+            with path yield path
             path.end_path
 
             if fill
@@ -127,6 +144,8 @@ module UIng
               params = stroke_params || raise ArgumentError.new("stroke=true requires stroke_brush and stroke_params")
               draw_stroke(path, brush, params)
             end
+          ensure
+            path.free
           end
         end
 
