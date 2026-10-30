@@ -13,7 +13,10 @@ describe "Area drawing values" do
     typeof(context.clip_path { add_rectangle(0, 0, 10, 10) }).should eq(Nil)
     typeof(context.draw_path(fill_brush: brush) { add_rectangle(0, 0, 10, 10) }).should eq(Nil)
 
+    # Keep an explicit block argument to cover the existing non-DSL form.
+    # ameba:disable Style/VerboseBlock
     typeof(context.fill_path(brush) { |path| path.add_rectangle(0, 0, 10, 10) }).should eq(Nil)
+    # ameba:enable Style/VerboseBlock
     builder = ->(path : UIng::Area::Draw::Path) { path.add_rectangle(0, 0, 10, 10); nil }
     typeof(context.stroke_path(brush, &builder)).should eq(Nil)
   end
