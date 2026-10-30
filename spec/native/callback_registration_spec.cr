@@ -10,9 +10,9 @@ require "../spec_helper"
                            UIng::Table       => [:on_row_clicked_box, :on_row_double_clicked_box, :on_header_clicked_box, :on_selection_changed_box],
                            UIng::ToolbarItem => [:on_clicked_box],
                          } %}
-    class {{type}}
+    class {{ type }}
       def callback_boxes_for_spec : Array(Pointer(Void)?)
-        [{% for field in fields %} @{{field.id}}, {% end %}] of Pointer(Void)?
+        [{% for field in fields %} @{{ field.id }}, {% end %}] of Pointer(Void)?
       end
     end
   {% end %}
