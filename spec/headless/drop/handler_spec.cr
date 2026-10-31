@@ -114,6 +114,44 @@ describe UIng::Drop::Handler do
       window.try &.destroy
     end
 
+    it "rejects hover while the drop callback is cleared and resumes when restored" do
+      window = SpecSupport::DropWindowForSpec.new
+      handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }
+      window.drop_handler = handler
+      native = window.native_handler
+      data = window.user_data
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+      payload = UIng::LibUI::DropData.new(format: UIng::LibUI::DropFormat::Text, text: "".to_unsafe)
+      over_calls = 0
+
+      handler.clear_drop
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
+      native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Rejected)
+      handler.over { |_target, _info| over_calls += 1; true }
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
+      over_calls.should eq(0)
+
+      handler.drop { |_target, _event| true }
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::Copy)
+      native.drop.call(pointerof(info), pointerof(payload), data).should eq(UIng::LibUI::DropResult::Accepted)
+      over_calls.should eq(1)
+      handler.drop(nil)
+      native.over.call(pointerof(info), data).should eq(UIng::LibUI::DropAction::None)
+    ensure
+      window.try &.destroy
+    end
+
+    it "rejects hover if its callback clears the drop callback" do
+      window = SpecSupport::DropWindowForSpec.new
+      handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }
+      handler.over { |_target, _info| handler.clear_drop; true }
+      window.drop_handler = handler
+      info = UIng::LibUI::DropInfo.new(format: UIng::LibUI::DropFormat::Text)
+      window.native_handler.over.call(pointerof(info), window.user_data).should eq(UIng::LibUI::DropAction::None)
+    ensure
+      window.try &.destroy
+    end
+
     it "preserves the current handler on failure and clears it on destruction" do
       window = SpecSupport::DropWindowForSpec.new
       handler = UIng::Drop::Handler.new { drop { |_target, _event| true } }

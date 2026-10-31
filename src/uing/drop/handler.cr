@@ -49,7 +49,12 @@ module UIng
             begin
               target, handler = ::Box(CallbackContext).unbox(data)
               callback = handler.over_callback
-              callback.nil? || callback.call(target, Info.new(info.value)) ? LibUI::DropAction::Copy : LibUI::DropAction::None
+              # Over may itself clear the required drop callback.
+              if handler.drop_callback && (callback.nil? || callback.call(target, Info.new(info.value))) && handler.drop_callback
+                LibUI::DropAction::Copy
+              else
+                LibUI::DropAction::None
+              end
             rescue error
               UIng.handle_callback_error(error, "Drop over")
               LibUI::DropAction::None
@@ -79,7 +84,8 @@ module UIng
       end
 
       # Metadata only: filenames and text are available in drop, not over.
-      # Without this callback, compatible Copy offers are accepted.
+      # Without this callback, compatible Copy offers are accepted while a drop
+      # callback is installed. Clearing drop also rejects hover offers.
       def over(&block : Proc(Target, Info, Bool)) : Nil
         @over_callback = block
       end
