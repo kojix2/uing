@@ -4,11 +4,21 @@ require "../spec_helper"
   # Callback retention has no public accessor. Observe it without injecting state
   # or relying on the timing of the conservative garbage collector.
   {% for type, fields in {
-                           UIng::Button      => [:on_clicked_box],
-                           UIng::Slider      => [:on_changed_box, :on_released_box],
-                           UIng::Window      => [:on_position_changed_box, :on_content_size_changed_box, :on_closing_box, :on_focus_changed_box],
-                           UIng::Table       => [:on_row_clicked_box, :on_row_double_clicked_box, :on_header_clicked_box, :on_selection_changed_box],
-                           UIng::ToolbarItem => [:on_clicked_box],
+                           UIng::Button           => [:on_clicked_box],
+                           UIng::Checkbox         => [:on_toggled_box],
+                           UIng::Entry            => [:on_changed_box],
+                           UIng::MultilineEntry   => [:on_changed_box],
+                           UIng::Combobox         => [:on_selected_box],
+                           UIng::EditableCombobox => [:on_changed_box],
+                           UIng::RadioButtons     => [:on_selected_box],
+                           UIng::Spinbox          => [:on_changed_box],
+                           UIng::Slider           => [:on_changed_box, :on_released_box],
+                           UIng::ColorButton      => [:on_changed_box],
+                           UIng::FontButton       => [:on_changed_box],
+                           UIng::DateTimePicker   => [:on_changed_box],
+                           UIng::Window           => [:on_position_changed_box, :on_content_size_changed_box, :on_closing_box, :on_focus_changed_box],
+                           UIng::Table            => [:on_row_clicked_box, :on_row_double_clicked_box, :on_header_clicked_box, :on_selection_changed_box],
+                           UIng::ToolbarItem      => [:on_clicked_box],
                          } %}
     class {{ type }}
       def callback_boxes_for_spec : Array(Pointer(Void)?)
@@ -23,73 +33,129 @@ require "../spec_helper"
     control.callback_boxes_for_spec.should eq(before)
   end
 
-  describe "callback registration on released objects" do
+  describe "control callback lifecycle" do
     before_all { UIng.init }
     after_all { UIng.uninit }
 
-    it "does not retain a rejected Button callback" do
-      window = UIng::Window.new("Released button", 160, 80)
-      button = UIng::Button.new("Button")
-      window.child = button
-      window.destroy
+    # These controls share callback retention and clearing contracts. Keep the
+    # matrix explicit so each callback API, including aliases, is instantiated.
+    {% for callback_case in [
+                              {UIng::Button, ["Button"], [[:on_clicked, :clear_on_clicked]]},
+                              {UIng::Checkbox, ["Checkbox"], [[:on_toggled, :clear_on_toggled]]},
+                              {UIng::Entry, [] of Nil, [[:on_changed, :clear_on_changed]]},
+                              {UIng::MultilineEntry, [] of Nil, [[:on_changed, :clear_on_changed], [:on_changed_with_text, :clear_on_changed_with_text]]},
+                              {UIng::Combobox, [["first"]], [[:on_selected, :clear_on_selected]]},
+                              {UIng::EditableCombobox, [] of Nil, [[:on_changed, :clear_on_changed]]},
+                              {UIng::RadioButtons, [["first"]], [[:on_selected, :clear_on_selected]]},
+                              {UIng::Spinbox, [0, 100], [[:on_changed, :clear_on_changed]]},
+                              {UIng::Slider, [0, 100], [[:on_changed, :clear_on_changed], [:on_released, :clear_on_released]]},
+                              {UIng::ColorButton, [] of Nil, [[:on_changed, :clear_on_changed]]},
+                              {UIng::FontButton, [] of Nil, [[:on_changed, :clear_on_changed]]},
+                              {UIng::DateTimePicker, [] of Nil, [[:on_changed, :clear_on_changed]]},
+                            ] %}
+      {% type, arguments, callbacks = callback_case[0], callback_case[1], callback_case[2] %}
+      describe {{ type }} do
+        it "replaces retained callbacks and supports both clearing forms" do
+          window = UIng::Window.new("Callback registration", 160, 80)
+          control = {{ type }}.new({{ arguments.splat }})
+          window.child = control
 
-      expect_callback_rejected_without_retention(button) { button.on_clicked { } }
-    ensure
-      window.try &.destroy
-    end
+          {% for callback in callbacks %}
+            control.{{ callback[0].id }} { }
+            original = control.callback_boxes_for_spec.compact
+            original.size.should eq(1)
+            control.{{ callback[0].id }} { }
+            control.callback_boxes_for_spec.compact.should_not eq(original)
+            GC.collect
+            control.callback_boxes_for_spec.compact.size.should eq(1)
 
-    it "does not retain either rejected Slider callback" do
-      window = UIng::Window.new("Released slider", 160, 80)
-      slider = UIng::Slider.new(0, 100)
-      window.child = slider
-      window.destroy
+            control.{{ callback[1].id }}
+            control.callback_boxes_for_spec.compact.should be_empty
+            control.{{ callback[0].id }} { }
+            control.{{ callback[0].id }}(nil)
+            control.callback_boxes_for_spec.compact.should be_empty
+          {% end %}
+        ensure
+          window.try &.destroy
+        end
 
-      expect_callback_rejected_without_retention(slider) { slider.on_changed { |_value| } }
-      expect_callback_rejected_without_retention(slider) { slider.on_released { |_value| } }
-    ensure
-      window.try &.destroy
-    end
+        it "releases retained callbacks when the parent destroys the control" do
+          window = UIng::Window.new("Callback cleanup", 160, 80)
+          control = {{ type }}.new({{ arguments.splat }})
+          window.child = control
+          {% for callback in callbacks %}
+            control.{{ callback[0].id }} { }
+          {% end %}
+          control.callback_boxes_for_spec.compact.should_not be_empty
 
-    it "does not retain rejected Window callbacks" do
-      window = UIng::Window.new("Released window", 160, 80)
-      window.destroy
+          window.destroy
+          deadline = Time.instant + 5.seconds
+          until control.callback_boxes_for_spec.compact.empty?
+            UIng.main_step(false)
+            raise "timed out waiting for callback cleanup" if Time.instant >= deadline
+          end
+          control.released?.should be_true
+        ensure
+          window.try &.destroy
+        end
 
-      expect_callback_rejected_without_retention(window) { window.on_position_changed { |_x, _y| } }
-      expect_callback_rejected_without_retention(window) { window.on_content_size_changed { |_width, _height| } }
-      expect_callback_rejected_without_retention(window) { window.on_closing { false } }
-      expect_callback_rejected_without_retention(window) { window.on_focus_changed { |_focused| } }
-    ensure
-      window.try &.destroy
-    end
+        it "does not retain callbacks rejected after destruction" do
+          window = UIng::Window.new("Rejected callback", 160, 80)
+          control = {{ type }}.new({{ arguments.splat }})
+          window.child = control
+          window.destroy
 
-    it "does not retain rejected Table callbacks" do
-      handler = UIng::Table::Model::Handler.new
-      handler.num_columns { 1 }
-      handler.column_type { |_column| UIng::Table::Value::Type::String }
-      handler.num_rows { 0 }
-      model = UIng::Table::Model.new(handler)
-      window = UIng::Window.new("Released table", 160, 80)
-      table = UIng::Table.new(model)
-      window.child = table
-      window.destroy
+          {% for callback in callbacks %}
+            expect_callback_rejected_without_retention(control) { control.{{ callback[0].id }} { } }
+          {% end %}
+        ensure
+          window.try &.destroy
+        end
+      end
+    {% end %}
 
-      expect_callback_rejected_without_retention(table) { table.on_row_clicked { |_row| } }
-      expect_callback_rejected_without_retention(table) { table.on_row_double_clicked { |_row| } }
-      expect_callback_rejected_without_retention(table) { table.on_header_clicked { |_column| } }
-      expect_callback_rejected_without_retention(table) { table.on_selection_changed { |_selection| } }
-    ensure
-      window.try &.destroy
-      model.try &.free
-    end
+    describe "callbacks on other released objects" do
+      it "does not retain rejected Window callbacks" do
+        window = UIng::Window.new("Released window", 160, 80)
+        window.destroy
 
-    it "does not retain a rejected ToolbarItem callback" do
-      toolbar = UIng::Toolbar.new
-      item = toolbar.append_button("Button")
-      toolbar.free
+        expect_callback_rejected_without_retention(window) { window.on_position_changed { |_x, _y| } }
+        expect_callback_rejected_without_retention(window) { window.on_content_size_changed { |_width, _height| } }
+        expect_callback_rejected_without_retention(window) { window.on_closing { false } }
+        expect_callback_rejected_without_retention(window) { window.on_focus_changed { |_focused| } }
+      ensure
+        window.try &.destroy
+      end
 
-      expect_callback_rejected_without_retention(item) { item.on_clicked { |_item| } }
-    ensure
-      toolbar.try &.free
+      it "does not retain rejected Table callbacks" do
+        handler = UIng::Table::Model::Handler.new
+        handler.num_columns { 1 }
+        handler.column_type { |_column| UIng::Table::Value::Type::String }
+        handler.num_rows { 0 }
+        model = UIng::Table::Model.new(handler)
+        window = UIng::Window.new("Released table", 160, 80)
+        table = UIng::Table.new(model)
+        window.child = table
+        window.destroy
+
+        expect_callback_rejected_without_retention(table) { table.on_row_clicked { |_row| } }
+        expect_callback_rejected_without_retention(table) { table.on_row_double_clicked { |_row| } }
+        expect_callback_rejected_without_retention(table) { table.on_header_clicked { |_column| } }
+        expect_callback_rejected_without_retention(table) { table.on_selection_changed { |_selection| } }
+      ensure
+        window.try &.destroy
+        model.try &.free
+      end
+
+      it "does not retain a rejected ToolbarItem callback" do
+        toolbar = UIng::Toolbar.new
+        item = toolbar.append_button("Button")
+        toolbar.free
+
+        expect_callback_rejected_without_retention(item) { item.on_clicked { |_item| } }
+      ensure
+        toolbar.try &.free
+      end
     end
   end
 {% end %}
