@@ -1,5 +1,6 @@
 require "../spec_helper"
 require "../../src/uing/crimage"
+require "../support/native_controls"
 require "../support/toolbar_items"
 
 {% if env("UING_NATIVE_GUI_TESTS") == "1" %}
@@ -8,49 +9,74 @@ require "../support/toolbar_items"
     after_all { UIng.uninit }
     after_each { UIng.on_error(nil) }
 
-    describe "colors and images" do
-      it "converts CrImage colors and images through native controls" do
+    describe "color conversion" do
+      it "converts CrImage colors to foreground, background, and underline attributes" do
         color = CrImage::Color::NRGBA.new(255, 0, 0, 128)
         foreground = UIng::Area::Attribute.new_color(color)
         background = UIng::Area::Attribute.new_background(color)
         underline = UIng::Area::Attribute.new_underline_color(UIng::Area::Attribute::UnderlineColor::Custom, color)
-        table_color = UIng::Table::Value.new_color(color)
 
         foreground.color[0].should be_close(1.0, 1.0 / 255)
         background.color[3].should be_close(128.0 / 255, 1.0 / 255)
         underline.underline_color[1].should be_close(1.0, 1.0 / 255)
-        table_color.color[3].should be_close(128.0 / 255, 1.0 / 255)
-
-        color_button = UIng::ColorButton.new
-        color_button.color = color
-        color_button.color[0].should be_close(1.0, 1.0 / 255)
-        color_button.color[3].should be_close(128.0 / 255, 1.0 / 255)
-        color_button.color_crimage.should be_a(CrImage::Color::NRGBA)
-        color_button.set_color(CrImage::Color::NRGBA.new(0, 255, 0, 255))
-        color_button.color[1].should be_close(1.0, 1.0 / 255)
-
-        source = CrImage::NRGBA.new(CrImage.rect(0, 0, 1, 1))
-        source.set_nrgba(0, 0, color)
-        image = source.to_uing_image
-        image.append(CrImage.rgba(2, 2, color))
-        file_image = UIng::Image.from_file(File.expand_path("../../examples/gallery/crys.png", __DIR__))
-        view = UIng::ImageView.new(source)
-        view.image = source
-        view.image = nil
-
-        window = UIng::Window.new("CrImage integration spec", 200, 100)
-        box = UIng::Box.new(:vertical)
-        box.append(color_button)
-        box.append(view)
-        window.child = box
       ensure
-        window.try { |control| control.destroy unless control.released? }
-        image.try &.free
-        file_image.try &.free
         foreground.try &.free
         background.try &.free
         underline.try &.free
+      end
+
+      it "converts a CrImage color to a table color value" do
+        table_color = UIng::Table::Value.new_color(CrImage::Color::NRGBA.new(255, 0, 0, 128))
+
+        table_color.color[3].should be_close(128.0 / 255, 1.0 / 255)
+      ensure
         table_color.try &.free
+      end
+
+      it "reads and updates ColorButton colors through the CrImage API" do
+        SpecSupport.with_native_control(UIng::ColorButton.new) do |button|
+          button.color = CrImage::Color::NRGBA.new(255, 0, 0, 128)
+          button.color[0].should be_close(1.0, 1.0 / 255)
+          button.color[3].should be_close(128.0 / 255, 1.0 / 255)
+          button.color_crimage.should be_a(CrImage::Color::NRGBA)
+          button.set_color(CrImage::Color::NRGBA.new(0, 255, 0, 255))
+          button.color[1].should be_close(1.0, 1.0 / 255)
+        end
+      end
+    end
+
+    describe "image conversion" do
+      it "creates an Image from CrImage pixels and appends a higher-resolution representation" do
+        color = CrImage::Color::NRGBA.new(255, 0, 0, 128)
+        source = CrImage::NRGBA.new(CrImage.rect(0, 0, 1, 1))
+        source.set_nrgba(0, 0, color)
+        image = source.to_uing_image
+        image.size.should eq({1.0, 1.0})
+
+        image.append(CrImage.rgba(2, 2, color))
+        image.size.should eq({1.0, 1.0})
+      ensure
+        image.try &.free
+      end
+
+      it "loads a native Image from a PNG file" do
+        image = UIng::Image.from_file(File.expand_path("../../examples/gallery/crys.png", __DIR__))
+
+        image.size.should eq({400.0, 400.0})
+      ensure
+        image.try &.free
+      end
+    end
+
+    describe "image views" do
+      it "accepts CrImage sources during construction, replacement, and clearing" do
+        source = CrImage::NRGBA.new(CrImage.rect(0, 0, 1, 1))
+        source.set_nrgba(0, 0, CrImage::Color::NRGBA.new(255, 0, 0, 128))
+
+        SpecSupport.with_native_control(UIng::ImageView.new(source)) do |view|
+          view.image = source
+          view.image = nil
+        end
       end
     end
 

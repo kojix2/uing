@@ -1,6 +1,14 @@
 require "../../spec_helper"
 
 {% if env("UING_NATIVE_GUI_TESTS") == "1" %}
+  private def with_enumeration_string(&)
+    UIng::Area::AttributedString.open("abcd") do |string|
+      string.set_attribute(UIng::Area::Attribute.new_size(12.0), 0, 2)
+      string.set_attribute(UIng::Area::Attribute.new_weight(UIng::TextWeight::Bold), 2, 4)
+      yield string
+    end
+  end
+
   describe UIng::Area::AttributedString do
     before_all { UIng.init }
     after_all { UIng.uninit }
@@ -51,40 +59,46 @@ require "../../spec_helper"
 
     describe "attribute enumeration" do
       it "rejects AttributedString mutation during enumeration and preserves its owner" do
-        string = UIng::Area::AttributedString.new("abcd")
-        string.set_attribute(UIng::Area::Attribute.new_size(12.0), 0, 2)
-        string.set_attribute(UIng::Area::Attribute.new_weight(UIng::TextWeight::Bold), 2, 4)
         errors = [] of Exception
         UIng.on_error { |error, _context| errors << error }
 
-        visits = 0
-        string.each_attribute do |_attribute, _start, _end|
-          visits += 1
-          string.append_unattributed("x")
-        end
-
-        visits.should eq(1)
-        errors.size.should eq(1)
-        errors.first.message.to_s.should contain("being enumerated")
-        string.string.should eq("abcd")
-
-        nested_visits = 0
-        string.each_attribute do |_outer_attribute, _outer_start, _outer_end|
-          string.each_attribute do |_inner_attribute, _inner_start, _inner_end|
-            nested_visits += 1
+        with_enumeration_string do |string|
+          visits = 0
+          string.each_attribute do |_attribute, _start, _end|
+            visits += 1
+            string.append_unattributed("x")
           end
-        end
-        nested_visits.should eq(4)
 
-        limited_visits = 0
-        string.each_attribute_while do |_attribute, _start, _end|
-          limited_visits += 1
-          false
+          visits.should eq(1)
+          errors.size.should eq(1)
+          errors.first.message.to_s.should contain("being enumerated")
+          string.string.should eq("abcd")
         end
-        limited_visits.should eq(1)
       ensure
         UIng.on_error(nil)
-        string.try &.free
+      end
+
+      it "permits nested read-only enumeration" do
+        with_enumeration_string do |string|
+          nested_visits = 0
+          string.each_attribute do |_outer_attribute, _outer_start, _outer_end|
+            string.each_attribute do |_inner_attribute, _inner_start, _inner_end|
+              nested_visits += 1
+            end
+          end
+          nested_visits.should eq(4)
+        end
+      end
+
+      it "stops enumeration when the callback returns false" do
+        with_enumeration_string do |string|
+          limited_visits = 0
+          string.each_attribute_while do |_attribute, _start, _end|
+            limited_visits += 1
+            false
+          end
+          limited_visits.should eq(1)
+        end
       end
     end
 

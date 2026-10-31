@@ -48,6 +48,10 @@ and native tests on Linux x64, macOS ARM64, and Windows MSVC.
   their rejection cases in the same behavior group; short, focused specs can
   remain flat.
 - Each spec must run independently and must not require another spec.
+- Keep each `it` focused on one behavioral contract or a connected lifecycle
+  scenario. Multiple assertions and small input matrices can explain that
+  contract; split independent behaviors so one failure does not hide the
+  others. Give distinct callback APIs their own named cases.
 - Native features own initialization and shutdown. Menu cases use a fresh
   runtime and create menus before any Window. Event-loop waits need deadlines.
 

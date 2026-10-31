@@ -1,4 +1,5 @@
 require "../spec_helper"
+require "../support/native_controls"
 
 {% if env("UING_NATIVE_GUI_TESTS") == "1" %}
   # Callback retention has no public accessor. Observe it without injecting state
@@ -55,29 +56,45 @@ require "../spec_helper"
                             ] %}
       {% type, arguments, callbacks = callback_case[0], callback_case[1], callback_case[2] %}
       describe {{ type }} do
-        it "replaces retained callbacks and supports both clearing forms" do
-          window = UIng::Window.new("Callback registration", 160, 80)
-          control = {{ type }}.new({{ arguments.splat }})
-          window.child = control
+        {% for callback in callbacks %}
+          describe {{ callback[0].id.stringify }} do
+            it "replaces the retained callback and keeps its replacement across garbage collection" do
+              SpecSupport.with_native_control({{ type }}.new({{ arguments.splat }})) do |control|
+                control.{{ callback[0].id }} { }
+                original = control.callback_boxes_for_spec.compact
+                original.size.should eq(1)
+                control.{{ callback[0].id }} { }
+                control.callback_boxes_for_spec.compact.should_not eq(original)
+                GC.collect
+                control.callback_boxes_for_spec.compact.size.should eq(1)
+              end
+            end
 
-          {% for callback in callbacks %}
-            control.{{ callback[0].id }} { }
-            original = control.callback_boxes_for_spec.compact
-            original.size.should eq(1)
-            control.{{ callback[0].id }} { }
-            control.callback_boxes_for_spec.compact.should_not eq(original)
-            GC.collect
-            control.callback_boxes_for_spec.compact.size.should eq(1)
+            it "releases the retained callback through either clearing form" do
+              SpecSupport.with_native_control({{ type }}.new({{ arguments.splat }})) do |control|
+                control.{{ callback[0].id }} { }
+                control.callback_boxes_for_spec.compact.size.should eq(1)
+                control.{{ callback[1].id }}
+                control.callback_boxes_for_spec.compact.should be_empty
+                control.{{ callback[0].id }} { }
+                control.callback_boxes_for_spec.compact.size.should eq(1)
+                control.{{ callback[0].id }}(nil)
+                control.callback_boxes_for_spec.compact.should be_empty
+              end
+            end
 
-            control.{{ callback[1].id }}
-            control.callback_boxes_for_spec.compact.should be_empty
-            control.{{ callback[0].id }} { }
-            control.{{ callback[0].id }}(nil)
-            control.callback_boxes_for_spec.compact.should be_empty
-          {% end %}
-        ensure
-          window.try &.destroy
-        end
+            it "does not retain a callback rejected after destruction" do
+              window = UIng::Window.new("Rejected callback", 160, 80)
+              control = {{ type }}.new({{ arguments.splat }})
+              window.child = control
+              window.destroy
+
+              expect_callback_rejected_without_retention(control) { control.{{ callback[0].id }} { } }
+            ensure
+              window.try &.destroy
+            end
+          end
+        {% end %}
 
         it "releases retained callbacks when the parent destroys the control" do
           window = UIng::Window.new("Callback cleanup", 160, 80)
@@ -98,55 +115,50 @@ require "../spec_helper"
         ensure
           window.try &.destroy
         end
-
-        it "does not retain callbacks rejected after destruction" do
-          window = UIng::Window.new("Rejected callback", 160, 80)
-          control = {{ type }}.new({{ arguments.splat }})
-          window.child = control
-          window.destroy
-
-          {% for callback in callbacks %}
-            expect_callback_rejected_without_retention(control) { control.{{ callback[0].id }} { } }
-          {% end %}
-        ensure
-          window.try &.destroy
-        end
       end
     {% end %}
 
-    describe "callbacks on other released objects" do
-      it "does not retain rejected Window callbacks" do
-        window = UIng::Window.new("Released window", 160, 80)
-        window.destroy
+    describe UIng::Window do
+      {% for callback in [:on_position_changed, :on_content_size_changed, :on_closing, :on_focus_changed] %}
+        it {{ "does not retain a rejected " + callback.id.stringify + " callback" }} do
+          window = UIng::Window.new("Released window", 160, 80)
+          window.destroy
 
-        expect_callback_rejected_without_retention(window) { window.on_position_changed { |_x, _y| } }
-        expect_callback_rejected_without_retention(window) { window.on_content_size_changed { |_width, _height| } }
-        expect_callback_rejected_without_retention(window) { window.on_closing { false } }
-        expect_callback_rejected_without_retention(window) { window.on_focus_changed { |_focused| } }
-      ensure
-        window.try &.destroy
-      end
+          expect_callback_rejected_without_retention(window) do
+            window.{{ callback.id }} do
+              {% if callback == :on_closing %}
+                false
+              {% end %}
+            end
+          end
+        ensure
+          window.try &.destroy
+        end
+      {% end %}
+    end
 
-      it "does not retain rejected Table callbacks" do
-        handler = UIng::Table::Model::Handler.new
-        handler.num_columns { 1 }
-        handler.column_type { |_column| UIng::Table::Value::Type::String }
-        handler.num_rows { 0 }
-        model = UIng::Table::Model.new(handler)
-        window = UIng::Window.new("Released table", 160, 80)
-        table = UIng::Table.new(model)
-        window.child = table
-        window.destroy
+    describe UIng::Table do
+      {% for callback in [:on_row_clicked, :on_row_double_clicked, :on_header_clicked, :on_selection_changed] %}
+        it {{ "does not retain a rejected " + callback.id.stringify + " callback" }} do
+          handler = UIng::Table::Model::Handler.new
+          handler.num_columns { 1 }
+          handler.column_type { |_column| UIng::Table::Value::Type::String }
+          handler.num_rows { 0 }
+          model = UIng::Table::Model.new(handler)
+          window = UIng::Window.new("Released table", 160, 80)
+          table = UIng::Table.new(model)
+          window.child = table
+          window.destroy
 
-        expect_callback_rejected_without_retention(table) { table.on_row_clicked { |_row| } }
-        expect_callback_rejected_without_retention(table) { table.on_row_double_clicked { |_row| } }
-        expect_callback_rejected_without_retention(table) { table.on_header_clicked { |_column| } }
-        expect_callback_rejected_without_retention(table) { table.on_selection_changed { |_selection| } }
-      ensure
-        window.try &.destroy
-        model.try &.free
-      end
+          expect_callback_rejected_without_retention(table) { table.{{ callback.id }} { } }
+        ensure
+          window.try &.destroy
+          model.try &.free
+        end
+      {% end %}
+    end
 
+    describe UIng::ToolbarItem do
       it "does not retain a rejected ToolbarItem callback" do
         toolbar = UIng::Toolbar.new
         item = toolbar.append_button("Button")

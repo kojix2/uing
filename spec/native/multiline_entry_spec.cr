@@ -7,18 +7,31 @@ require "../support/native_controls"
     after_all { UIng.uninit }
     after_each { UIng.on_error(nil) }
 
-    describe "text and editing" do
-      it "appends UTF-8 lines in both wrapping modes and toggles read-only state" do
+    describe "text" do
+      it "appends and clears UTF-8 lines in both wrapping modes" do
+        [true, false].each do |wrapping|
+          SpecSupport.with_native_control(UIng::MultilineEntry.new(wrapping: wrapping)) do |entry|
+            entry.text = "first\n"
+            entry.append("日本語")
+            entry.text.should eq("first\n日本語")
+            entry.text = ""
+            entry.text.should eq("")
+          end
+        end
+      end
+    end
+
+    describe "read-only state" do
+      it "honors the constructor option and permits programmatic text changes in both wrapping modes" do
         [true, false].each do |wrapping|
           SpecSupport.with_native_control(UIng::MultilineEntry.new(wrapping: wrapping, read_only: true)) do |entry|
             entry.read_only?.should be_true
             entry.text = "first\n"
             entry.append("日本語")
             entry.text.should eq("first\n日本語")
+
             entry.read_only = false
             entry.read_only?.should be_false
-            entry.text = ""
-            entry.text.should eq("")
             entry.read_only = true
             entry.read_only?.should be_true
           end
