@@ -7,7 +7,8 @@ Tests are grouped by execution requirements, then by the type they exercise:
 | `headless/` | State, ownership, conversion, and C callback tests without GUI initialization |
 | `native/` | Tests requiring native GUI initialization or the event loop |
 | `support/` | Explicitly required shared fakes, accessors, and lifecycle helpers |
-| `fixtures/` | Programs that run in a separate process |
+| `fixtures/` | Static test input data, such as images |
+| `programs/` | Standalone test programs run in a separate process |
 
 ## Running tests
 
@@ -48,6 +49,10 @@ and native tests on Linux x64, macOS ARM64, and Windows MSVC.
   their rejection cases in the same behavior group; short, focused specs can
   remain flat.
 - Each spec must run independently and must not require another spec.
+- Keep test input data in `fixtures/` and subprocess scenarios in `programs/`.
+  Execute these programs with `Process.run`; do not require them into the main
+  spec process, where their replacements of runtime methods would affect other
+  tests.
 - Keep each `it` focused on one behavioral contract or a connected lifecycle
   scenario. Multiple assertions and small input matrices can explain that
   contract; split independent behaviors so one failure does not hide the

@@ -60,9 +60,9 @@ require "../support/toolbar_items"
       end
 
       it "loads a native Image from a PNG file" do
-        image = UIng::Image.from_file(File.expand_path("../../examples/gallery/crys.png", __DIR__))
+        image = UIng::Image.from_file(File.expand_path("../fixtures/rgba_2x3.png", __DIR__))
 
-        image.size.should eq({400.0, 400.0})
+        image.size.should eq({2.0, 3.0})
       ensure
         image.try &.free
       end

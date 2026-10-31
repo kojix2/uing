@@ -4,19 +4,19 @@ require "../../src/uing"
 # in the main spec binary would disable real native initialization for every
 # other spec loaded into that process.
 module UIng
-  @@fixture_init_calls = 0
-  @@fixture_uninit_calls = 0
+  @@init_calls_for_spec = 0
+  @@uninit_calls_for_spec = 0
 
   def self.init : Nil
-    @@fixture_init_calls += 1
+    @@init_calls_for_spec += 1
   end
 
   def self.uninit : Nil
-    @@fixture_uninit_calls += 1
+    @@uninit_calls_for_spec += 1
   end
 
-  def self.fixture_calls : {Int32, Int32}
-    {@@fixture_init_calls, @@fixture_uninit_calls}
+  def self.lifecycle_calls_for_spec : {Int32, Int32}
+    {@@init_calls_for_spec, @@uninit_calls_for_spec}
   end
 end
 
@@ -26,4 +26,4 @@ rescue exception
   raise exception unless exception.message == "boom"
 end
 
-raise "unexpected init/uninit calls: #{UIng.fixture_calls}" unless UIng.fixture_calls == {1, 1}
+raise "unexpected init/uninit calls: #{UIng.lifecycle_calls_for_spec}" unless UIng.lifecycle_calls_for_spec == {1, 1}
