@@ -286,6 +286,7 @@ module StableFluids
         begin
           area = UIng::Area.new
           paused = false
+          dirty = false
           painter = Painter.new(model)
           frames = 0
           measured_at = Time.instant
@@ -299,10 +300,6 @@ module StableFluids
           swirl.has_tool_tip = false
           swirl_label = UIng::Label.new("Swirl: #{swirl.value}")
           status = UIng::Label.new("Drag to pour ink and stir · #{SIZE} × #{SIZE} cells")
-          redraw = -> {
-            image.update(model.render)
-            area.queue_redraw_all
-          }
           background = UIng::Area::Draw::Brush.solid(BACKGROUND)
           area.on_draw do |params|
             x, y, size = viewport(params.area_width, params.area_height)
@@ -312,8 +309,10 @@ module StableFluids
             end
             params.context.draw_image(image, x, y, size, size, interpolation: :smooth)
           end
+          # Render on the timer, so frequent input cannot flood the Windows
+          # event loop with image updates and paints ahead of WM_TIMER.
           area.on_mouse_event do |event|
-            redraw.call if painter.paint(event)
+            dirty = true if painter.paint(event)
           end
           area.on_mouse_crossed { |_left| painter.reset }
           area.on_drag_broken { painter.reset }
@@ -325,12 +324,12 @@ module StableFluids
           clear.on_clicked do
             model.clear
             painter.reset
-            redraw.call
+            dirty = true
           end
           automatic.on_toggled { |enabled| model.automatic = enabled }
           palettes.on_selected do |index|
             model.palette = index
-            redraw.call
+            dirty = true
           end
           swirl.on_changed do |value|
             model.swirl = value.to_f64
@@ -365,7 +364,13 @@ module StableFluids
           timer = UIng.timer(16.milliseconds) do
             unless paused
               model.advance
-              redraw.call
+              dirty = true
+            end
+            # Pausing stops the simulation, but still displays input changes.
+            if dirty
+              image.update(model.render)
+              area.queue_redraw_all
+              dirty = false
             end
             frames += 1
             now = Time.instant
