@@ -25,17 +25,9 @@ crystal run examples/crimage/control_gallery.cr
 
 Larger examples include:
 
-- [MD5 Checker](https://github.com/kojix2/uing/tree/main/examples/md5_checker)
 - [Video Player](https://github.com/kojix2/uing/tree/main/examples/video_player)
 - [Air Hockey](https://github.com/kojix2/uing/tree/main/examples/air_hockey)
 
 Start with the smallest example containing the control you need. Custom
 drawing and tables have additional callbacks and lifetime requirements, so
 their gallery examples are the best starting point.
-
-## Packaging an application
-
-The [MD5 Checker](https://github.com/kojix2/uing/tree/main/examples/md5_checker)
-includes scripts for packaging a UIng application with the native libraries it
-needs on Linux, macOS, and Windows. Use it as a starting point when preparing
-an application for distribution.
