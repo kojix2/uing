@@ -1,5 +1,7 @@
 require "../../src/uing/crimage"
 
+# Run with: crystal run --release examples/crimage/gray_scott.cr
+
 # du/dt = Du * laplacian(u) - u*v*v + feed*(1-u)
 # dv/dt = Dv * laplacian(v) + u*v*v - (feed+kill)*v
 module GrayScott

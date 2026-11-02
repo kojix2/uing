@@ -1,6 +1,6 @@
 require "../../src/uing/crimage"
 
-# Run with: crystal run --release examples/image_buffer/stable_fluids.cr
+# Run with: crystal run --release examples/crimage/stable_fluids.cr
 # Requires ImageBuffer-capable libui-ng (dev da49cf29 or later).
 # See Jos Stam, Real-Time Fluid Dynamics for Games (2003):
 # https://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf

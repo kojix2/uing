@@ -457,34 +457,34 @@ If you're looking for icons under the MIT license, try [icon-viewer](https://git
   </tbody>
 </table>
 
+### Drag and Drop
+
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/gallery/basic_drop.cr">basic_drop</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_drop-ubuntu.png" alt="basic_drop-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_drop-windows.png" alt="basic_drop-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_drop-macos.png" alt="basic_drop-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/gallery/basic_drop_callbacks.cr">basic_drop_callbacks</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_drop_callbacks-ubuntu.png" alt="basic_drop_callbacks-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_drop_callbacks-windows.png" alt="basic_drop_callbacks-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/basic_drop_callbacks-macos.png" alt="basic_drop_callbacks-macos"></td>
+    </tr>
+  </tbody>
+</table>
+
 ### Image
-
-`require "uing/crimage"` enables optional helpers for reading images, converting
-CrImage pixels, and passing CrImage colors to UIng controls. Applications using
-these helpers must declare `crimage` in their own `shard.yml`. Plain
-`require "uing"` does not load it. CrImage examples are kept in
-[`examples/crimage/`](examples/crimage/). See the [ImageView guide](guide/content/books/guide_en/widget-image-view.md)
-for usage and image ownership rules.
-
-The optional integration also provides these overloads:
-
-| API | Behavior |
-| --- | --- |
-| `ImageBuffer.new(frame)` / `ImageBuffer.open(frame) { ... }` | Creates and fills a buffer using the image dimensions and alpha format. |
-| `buffer.update(frame)` | Copies an image with matching dimensions, converting alpha format as needed. |
-| `buffer.update_rect(x, y, patch)` | Replaces a region using the patch's visible dimensions. The patch must fit inside the buffer. |
-| `toolbar.append_button(text, icon)` / `append_toggle_button(text, icon)` | Accepts CrImage icons and manages temporary native images. |
-| `item.icon = icon` | Replaces a toolbar icon with a copy of a CrImage image. |
-| `brush.color = color` / `stop.color = color` | Changes color from a CrImage color while preserving geometry and stop position. |
-| `Brush.from_crimage(gradient)` | Copies a CrImage linear or radial gradient into a native brush. |
-| `GradientStop.new(color_stop)` | Copies a CrImage gradient stop. |
-
-Image-based buffer constructors default to straight alpha for NRGBA/NRGBA64 and
-premultiplied alpha for other image types; `format:` can override this choice.
-`open(frame)` frees the buffer when its block exits, so keep the event loop
-inside the block when callbacks use it. Buffer updates do not request redraws.
-Gradient conversion uses native interpolation and requires a positive radial
-radius; its rasterized output can differ from CrImage's renderer.
 
 <table>
   <thead>
@@ -511,7 +511,32 @@ radius; its rasterized output can differ from CrImage's renderer.
   </tbody>
 </table>
 
-Note: Image display is a feature introduced in `kojix2/libui-ng`. This feature is not present in the original libui-ng.
+### Image Buffer
+
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Ubuntu</th>
+      <th>Windows</th>
+      <th>macOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="examples/crimage/gray_scott.cr">Gray–Scott</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/gray_scott-ubuntu.png" alt="gray_scott-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/gray_scott-windows.png" alt="gray_scott-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/gray_scott-macos.png" alt="gray_scott-macos"></td>
+    </tr>
+    <tr>
+      <td><a href="examples/crimage/stable_fluids.cr">Stable Fluids</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/stable_fluids-ubuntu.png" alt="stable_fluids-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/stable_fluids-windows.png" alt="stable_fluids-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/stable_fluids-macos.png" alt="stable_fluids-macos"></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Contributing
 
