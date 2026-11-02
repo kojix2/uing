@@ -1,6 +1,11 @@
 Naming/AccessorMethodName:
   Enabled: false
 
+# These programs run in separate processes and must not be loaded as specs.
+Lint/SpecFilename:
+  Excluded:
+    - spec/programs/**
+
 # Ameba 1.7's embedded formatter disagrees with Crystal 1.21 on continued
 # string literal indentation in this example.
 Lint/Formatting:
