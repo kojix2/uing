@@ -86,22 +86,19 @@ class CSVViewer
     result
   end
 
-  private def load_csv_data(filename : String) : Int32
+  private def load_csv_data(filename : String) : Array(Array(String))?
     separator = File.extname(filename).downcase == ".tsv" ? '\t' : ','
 
     File.open(filename) do |file|
       new_data = CSV.parse(file, separator: separator)
-      return 0 if new_data.empty?
+      return if new_data.empty? || new_data.first.empty?
 
-      @csv_data.clear
-      @csv_data.concat(new_data)
-      columns = @csv_data.first?.try(&.size) || 0
-      puts "Loaded file: #{filename} (#{@csv_data.size} rows, #{columns} columns)"
-      columns
+      puts "Loaded file: #{filename} (#{new_data.size} rows, #{new_data.first.size} columns)"
+      new_data
     end
   rescue ex : Exception
     puts "Error loading file: #{ex.message}"
-    0
+    nil
   end
 
   private def create_table_with_columns(column_count : Int32)
@@ -133,6 +130,7 @@ class CSVViewer
   private def clear_table_data
     old_count = @csv_data.size
     (old_count - 1).downto(0) do |i|
+      @csv_data.delete_at(i)
       @table_model.row_deleted(i)
     end
   end
@@ -143,18 +141,21 @@ class CSVViewer
     @table_model.free
   end
 
-  private def recreate_table(new_column_count : Int32)
+  private def recreate_table(new_column_count : Int32, new_data : Array(Array(String)))
     puts "Column count changed from #{@column_count} to #{new_column_count}, recreating table"
 
     destroy_current_table
+    @csv_data = new_data
     create_table_with_columns(new_column_count)
 
     puts "Table updated with new data"
   end
 
-  private def update_existing_table
-    @csv_data.each_with_index do |_row_data, row_index|
-      @table_model.row_inserted(row_index)
+  private def update_existing_table(new_data : Array(Array(String)))
+    clear_table_data
+    new_data.each do |row_data|
+      @csv_data << row_data
+      @table_model.row_inserted(@csv_data.size - 1)
     end
 
     puts "Table updated with new data"
@@ -163,16 +164,15 @@ class CSVViewer
   private def update_table_with_file(filename : String) : Bool
     puts "Opening file: #{filename}"
 
-    # Clear existing data
-    clear_table_data
-
-    new_column_count = load_csv_data(filename)
-    return false if new_column_count == 0
+    # Parse first so a failed load leaves the displayed rows intact.
+    new_data = load_csv_data(filename)
+    return false unless new_data
+    new_column_count = new_data.first.size
 
     if new_column_count != @column_count && new_column_count > 0
-      recreate_table(new_column_count)
+      recreate_table(new_column_count, new_data)
     else
-      update_existing_table
+      update_existing_table(new_data)
     end
 
     @column_count = new_column_count
