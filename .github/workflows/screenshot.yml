@@ -66,7 +66,12 @@ jobs:
         run: |
           for f in examples/gallery/*.cr examples/crimage/*.cr; do
             name=$(basename "$f" .cr)
-            crystal build "$f" -o "$name"
+            # Stable Fluids' startup simulation exceeds the capture timeout without optimization.
+            if [[ "$name" == "stable_fluids" ]]; then
+              crystal build --release "$f" -o "$name"
+            else
+              crystal build "$f" -o "$name"
+            fi
           done
 
       - name: Build all examples (Windows)
@@ -75,7 +80,12 @@ jobs:
         run: |
           Get-ChildItem examples/gallery/*.cr, examples/crimage/*.cr | ForEach-Object {
             $name = $_.BaseName
-            crystal build $_.FullName -o $name
+            # Stable Fluids' startup simulation exceeds the capture timeout without optimization.
+            if ($name -eq 'stable_fluids') {
+              crystal build --release $_.FullName -o $name
+            } else {
+              crystal build $_.FullName -o $name
+            }
           }
 
       - name: Generate app names
