@@ -2,7 +2,7 @@ require "../../src/uing"
 
 UIng.init
 
-window = UIng::Window.new("Drop files", 480, 240, margined: true)
+window = UIng::Window.new("Drop files", 240, 120, margined: true)
 window.on_closing do
   UIng.quit
   true

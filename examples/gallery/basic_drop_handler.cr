@@ -2,14 +2,14 @@ require "../../src/uing"
 
 UIng.init
 
-window = UIng::Window.new("Drop files or text", 520, 320, margined: true)
+window = UIng::Window.new("Drop files or text", 260, 160, margined: true)
 window.on_closing do
   UIng.quit
   true
 end
 
 box = UIng::Box.new(:vertical)
-status = UIng::Label.new("Drop files or text on the window or the blank area.")
+status = UIng::Label.new("Drop files or text here.")
 area = UIng::Area.new(UIng::Area::Handler.new)
 box.append(status)
 box.append(area, true)
