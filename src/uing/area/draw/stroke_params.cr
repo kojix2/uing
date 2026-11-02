@@ -68,22 +68,30 @@ module UIng
         end
 
         def dashes=(values : Array(Float64))
-          values.each_with_index do |value, index|
-            NumericValue.finite(value, "stroke dash #{index}")
-          end
+          validate_dashes(values)
           @dashes_array = values
           sync_dashes
         end
 
         def dashes=(values : Enumerable(Number))
-          @dashes_array = values.map_with_index do |value, index|
+          self.dashes = values.map_with_index do |value, index|
             NumericValue.finite(value, "stroke dash #{index}")
           end
-          sync_dashes
         end
 
         def num_dashes : Int32
           @dashes_array.size
+        end
+
+        private def validate_dashes(values : Array(Float64)) : Nil
+          values.each_with_index do |value, index|
+            unless value.finite? && value >= 0
+              raise ArgumentError.new("stroke dash #{index} must be finite and nonnegative")
+            end
+          end
+          unless values.empty? || values.any? { |value| value > 0 }
+            raise ArgumentError.new("stroke dash pattern must contain at least one positive length")
+          end
         end
 
         private def sync_dashes
@@ -97,6 +105,7 @@ module UIng
         end
 
         def to_unsafe
+          validate_dashes(@dashes_array)
           sync_dashes
           pointerof(@cstruct)
         end
