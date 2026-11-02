@@ -3,6 +3,7 @@ require "math"
 
 # Run with:
 #   crystal run examples/mandelbrot.cr
+# Drag with the left button to pan; scroll up/down to zoom at the pointer.
 
 WIDTH           = 1200
 HEIGHT          =  900
@@ -10,8 +11,6 @@ TILE_SIZE       =   32
 DEFAULT_ITERS   =  500
 DEFAULT_WORKERS =    4
 LEFT_BUTTON     =    1
-RIGHT_BUTTON    =    3
-ZOOM_FACTOR     =  2.0
 
 record RenderConfig,
   job_id : Int32,
@@ -50,12 +49,14 @@ class MandelbrotRenderer
   @render_stop_button : UIng::Button
   @reset_button : UIng::Button
   @status_label : UIng::Label
+  @image_buffer : UIng::ImageBuffer
 
-  @pixels = Bytes.new(WIDTH * HEIGHT * 4, 0_u8)
+  @background = Bytes.new(WIDTH * HEIGHT * 4, 0_u8)
   @messages = Channel(RenderMessage).new(256)
   @worker_context : Fiber::ExecutionContext::Parallel = Fiber::ExecutionContext::Parallel.new("mandelbrot-workers", 16)
   @job_id = Atomic(Int32).new(0)
   @running = false
+  @render_pending = false
   @completed_workers = 0
   @active_workers = 0
   @completed_tiles = 0
@@ -67,6 +68,9 @@ class MandelbrotRenderer
   @draw_y : Float64 = 0.0
   @draw_width : Float64 = WIDTH.to_f64
   @draw_height : Float64 = HEIGHT.to_f64
+  @drag_position : Tuple(Float64, Float64)?
+  @pan_x = 0.0
+  @pan_y = 0.0
 
   def initialize
     @handler = UIng::Area::Handler.new
@@ -80,8 +84,9 @@ class MandelbrotRenderer
     @render_stop_button = UIng::Button.new("Render")
     @reset_button = UIng::Button.new("Reset")
     @status_label = UIng::Label.new("Idle")
+    @image_buffer = UIng::ImageBuffer.new(WIDTH, HEIGHT)
 
-    clear_pixels
+    prepare_background
     setup_handlers
     setup_ui
   end
@@ -104,26 +109,51 @@ class MandelbrotRenderer
       @draw_width = draw_width
       @draw_height = draw_height
 
-      image = UIng::Image.new(WIDTH, HEIGHT)
-      image.append(@pixels, WIDTH, HEIGHT, WIDTH * 4)
-      ctx.draw_image(image, x, y, draw_width, draw_height)
-      image.free
-    end
+      next unless draw_width > 0 && draw_height > 0
 
-    @handler.mouse_event do |_area, event|
-      case event.down
-      when LEFT_BUTTON
-        zoom_at(event.x, event.y, 1.0 / ZOOM_FACTOR)
-        start_render
-      when RIGHT_BUTTON
-        zoom_at(event.x, event.y, ZOOM_FACTOR)
-        start_render
+      ctx.saved do
+        ctx.clip_path { |path| path.add_rectangle(x, y, draw_width, draw_height) }
+        ctx.draw_image(@image_buffer, x + @pan_x, y + @pan_y, draw_width, draw_height)
       end
     end
 
+    @handler.mouse_event { |_area, event| pan(event) }
+
+    @handler.scroll_event do |_area, event|
+      next false if @drag_position || event.delta_y == 0
+
+      factor = 1.1 ** event.delta_y.clamp(-10.0, 10.0)
+      zoomed = zoom_at(event.x, event.y, factor)
+      @render_pending = true if zoomed
+      zoomed
+    end
+
     @handler.mouse_crossed { |_area, _left| }
-    @handler.drag_broken { |_area| }
+    @handler.drag_broken { |_area| @drag_position = nil }
     @handler.key_event { |_area, _event| false }
+  end
+
+  private def pan(event : UIng::Area::MouseEvent)
+    if event.down == LEFT_BUTTON
+      @drag_position = {event.x, event.y} if inside_image?(event.x, event.y)
+    elsif previous = @drag_position
+      if event.up != LEFT_BUTTON && (event.held1_to64 & 1_u64) == 0
+        @drag_position = nil
+        return
+      end
+
+      dx = event.x - previous[0]
+      dy = event.y - previous[1]
+      if dx != 0 || dy != 0
+        @center_x -= dx / @draw_width * @scale * (WIDTH.to_f64 / HEIGHT)
+        @center_y -= dy / @draw_height * @scale
+        @pan_x += dx
+        @pan_y += dy
+        @render_pending = true
+        @area.queue_redraw_all
+      end
+      @drag_position = event.up == LEFT_BUTTON ? nil : {event.x, event.y}
+    end
   end
 
   private def setup_ui
@@ -176,7 +206,10 @@ class MandelbrotRenderer
   private def start_render
     stop_render
     drain_messages
-    clear_pixels
+    @drag_position = nil
+    @pan_x = 0.0
+    @pan_y = 0.0
+    @image_buffer.update(@background)
 
     job_id = @job_id.add(1) + 1
     workers = @workers_spinbox.value.clamp(1, 16)
@@ -215,6 +248,7 @@ class MandelbrotRenderer
   end
 
   private def stop_render
+    @render_pending = false
     return unless @running
 
     @job_id.add(1)
@@ -304,26 +338,17 @@ class MandelbrotRenderer
     end
   end
 
-  private def copy_tile(result : TileResult)
-    tile = result.tile
-    tile.height.times do |local_y|
-      source = local_y * tile.width * 4
-      target = ((tile.y + local_y) * WIDTH + tile.x) * 4
-      @pixels[target, tile.width * 4].copy_from(result.pixels[source, tile.width * 4])
-    end
-  end
-
-  private def clear_pixels
+  private def prepare_background
     y = 0
     while y < HEIGHT
       x = 0
       while x < WIDTH
         offset = (y * WIDTH + x) * 4
         shade = ((x.to_f64 / WIDTH) * 20 + (y.to_f64 / HEIGHT) * 18).to_u8
-        @pixels[offset] = 10_u8 + shade
-        @pixels[offset + 1] = 12_u8 + shade
-        @pixels[offset + 2] = 17_u8 + shade
-        @pixels[offset + 3] = 255_u8
+        @background[offset] = 10_u8 + shade
+        @background[offset + 1] = 12_u8 + shade
+        @background[offset + 2] = 17_u8 + shade
+        @background[offset + 3] = 255_u8
         x += 1
       end
       y += 1
@@ -348,7 +373,8 @@ class MandelbrotRenderer
       when TileResult
         next unless message.job_id == @job_id.get
 
-        copy_tile(message)
+        tile = message.tile
+        @image_buffer.update_rect(tile.x, tile.y, tile.width, tile.height, message.pixels)
         @completed_tiles += 1
         progress = ((@completed_tiles.to_f64 / @total_tiles) * 100).to_i.clamp(0, 100)
         @progress_bar.value = progress
@@ -370,21 +396,33 @@ class MandelbrotRenderer
     @area.queue_redraw_all if dirty
   end
 
-  private def zoom_at(x : Float64, y : Float64, factor : Float64)
-    return unless x >= @draw_x && x <= @draw_x + @draw_width
-    return unless y >= @draw_y && y <= @draw_y + @draw_height
+  private def inside_image?(x : Float64, y : Float64) : Bool
+    @draw_width > 0 && @draw_height > 0 &&
+      x >= @draw_x && x <= @draw_x + @draw_width &&
+      y >= @draw_y && y <= @draw_y + @draw_height
+  end
 
+  private def zoom_at(x : Float64, y : Float64, factor : Float64) : Bool
+    return false unless inside_image?(x, y)
+
+    scale = (@scale * factor).clamp(1e-13, 12.0)
+    return false if scale == @scale
+
+    # Keep the complex-plane coordinate under the pointer fixed while zooming.
     normalized_x = (x - @draw_x) / @draw_width
     normalized_y = (y - @draw_y) / @draw_height
-    image_x = (normalized_x - 0.5) * @scale * (WIDTH.to_f64 / HEIGHT)
-    image_y = (normalized_y - 0.5) * @scale
+    image_x = (normalized_x - 0.5) * (@scale - scale) * (WIDTH.to_f64 / HEIGHT)
+    image_y = (normalized_y - 0.5) * (@scale - scale)
     @center_x += image_x
     @center_y += image_y
-    @scale *= factor
+    @scale = scale
+    true
   end
 
   def run
-    UIng.timer(16.milliseconds) do
+    timer = UIng.timer(16.milliseconds) do
+      # Show a translated preview during dragging; render once it ends.
+      start_render if @render_pending && @drag_position.nil?
       process_messages
       true
     end
@@ -392,9 +430,14 @@ class MandelbrotRenderer
     @window.show
     start_render
     UIng.main
+  ensure
+    timer.try &.stop
+    stop_render
+    @window.destroy unless @window.released?
+    @image_buffer.free
   end
 end
 
-UIng.init
-MandelbrotRenderer.new.run
-UIng.uninit
+UIng.init do
+  MandelbrotRenderer.new.run
+end
