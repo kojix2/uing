@@ -137,11 +137,12 @@ Images are automatically generated and stored in the `screenshots` branch.
 
 Note: Toolbar is a feature specific to `kojix2/libui-ng`. It is experimental and may change.
 
-If you're looking for icons under the MIT license, try [icon-viewer](https://github.com/kojix2/icon-viewer).
+If you're looking for icons under the MIT license, try [Icon Viewer](https://github.com/kojix2/icon-viewer).
 
 <table>
   <thead>
     <tr>
+      <th></th>
       <th>Ubuntu</th>
       <th>Windows</th>
       <th>macOS</th>
@@ -149,9 +150,10 @@ If you're looking for icons under the MIT license, try [icon-viewer](https://git
   </thead>
   <tbody>
     <tr>
-      <td><img src="https://raw.githubusercontent.com/kojix2/icon-viewer/screenshots/icon-viewer-ubuntu.png" alt="Icon Viewer on Ubuntu"></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/icon-viewer/screenshots/icon-viewer-windows.png" alt="Icon Viewer on Windows"></td>
-      <td><img src="https://raw.githubusercontent.com/kojix2/icon-viewer/screenshots/icon-viewer-macos.png" alt="Icon Viewer on macOS"></td>
+      <td><a href="https://github.com/kojix2/icon-viewer">Icon Viewer</a></td>
+      <td><a href="https://github.com/kojix2/icon-viewer"><img src="https://raw.githubusercontent.com/kojix2/icon-viewer/screenshots/icon-viewer-ubuntu.png" alt="Icon Viewer on Ubuntu"></a></td>
+      <td><a href="https://github.com/kojix2/icon-viewer"><img src="https://raw.githubusercontent.com/kojix2/icon-viewer/screenshots/icon-viewer-windows.png" alt="Icon Viewer on Windows"></a></td>
+      <td><a href="https://github.com/kojix2/icon-viewer"><img src="https://raw.githubusercontent.com/kojix2/icon-viewer/screenshots/icon-viewer-macos.png" alt="Icon Viewer on macOS"></a></td>
     </tr>
   </tbody>
 </table>
