@@ -1,7 +1,7 @@
 CRYSTAL ?= crystal
 SHARDS ?= shards
 
-CRFLAGS ?= -Dpreview_mt -Dexecution_context
+CRFLAGS ?=
 SOURCE = src/air_hockey.cr
 TARGET = bin/air_hockey
 TARGET_DIR = bin

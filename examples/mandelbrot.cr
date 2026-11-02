@@ -1,8 +1,8 @@
-require "../../src/uing"
+require "../src/uing"
 require "math"
 
 # Run with:
-#   crystal run -Dexecution_context -Dpreview_mt examples/MT/mandelbrot.cr
+#   crystal run examples/mandelbrot.cr
 
 WIDTH           = 1200
 HEIGHT          =  900

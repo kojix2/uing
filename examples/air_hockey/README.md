@@ -4,7 +4,7 @@ An air hockey example built with UIng `Area` drawing. Move your mallet with the 
 
 ## Requirements
 
-- Crystal 1.0 or later
+- Crystal 1.21.0 or later
 - shards
 - A working UIng runtime environment
   - Linux: GTK 3 runtime
@@ -35,7 +35,7 @@ To build directly without the Makefile:
 
 ```sh
 shards install
-crystal build -Dpreview_mt -Dexecution_context src/air_hockey.cr -o bin/air_hockey
+crystal build src/air_hockey.cr -o bin/air_hockey
 ./bin/air_hockey
 ```
 
