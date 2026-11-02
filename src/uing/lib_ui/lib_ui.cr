@@ -18,19 +18,19 @@ module UIng
     {% end %}
     {% if flag?(:static) %}
       {% if flag?(:release) || !flag?(:debug) %}
-        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release/mt")]
+        @[Link(ldflags: "/LIBPATH:\"#{__DIR__}/../../../libui/release/mt\"")]
       {% else %}
-        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug/mt")]
+        @[Link(ldflags: "/LIBPATH:\"#{__DIR__}/../../../libui/debug/mt\"")]
       {% end %}
     {% else %}
       {% if flag?(:release) || !flag?(:debug) %}
-        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/release/md")]
+        @[Link(ldflags: "/LIBPATH:\"#{__DIR__}/../../../libui/release/md\"")]
       {% else %}
-        @[Link(ldflags: "/LIBPATH:#{__DIR__}/../../../libui/debug/md")]
+        @[Link(ldflags: "/LIBPATH:\"#{__DIR__}/../../../libui/debug/md\"")]
       {% end %}
     {% end %}
     # @[Link("ui", dll: "libui.dll")]
-    @[Link(ldflags: "/MANIFESTINPUT:#{__DIR__}/../../../comctl32.manifest /MANIFEST:EMBED")]
+    @[Link(ldflags: "/MANIFESTINPUT:\"#{__DIR__}/../../../comctl32.manifest\" /MANIFEST:EMBED")]
   {% elsif flag?(:win32) && flag?(:gnu) %}
     {% link_dir = __DIR__.gsub(/\\/, "/") %}
     @[Link("stdc++")]
@@ -56,17 +56,17 @@ module UIng
     @[Link("gtk+-3.0")]
     @[Link("m")]
     {% if flag?(:release) || !flag?(:debug) %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+      @[Link(ldflags: "-L\"#{__DIR__}/../../../libui/release\"")]
     {% else %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+      @[Link(ldflags: "-L\"#{__DIR__}/../../../libui/debug\"")]
     {% end %}
   {% elsif flag?(:darwin) %}
     @[Link(framework: "CoreGraphics")]
     @[Link(framework: "AppKit")]
     {% if flag?(:release) || !flag?(:debug) %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/release")]
+      @[Link(ldflags: "-L\"#{__DIR__}/../../../libui/release\"")]
     {% else %}
-      @[Link(ldflags: "-L#{__DIR__}/../../../libui/debug")]
+      @[Link(ldflags: "-L\"#{__DIR__}/../../../libui/debug\"")]
     {% end %}
   {% end %}
   @[Link("ui")]
