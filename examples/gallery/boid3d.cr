@@ -419,11 +419,10 @@ class BoidRenderer3D
     @simulation.boids_sorted_by_depth.each do |boid|
       draw_boid(ctx, boid)
     end
-    draw_depth_indicator(ctx)
   end
 
   private def draw_background(ctx, width : Float64, height : Float64)
-    brush = UIng::Area::Draw::Brush.new(:solid, 0.0, 0.05, 0.15, 1.0)
+    brush = UIng::Area::Draw::Brush.new(:solid, 1.0, 1.0, 1.0, 1.0)
     ctx.fill_path(brush) do |path|
       path.add_rectangle(0, 0, width, height)
     end
@@ -534,23 +533,6 @@ class BoidRenderer3D
       path.line_to(tip_x, tip_y)
       path.line_to(right_x, right_y)
       path.close_figure
-    end
-  end
-
-  private def draw_depth_indicator(ctx)
-    brush = UIng::Area::Draw::Brush.new(:solid, 0.5, 0.5, 0.5, 0.7)
-    ctx.stroke_path(brush, thickness: 1.0) do |path|
-      scale_x = @simulation.width - 30
-      scale_top = 50.0
-      scale_bottom = @simulation.height - 50
-      path.new_figure(scale_x, scale_top)
-      path.line_to(scale_x, scale_bottom)
-
-      (0..4).each do |index|
-        tick_y = scale_top + (scale_bottom - scale_top) * index / 4
-        path.new_figure(scale_x - 5, tick_y)
-        path.line_to(scale_x + 5, tick_y)
-      end
     end
   end
 end
