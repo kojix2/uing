@@ -30,6 +30,14 @@ private class FailingCleanupBlockControl < SpecSupport::LifetimeControl
   end
 end
 
+private def return_from_block_constructor(constructed : Array(BlockConstructedLifetimeControl)) : Symbol
+  BlockConstructedLifetimeControl.new do |control|
+    constructed << control
+    return :cancelled
+  end
+  :completed
+end
+
 describe UIng::Control do
   describe "lifecycle" do
     it "moves through Alive, DestroyPending, and Destroyed" do
@@ -120,6 +128,43 @@ describe UIng::Control do
   end
 
   describe "block construction" do
+    it "destroys a Control when its construction block returns from the calling method" do
+      constructed = [] of BlockConstructedLifetimeControl
+
+      return_from_block_constructor(constructed).should eq(:cancelled)
+      constructed.size.should eq(1)
+      constructed[0].released?.should be_true
+    end
+
+    it "detaches and destroys a Control when its construction block exits with break" do
+      parent = SpecSupport::LifetimeContainer.new
+      constructed : BlockConstructedLifetimeControl? = nil
+
+      result = BlockConstructedLifetimeControl.new do |control|
+        constructed = control
+        parent.adopt_child(control)
+        break :cancelled
+      end
+
+      result.should eq(:cancelled)
+      control = constructed.should_not be_nil
+      control.released?.should be_true
+      control.parent.should be_nil
+      parent.contains?(control).should be_false
+    end
+
+    it "cleans up keyword block construction when the block exits with break" do
+      constructed : KeywordBlockConstructedLifetimeControl? = nil
+
+      result = KeywordBlockConstructedLifetimeControl.new(address: 0x111_u64) do |control|
+        constructed = control
+        break :cancelled
+      end
+
+      result.should eq(:cancelled)
+      constructed.should_not(be_nil).released?.should be_true
+    end
+
     it "detaches and destroys a Control when block construction raises" do
       parent = SpecSupport::LifetimeContainer.new
       constructed : BlockConstructedLifetimeControl? = nil
