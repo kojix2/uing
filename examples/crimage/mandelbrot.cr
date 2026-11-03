@@ -11,6 +11,9 @@ TILE_SIZE       =   32
 DEFAULT_ITERS   =  500
 DEFAULT_WORKERS =    4
 LEFT_BUTTON     =    1
+DEFAULT_CENTER_X =  -0.75
+DEFAULT_CENTER_Y =   0.0
+DEFAULT_SCALE    =   2.4
 
 record RenderConfig,
   job_id : Int32,
@@ -61,9 +64,9 @@ class MandelbrotRenderer
   @active_workers = 0
   @completed_tiles = 0
   @total_tiles = 0
-  @center_x = -0.5
-  @center_y = 0.0
-  @scale = 3.0
+  @center_x = DEFAULT_CENTER_X
+  @center_y = DEFAULT_CENTER_Y
+  @scale = DEFAULT_SCALE
   @draw_x : Float64 = 0.0
   @draw_y : Float64 = 0.0
   @draw_width : Float64 = WIDTH.to_f64
@@ -189,9 +192,9 @@ class MandelbrotRenderer
     end
     @palette_combobox.on_selected { start_render }
     @reset_button.on_clicked do
-      @center_x = -0.5
-      @center_y = 0.0
-      @scale = 3.0
+      @center_x = DEFAULT_CENTER_X
+      @center_y = DEFAULT_CENTER_Y
+      @scale = DEFAULT_SCALE
       start_render
     end
 
