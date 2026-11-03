@@ -554,6 +554,12 @@ If you're looking for icons under the MIT license, try [Icon Viewer](https://git
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/stable_fluids-windows.png" alt="stable_fluids-windows"></td>
       <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/stable_fluids-macos.png" alt="stable_fluids-macos"></td>
     </tr>
+    <tr>
+      <td><a href="examples/crimage/mandelbrot.cr">Mandelbrot</a></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/mandelbrot-ubuntu.png" alt="mandelbrot-ubuntu"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/mandelbrot-windows.png" alt="mandelbrot-windows"></td>
+      <td><img src="https://raw.githubusercontent.com/kojix2/uing/screenshots/mandelbrot-macos.png" alt="mandelbrot-macos"></td>
+    </tr>
   </tbody>
 </table>
 

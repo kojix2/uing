@@ -1,8 +1,8 @@
-require "../src/uing"
+require "../../src/uing"
 require "math"
 
 # Run with:
-#   crystal run examples/mandelbrot.cr
+#   crystal run examples/crimage/mandelbrot.cr
 # Drag with the left button to pan; scroll up/down to zoom at the pointer.
 
 WIDTH           = 1200
