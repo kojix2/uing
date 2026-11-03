@@ -5,13 +5,13 @@ require "math"
 #   crystal run examples/crimage/mandelbrot.cr
 # Drag with the left button to pan; scroll up/down to zoom at the pointer.
 
-WIDTH           = 1200
-HEIGHT          =  900
-TILE_SIZE       =   32
-DEFAULT_ITERS   =  500
-DEFAULT_WORKERS =    4
-LEFT_BUTTON     =    1
-DEFAULT_CENTER_X =  -0.75
+WIDTH            =  1200
+HEIGHT           =   900
+TILE_SIZE        =    32
+DEFAULT_ITERS    =   500
+DEFAULT_WORKERS  =     4
+LEFT_BUTTON      =     1
+DEFAULT_CENTER_X = -0.75
 DEFAULT_CENTER_Y =   0.0
 DEFAULT_SCALE    =   2.4
 
