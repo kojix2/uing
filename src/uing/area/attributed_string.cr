@@ -32,6 +32,10 @@ module UIng
         @released = true
       end
 
+      protected def __block_constructor_failed__ : Nil
+        free
+      end
+
       def string : String?
         check_available
         str_ptr = native_string

@@ -1,6 +1,8 @@
 require "../../spec_helper"
 
 private class BoundaryAttributedString < UIng::Area::AttributedString
+  block_constructor
+
   getter? freed = false
 
   def initialize(@contents : String)
@@ -32,6 +34,38 @@ end
 
 describe UIng::Area::AttributedString do
   describe "block lifetime" do
+    it "frees the string when its construction block raises" do
+      constructed : BoundaryAttributedString? = nil
+
+      expect_raises(Exception, "construction failed") do
+        BoundaryAttributedString.new("abc") do |string|
+          constructed = string
+          raise "construction failed"
+        end
+      end
+
+      constructed.should_not(be_nil).freed?.should be_true
+    end
+
+    it "frees the string when its construction block exits with break" do
+      constructed : BoundaryAttributedString? = nil
+
+      result = BoundaryAttributedString.new("abc") do |string|
+        constructed = string
+        break :cancelled
+      end
+
+      result.should eq(:cancelled)
+      constructed.should_not(be_nil).freed?.should be_true
+    end
+
+    it "keeps the string available after normal block construction" do
+      string = BoundaryAttributedString.new("abc") { len }
+
+      string.len.should eq(3)
+      string.freed?.should be_false
+    end
+
     it "returns the block result and frees the string after the block" do
       scoped = nil
       result = BoundaryAttributedString.open("abc") do |string|
