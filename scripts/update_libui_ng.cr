@@ -14,7 +14,7 @@ release_tag = release_id.starts_with?("commit-") ? release_id : "commit-#{releas
 commit_hash = release_tag.lchop("commit-")
 
 source = File.read(DOWNLOAD_PATH)
-newline = source.includes?("\r\n") ? "\r\n" : "\n"
+newline = /COMMIT_HASH = [^\r\n]*(\r?\n)/.match(source).try(&.[1]) || abort "COMMIT_HASH line ending not found in #{DOWNLOAD_PATH}"
 asset_names = [] of String
 source.scan(/zip:\s*"([^"]+\.zip)"/) do |match|
   asset_names << match[1]

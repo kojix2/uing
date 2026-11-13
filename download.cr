@@ -3,27 +3,27 @@ require "digest/sha256"
 require "file/tempfile"
 require "file_utils"
 
-COMMIT_HASH = "22f21042-experimental"
+COMMIT_HASH = "6c14dcc2-experimental"
 
 ASSET_SHA256 = {
-  "libui-ng-macos-arm64-static-debug.zip"           => "e41c84313dfcbfcc3763e7ee35199e6801c8531a1dc521437bbf37379387266c",
-  "libui-ng-macos-arm64-static-release.zip"         => "f6b974bae82ef2147badb619d9a193775af9fd0ac668435a7cf7d399b3f21377",
-  "libui-ng-macos-x64-static-debug.zip"             => "6580972b461f5f5715ac50369422c3111eafdb58ed00e15d538eeb538863ee08",
-  "libui-ng-macos-x64-static-release.zip"           => "55ff2f13b7ce1588e4a7ebdc04d8b734e6d863cd255a7fdc5f8475d93ab86a0a",
-  "libui-ng-ubuntu-arm64-static-debug.zip"          => "5b7720e6300c89a16bd58407a1764a1b97c5edb37f4b9443d8e57f3a9be22f67",
-  "libui-ng-ubuntu-arm64-static-release.zip"        => "6174959fb28903b3d3feee4b9b4ed47843bf21421b9f8dd1d6bcb8121e054b26",
-  "libui-ng-ubuntu-x64-static-debug.zip"            => "c97ba0fcf001b6494c271860081f1a7f12fdaa6d1138b3a43691eee06219aa5b",
-  "libui-ng-ubuntu-x64-static-release.zip"          => "eecba16e22f52c8021f7fd22f4a3eba32a1ef1de0690a98aaee23b77dd3f4c51",
-  "libui-ng-windows-x64-msvc-static-md-debug.zip"   => "122716348144fb32661cb1180b99f2b220a70062020452b6c99139bef6a6423a",
-  "libui-ng-windows-x64-msvc-static-md-release.zip" => "de55718dc76e5388f1e04204b708bbde5fa0b6965b4b0eac57813e70e3cde21c",
-  "libui-ng-windows-x64-msvc-static-mt-debug.zip"   => "a33befc859a84dc6a6ff7424cba1f6c794c5f4438928768577847d177e326749",
-  "libui-ng-windows-x64-msvc-static-mt-release.zip" => "5cc5c1509afccb8e5b7000893665ce054d670868181a62badefe131fcb89d42d",
-  "libui-ng-windows-x64-ucrt-static-debug.zip"      => "6044de6821d5f7a9d49b4548d3ff936e47e1c0d9073a29f913448dfb3ffc989a",
-  "libui-ng-windows-x64-ucrt-static-release.zip"    => "991ba0bf75163a5d1e9b9703ec6bb6752a2b88b9a130a49636529d3b1067e76a",
-  "libui-ng-windows-x86-msvc-static-md-debug.zip"   => "a198d3c32337ecda8671c471013941ff06ed205fe11a37a757cd2f7eada3df89",
-  "libui-ng-windows-x86-msvc-static-md-release.zip" => "f2f014302672368807ed15515ea77a3e43a15eb7e315fa60f6e2aff9e15bf60c",
-  "libui-ng-windows-x86-msvc-static-mt-debug.zip"   => "81a2eeb60f9390634b8c640e68ab4fff4405aa28d09ea44aea808df4e2939674",
-  "libui-ng-windows-x86-msvc-static-mt-release.zip" => "d383f2532986f3655e39a92cb29369afa7c5a53c21ea1671ec8ca23548e9cd2f",
+  "libui-ng-macos-arm64-static-debug.zip"           => "5192df2b2d676ed26cdca3fcc0b016c23b55e06a57b159a1e14bba21ddb213b4",
+  "libui-ng-macos-arm64-static-release.zip"         => "bd462c7f7a488b2be357d766407399938dce71f816da6593343a632c31e7d3fc",
+  "libui-ng-macos-x64-static-debug.zip"             => "f8e4e240ff774a34fe58de7e012a192a1bcdbf86c99512c6ecf9a177d0184c96",
+  "libui-ng-macos-x64-static-release.zip"           => "b905057e619d9d4ba6e69c6cc2b992ccd13912dbc5ff9214d76f11727c963758",
+  "libui-ng-ubuntu-arm64-static-debug.zip"          => "b8c3fc3d4654a97571dffc135369c563179bea01094d0a0704c83c08aff5a069",
+  "libui-ng-ubuntu-arm64-static-release.zip"        => "3bf93407e1ebf09f714416a5bcd6b1143b991e180c9d4007f32e0e6113cb9857",
+  "libui-ng-ubuntu-x64-static-debug.zip"            => "685008a8f2b98df6cbe4e4ad0656e2f6a442783455be4ebaa933947d6d094e99",
+  "libui-ng-ubuntu-x64-static-release.zip"          => "423ca5a0abcafa706d55deebf8d37e525a8f404460e84672ff9cc25e4111515b",
+  "libui-ng-windows-x64-msvc-static-md-debug.zip"   => "7f3f8cd0b5eba9e914cc6b0fb935ee202ac260dd50ed75a04fc577f18ada631d",
+  "libui-ng-windows-x64-msvc-static-md-release.zip" => "b9a546ff236f48cd50397c83dd597cbefd1dd962056384cd0648511a6b4ae7da",
+  "libui-ng-windows-x64-msvc-static-mt-debug.zip"   => "7eb125644252665dad7ab0931933aa3a8c0fd05ebe51f0e9346482d34276e09d",
+  "libui-ng-windows-x64-msvc-static-mt-release.zip" => "83f61f3c912b2b689aa57a5cbe5898a7209630f776eb6f6a8bb5888b92a1cb93",
+  "libui-ng-windows-x64-ucrt-static-debug.zip"      => "df48201e8eec565ddd012386512c9b141b1250093178d3f506478eaf826286f4",
+  "libui-ng-windows-x64-ucrt-static-release.zip"    => "b87f0092914f49eff55c9833792015d6b1a1da2d4eb5915fb3ac5eaa77ef8b85",
+  "libui-ng-windows-x86-msvc-static-md-debug.zip"   => "e06f1d44159192c39d2305b962f8f594e098b4c557d8d236469e57a0f7bf660f",
+  "libui-ng-windows-x86-msvc-static-md-release.zip" => "1a64ba9809f97cb265fb6f4395d155ce79996d46a1f4a8a3b3e6b119e39140d2",
+  "libui-ng-windows-x86-msvc-static-mt-debug.zip"   => "7b684fad315e3db39a84d451ddb3f80a23064c9a68bc845ca57ec84c45e93e72",
+  "libui-ng-windows-x86-msvc-static-mt-release.zip" => "c1821a2d8e507a31b36a7c97cd51050acf171c8db6ff5176c4e64eb2cdfe6ea0",
 }
 
 # Path constants
